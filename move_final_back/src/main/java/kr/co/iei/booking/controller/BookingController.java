@@ -1,4 +1,4 @@
-package kr.co.iei.booking.model.controller;
+package kr.co.iei.booking.controller;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
