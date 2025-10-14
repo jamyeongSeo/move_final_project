@@ -30,14 +30,6 @@ const Join = () => {
     const agreeAllChecks =
       newChecks.agree1 && newChecks.agree2 && newChecks.agree3;
     setChecks({ ...newChecks, allAgree: agreeAllChecks });
-    //agree 풀렸을 때 전체동의 해체 안됨 -> 왜야 ㅠㅠㅠ
-    /*
-        if(newChecks.agree1 && newChecks.agree2 && newChecks.agree3 ){
-        setChecks({...newChecks, allAgree: checked });
-        }else{
-            setChecks(newChecks)
-        }
-            */
   };
   const nextJoin = () => {
     if (checks.agree1 && checks.agree2) {

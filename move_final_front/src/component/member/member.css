@@ -205,3 +205,80 @@
 .memberModal-close {
   display: none;
 }
+
+/*leftSideMenu*/
+.content-wrap {
+  overflow: hidden;
+}
+.left-side-menu-side {
+  width: 20%;
+  float: left;
+  /*고정 할 수 있으면 고정 ㄱ*/
+}
+.left-side-menu-title {
+  border: 2px solid var(--gray5);
+  border-radius: 5px;
+  background-color: var(--main1);
+  color: var(--gray7);
+  width: 210px;
+  height: 55px;
+  text-align: center;
+  line-height: 55px;
+  font-size: 20px;
+  font-family: ns-b;
+}
+/*LeftSideMenu 옆 텍스트 공간
+(background-color는 className 넣어서 지정하여 사용 하면 될 것 같습니다.)
+*/
+.left-side-menu-other {
+  float: right;
+  width: 77%;
+}
+
+/*MemberMain*/
+.member-mypage-wrap {
+  background-color: var(--gray7);
+  padding: 30px 0px;
+  border: 1px solid var(--main1);
+}
+.memberMain-title {
+  overflow: hidden;
+  height: 80px;
+}
+.member-mypage-content-wrap {
+  border-top: 2px solid var(--main1);
+  border-bottom: 2px solid var(--main1);
+  margin: 0px 20px;
+  padding: 15px 0px;
+  min-height: 450px;
+}
+.member-mypage-content {
+  padding: 7px 15px;
+  margin: 15px 0px;
+  border: 1px solid var(--main3);
+  border-radius: 3px;
+  background-color: var(--main3);
+  overflow: hidden;
+  font-size: 19px;
+  font-weight: 600;
+}
+.member-mypage-content-left {
+  float: left;
+}
+.member-mypage-content-right {
+  float: right;
+}
+.member-mypage-coupon {
+  background-color: var(--main3);
+  font-size: 16px;
+  padding: 0px 3px;
+  text-align: center;
+}
+.member-mypage-btn-wrap {
+  margin-top: 30px;
+}
+.member-mypage-btn-wrap > .member-mypage-btn {
+  margin: 0px 15px;
+  padding: 5px 75px;
+  font-size: 17px;
+}
