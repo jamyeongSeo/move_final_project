@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil"
 import Swal from "sweetalert2";
 import axios from "axios";
-import "./adminMenu.css"
+
 const AdminMain = () =>{
     //const [authReady, setAuthReady] = useRecoilState(authReadyState);
     //const [memberType, setMemberType] = useRecoilState(memberTypeState);
