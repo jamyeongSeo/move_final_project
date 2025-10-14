@@ -1,0 +1,143 @@
+/*join*/
+.joinMain-none {
+  display: none;
+}
+.joinAgree-none {
+  display: none;
+}
+.join-wrap {
+  background-color: var(--gray7);
+  width: 780px;
+  justify-self: center;
+}
+.joinAgree-title {
+  text-align: left;
+  margin: 30px 20px;
+}
+.joinAgree-title > * {
+  margin-bottom: 7px;
+}
+.joinAgree-title > span {
+  font-size: 14px;
+  color: var(--gray3);
+}
+.joinAgree-title > hr {
+  margin-top: 10px;
+  margin-bottom: 40px;
+  border: 2px solid var(--gray5);
+}
+.joinAgree-content {
+  text-align: left;
+  margin: 55px 20px;
+}
+.joinAgree-content > * {
+  font-size: 14px;
+}
+.joinAgree-checkbox-title {
+  font-weight: 600;
+  padding-left: 3px;
+}
+.joinAgree-checkbox-content {
+  border: 1px solid var(--main1);
+  margin-top: 7px;
+  margin-bottom: 35px;
+  height: 200px;
+  overflow: auto;
+  border-radius: 1px;
+  padding: 2px 5px;
+}
+.joinAgree-checkbox-content > p {
+  color: var(--gray3);
+}
+.joinAgree-btn {
+  width: 265px;
+  padding: 7px;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  font-size: 17px;
+}
+
+/*join*/
+.join-item {
+  margin-bottom: 45px;
+  font-size: 15px;
+}
+.joinAgree-content > div > ul {
+  overflow: hidden;
+}
+.join-input {
+  float: left;
+}
+.join-input > input {
+  width: 400px;
+}
+.join-input > input {
+  border: none;
+}
+.join-span {
+  text-align: right;
+}
+.input-email > label {
+  float: right;
+}
+
+.join-su {
+  color: var(--main10);
+}
+.join-f {
+  color: var(--main5);
+}
+.join-btn > button {
+  background-color: var(--gray7);
+  margin-right: 7px;
+}
+.join-btn > button:hover {
+  background-color: var(--main3);
+}
+.join-btn {
+  float: left;
+}
+.join-btn > span {
+  margin-left: 7px;
+  margin-right: 10px;
+  color: var(--main5);
+}
+.join-item-none {
+  display: none;
+}
+.join-memberBG {
+  overflow: hidden;
+}
+.join-radio > input {
+  display: none;
+}
+.join-btn-gray {
+  cursor: pointer;
+  background-color: var(--gray7);
+  text-align: center;
+  border-radius: 5px;
+  box-sizing: border-box;
+  border: 2px solid var(--gray5);
+  margin: 0 1px;
+  width: 75px;
+}
+.join-btn-red {
+  cursor: pointer;
+  color: var(--gray7);
+  background-color: var(--main5);
+  text-align: center;
+  border-radius: 5px;
+  box-sizing: border-box;
+  border: 2px solid var(--main5);
+  margin: 0 1px;
+  width: 75px;
+}
+.join-radio {
+  float: right;
+  line-height: 30px;
+  display: flex;
+}
+.join-memberBirth {
+  float: left;
+  width: 510px;
+}
