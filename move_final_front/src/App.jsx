@@ -6,6 +6,7 @@ import CSMain from "./component/cs/CSMain";
 import Join from "./component/member/join";
 import Login from "./component/common/Login";
 import MemberMain from "./component/member/MemberMain";
+import MemberUpdate from "./component/member/MemberUpdate";
 
 function App() {
   return (
@@ -21,6 +22,10 @@ function App() {
             path="/member/memberMain"
             element={<MemberMain></MemberMain>}
           />
+          <Route
+            path="/member/memberUpdate"
+            element={<MemberUpdate></MemberUpdate>}
+          ></Route>
         </Routes>
       </main>
       <Footer />

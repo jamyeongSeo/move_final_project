@@ -282,3 +282,80 @@
   padding: 5px 75px;
   font-size: 17px;
 }
+
+/*memberUpdate*/
+.member-mypage-content-line {
+  overflow: hidden;
+}
+.member-mypage-content-line > input {
+  border: none;
+  font-size: 17px;
+}
+
+.memberUpdate-title-contnet {
+  float: left;
+  color: var(--gray3);
+  font-weight: 500;
+  margin-left: 20px;
+  margin-top: 7px;
+}
+.member-mypage-content-line {
+  margin-top: 65px;
+}
+.memberUpdate-searchPw {
+  text-align: left;
+  margin-top: 325px;
+}
+.memberUpdate-searchPw > span {
+  margin-right: 5px;
+  color: var(--gray4);
+}
+.memberUpdate-searchPw > a {
+  padding: 3px 5px;
+  color: var(--gray4);
+}
+.memberUpdate-searchPw > a:hover {
+  color: var(--main1);
+}
+.memberMypage-css {
+  background-color: aquamarine;
+}
+
+.updateCheckPw-none {
+  display: none;
+}
+
+.memberUpdateMain-none {
+  display: none;
+}
+
+/*updateMain*/
+.memberUpdate-item {
+  overflow: hidden;
+  margin: 30px 0px;
+}
+.memberUpdate-line {
+  width: 635px;
+}
+.memberUpdate-item > label {
+  float: left;
+  line-height: 35px;
+  font-family: ns-b;
+  font-size: 17px;
+}
+.memberUpdate-item > input {
+  float: right;
+  display: none;
+}
+.memberUpdate-line {
+  float: right;
+}
+.memberUpdate-input-content {
+  font-size: 17px;
+}
+.memberUpdatePw-not {
+  display: none;
+}
+.login-searchPwModal-none {
+  display: none;
+}
