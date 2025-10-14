@@ -1,0 +1,361 @@
+/*join*/
+.joinMain-none {
+  display: none;
+}
+.joinAgree-none {
+  display: none;
+}
+.join-wrap {
+  background-color: var(--gray7);
+  width: 780px;
+  justify-self: center;
+}
+.joinAgree-title {
+  text-align: left;
+  margin: 30px 20px;
+}
+.joinAgree-title > * {
+  margin-bottom: 7px;
+}
+.joinAgree-title > span {
+  font-size: 14px;
+  color: var(--gray3);
+}
+.joinAgree-title > hr {
+  margin-top: 10px;
+  margin-bottom: 40px;
+  border: 2px solid var(--gray5);
+}
+.joinAgree-content {
+  text-align: left;
+  margin: 55px 20px;
+}
+.joinAgree-content > * {
+  font-size: 14px;
+}
+.joinAgree-checkbox-title {
+  font-weight: 600;
+  padding-left: 3px;
+}
+.joinAgree-checkbox-content {
+  border: 1px solid var(--main1);
+  margin-top: 7px;
+  margin-bottom: 35px;
+  height: 200px;
+  overflow: auto;
+  border-radius: 1px;
+  padding: 2px 5px;
+}
+.joinAgree-checkbox-content > p {
+  color: var(--gray3);
+}
+.joinAgree-btn {
+  width: 265px;
+  padding: 7px;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  font-size: 17px;
+}
+
+/*join*/
+.join-item {
+  margin-bottom: 45px;
+  font-size: 15px;
+}
+.joinAgree-content > div > ul {
+  overflow: hidden;
+}
+.join-input {
+  float: left;
+}
+.join-input > input {
+  width: 400px;
+}
+.join-input > input {
+  border: none;
+}
+.join-span {
+  text-align: right;
+}
+.input-email > label {
+  float: right;
+}
+
+.join-su {
+  color: var(--main10);
+}
+.join-f {
+  color: var(--main5);
+}
+.join-btn > button {
+  background-color: var(--gray7);
+  margin-right: 7px;
+}
+.join-btn > button:hover {
+  background-color: var(--main3);
+}
+.join-btn {
+  float: left;
+}
+.join-btn > span {
+  margin-left: 7px;
+  margin-right: 10px;
+  color: var(--main5);
+}
+.join-item-none {
+  display: none;
+}
+.join-memberBG {
+  overflow: hidden;
+}
+.join-radio > input {
+  display: none;
+}
+.join-btn-gray {
+  cursor: pointer;
+  background-color: var(--gray7);
+  text-align: center;
+  border-radius: 5px;
+  box-sizing: border-box;
+  border: 2px solid var(--gray5);
+  margin: 0 1px;
+  width: 75px;
+}
+.join-btn-red {
+  cursor: pointer;
+  color: var(--gray7);
+  background-color: var(--main5);
+  text-align: center;
+  border-radius: 5px;
+  box-sizing: border-box;
+  border: 2px solid var(--main5);
+  margin: 0 1px;
+  width: 75px;
+}
+.join-radio {
+  float: right;
+  line-height: 30px;
+  display: flex;
+}
+.join-memberBirth {
+  float: left;
+  width: 510px;
+}
+
+/*Modal*/
+.memberModal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+.memberModal-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+.memberModal-content-box-wrap {
+  width: 750px;
+  border: 1px solid var(--main1);
+  border-radius: 15px;
+  background-color: var(--main1);
+}
+.memberModal-content-box {
+  margin: 7px;
+  padding: 50px 35px;
+  border: 1px solid var(--main1);
+  border-radius: 5px;
+  background-color: var(--gray7);
+  text-align: center;
+}
+.memberModal-content-wrap {
+  min-height: 250px;
+  border-bottom: 2px solid var(--main1);
+  border-top: 2px solid var(--main1);
+  margin: 30px 0px;
+  padding: 25px 0px;
+}
+.memberModal-content-wrap > div {
+  margin: 20px 0px;
+}
+.memberModal-btn {
+  padding: 5px 75px;
+}
+.memberModal-searchResult-box {
+  border: 1px solid var(--main3);
+  background-color: var(--main3);
+  padding: 45px 20px;
+  border-radius: 5px;
+}
+.memberModal-searchResult {
+  font-size: 15px;
+  font-weight: 600;
+}
+.membersearchResult-none {
+  display: none;
+}
+.membersearch-none {
+  display: none;
+}
+.memberModal-close {
+  display: none;
+}
+
+/*leftSideMenu*/
+.content-wrap {
+  overflow: hidden;
+}
+.left-side-menu-side {
+  width: 20%;
+  float: left;
+  /*고정 할 수 있으면 고정 ㄱ*/
+}
+.left-side-menu-title {
+  border: 2px solid var(--gray5);
+  border-radius: 5px;
+  background-color: var(--main1);
+  color: var(--gray7);
+  width: 210px;
+  height: 55px;
+  text-align: center;
+  line-height: 55px;
+  font-size: 20px;
+  font-family: ns-b;
+}
+/*LeftSideMenu 옆 텍스트 공간
+(background-color는 className 넣어서 지정하여 사용 하면 될 것 같습니다.)
+*/
+.left-side-menu-other {
+  float: right;
+  width: 77%;
+}
+
+/*MemberMain*/
+.member-mypage-wrap {
+  background-color: var(--gray7);
+  padding: 30px 0px;
+  border: 1px solid var(--main1);
+}
+.memberMain-title {
+  overflow: hidden;
+  height: 80px;
+}
+.member-mypage-content-wrap {
+  border-top: 2px solid var(--main1);
+  border-bottom: 2px solid var(--main1);
+  margin: 0px 20px;
+  padding: 15px 0px;
+  min-height: 450px;
+}
+.member-mypage-content {
+  padding: 7px 15px;
+  margin: 15px 0px;
+  border: 1px solid var(--main3);
+  border-radius: 3px;
+  background-color: var(--main3);
+  overflow: hidden;
+  font-size: 19px;
+  font-weight: 600;
+}
+.member-mypage-content-left {
+  float: left;
+}
+.member-mypage-content-right {
+  float: right;
+}
+.member-mypage-coupon {
+  background-color: var(--main3);
+  font-size: 16px;
+  padding: 0px 3px;
+  text-align: center;
+}
+.member-mypage-btn-wrap {
+  margin-top: 30px;
+}
+.member-mypage-btn-wrap > .member-mypage-btn {
+  margin: 0px 15px;
+  padding: 5px 75px;
+  font-size: 17px;
+}
+
+/*memberUpdate*/
+.member-mypage-content-line {
+  overflow: hidden;
+}
+.member-mypage-content-line > input {
+  border: none;
+  font-size: 17px;
+}
+
+.memberUpdate-title-contnet {
+  float: left;
+  color: var(--gray3);
+  font-weight: 500;
+  margin-left: 20px;
+  margin-top: 7px;
+}
+.member-mypage-content-line {
+  margin-top: 65px;
+}
+.memberUpdate-searchPw {
+  text-align: left;
+  margin-top: 325px;
+}
+.memberUpdate-searchPw > span {
+  margin-right: 5px;
+  color: var(--gray4);
+}
+.memberUpdate-searchPw > a {
+  padding: 3px 5px;
+  color: var(--gray4);
+}
+.memberUpdate-searchPw > a:hover {
+  color: var(--main1);
+}
+.memberMypage-css {
+  background-color: aquamarine;
+}
+
+.updateCheckPw-none {
+  display: none;
+}
+
+.memberUpdateMain-none {
+  display: none;
+}
+
+/*updateMain*/
+.memberUpdate-item {
+  overflow: hidden;
+  margin: 30px 0px;
+}
+.memberUpdate-line {
+  width: 635px;
+}
+.memberUpdate-item > label {
+  float: left;
+  line-height: 35px;
+  font-family: ns-b;
+  font-size: 17px;
+}
+.memberUpdate-item > input {
+  float: right;
+  display: none;
+}
+.memberUpdate-line {
+  float: right;
+}
+.memberUpdate-input-content {
+  font-size: 17px;
+}
+.memberUpdatePw-not {
+  display: none;
+}
+.login-searchPwModal-none {
+  display: none;
+}
