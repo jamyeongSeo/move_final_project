@@ -1,0 +1,30 @@
+.side-menu-box {
+  width: 210px;
+  height: 52px;
+  background-color: #444;
+  line-height: 52px;
+  text-align: center;
+  border-radius: 8px;
+}
+.side-menu-box > div {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 700;
+}
+.cs-wrap {
+  display: flex;
+  gap: 60px;
+}
+.notice-title {
+  font-size: 24px;
+  font-weight: 700;
+  padding: 6px;
+  width: 794px;
+  border-bottom: 2px solid #666;
+}
+.posting-wrap {
+  margin-top: 12px;
+}
+.tbl {
+  width: 100%;
+}
