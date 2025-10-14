@@ -3,6 +3,10 @@ import Header from "./component/common/Header";
 import Footer from "./component/common/Footer";
 import Main from "./component/common/Main";
 import CSMain from "./component/cs/CSMain";
+import BookingMain from "./component/booking/BookingMain";
+
+import AdminMain from "./component/admin/AdminMain";
+
 import Join from "./component/member/join";
 import Login from "./component/common/Login";
 import MemberMain from "./component/member/MemberMain";
@@ -17,6 +21,10 @@ function App() {
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/cs/*" element={<CSMain />} />
+          <Route path="/booking" element={<BookingMain />} />
+
+          <Route path="admin/main" element={<AdminMain />} />
+
           <Route path="/member/join" element={<Join></Join>} />
           <Route path="/common/login" element={<Login></Login>} />
           <Route

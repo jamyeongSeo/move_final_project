@@ -5,7 +5,9 @@ const Header = () => {
   return (
     <header className="header-wrap">
       <div className="header-div">
-        <div className="header-logo">I_MOVE_U</div>
+        <Link to="/" className="header-logo">
+          I_MOVE_U
+        </Link>
         <HeaderNavi />
         <AuthNavi />
       </div>
@@ -20,7 +22,7 @@ const HeaderNavi = () => {
           <Link to="#">영화</Link>
         </li>
         <li>
-          <Link to="#">예매하기</Link>
+          <Link to="/booking">예매하기</Link>
         </li>
         <li>
           <Link to="/cs/main">고객센터</Link>

@@ -1,0 +1,49 @@
+.content-wrap {
+  margin-bottom: 90px;
+}
+
+.page-title {
+  margin-bottom: 30px;
+}
+.page-title > h2 {
+  color: var(--main5);
+}
+.booking-content-wrap {
+  margin: 0 auto;
+  width: 900px;
+}
+
+.booking-content-header {
+  margin: auto;
+  width: 80%;
+  border: 3px solid transparent;
+  background-color: black;
+  overflow: hidden;
+  transform: rotate(175deg);
+  margin-bottom: 20px;
+  padding-left: 10px;
+}
+
+.booking-content-box {
+  margin: 0 auto;
+  width: 80%;
+  border: 3px solid var(--gray3);
+
+  height: 500px;
+  margin-top: 30px;
+}
+
+.booking-content-header > div {
+  height: 100px;
+  float: right;
+  transform: skew(135deg);
+}
+
+.header-design-black {
+  width: 10%;
+  background-color: black;
+}
+.header-design-white {
+  width: 10%;
+  background-color: white;
+}
