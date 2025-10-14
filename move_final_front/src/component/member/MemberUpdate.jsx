@@ -261,11 +261,12 @@ const MemberUpdateMain = () => {
     setJoinEmailRe(false);
     setMemberEmail("");
   }, [member.memberEmail]);
+  const backServer = import.meta.env.VITE_BACK_SERVER;
   const checkEmail = () => {
     if (member.memberEmail != "") {
       axios
         .get(
-          `http://localhost:9999/member/checkEmail?memberEmail=${member.memberEmail}`
+          `${backServer}/member/checkEmail?memberEmail=${member.memberEmail}`
         )
         .then((res) => {
           console.log(res);

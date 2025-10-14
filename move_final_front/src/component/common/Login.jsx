@@ -2,10 +2,12 @@ import { useEffect, useRef, useState } from "react";
 
 import "./default.css";
 import "./login.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import SearchIdModal from "../member/SearchIdModal";
 import SearchPwModal from "../member/SearchPwModal";
+import axios from "axios";
+import Swal from "sweetalert2";
 const Login = () => {
   const [member, setMember] = useState({
     memberId: "",
@@ -32,6 +34,29 @@ const Login = () => {
   const openPwModal = () => {
     setIsModalPw(true);
   };
+  const backServer = import.meta.env.VITE_BACK_SERVER;
+  const navigate = useNavigate();
+  const login = () => {
+    if (member.memberId !== "" && member.memberPw !== "") {
+      axios
+        .post(`${backServer}/member/login`, member)
+        .then((res) => {
+          console.log(res);
+          if (res.data == 1) {
+            navigate("/");
+          } else {
+            Swal.fire({
+              title: "로그인 실패",
+              text: "아이디 또는 비밀번호를 확인하세요",
+              icon: "warning",
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
 
   return (
     <div className="content-wrap section login-wrap">
@@ -41,6 +66,7 @@ const Login = () => {
           <form
             onSubmit={(e) => {
               e.preventDefault();
+              login();
             }}
           >
             <div className="input-item ">

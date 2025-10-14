@@ -7,4 +7,9 @@
 		select count(*) from member_tbl where member_email = #{memberEmail}
 	</select>
 	
+	<!-- Login -->
+	<select id="login">
+		select count(*) from member_tbl where member_id = #{memberId} and member_pw = #{memberPw} 
+	</select>
+	
 </mapper>

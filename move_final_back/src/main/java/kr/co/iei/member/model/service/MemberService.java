@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.co.iei.member.model.dao.MemberDao;
+import kr.co.iei.member.model.dto.Member;
 
 @Service
 public class MemberService {
@@ -12,6 +13,11 @@ public class MemberService {
 
 	public int checkEmail(String memberEmail) {
 		int result = memberDao.checkEmail(memberEmail);
+		return result;
+	}
+
+	public int login(Member member) {
+		int result = memberDao.login(member);
 		return result;
 	}
 }
