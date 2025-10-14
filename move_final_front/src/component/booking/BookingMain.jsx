@@ -5,7 +5,7 @@ const BookingMain = () => {
   const [movie, setMovie] = useState([]);
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_BACK_SERVER}/book/list`)
+      .get(`${import.meta.env.VITE_BACK_SERVER}/booking/list`)
       .then((res) => {
         console.log(res);
       })
