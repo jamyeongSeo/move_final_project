@@ -25,6 +25,53 @@
 .posting-wrap {
   margin-top: 12px;
 }
+.input-wrap {
+  display: flex;
+  margin: 10px 0;
+  justify-content: space-between;
+  align-items: center;
+}
+.input-wrap > input {
+  text-align: center;
+  height: 28px;
+  width: 210px;
+  border: 1px solid var(--gray4);
+  border-radius: 8px;
+  margin-left: 430px;
+}
+.input-wrap > button {
+  width: 64px;
+  height: 30px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background-color: var(--main5);
+  color: #fff;
+  font-family: ns-b;
+  cursor: pointer;
+}
+.list-wrap {
+  border: 1px solid var(--gray4);
+  border-radius: 8px;
+  overflow: hidden;
+}
 .tbl {
   width: 100%;
+  text-align: center;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+.tbl > thead {
+  background-color: var(--gray5);
+  height: 40px;
+}
+.tbl > tbody > tr {
+  height: 40px;
+}
+.tbl tr + tr td {
+  border-top: 1px solid #ddd;
+}
+.page-navi {
+  display: flex;
+  justify-content: center;
+  margin: 24px 0;
 }
