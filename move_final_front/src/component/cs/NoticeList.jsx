@@ -1,36 +1,46 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import PageNavigation from "../utils/PageNavigation";
 
 const NoticeList = () => {
   const [noticeList, setNoticeList] = useState([]);
   const [reqPage, setReqPage] = useState(1);
   const [pi, setPi] = useState(null);
+  const [totalCount, setTotalCount] = useState(0);
+  const [search, setSearch] = useState("");
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_BACK_SERVER}/cs?reqPage=${reqPage}`)
+      .get(`${import.meta.env.VITE_BACK_SERVER}/cs/notice?reqPage=${reqPage}`)
       .then((res) => {
         console.log(res);
         setNoticeList(res.data.noticeList);
+        setPi(res.data.pi);
+        setTotalCount(res.data.totalCount);
       })
       .catch((err) => {
         console.log(err);
       });
   }, [reqPage]);
+
   return (
     <section className="section notice-list">
       <div className="notice-title">공지사항</div>
       <div className="input-wrap">
-        <div className="list-count">전체 : 100건</div>
+        <div className="list-count">전체 : {totalCount}건</div>
         <input
           type="text"
-          id="noticeContent"
-          name="noticeContent"
-          value={noticeList.noticeContent}
+          id="noticeTitle"
+          name="noticeTitle"
+          value={search}
+          onChange={(e) => {
+            setSearch(e.target.value);
+          }}
           placeholder="검색어를 입력하십시오"
         ></input>
+        <button type="submit">입력</button>
       </div>
-      <div className="notice-list-wrap">
+      <div className="list-wrap">
         <table className="tbl">
           <thead>
             <tr>
@@ -52,14 +62,13 @@ const NoticeList = () => {
           </tbody>
         </table>
       </div>
+      <div className="page-navi">
+        {pi && (
+          <PageNavigation pi={pi} reqPage={reqPage} setReqPage={setReqPage} />
+        )}
+      </div>
     </section>
   );
-};
-
-const NoticeItem = (props) => {
-  const notice = props.notice;
-  const navigate = useNavigate();
-  return;
 };
 
 export default NoticeList;
