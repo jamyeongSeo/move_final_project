@@ -1,0 +1,8 @@
+2025-10-14  10:07 서자명
+npm install react-router-dom
+npm install axios
+npm install sweetalert2
+npm install recoil
+npm install recoil-persist
+npm install react-quill
+npm install quill-image-resize-module-react

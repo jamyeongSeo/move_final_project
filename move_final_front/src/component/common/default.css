@@ -1,0 +1,303 @@
+:root {
+  /*main color */
+  --main1: #444444;
+  --main2: #e8e8e8;
+  --main3: #f9f9f9;
+  --main4: #ffffff;
+  --main5: #ff2b2b; /*빨간색(연령 및 버튼)*/
+  --mian6: #e5b8b8; /*연한빨간색*/
+  --main7: #329f56; /*초록색(연령) */
+  --main8: #fbf71f; /*노란색(연령)*/
+  --main9: #db8e40; /*주황색(연령)*/
+  --main10: #25a4f3; /*파란색*/
+
+  /*gray_글자 색*/
+  --gray1: #222222;
+  --gray2: #555555;
+  --gray3: #666666;
+  --gray4: #a0a0a0; /*푸터 글자 색*/
+  --gray5: #d9d9d9; /*피그마 내 이미지 박스 색*/
+  --gray6: #efefef;
+  --gray7: #ffffff; /*로고 색*/
+
+  /*line-color*/
+  --line1: #222222;
+  --line2: #d9d9d9;
+  --line3: #eaeced;
+  --line4: #f6f6f6;
+  --line5: #f8f9fa;
+}
+
+@font-face {
+  font-family: ns-l;
+  src: url(/font/NotoSansKR-Light.ttf);
+}
+@font-face {
+  font-family: ns-r;
+  src: url(/font/NotoSansKR-Regular.ttf);
+}
+@font-face {
+  font-family: ns-b;
+  src: url(/font/NotoSansKR-Bold.ttf);
+}
+@font-face {
+  font-family: ns-black;
+  src: url(/font/NotoSansKR-Black.ttf);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  outline: 0;
+  font-family: ns-r;
+  list-style-type: none;
+  color: var(--main1);
+}
+a {
+  text-decoration: none;
+}
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  min-width: 1080px;
+  position: relative;
+  background-color: var(--main3);
+}
+
+/*-----------------------App.jsx-------------------*/
+.wrap {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.content {
+  width: 100%;
+  max-width: 1080px;
+  margin: 30px auto;
+  flex: 1;
+}
+
+/*-----------------각 component wrap 및 title-------------*/
+.content-wrap {
+  text-align: center;
+}
+.page-title {
+  padding: 30px;
+  text-align: center;
+  font-family: ns-b;
+  font-size: 25px;
+  color: var(--main1);
+}
+.title-logo {
+  /*페이지 타이틀 로고 사용시 사용해주세요!(I_MOVE_U 빨간색 / 기울기) */
+  padding: 35px;
+  text-align: center;
+  font-family: ns-b;
+  font-size: 30px;
+  color: var(--main5);
+  font-style: italic;
+}
+
+/*----------------------세부 item------------------------*/
+/*button
+사이즈는 및 magin각자 개인 className에 설정해서 사용하면 될 것 같습니다.
+*/
+.btn-red {
+  cursor: pointer;
+  color: var(--gray7);
+  background-color: var(--main5);
+  text-align: center;
+  font-family: ns-b;
+  border-radius: 5px;
+  border: noen;
+  box-sizing: border-box;
+  border: 1px solid var(--main5);
+  padding: 3px 8px;
+}
+.btn-red:hover {
+  color: var(--main3);
+  text-shadow: 0px 1px 1px var(--mian6);
+  box-shadow: 0px 1px 1px var(--mian6);
+}
+.btn-gray {
+  cursor: pointer;
+  color: var(--gray3);
+  background-color: var(--gray5);
+  text-align: center;
+  font-family: ns-b;
+  border-radius: 5px;
+  border: noen;
+  box-sizing: border-box;
+  border: 1px solid var(--gray5);
+  padding: 3px 8px;
+}
+.btn-gray:hover {
+  box-shadow: 0px 1px 1px var(--gray6);
+  text-shadow: 0px 1px 1px var(--gray4);
+}
+/*input
+background-color, margin는 각자 개인 className에 설정해서 사용하면 될 것 같습니다.
+*/
+.input-box {
+  border: 2px solid var(--gray5);
+  padding: 5px 5px;
+  /*margin: 5px 5px;*/
+  border-radius: 5px;
+}
+.input-box:hover {
+  border: 2px solid var(--gray3);
+}
+.input-line {
+  padding: 5px 5px;
+  /*margin: 5px 5px;*/
+  border: none;
+  border-bottom: 2px solid var(--gray5);
+}
+.input-line:hover {
+  border-bottom: 2px solid var(--gray3);
+}
+
+/* 헤더 */
+.header-wrap {
+  width: 100%;
+  background: #fff;
+  border-bottom: 1px solid #cfcfcf;
+}
+
+.header-div {
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 120px;
+  position: relative;
+  padding: 0 24px;
+  display: block;
+}
+
+.nav-menu {
+  position: absolute;
+  left: 50%;
+  top: 84px;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+.nav-menu ul {
+  list-style: none;
+  display: flex;
+  gap: 80px;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-menu li a {
+  text-decoration: none;
+  color: #222;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+}
+
+.header-logo {
+  position: absolute;
+  left: 50%;
+  top: 24px;
+  transform: translateX(-50%);
+  z-index: 2;
+  font-size: 32px;
+  font-weight: 800;
+  background: #fff;
+  padding: 0 8px;
+  line-height: 1;
+  font-style: italic;
+  margin-bottom: 8px;
+}
+
+.auth-nav {
+  position: absolute;
+  right: 24px;
+  top: 22px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  font-size: 13px;
+  color: #333;
+}
+
+.auth-nav span {
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.auth-nav span:hover {
+  color: #000;
+  text-decoration: underline;
+}
+
+.nav-menu li a::after {
+  content: "";
+  display: block;
+  width: 0;
+  height: 2px;
+  background: #000;
+  margin-top: 6px;
+  transition: width 0.25s;
+}
+.nav-menu li a:hover::after {
+  width: 100%;
+}
+
+.footer-wrap {
+  width: 100%;
+  background-color: #d9d9d9;
+  color: #333;
+  font-family: "Noto Sans KR", sans-serif;
+  padding: 16px 32px;
+  border-top: 1px solid #ccc;
+}
+.footer-div {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px;
+}
+.footer-logo {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--gray4);
+  font-style: italic;
+}
+
+.footer-menu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 35px;
+  font-size: 14px;
+  color: #333;
+  margin-right: 520px;
+}
+
+.footer-menu span {
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.footer-menu span:hover {
+  color: #000;
+  text-decoration: underline;
+}
+
+.footer-info {
+  font-size: 11px;
+  line-height: 1.7;
+  color: var(--gray4);
+  font-weight: 500;
+}
+
+.footer-info p {
+  margin: 0;
+}
