@@ -3,6 +3,7 @@ import Header from "./component/common/Header";
 import Footer from "./component/common/Footer";
 import Main from "./component/common/Main";
 import CSMain from "./component/cs/CSMain";
+import BookingMain from "./component/booking/BookingMain";
 
 import AdminMain from "./component/admin/AdminMain";
 
@@ -12,7 +13,6 @@ import MemberMain from "./component/member/MemberMain";
 import MemberUpdate from "./component/member/MemberUpdate";
 import MemberDelete from "./component/member/MemberDelete";
 
-
 function App() {
   return (
     <div className="wrap">
@@ -21,9 +21,9 @@ function App() {
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/cs/*" element={<CSMain />} />
+          <Route path="/booking" element={<BookingMain />} />
 
-
-          <Route path="admin/main" element={<AdminMain />}/>
+          <Route path="admin/main" element={<AdminMain />} />
 
           <Route path="/member/join" element={<Join></Join>} />
           <Route path="/common/login" element={<Login></Login>} />
@@ -39,7 +39,6 @@ function App() {
             path="/member/memberDelete"
             element={<MemberDelete></MemberDelete>}
           ></Route>
-
         </Routes>
       </main>
       <Footer />

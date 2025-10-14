@@ -20,7 +20,7 @@ const HeaderNavi = () => {
           <Link to="#">영화</Link>
         </li>
         <li>
-          <Link to="#">예매하기</Link>
+          <Link to="/booking">예매하기</Link>
         </li>
         <li>
           <Link to="/cs/main">고객센터</Link>
