@@ -1,8 +1,9 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import LeftSideMenu from "../utils/LeftSideMenu";
 import { Link, useNavigate } from "react-router-dom";
 import SearchIdModal from "./SearchIdModal";
 import SearchPwModal from "./SearchPwModal";
+import axios from "axios";
 
 const MemberUpdate = () => {
   const [menus, setMenus] = useState([
@@ -256,12 +257,15 @@ const MemberUpdateMain = () => {
     joinEmailRe.current.classList.remove("join-item-none");
     joinEmailRe.current.classList.add("join-item");
   };
+  useEffect(() => {
+    setJoinEmailRe(false);
+    setMemberEmail("");
+  }, [member.memberEmail]);
   const checkEmail = () => {
     if (member.memberEmail != "") {
-      /*back 작업 후 주석 제거 예정
       axios
         .get(
-          `http://localhost:80/member/checkEmail?memberEmail=${member.memberEmail}`
+          `http://localhost:9999/member/checkEmail?memberEmail=${member.memberEmail}`
         )
         .then((res) => {
           console.log(res);
@@ -278,7 +282,6 @@ const MemberUpdateMain = () => {
         .catch((err) => {
           console.log(err);
         });
-        */
     }
   };
 
@@ -390,7 +393,10 @@ const MemberUpdateMain = () => {
             </div>
 
             <section>
-              <JoinEmailCode></JoinEmailCode>
+              <JoinEmailCode
+                joinEmailRe={joinEmailRe}
+                memberEmail={memberEmail}
+              ></JoinEmailCode>
             </section>
           </div>
         </div>
@@ -420,11 +426,8 @@ const JoinEmailCode = (props) => {
   const emailMsgRe = useRef(null);
   return (
     <section>
-      <div className="join-item-none" ref={joinEmailRe}>
-        <div
-          className={joinEmailRe ? "join-item" : "join-item-none"}
-          style={{ overflow: "hidden" }}
-        >
+      <div className={joinEmailRe ? "join-item" : "join-item-none"}>
+        <div style={{ overflow: "hidden" }}>
           <div className="join-btn">
             <button type="button" className="input-box" onClick={emailRe}>
               인증번호 발송

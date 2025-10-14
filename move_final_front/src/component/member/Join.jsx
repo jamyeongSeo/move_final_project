@@ -1,7 +1,8 @@
-import { use } from "react";
+import { use, useEffect } from "react";
 import { useRef, useState } from "react";
 import "./member.css";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 const Join = () => {
   const joinAgreeEnd = useRef();
@@ -253,16 +254,19 @@ const JoinMain = () => {
   const [joinEmailRe, setJoinEmailRe] = useState(false);
   const [memberEmail, setMemberEmail] = useState("");
   const [checkEmailMsg, setCheckEailMsg] = useState("");
+  useEffect(() => {
+    setJoinEmailRe(false);
+    setMemberEmail("");
+  }, [member.memberEmail]);
   const checkEmail = () => {
     if (member.memberEmail != "") {
-      /*back 작업 후 주석 제거 예정
       axios
         .get(
-          `http://localhost:80/member/checkEmail?memberEmail=${member.memberEmail}`
+          `http://localhost:9999/member/checkEmail?memberEmail=${member.memberEmail}`
         )
         .then((res) => {
           console.log(res);
-          if (res.data == 1) {
+          if (res.data != 0) {
             setJoinEmailRe(false);
             setCheckEailMsg("이미 사용 중인 이메일입니다");
           } else {
@@ -275,7 +279,6 @@ const JoinMain = () => {
         .catch((err) => {
           console.log(err);
         });
-        */
     }
   };
 
@@ -381,7 +384,10 @@ const JoinMain = () => {
           </div>
 
           <section>
-            <JoinEmailCode></JoinEmailCode>
+            <JoinEmailCode
+              joinEmailRe={joinEmailRe}
+              memberEmail={memberEmail}
+            ></JoinEmailCode>
           </section>
 
           <div className="join-item">
@@ -491,11 +497,8 @@ const JoinEmailCode = (props) => {
   const emailMsgRe = useRef(null);
   return (
     <section>
-      <div className="join-item-none" ref={joinEmailRe}>
-        <div
-          className={joinEmailRe ? "join-item" : "join-item-none"}
-          style={{ overflow: "hidden" }}
-        >
+      <div className={joinEmailRe ? "join-item" : "join-item-none"}>
+        <div style={{ overflow: "hidden" }}>
           <div className="join-btn">
             <button type="button" className="input-box" onClick={emailRe}>
               인증번호 발송
