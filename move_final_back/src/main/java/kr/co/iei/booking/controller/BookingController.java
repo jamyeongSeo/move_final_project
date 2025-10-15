@@ -18,10 +18,11 @@ public class BookingController {
 	@Autowired
 	BookingService bookingService;
 	
-	@GetMapping(value="/list")
-	public ResponseEntity<MovieDTO> getMovieList(){
-		return ResponseEntity.ok(null);
+
+	//@GetMapping(value="/list")
+	//public ResponseEntity<MovieDTO> getMovieList(){
+
 		
-	}
+	
 
 }

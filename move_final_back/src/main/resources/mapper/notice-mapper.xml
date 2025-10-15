@@ -5,7 +5,11 @@
 		select count(*) from notice_tbl
 	</select>
 	
-	<select id="selectBoardList" resultType="notice">
+	<select id="searchTotalCount" resultType="int">
+		select count(*) from notice_tbl where notice_title like '%'||#{noticeTitle}||'%'
+	</select>
+	
+	<select id="selectNoticeList" resultType="notice">
 		select * from
 	        (select rownum as rnum, b.*
 	            from
@@ -15,5 +19,31 @@
 	                    notice_date
 	                from notice_tbl order by notice_no desc)b)
 	    where rnum between #{start} and #{end}
+	</select>
+	
+	<select id="searchNoticeList" resultType="notice">
+		select * from
+	        (select rownum as rnum, b.*
+	            from
+	            	(select
+	            		notice_no, 
+	                    notice_title, 
+	                    notice_date 
+	            	from notice_tbl 
+	            	where notice_title like '%'||#{noticeTitle}||'%'
+	            	order by notice_no desc)b)
+	    where rnum between #{start} and #{end}     	
+	</select>
+	
+	<insert id="insertNotice">
+		insert into notice_tbl values(notice_seq.nextval,#{memberId},#{noticeTitle},#{noticeContent},to_char(sysdate,'yyyy-mm-dd'))
+	</insert>
+	
+	<insert id="insertNoticeFile">
+		insert into notice_file_tbl values(notice_file_seq.nextval,#{noticeNo},#{filename},#{filepath})
+	</insert>
+	
+	<select id="getNoticeNo" resultType="int">
+		select notice_seq.nextval from dual;
 	</select>
 </mapper>
