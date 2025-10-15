@@ -19,10 +19,10 @@ const HeaderNavi = () => {
     <nav className="nav-menu">
       <ul>
         <li>
-          <Link to="#">영화</Link>
+          <Link to="/movie/list">영화</Link>
         </li>
         <li>
-          <Link to="/booking">예매하기</Link>
+          <Link to="/booking/main">예매하기</Link>
         </li>
         <li>
           <Link to="/cs/notice">고객센터</Link>

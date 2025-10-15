@@ -72,23 +72,6 @@
   overflow: hidden;
 }
 
-.content-tbl {
-  width: 100%;
-  text-align: center;
-  border-collapse: collapse;
-  border-spacing: 0;
-}
-
-.content-tbl th {
-  background-color: var(--gray5);
-  height: 40px;
-}
-
-.content-tbl td {
-  padding: 10px;
-  border-top: 1px solid #eee;
-}
-
 .admin-select {
   width: 130px;
   height: 36px;

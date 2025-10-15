@@ -1,4 +1,8 @@
-package kr.co.iei.booking.controller;
+package kr.co.iei.movie.controller;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -7,22 +11,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import kr.co.iei.booking.model.service.BookingService;
-import kr.co.iei.movie.model.dto.MovieDTO;
+
+import kr.co.iei.movie.model.service.MovieService;
 
 @RestController
-@RequestMapping(value="/booking")
+@RequestMapping(value="/movie")
 @CrossOrigin("*")
-public class BookingController {
-	
+public class MovieController {
 	@Autowired
-	BookingService bookingService;
+	MovieService movieService;
 	
-
-	//@GetMapping(value="/list")
-	//public ResponseEntity<MovieDTO> getMovieList(){
-
+	@GetMapping(value="/list")
+	public ResponseEntity<Map> getMovieList(){
+		Map map =  movieService.selectMovieList();
 		
-	
-
+		return ResponseEntity.ok(map);
+	}
 }

@@ -12,6 +12,7 @@ import Login from "./component/common/Login";
 import MemberMain from "./component/member/MemberMain";
 import MemberUpdate from "./component/member/MemberUpdate";
 import MemberDelete from "./component/member/MemberDelete";
+import MovieList from "./component/movie/MovieList";
 
 function App() {
   return (
@@ -21,7 +22,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/cs/*" element={<CSMain />} />
-          <Route path="/booking" element={<BookingMain />} />
+          <Route path="/booking/main" element={<BookingMain />} />
 
           <Route path="/admin/main" element={<AdminMain />} />
 
@@ -39,6 +40,7 @@ function App() {
             path="/member/memberDelete"
             element={<MemberDelete></MemberDelete>}
           ></Route>
+          <Route path="/movie/list" element={<MovieList />} />
         </Routes>
       </main>
       <Footer />
