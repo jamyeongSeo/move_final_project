@@ -10,3 +10,8 @@ npm install quill-image-resize-module-react
 2025-10-14 15:00 채희찬
 npm install @mui/material @emotion/react @emotion/styled
 npm install @mui/icons-material
+
+2025-10-15 16:20 김윤지
+npm install @radix-ui/react-select lucide-react clsx class-variance-authority tailwind-variants
+npm install -D tailwindcss postcss autoprefixer
+npx shadcn@latest add select

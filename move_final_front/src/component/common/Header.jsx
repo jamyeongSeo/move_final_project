@@ -27,6 +27,9 @@ const HeaderNavi = () => {
         <li>
           <Link to="/cs/main">고객센터</Link>
         </li>
+        <li>
+          <Link to="/admin/main">관리자페이지</Link>
+        </li>
       </ul>
     </nav>
   );
