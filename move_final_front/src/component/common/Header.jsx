@@ -25,7 +25,7 @@ const HeaderNavi = () => {
           <Link to="/booking">예매하기</Link>
         </li>
         <li>
-          <Link to="/cs/main">고객센터</Link>
+          <Link to="/cs/notice">고객센터</Link>
         </li>
       </ul>
     </nav>

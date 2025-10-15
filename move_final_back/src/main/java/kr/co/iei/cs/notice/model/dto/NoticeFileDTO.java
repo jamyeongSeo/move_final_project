@@ -6,14 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
-@Alias(value="notice")
-public class NoticeDTO {
+@Alias(value="noticeFile")
+public class NoticeFileDTO {
+	private int noticeFileNo;
 	private int noticeNo;
-	private String memberId;
-	private String noticeTitle;
-	private String noticeContent;
-	private String noticeDate;
+	private String filename;
+	private String filepath;
 }
