@@ -260,6 +260,9 @@ const JoinMain = () => {
     setCheckEmailMsg("");
   }, [member.memberEmail]);
 
+  //이메일 코드 인증 결과
+  const [emailCodeCheck, setEmailCodeCheck] = useState(false);
+
   const backServer = import.meta.env.VITE_BACK_SERVER;
   const checkEmail = () => {
     if (member.memberEmail != "") {
@@ -286,6 +289,7 @@ const JoinMain = () => {
   };
 
   console.log(member);
+  console.log("인증 결과" + emailCodeCheck);
   return (
     <section>
       <div className="joinAgree-title">
@@ -390,6 +394,7 @@ const JoinMain = () => {
             <JoinEmailCode
               joinEmailRe={joinEmailRe}
               memberEmail={memberEmail}
+              setEmailCodeCheck={setEmailCodeCheck}
             ></JoinEmailCode>
           </section>
 
@@ -488,33 +493,113 @@ const JoinMain = () => {
 };
 
 const JoinEmailCode = (props) => {
+  const setEmailCodeCheck = props.setEmailCodeCheck;
   const memberEmail = props.memberEmail;
   const joinEmailRe = props.joinEmailRe;
-  const [memberEmailRe, setMemberEmailRe] = useState("");
-  const [emailCodeCheck, setEmailCodeCheck] = useState();
+  const [emailCode, setEmailCode] = useState(""); //발송된 인증번호
+  const [emailCodeReMsg, setEmailcodeReMsg] = useState(0); //인증코드 확인용(1:성공/2:실패)
 
-  const [sendEmailMsg, setSendEmailMsg] = useState(-1);
-  //-1:발송 전 : "" / 0:발송 실패 : "이메일을 확인하세요" / 1발송 성공 :"인증번호 입력" / err:""무ㅓ하지
-  const emailTimeRe = useRef(null);
+  const [sendEmailMsg, setSendEmailMsg] = useState(0);
+  //0:발송 전 및 인증시간 초과:  / 1발송 성공 :"인증번호 입력"
+  const [timer, setTimer] = useState(0); //인증 시간 3분
+  const [timerIntervalId, setTimerIntervalId] = useState(null);
+  const [resultCode, setResultCode] = useState("");
   const backServer = import.meta.env.VITE_BACK_SERVER;
-  const sendEmail = () => {
+  const sendCode = () => {
+    setSendEmailMsg(0);
+    setTimer(0);
+    setResultCode("");
+    if (timerIntervalId) {
+      clearInterval(timerIntervalId);
+    }
+    setTimerIntervalId(null);
+    setShowtimer();
+    setEmailCodeCheck(false);
     axios
-      .get(`${backServer}/member/sendEmail?memberEmail=${memberEmail}`)
+      .get(`${backServer}/email/sendCode?memberEmail=${memberEmail}`)
       .then((res) => {
-        console.log(res);
-        console.log("확인" + res.data);
-        if (res.request.response === 0) {
-          setSendEmailMsg(0);
-        } else {
-          setSendEmailMsg(1);
-          emailTimeRe.current.innerText = "3:00";
-        }
+        setResultCode(res.data);
+        setSendEmailMsg(1);
+        setTimer(60);
+        //!!!!!!  interval 재이해 필요
+        const id = setInterval(() => {
+          setTimer((prev) => {
+            console.log(prev);
+            return prev - 1;
+          });
+        }, 1000);
+        setTimerIntervalId(id);
       })
       .catch((err) => {
         console.log(err);
         setSendEmailMsg(0);
+        setTimer(0);
+        setResultCode("");
+        if (timerIntervalId) {
+          clearInterval(timerIntervalId);
+        }
+        setTimerIntervalId(null);
+        setShowtimer();
       });
   };
+  //타이머 분,초(0:00) 형식으로 저장할 변수
+  const [showTimer, setShowtimer] = useState();
+  //타이머 카운팅  //!!!!!!  interval 재이해 필요
+  useEffect(() => {
+    timeFunc();
+  }, [timer]);
+  const timeFunc = () => {
+    if (0 <= timer && timer <= 180) {
+      const minutes = Math.floor(timer / 60);
+      const seconds = timer % 60;
+      if (seconds < 10) {
+        setShowtimer(`${minutes}:0${seconds}`);
+      } else {
+        setShowtimer(`${minutes}:${seconds}`);
+      }
+      if (timer == 0) {
+        if (emailCodeReMsg == 1) {
+          setSendEmailMsg(1);
+        } else {
+          setSendEmailMsg(0);
+        }
+      }
+    } else if (timer < 0) {
+      if (timerIntervalId) {
+        clearInterval(timerIntervalId);
+      }
+    }
+  };
+
+  //이메일 코드 확인
+  const emailCodeRe = () => {
+    if (resultCode != "") {
+      if (resultCode == emailCode) {
+        setTimer(0);
+        setEmailcodeReMsg(1);
+        setEmailCodeCheck(true);
+      } else if (resultCode != emailCode) {
+        setEmailcodeReMsg(2);
+        setEmailCodeCheck(false);
+      }
+    } else {
+      setEmailcodeReMsg(0);
+    }
+  };
+  //이메일주소 수정 시
+  useEffect(() => {
+    if (!joinEmailRe) {
+      setSendEmailMsg(0);
+      setTimer(0);
+      setResultCode("");
+      if (timerIntervalId) {
+        clearInterval(timerIntervalId);
+      }
+      setTimerIntervalId(null);
+      setShowtimer();
+      setEmailCodeCheck(false);
+    }
+  }, [joinEmailRe]);
 
   const emailMsgRe = useRef(null);
   return (
@@ -522,13 +607,16 @@ const JoinEmailCode = (props) => {
       <div className={joinEmailRe ? "join-item" : "join-item-none"}>
         <div style={{ overflow: "hidden" }}>
           <div className="join-btn">
-            <button type="button" className="input-box" onClick={sendEmail}>
+            <button
+              type="button"
+              className={sendEmailMsg == 0 ? "input-box" : "join-sendCode-btn"}
+              onClick={sendCode}
+            >
               인증번호 발송
             </button>
-            {/*이메일발송하면 btn-red 로 변경하고, 인증번호 시간 끝나면 원래 색상으로 변경 할 수 있으면 ㄱㄱ*/}
-            <span ref={emailTimeRe}></span>
+            <span>{showTimer == "0:00" ? "" : showTimer}</span>
           </div>
-          <ul className="input-line">
+          <ul className="input-line" style={{ width: "585px", float: "right" }}>
             <label htmlFor="memberEmailRe">
               <li className="join-input">
                 <input
@@ -536,18 +624,35 @@ const JoinEmailCode = (props) => {
                   name="memberEmailRe"
                   id="memberEmailRe"
                   placeholder={
-                    sendEmailMsg == -1
-                      ? ""
-                      : sendEmailMsg == 1 && "인증번호 입력"
+                    sendEmailMsg == 1
+                      ? "인증번호 입력"
+                      : "인증번호를 발송해주세요"
                   }
-                  value={memberEmailRe}
+                  value={emailCode}
                   onChange={(e) => {
-                    setMemberEmailRe(e.target.value);
+                    setEmailCode(e.target.value);
                   }}
+                  onBlur={emailCodeRe}
                 />
               </li>
               <li className="join-span">
-                <span className="join-f">인증 체크 아직</span>
+                <span
+                  style={{ display: "none" }}
+                  className={
+                    emailCodeReMsg == 1
+                      ? "join-su"
+                      : emailCodeReMsg == 2 && "join-f"
+                  }
+                >
+                  {emailCodeReMsg == 0
+                    ? ""
+                    : emailCodeReMsg == 1
+                    ? "인증 성공"
+                    : emailCodeReMsg == 2 && "인증 실패"}
+                </span>
+                <button type="button" className="input-box">
+                  인증번호 확인
+                </button>
               </li>
             </label>
           </ul>

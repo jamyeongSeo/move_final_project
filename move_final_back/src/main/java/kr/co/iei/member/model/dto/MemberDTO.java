@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Alias("member")
-public class Member {
+public class MemberDTO {
 	private int memberNo;
 	private String memberId;
 	private String memberPw;
@@ -37,3 +37,4 @@ enroll_date         char(10)        not null,
 member_level        number          not null,--1:������ 2:ȸ��
 member_grade        number          not null
 );*/
+
