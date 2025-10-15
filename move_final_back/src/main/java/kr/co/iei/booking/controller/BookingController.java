@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import kr.co.iei.booking.model.service.BookingService;
+import kr.co.iei.movie.model.dto.MovieDTO;
 
 @RestController
 @RequestMapping(value="/booking")
@@ -19,6 +20,7 @@ public class BookingController {
 	
 	@GetMapping(value="/list")
 	public ResponseEntity<MovieDTO> getMovieList(){
+		return ResponseEntity.ok(null);
 		
 	}
 
