@@ -1,4 +1,4 @@
-package kr.co.iei.util;
+package kr.co.iei.utils;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Date;

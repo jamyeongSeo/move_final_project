@@ -20,4 +20,9 @@ public class MemberService {
 		int result = memberDao.login(member);
 		return result;
 	}
+
+	public int checkId(String memberId) {
+		int result = memberDao.checkId(memberId);
+		return result;
+	}
 }

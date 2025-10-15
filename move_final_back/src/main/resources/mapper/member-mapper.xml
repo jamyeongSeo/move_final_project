@@ -6,6 +6,9 @@
 	<select id="checkEmail">
 		select count(*) from member_tbl where member_email = #{memberEmail}
 	</select>
+	<select id="checkId">
+		select count(*) from member_tbl where member_id = #{memberId}
+	</select>
 	
 	<!-- Login -->
 	<select id="login">

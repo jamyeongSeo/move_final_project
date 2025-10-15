@@ -35,6 +35,12 @@ public class MemberController {
 		return ResponseEntity.ok(result);
 	}
 	
+	@GetMapping("/checkId")
+	public ResponseEntity<Integer> checkId(@RequestParam String memberId){
+		int result = memberService.checkId(memberId);
+		return ResponseEntity.ok(result);
+	}
+	
 	
 	
 }

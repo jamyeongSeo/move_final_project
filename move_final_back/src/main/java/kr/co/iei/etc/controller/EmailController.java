@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import kr.co.iei.util.EmailSender;
+import kr.co.iei.utils.EmailSender;
 
 @CrossOrigin("*")
 @RestController

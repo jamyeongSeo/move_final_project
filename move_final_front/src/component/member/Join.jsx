@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 import "./member.css";
 import Swal from "sweetalert2";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Join = () => {
   const joinAgreeEnd = useRef();
@@ -215,8 +216,8 @@ const JoinMain = () => {
     memberGender: "",
     memberPhone: "",
   });
-  const [memberPwRe, setMemberPwRe] = useState("");
-  const pwMsgRef = useRef(null);
+
+  //이름, 생년월일, 전화번호
   const inputData = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -224,15 +225,37 @@ const JoinMain = () => {
     setMember(newMember);
   };
 
-  const checkGender = (e) => {
-    const value = e.target.value;
-    const name = e.target.name;
-    const newMember = { ...member, memberGender: value };
-    setMember(newMember);
+  //아이디 유효성 검사
+  const [IdCheckMsg, setIdcheckMsg] = useState(0); //0:검사 전/1:사용가능//2:사용 불가(중복)//3:사용불가(정규표현식)
+  const memberIdCheck = () => {
+    //정규표현식
+    const idRef = /^[a-zA-Z0-9]{6,12}$/;
+    if (member.memberId != "") {
+      if (idRef.test(member.memberId)) {
+        //true면 아이디 중복체크
+        axios
+          .get(`${backServer}/member/checkId?memberId=${member.memberId}`)
+          .then((res) => {
+            if (res.data == 0) {
+              //사용 가능한 아이디 입니다.
+              setIdcheckMsg(1);
+            } else {
+              //이미 사용중인 아이디입니다.
+              setIdcheckMsg(2);
+            }
+          });
+      } else {
+        //정규표현식 조건 불충
+        setIdcheckMsg(3);
+      }
+    } else {
+      setIdcheckMsg(0);
+    }
   };
-  const checkPwRe = (e) => {
-    setMemberPwRe(e.target.value);
-  };
+
+  //비밀번호
+  const [memberPwRe, setMemberPwRe] = useState("");
+  const pwMsgRef = useRef(null);
   const checkPw = () => {
     pwMsgRef.current.classList.remove("join-su");
     pwMsgRef.current.classList.remove("join-f");
@@ -250,7 +273,11 @@ const JoinMain = () => {
       pwMsgRef.current.innerText = "";
     }
   };
+  const checkPwRe = (e) => {
+    setMemberPwRe(e.target.value);
+  };
 
+  //이메일
   const [joinEmailRe, setJoinEmailRe] = useState(false);
   const [checkEmailMsg, setCheckEmailMsg] = useState("");
   const [memberEmail, setMemberEmail] = useState("");
@@ -271,7 +298,6 @@ const JoinMain = () => {
           `${backServer}/member/checkEmail?memberEmail=${member.memberEmail}`
         )
         .then((res) => {
-          console.log(res);
           if (res.data != 0) {
             setJoinEmailRe(false);
             setCheckEmailMsg("이미 사용 중인 이메일입니다");
@@ -288,8 +314,65 @@ const JoinMain = () => {
     }
   };
 
+  //성별 체크
+  const checkGender = (e) => {
+    const value = e.target.value;
+    const name = e.target.name;
+    const newMember = { ...member, memberGender: value };
+    setMember(newMember);
+  };
+
+  //회원가입 조건 검사 및 회원가입
+  const navigate = useNavigate();
+  const joinMember = () => {
+    /*
+    //모든 값 입력 확인
+    if (
+      member.memberId != "" &&
+      member.memberPw != "" &&
+      member.memberEmail &&
+      member.memberName != "" &&
+      member.memberBirth != "" &&
+      member.memberGender != "" &&
+      member.memberPhone != ""
+    ) {
+      //아이디/비밀번호/이메일인증
+      if (IdCheckMsg == 1 && member.memberPw == memberPwRe && emailCodeCheck) {
+        axios.post(`${backServer}/member`, member).then((res) => {
+          if (res.data == 1) {
+            Swal.fire({
+              title: "회원가입 성공",
+              text: "환영합니다",
+              icon: "success",
+            });
+            axios
+              .get(
+                `${backServer}/email/wellcomCupon?memberEmail=${member.memberEmail}`
+              )
+              .then((res) => {
+                Swal.fire({
+                  title: "WellcomCupon!!",
+                  text: "환영합니다. 웰컴 쿠폰이 발행되었습니다. 자세한 내용은 마이페이지에서 확인해주세요!",
+                  icon: "success", //쿠폰 이미지 나중에 변경하기
+                });
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          }
+        });
+      }
+    } else {
+      Swal.fire({
+        title: "입력값 확인",
+        text: "입력값을 확인하세요",
+        icon: "warning",
+      });
+    }*/
+  };
+
   console.log(member);
-  console.log("인증 결과" + emailCodeCheck);
+
   return (
     <section>
       <div className="joinAgree-title">
@@ -300,6 +383,7 @@ const JoinMain = () => {
       <form
         onSubmit={(e) => {
           e.preventDefault();
+          joinMember();
         }}
       >
         <div className="joinAgree-content">
@@ -314,10 +398,19 @@ const JoinMain = () => {
                     placeholder="아이디 영문, 숫자(6~12자)"
                     value={member.memberId}
                     onChange={inputData}
+                    onBlur={memberIdCheck}
                   />
                 </li>
                 <li className="join-span">
-                  <span className="join-su">사용 가능한 아이디입니다</span>
+                  <span className={IdCheckMsg == 1 ? "join-su" : "join-f"}>
+                    {IdCheckMsg == 0
+                      ? ""
+                      : IdCheckMsg == 1
+                      ? "사용 가능한 아이디입니다"
+                      : IdCheckMsg == 2
+                      ? "이미 사용중인 아이디입니다"
+                      : IdCheckMsg == 3 && "영문,숫자 조합 6~12자로 입력하세요"}
+                  </span>
                 </li>
               </label>
             </ul>
@@ -328,19 +421,14 @@ const JoinMain = () => {
               <label htmlFor="memberPw">
                 <li className="join-input">
                   <input
-                    type="text"
+                    type="password"
                     name="memberPw"
                     id="memberPw"
-                    placeholder="비밀번호 영문, 숫자 조합(4~12자)"
+                    placeholder="비밀번호"
                     value={member.memberPw}
                     onChange={inputData}
                     onBlur={checkPw}
                   />
-                </li>
-                <li className="join-span">
-                  <span className="join-f">
-                    영문, 숫자 4~12 글자로 입력하세요
-                  </span>
                 </li>
               </label>
             </ul>
@@ -351,7 +439,7 @@ const JoinMain = () => {
               <label htmlFor="memberPwRe">
                 <li className="join-input">
                   <input
-                    type="text"
+                    type="password"
                     name="memberPwRe"
                     id="memberPwRe"
                     placeholder="비밀번호 확인"
@@ -497,7 +585,7 @@ const JoinEmailCode = (props) => {
   const memberEmail = props.memberEmail;
   const joinEmailRe = props.joinEmailRe;
   const [emailCode, setEmailCode] = useState(""); //발송된 인증번호
-  const [emailCodeReMsg, setEmailCodeReMsg] = useState(0); //인증코드 확인용(1:성공/2:실패)
+  const [emailCodeReMsg, setEmailCodeReMsg] = useState(0); //인증코드 확인용(1:성공/2:실패/3:이메일 형식을 확인하세요)
   const codeCheck = useRef();
 
   const [sendEmailMsg, setSendEmailMsg] = useState(0);
@@ -549,6 +637,7 @@ const JoinEmailCode = (props) => {
         }
         setTimerIntervalId(null);
         setShowtimer();
+        setEmailCodeReMsg(3);
       });
   };
   //타이머 분,초(0:00) 형식으로 저장할 변수
@@ -648,18 +737,14 @@ const JoinEmailCode = (props) => {
                 />
               </li>
               <li className="join-span">
-                <span
-                  className={
-                    emailCodeReMsg == 1
-                      ? "join-su"
-                      : emailCodeReMsg == 2 && "join-f"
-                  }
-                >
+                <span className={emailCodeReMsg == 1 ? "join-su" : "join-f"}>
                   {emailCodeReMsg == 0
                     ? ""
                     : emailCodeReMsg == 1
                     ? "인증 성공"
-                    : emailCodeReMsg == 2 && "인증 실패"}
+                    : emailCodeReMsg == 2
+                    ? "인증 실패"
+                    : emailCodeReMsg == 3 && "이메일 형식을 확인하세요"}
                 </span>
                 <button
                   ref={codeCheck}

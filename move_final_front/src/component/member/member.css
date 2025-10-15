@@ -93,8 +93,6 @@
 .join-btn > .input-box {
   background-color: var(--gray7);
   border: 3px solid var(--main2);
-  padding-bottom: 5px;
-  padding-top: 5px;
 }
 .join-btn > .input-box:hover {
   background-color: var(--main3);
@@ -153,7 +151,7 @@
 }
 .join-memberBirth {
   float: left;
-  width: 510px;
+  width: 520px;
 }
 
 .join-span > button:hover {
