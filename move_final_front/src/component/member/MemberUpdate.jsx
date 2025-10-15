@@ -260,6 +260,7 @@ const MemberUpdateMain = () => {
   useEffect(() => {
     setJoinEmailRe(false);
     setMemberEmail("");
+    setCheckEailMsg("");
   }, [member.memberEmail]);
   const backServer = import.meta.env.VITE_BACK_SERVER;
   const checkEmail = () => {
