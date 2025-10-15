@@ -93,22 +93,20 @@
 .join-btn > .input-box {
   background-color: var(--gray7);
   border: 3px solid var(--main2);
-  font-family: ns-b;
-  padding-bottom: 6px;
-  padding-top: 6px;
+  padding-bottom: 5px;
+  padding-top: 5px;
 }
 .join-btn > .input-box:hover {
   background-color: var(--main3);
 }
 .join-btn > .join-sendCode-btn {
   border: 3px solid var(--main5);
-  padding: 6px 5px;
+  padding: 5px 5px;
   border-radius: 5px;
   background-color: var(--main5);
   color: #ffff;
   font-weight: 700px;
   padding-bottom: 6px;
-  font-family: ns-b;
 }
 .join-btn {
   float: left;
@@ -156,6 +154,16 @@
 .join-memberBirth {
   float: left;
   width: 510px;
+}
+
+.join-span > button:hover {
+  background-color: var(--main3);
+}
+.join-email #memberEmaiRe {
+  line-height: 35px;
+}
+.join-checkEmailCode-none {
+  display: none;
 }
 
 /*Modal*/

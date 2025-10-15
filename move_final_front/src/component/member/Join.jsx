@@ -497,7 +497,8 @@ const JoinEmailCode = (props) => {
   const memberEmail = props.memberEmail;
   const joinEmailRe = props.joinEmailRe;
   const [emailCode, setEmailCode] = useState(""); //발송된 인증번호
-  const [emailCodeReMsg, setEmailcodeReMsg] = useState(0); //인증코드 확인용(1:성공/2:실패)
+  const [emailCodeReMsg, setEmailCodeReMsg] = useState(0); //인증코드 확인용(1:성공/2:실패)
+  const codeCheck = useRef();
 
   const [sendEmailMsg, setSendEmailMsg] = useState(0);
   //0:발송 전 및 인증시간 초과:  / 1발송 성공 :"인증번호 입력"
@@ -506,6 +507,7 @@ const JoinEmailCode = (props) => {
   const [resultCode, setResultCode] = useState("");
   const backServer = import.meta.env.VITE_BACK_SERVER;
   const sendCode = () => {
+    //초기값 세팅
     setSendEmailMsg(0);
     setTimer(0);
     setResultCode("");
@@ -515,12 +517,16 @@ const JoinEmailCode = (props) => {
     setTimerIntervalId(null);
     setShowtimer();
     setEmailCodeCheck(false);
+    setEmailCodeReMsg(0);
+    codeCheck.current.classList.add("join-checkEmailCode-none");
+    setEmailCode("");
+    //인증번호 발송 버튼 순차적 시작
     axios
       .get(`${backServer}/email/sendCode?memberEmail=${memberEmail}`)
       .then((res) => {
         setResultCode(res.data);
         setSendEmailMsg(1);
-        setTimer(60);
+        setTimer(180);
         //!!!!!!  interval 재이해 필요
         const id = setInterval(() => {
           setTimer((prev) => {
@@ -529,7 +535,10 @@ const JoinEmailCode = (props) => {
           });
         }, 1000);
         setTimerIntervalId(id);
+
+        codeCheck.current.classList.remove("join-checkEmailCode-none");
       })
+
       .catch((err) => {
         console.log(err);
         setSendEmailMsg(0);
@@ -576,14 +585,14 @@ const JoinEmailCode = (props) => {
     if (resultCode != "") {
       if (resultCode == emailCode) {
         setTimer(0);
-        setEmailcodeReMsg(1);
+        setEmailCodeReMsg(1);
         setEmailCodeCheck(true);
       } else if (resultCode != emailCode) {
-        setEmailcodeReMsg(2);
+        setEmailCodeReMsg(2);
         setEmailCodeCheck(false);
       }
     } else {
-      setEmailcodeReMsg(0);
+      setEmailCodeReMsg(0);
     }
   };
   //이메일주소 수정 시
@@ -598,6 +607,9 @@ const JoinEmailCode = (props) => {
       setTimerIntervalId(null);
       setShowtimer();
       setEmailCodeCheck(false);
+      setEmailCodeReMsg(0);
+      setEmailCode("");
+      codeCheck.current.classList.add("join-checkEmailCode-none");
     }
   }, [joinEmailRe]);
 
@@ -620,6 +632,7 @@ const JoinEmailCode = (props) => {
             <label htmlFor="memberEmailRe">
               <li className="join-input">
                 <input
+                  style={{ height: "35px" }}
                   type="text"
                   name="memberEmailRe"
                   id="memberEmailRe"
@@ -632,12 +645,10 @@ const JoinEmailCode = (props) => {
                   onChange={(e) => {
                     setEmailCode(e.target.value);
                   }}
-                  onBlur={emailCodeRe}
                 />
               </li>
               <li className="join-span">
                 <span
-                  style={{ display: "none" }}
                   className={
                     emailCodeReMsg == 1
                       ? "join-su"
@@ -650,7 +661,13 @@ const JoinEmailCode = (props) => {
                     ? "인증 성공"
                     : emailCodeReMsg == 2 && "인증 실패"}
                 </span>
-                <button type="button" className="input-box">
+                <button
+                  ref={codeCheck}
+                  style={{ marginLeft: "10px" }}
+                  type="button"
+                  className="input-box join-checkEmailCode-none"
+                  onClick={emailCodeRe}
+                >
                   인증번호 확인
                 </button>
               </li>
