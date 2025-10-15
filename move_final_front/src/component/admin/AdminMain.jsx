@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { Link, NavLink, useNavigate, useParams } from "react-router-dom";
-import { useRecoilState } from "recoil";
+import { NavLink, useNavigate, } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "axios";
 import LeftSideMenu from "../utils/LeftSideMenu";
@@ -180,7 +179,7 @@ const AdminMain = () => {
         </section>
 
         <div className="content-box">
-          <table className="content-tbl">
+          <table className="tbl">
             <thead>
               <tr>
                 <th style={{ width: "10%" }}>영화번호</th>
