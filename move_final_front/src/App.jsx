@@ -12,7 +12,7 @@ import Login from "./component/common/Login";
 import MemberMain from "./component/member/MemberMain";
 import MemberUpdate from "./component/member/MemberUpdate";
 import MemberDelete from "./component/member/MemberDelete";
-import MovieList from "./component/movie/MoiveList";
+import MovieList from "./component/movie/MovieList";
 
 function App() {
   return (

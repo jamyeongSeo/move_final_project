@@ -1,46 +1,44 @@
 import { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil"
+import { useRecoilState } from "recoil";
 import Swal from "sweetalert2";
 import axios from "axios";
 import LeftSideMenu from "../utils/LeftSideMenu";
 
-
-
 const subMenus = {
-    "/admin/movie" : [
-        //{text : "영화 리스트", url : "admin/movie/list"},
-        //{text : "영화 등록", url: "admin/movie/regist"},
-        //{text : "스케줄 등록", url : "admin/schedule/regist"},
-        //{text : "관객 수 조회", url : "admin/movieGoer"},
-        ],
-    "admin/sales" :[
-        //{text : "전체 매출 조회", url : "admin/salesAll"},
-        //{text: "각 영화 매출 조회", url: "admin/saelsOne"},
-        ]
-    };
-
+  "/admin/movie": [
+    //{text : "영화 리스트", url : "admin/movie/list"},
+    //{text : "영화 등록", url: "admin/movie/regist"},
+    //{text : "스케줄 등록", url : "admin/schedule/regist"},
+    //{text : "관객 수 조회", url : "admin/movieGoer"},
+  ],
+  "admin/sales": [
+    //{text : "전체 매출 조회", url : "admin/salesAll"},
+    //{text: "각 영화 매출 조회", url: "admin/saelsOne"},
+  ],
+};
 
 const AdminMain = () => {
-    const [menus, setMenus] = useState([
-    {url : "/admin/main", text : "영화 관리",},
+  const [menus, setMenus] = useState([
+    { url: "/admin/main", text: "영화 관리" },
     //{url : "/admin/sales", text:"매출 관리",},
     //{url : "/admin/member", text:"회원 관리"},
-    ]);
-    const [openMenu, setOpenMenu] = useState(null);
-    const menuClick = (menuUrl) => {
-        setOpenMenu((prev) => (prev === menuUrl ? null : menuUrl));
-    }
+  ]);
+  const [openMenu, setOpenMenu] = useState(null);
+  const menuClick = (menuUrl) => {
+    setOpenMenu((prev) => (prev === menuUrl ? null : menuUrl));
+  };
 
-    //const [authReady, setAuthReady] = useRecoilState(authReadyState);
-    //const [memberType, setMemberType] = useRecoilState(memberTypeState);
+  //const [authReady, setAuthReady] = useRecoilState(authReadyState);
+  //const [memberType, setMemberType] = useRecoilState(memberTypeState);
 
-    const [movieList, setMovieList] = useState([]);
-    const [reqPage, setReqPage] = useState(1);
-    
-    const navigate = useNavigate();
+  const [movieList, setMovieList] = useState([]);
+  const [reqPage, setReqPage] = useState(1);
 
-    {/*useEffect(()=>{
+  const navigate = useNavigate();
+
+  {
+    /*useEffect(()=>{
         if(authReady && memberType !== 1){
             Swal.fire({
                 title: "관리자페이지입니다.",
@@ -51,9 +49,11 @@ const AdminMain = () => {
             });
         }
     },[authReady]);
-    */}
+    */
+  }
 
-    {/*
+  {
+    /*
     const MovieItem = (props) =>{
         const movie = props.movie;
         const navigate = useNavigate();
@@ -73,15 +73,16 @@ const AdminMain = () => {
             </li>
         )
     }
-        */}
+        */
+  }
 
-    return (
+  return (
     <section className="admin-list-wrap">
-        <div className="side-wrap">
-            <section className="side-menu-box">
-                <div>관리자 페이지</div>
-            </section>
-            {/*
+      <div className="side-wrap">
+        <section className="side-menu-box">
+          <div>관리자 페이지</div>
+        </section>
+        {/*
             <div className="side-menu-container">
                 {menus.map((menu, index) => (
                     <div key={index}>
@@ -106,43 +107,43 @@ const AdminMain = () => {
             </div>
                 ))
             */}
-                </div>
+      </div>
 
-            <div className="admin-main-content">
-            <section className="admin-header">
-                <div className="content-title">영화 리스트</div>
-                <div className="search-item"></div>
-            </ section>
-            <div className="content-box-title">
-                <table>
-                        <tr>
-                            <th>영화번호</th>
-                            <th>영화이름</th>
-                            <th>관람등급</th>
-                            <th>개봉일</th>
-                            <th>상영상태</th>
-                        </tr>
-                </table>
+      <div className="admin-main-content">
+        <section className="admin-header">
+          <div className="content-title">영화 리스트</div>
+          <div className="search-item"></div>
+        </section>
+        <div className="content-box-title">
+          <table>
+            <tr>
+              <th>영화번호</th>
+              <th>영화이름</th>
+              <th>관람등급</th>
+              <th>개봉일</th>
+              <th>상영상태</th>
+            </tr>
+          </table>
         </div>
-            <tbody>
-                {movieList.map((movie, index)=>{
-                    const statusChange = (e) => {
-                    const newStatus = Number(e.target.value);
-                    const obj = {movieNo : movie.movieNo, movieStatus : movieStatus};
-                    axios
-                        .patch(`${import.meta.env.VITE_BACK_SERVER}/movie/movieNo`, obj)
-                            .then((res)=>{
-                                console.log(res);
-                                movieList[index].movieStatus = movieStatus;
-                                setMovieList([...movieList]);
-                            })
-                            .catch((err)=>{
-                                console.log(err);
-                            })
-                        }
-                        })
-                    };
-                    {/* 
+        <tbody>
+          {movieList.map((movie, index) => {
+            const statusChange = (e) => {
+              const newStatus = Number(e.target.value);
+              const obj = { movieNo: movie.movieNo, movieStatus: movieStatus };
+              axios
+                .patch(`${import.meta.env.VITE_BACK_SERVER}/movie/movieNo`, obj)
+                .then((res) => {
+                  console.log(res);
+                  movieList[index].movieStatus = movieStatus;
+                  setMovieList([...movieList]);
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            };
+          })}
+          ;
+          {/* 
                     return(
                         <tr key={"movie-"+index}>
                             <td>{movie.movieNo}</td>
@@ -158,11 +159,10 @@ const AdminMain = () => {
                         </tr>
                     )
                         */}
-                </tbody>
-            </div>
-        </section>
-        )
-    }
-    
- 
-    export default AdminMain;
+        </tbody>
+      </div>
+    </section>
+  );
+};
+
+export default AdminMain;

@@ -15,10 +15,10 @@ const BookingMain = () => {
   }, []);
   return (
     <div className="content-wrap">
-      <div>
+      <div className="content">
         <div className="booking-all-wrap">
           <div className="page-title">
-            <h2>예매하기</h2>
+            <h3>예매하기</h3>
           </div>
 
           <div className="booking-content-wrap">
