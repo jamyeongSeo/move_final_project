@@ -1,10 +1,36 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil"
 import Swal from "sweetalert2";
 import axios from "axios";
+import LeftSideMenu from "../utils/LeftSideMenu";
 
-const AdminMain = () =>{
+const [menus, setMenus] = useState([
+    {url : "admin/main", text : "영화 관리",},
+    {url : "admin/sales", text:"매출 관리",},
+    {url : "admin/member", text:"회원 관리"},
+    ]);
+
+const subMenus = {
+    "admin/movie" : [
+        {text : "영화 리스트", url : "admin/movie/list"},
+        {text : "영화 등록", url: "admin/movie/regist"},
+        {text : "스케줄 등록", url : "admin/schedule/regist"},
+        {text : "관객 수 조회", url : "admin/movieGoer"},
+        ],
+    "admin/sales" :[
+        {text : "전체 매출 조회", url : "admin/salesAll"},
+        {text: "각 영화 매출 조회", url: "admin/saelsOne"},
+        ]
+    };
+
+
+const AdminMain = () => {
+    const [openMenu, setOpenMenu] = useState(null);
+    const menuClick = (menuUrl) => {
+        setOpenMenu((prev) => (prev === menuUrl ? null : menuUrl));
+    }
+
     //const [authReady, setAuthReady] = useRecoilState(authReadyState);
     //const [memberType, setMemberType] = useRecoilState(memberTypeState);
 
@@ -26,34 +52,6 @@ const AdminMain = () =>{
     },[authReady]);
     */}
 
-
-    const [menus, setMenus] = useState([
-        {url : "admin/main", 
-        text : "영화 관리",
-        subMenu :[
-                {url:"admin/main", text:"영화리스트"},
-                {url:"admin/movie/regist", text:"영화등록"},
-                {url:"admin/schedule/regist", text:"스케줄등록"},
-                {url:"admin/movieGoer", text:"관객수 조회"}
-            ],
-        },
-        {url : "admin/sales", 
-        text:"매출 관리",
-        subMenu :[
-            {url:"admin/salesAll", text:"전체 매출 조회"},
-            {url:"admin/saleseOne", text:"각 영화 매출 조회"}
-        ]
-
-        },
-        {url : "admin/member", text:"회원 관리"},
-    ]);
-    
-    //클릭된 항목 여부 index로 처리
-    const [openIndex, setOpenIndex] = useState(null);
-    const toggleMenu = (index) =>{
-        setOpenIndex(openIndex === index ? null : index);
-    };
-
     {/*
     const MovieItem = (props) =>{
         const movie = props.movie;
@@ -74,15 +72,42 @@ const AdminMain = () =>{
             </li>
         )
     }
-        서브라우팅 걸어서 사이드메뉴 
-
         */}
-
     return (
     <section className="admin-list-wrap">
-        <div className="side-title">관리자 페이지</div>
-            <div className="content-title">영화 리스트</div>
-            <div className="search-item"></div>
+        {/*<div className="side-wrap">
+            <section className="side-menu-box">
+                <div>관리자 페이지</div>
+            </section>
+            <div className="side-menu-container">
+                {menus.map((menu, index) => (
+                    < key={index}>
+                    <div onClick={() => menuClick(menu.url)}>
+                        <LeftSideMenu menus = {[menus]} />
+                    </div>
+            {openMenu === menu.url && (
+                <ul className="sub-menu-list">
+                {subMenus[menu.url]?.map((sub, i) => (
+                    <li key={`sub-${i}`}>
+                        <NavLink
+                        to={sub.url}
+                        className={({ isActive }) => isActive ? "active-link" : ""
+                        }>
+                            {sub.text}
+                        </NavLink>
+                    </li>
+                    ))}
+                </ul>
+                )}
+                </div>
+                ))}
+                </div>
+                */}
+        <div className="admin-main-content">
+            <section className="admin-header">
+                <div className="content-title">영화 리스트</div>
+                <div className="search-item"></div>
+            </ section>
             <div className="content-box-title">
                 <table>
                         <tr>
@@ -94,34 +119,6 @@ const AdminMain = () =>{
                         </tr>
                 </table>
         </div>
-        <div className="admin-content">
-            <div className="side-menu">
-                {menus.map((menu, index) => (
-                    <div key={index} className="menu-section">
-
-                    <div
-                        className={`menu-title ${openIndex === index ? "active" : ""}`}
-                        onClick={() => toggleMenu(index)}>
-                        {menu.text}
-                    </div>
-
-                    {openIndex === index && menu.subMenu && (
-                        <div className="submenu">
-                        {menu.subMenu.map((sub, i) => (
-                            <div
-                            key={i}
-                            className="submenu-item"
-                            onClick={() => navigate(`/${sub.url}`)}>
-                            {sub.text}
-                            </div>
-                        ))}
-                        </div>
-                    )}
-                    </div>
-                ))}
-            </div>
-        <div className="admin-main-content">
-            <div className="admin-main-content">
                 {/*
                 <tbody>
                     {movieList.map((movie, index)=>{
@@ -159,8 +156,6 @@ const AdminMain = () =>{
                     
                 </tbody>
                 */}
-            </div>
-        </div>
             </div>
         </section>
         )
