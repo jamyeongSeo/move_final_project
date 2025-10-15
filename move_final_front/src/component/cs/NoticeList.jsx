@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import PageNavigation from "../utils/PageNavigation";
+import AddBoxIcon from "@mui/icons-material/AddBox";
 
 const NoticeList = () => {
   const [noticeList, setNoticeList] = useState([]);
@@ -9,9 +10,14 @@ const NoticeList = () => {
   const [pi, setPi] = useState(null);
   const [totalCount, setTotalCount] = useState(0);
   const [search, setSearch] = useState("");
-  useEffect(() => {
+
+  const noticeFunc = () => {
     axios
-      .get(`${import.meta.env.VITE_BACK_SERVER}/cs/notice?reqPage=${reqPage}`)
+      .get(
+        `${
+          import.meta.env.VITE_BACK_SERVER
+        }/cs/notice?reqPage=${reqPage}&noticeTitle=${search}`
+      )
       .then((res) => {
         console.log(res);
         setNoticeList(res.data.noticeList);
@@ -21,11 +27,25 @@ const NoticeList = () => {
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  useEffect(() => {
+    noticeFunc(reqPage);
   }, [reqPage]);
+  const searchInput = () => {
+    setReqPage(1);
+    noticeFunc(1, search);
+  };
+  const navigate = useNavigate();
 
   return (
     <section className="section notice-list">
-      <div className="notice-title">공지사항</div>
+      <div className="title-wrap">
+        <div className="title">공지사항</div>
+        <div className="add-icon" onClick={() => navigate("/cs/noticeFrm")}>
+          <AddBoxIcon />
+        </div>
+      </div>
       <div className="input-wrap">
         <div className="list-count">전체 : {totalCount}건</div>
         <input
@@ -38,7 +58,9 @@ const NoticeList = () => {
           }}
           placeholder="검색어를 입력하십시오"
         ></input>
-        <button type="submit">입력</button>
+        <button type="submit" onClick={searchInput}>
+          입력
+        </button>
       </div>
       <div className="list-wrap">
         <table className="tbl">

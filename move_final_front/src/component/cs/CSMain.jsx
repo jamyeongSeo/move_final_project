@@ -3,6 +3,7 @@ import LeftSideMenu from "../utils/LeftSideMenu";
 import { Route, Routes } from "react-router-dom";
 import NoticeList from "./NoticeList";
 import "./cs.css";
+import NoticeWrite from "./NoticeWrite";
 
 const CSMain = () => {
   const [menus, setMenus] = useState([
@@ -24,6 +25,7 @@ const CSMain = () => {
         <section className="section">
           <Routes>
             <Route path="notice" element={<NoticeList />} />
+            <Route path="noticeFrm" element={<NoticeWrite />} />
           </Routes>
         </section>
       </div>

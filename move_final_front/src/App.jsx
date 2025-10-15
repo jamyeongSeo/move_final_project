@@ -23,7 +23,7 @@ function App() {
           <Route path="/cs/*" element={<CSMain />} />
           <Route path="/booking" element={<BookingMain />} />
 
-          <Route path="admin/main" element={<AdminMain />} />
+          <Route path="/admin/main" element={<AdminMain />} />
 
           <Route path="/member/join" element={<Join></Join>} />
           <Route path="/common/login" element={<Login></Login>} />

@@ -15,12 +15,22 @@
   display: flex;
   gap: 60px;
 }
-.notice-title {
-  font-size: 24px;
-  font-weight: 700;
+.title-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
   padding: 6px;
   width: 794px;
   border-bottom: 2px solid #666;
+}
+.title {
+  font-size: 24px;
+  font-weight: 700;
+}
+.add-icon > svg {
+  font-size: 2em;
+  cursor: pointer;
 }
 .posting-wrap {
   margin-top: 12px;
