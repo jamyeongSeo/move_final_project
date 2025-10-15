@@ -42,7 +42,7 @@ const AdminMain = () => {
   //const [authReady, setAuthReady] = useRecoilState(authReadyState);
   //const [memberType, setMemberType] = useRecoilState(memberTypeState);
 
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
 
   {
     /*useEffect(()=>{
