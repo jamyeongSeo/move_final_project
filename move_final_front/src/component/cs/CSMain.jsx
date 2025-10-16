@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import NoticeList from "./NoticeList";
 import "./cs.css";
 import NoticeWrite from "./NoticeWrite";
+import NoticeDetail from "./NoticeDetail";
 
 const CSMain = () => {
   const [menus, setMenus] = useState([
@@ -25,7 +26,8 @@ const CSMain = () => {
         <section className="section">
           <Routes>
             <Route path="notice" element={<NoticeList />} />
-            <Route path="noticeFrm" element={<NoticeWrite />} />
+            <Route path="notice/frm" element={<NoticeWrite />} />
+            <Route path="notice/detail/:noticeNo" element={<NoticeDetail />} />
           </Routes>
         </section>
       </div>

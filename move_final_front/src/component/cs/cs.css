@@ -52,7 +52,7 @@
 .input-wrap > button {
   width: 64px;
   height: 30px;
-  border: 1px solid transparent;
+  border: none;
   border-radius: 8px;
   background-color: var(--main5);
   color: #fff;
@@ -60,22 +60,27 @@
   cursor: pointer;
 }
 .list-wrap {
-  border: 1px solid var(--gray4);
-  border-radius: 8px;
-  overflow: hidden;
+  padding: 8px;
 }
-.tbl {
+.list-wrap .tbl {
   width: 100%;
   text-align: center;
   border-collapse: collapse;
-  border-spacing: 0;
+  border-radius: 8px;
+  border: 1px solid var(--gray4);
+  overflow: hidden;
 }
 .tbl > thead {
   background-color: var(--gray5);
   height: 40px;
 }
+
 .tbl > tbody > tr {
   height: 40px;
+}
+.tbl > tbody > tr:hover {
+  background-color: var(--main6);
+  cursor: pointer;
 }
 .tbl tr + tr td {
   border-top: 1px solid #ddd;
@@ -84,4 +89,45 @@
   display: flex;
   justify-content: center;
   margin: 24px 0;
+}
+.input-title {
+  margin: 16px 24px 0 0;
+  font-family: ns-b;
+  font-size: 20px;
+}
+.frm-wrap input {
+  border: 2px solid var(--gray3);
+  border-radius: 8px;
+  width: 100%;
+  margin: 16px 0;
+  height: 42px;
+}
+.add-file {
+  display: inline-block;
+  border: 2px solid var(--gray3);
+  border-radius: 8px;
+  width: 100%;
+  margin: 16px 0;
+  height: 42px;
+}
+.quill {
+  overflow-y: auto;
+  margin-top: 16px;
+}
+.ql-container {
+  height: 240px !important;
+}
+.ql-editor {
+  min-height: 200px;
+}
+.btn-zone {
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+}
+.btn-zone > button {
+  background-color: var(--main5);
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 8px;
 }

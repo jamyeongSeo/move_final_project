@@ -6,10 +6,21 @@ const NoticeFrm = (props) => {
   const setNoticeTitle = props.setNoticeTitle;
   const noticeFile = props.noticeFile;
   const setNoticeFile = props.setNoticeFile;
-  const noticeContent = props.noticeContent;
-  const setNoticeContent = props.setNoticeContent;
   //const [memberId,setMemberId] = useRecoilState(loginIdState);
   const [showFileList, setShowFileList] = useState([]);
+
+  const addNoticeFile = (e) => {
+    const files = e.target.value;
+    const fileArr = new Array();
+    const fileNameArr = new Array();
+    for (let i = 0; i < files.length; i++) {
+      fileArr.push(files[i]);
+      fileNameArr.push(files[i]);
+    }
+    setNoticeFile(...noticeFile, ...fileArr);
+    setShowFileList(...showFileList, fileNameArr);
+  };
+
   return (
     <div className="frm-wrap">
       <div className="input-title">제목</div>
@@ -22,7 +33,15 @@ const NoticeFrm = (props) => {
           setNoticeTitle(e.target.value);
         }}
       ></input>
-      <div className="input-title">파일첨부</div>
+      <div className="input-title">첨부파일</div>
+      <input
+        type="file"
+        id="noticeFile"
+        multiple
+        style={{ display: "none" }}
+        onChange={addNoticeFile}
+      ></input>
+      <label htmlFor="noticeFile" className="add-file"></label>
     </div>
   );
 };

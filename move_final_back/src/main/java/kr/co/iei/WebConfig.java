@@ -11,6 +11,6 @@ public class WebConfig {
 	
 	@Bean
 	public BCryptPasswordEncoder bCrypt() {
-		return new BCryptPasswordEncoder()
-;	}
+		return new BCryptPasswordEncoder();
+		}
 }

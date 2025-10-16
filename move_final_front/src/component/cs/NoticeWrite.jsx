@@ -10,7 +10,7 @@ const NoticeWrite = () => {
   const [noticeFile, setNoticeFile] = useState([]);
   const [noticeContent, setNoticeContent] = useState("");
   //const [memberId, setMemberId] = useRecoilState(null);
-  const nav = useNavigate();
+  const navigate = useNavigate();
   const write = () => {
     if (noticeTitle !== "" && noticeContent !== "") {
       const form = new FormData();
@@ -29,7 +29,7 @@ const NoticeWrite = () => {
         .then((res) => {
           console.log(res);
           if (res.data > 0) {
-            nav("/cs/notice");
+            navigate("/cs/notice");
           }
         })
         .catch((err) => {
@@ -38,7 +38,7 @@ const NoticeWrite = () => {
     }
   };
   return (
-    <section className="section">
+    <section className="section write-wrap">
       <div className="title-wrap">
         <div className="title">공지사항 작성</div>
       </div>
@@ -50,6 +50,7 @@ const NoticeWrite = () => {
           setNoticeFile={setNoticeFile}
         />
         <div className="texteditor-wrap">
+          <div className="input-title">내용</div>
           <TextEditor data={noticeContent} setData={setNoticeContent} />
         </div>
       </div>

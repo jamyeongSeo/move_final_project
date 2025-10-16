@@ -6,10 +6,8 @@ import kr.co.iei.member.model.dto.MemberDTO;
 
 @Mapper
 public interface MemberDao {
-
+	//회원가입
 	int checkEmail(String memberEmail);
-
-	int login(MemberDTO member);
 
 	int checkId(String memberId);
 
@@ -17,7 +15,7 @@ public interface MemberDao {
 
 	int wellcomCoupon(MemberDTO member);
 
-	
-
+	//로그인
+	MemberDTO login(MemberDTO member);
 }
 
