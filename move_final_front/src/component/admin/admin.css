@@ -11,6 +11,21 @@
   border-radius: 8px;
 }
 
+.side-menu-container{
+  width: 210px;
+  height: 52px;
+  background-color: #444;
+  line-height: 52px;
+  text-align: center;
+  border-radius: 8px;
+}
+
+.side-menu-container > div{
+  color: #fff;
+  font-size: 24px;
+  font-weight: 700;
+}
+
 .sub-menu-list li {
   font-size: 14px;
   line-height: 36px;
@@ -26,6 +41,7 @@
 }
 
 .admin-main-content {
+  max-width: 950px;
   width: 100%;
   text-align: center;
   border-collapse: collapse;
@@ -34,7 +50,6 @@
 
 .admin-header {
   display: flex;
-
   justify-content: space-between;
   margin-bottom: 14px;
 }
@@ -47,7 +62,7 @@
   border-bottom: 2px solid #666;
 }
 
-.input-search-wrap {
+.input-wrap {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -67,9 +82,12 @@
 }
 
 .content-box {
+  max-width: 1080px;
   border: 1px solid var(--gray4);
+  text-align: center;
   border-radius: 8px;
   overflow: hidden;
+  width: 100%;
 }
 
 .admin-select {
@@ -154,7 +172,10 @@
   * {
     @apply border-border;
   }
-  body {
-    @apply bg-background text-foreground;
-  }
+
+   h1, h2, h3{
+    font-size: revert;
+    font-weight: revert;
+    color: revert;
+   }
 }

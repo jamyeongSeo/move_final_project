@@ -5,7 +5,7 @@
   --main3: #f9f9f9;
   --main4: #ffffff;
   --main5: #ff2b2b; /*빨간색(연령 및 버튼)*/
-  --mian6: #e5b8b8; /*연한빨간색*/
+  --main6: #e5b8b8; /*연한빨간색*/
   --main7: #329f56; /*초록색(연령) */
   --main8: #fbf71f; /*노란색(연령)*/
   --main9: #db8e40; /*주황색(연령)*/
@@ -130,7 +130,7 @@ body {
   text-align: center;
   font-family: ns-b;
   border-radius: 5px;
-  border: noen;
+  border: none;
   box-sizing: border-box;
   border: 1px solid var(--gray5);
   padding: 3px 8px;

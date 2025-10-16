@@ -58,5 +58,11 @@ public class NoticeService {
 		}
 		return result;
 	}
+	public NoticeDTO selectOneNotice(int noticeNo) {
+		NoticeDTO notice = noticeDao.selectOneNotice(noticeNo);
+		List<NoticeFileDTO> fileList = noticeDao.selectNoticeFileList(noticeNo);
+		notice.setNoticeFileList(fileList);
+		return notice;
+	}
 
 }
