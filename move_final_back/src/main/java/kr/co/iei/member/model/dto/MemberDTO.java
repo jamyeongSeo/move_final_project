@@ -31,10 +31,10 @@ member_pw           char(60)        not null,
 member_email        varchar2(50)    not null,
 member_name         varchar2(20)    not null,
 member_birth        date            not null,
-member_gender       number          not null,--1:�� 2:��
-member_phone        char(13)        not null,-- -���� �Է��ϱ�
+member_gender       number          not null,--1: 남 2: 여
+member_phone        char(13)        not null,-- sysdate
 enroll_date         char(10)        not null,
-member_level        number          not null,--1:������ 2:ȸ��
-member_grade        number          not null
+member_level        number          not null,--1:관리자 2:회원
+member_grade        number          not null  --1.normal  2.  VIP 3. VVIP-뺄지 말지 얘기 필요
 );*/
 

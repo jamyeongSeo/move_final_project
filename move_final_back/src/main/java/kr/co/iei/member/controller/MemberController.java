@@ -41,6 +41,12 @@ public class MemberController {
 		return ResponseEntity.ok(result);
 	}
 	
+	@PostMapping
+	public ResponseEntity<Integer> joinMember(@RequestBody MemberDTO member){
+		int result = memberService.insertMember(member);
+		return ResponseEntity.ok(result);
+	}
+	
 	
 	
 }
