@@ -15,7 +15,7 @@ const BookingMain = () => {
       });
   }, []);
   console.log(bookingMovieList);
-  console.log(movie);
+
   return (
     <div className="content-wrap">
       <div className="content">
