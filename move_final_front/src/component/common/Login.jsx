@@ -8,7 +8,10 @@ import SearchIdModal from "../member/SearchIdModal";
 import SearchPwModal from "../member/SearchPwModal";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useRecoilState } from "recoil";
 const Login = () => {
+  //const [memberId, setMemberId] = useRecoilState();
+  //const [memberLevel, setmemberLevel] = useRecoilState();
   const [member, setMember] = useState({
     memberId: "",
     memberPw: "",
@@ -41,21 +44,11 @@ const Login = () => {
       axios
         .post(`${backServer}/member/login`, member)
         .then((res) => {
-          console.log(res);
-          if (res.data != null) {
-            Swal.fire({
-              title: "로그인 성공",
-              text: "안녕하세요! 즐거운 영화 관람 되세요",
-              icon: "success",
-            });
-            navigate("/");
-          } else {
-            Swal.fire({
-              title: "로그인 실패",
-              text: "아이디 또는 비밀번호를 확인하세요",
-              icon: "warning",
-            });
-          }
+          //setMemberId(res.data.memberId);
+          //setmemberLevel(res.data.memberLevel);
+          //다시 보기
+          //로그인 이후 axios 통한 요청을 수행하는경우 토큰값을 자동으로 axios에 추가하는 로직
+          navigate("/");
         })
         .catch((err) => {
           console.log(err);
@@ -69,7 +62,7 @@ const Login = () => {
       Swal.fire({
         title: "입력값 확인",
         text: "입력값을 확인하세요",
-        icon: "warning",
+        icon: "info",
       });
     }
   };
