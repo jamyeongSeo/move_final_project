@@ -179,7 +179,7 @@ const AdminMain = () => {
         </section>
 
         <div className="content-box">
-          <table className="content-tbl">
+          <table className="tbl">
             <thead>
               <tr>
                 <th style={{ width: "10%" }}>영화번호</th>

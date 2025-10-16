@@ -11,5 +11,7 @@ public interface MemberDao {
 
 	int login(MemberDTO member);
 
+	int checkId(String memberId);
+
 }
 
