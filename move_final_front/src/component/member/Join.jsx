@@ -325,7 +325,6 @@ const JoinMain = () => {
   //회원가입 조건 검사 및 회원가입
   const navigate = useNavigate();
   const joinMember = () => {
-    /*
     //모든 값 입력 확인
     if (
       member.memberId != "" &&
@@ -338,29 +337,39 @@ const JoinMain = () => {
     ) {
       //아이디/비밀번호/이메일인증
       if (IdCheckMsg == 1 && member.memberPw == memberPwRe && emailCodeCheck) {
-        axios.post(`${backServer}/member`, member).then((res) => {
-          if (res.data == 1) {
-            Swal.fire({
-              title: "회원가입 성공",
-              text: "환영합니다",
-              icon: "success",
-            });
-            axios
-              .get(
-                `${backServer}/email/wellcomCupon?memberEmail=${member.memberEmail}`
-              )
-              .then((res) => {
-                Swal.fire({
-                  title: "WellcomCupon!!",
-                  text: "환영합니다. 웰컴 쿠폰이 발행되었습니다. 자세한 내용은 마이페이지에서 확인해주세요!",
-                  icon: "success", //쿠폰 이미지 나중에 변경하기
-                });
-              })
-              .catch((err) => {
-                console.log(err);
+        axios
+          .post(`${backServer}/member`, member)
+          .then((res) => {
+            if (res.data == 2) {
+              Swal.fire({
+                title: "회원가입 성공",
+                text: "환영합니다. 웰컴 쿠폰 발행!자세한 내용은 마이페이지에서 확인해주세요!",
+                icon: "success",
               });
-          }
-        });
+
+              navigate("/common/login");
+            } else if (res.data == 1) {
+              Swal.fire({
+                title: "회원가입 성공",
+                text: "환영합니다. 웰컴쿠폰 발급을 위해 고객센터에서 1:1 문의해주세요!",
+              });
+              navigate("/common/login");
+            } else if (res.data == 0) {
+              Swal.fire({
+                title: "회원가입 실패",
+                text: "가입조건에 맞게 정보를 입력하세요",
+                icon: "warning",
+              });
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+            Swal.fire({
+              title: "회원가입 실패",
+              text: "가입조건에 맞게 정보를 입력하세요",
+              icon: "warning",
+            });
+          });
       }
     } else {
       Swal.fire({
@@ -368,7 +377,7 @@ const JoinMain = () => {
         text: "입력값을 확인하세요",
         icon: "warning",
       });
-    }*/
+    }
   };
 
   console.log(member);
@@ -618,7 +627,7 @@ const JoinEmailCode = (props) => {
         //!!!!!!  interval 재이해 필요
         const id = setInterval(() => {
           setTimer((prev) => {
-            console.log(prev);
+            //console.log(prev);(시간 카운팅 관련)
             return prev - 1;
           });
         }, 1000);

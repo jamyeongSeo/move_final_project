@@ -3,6 +3,7 @@ import NoticeFrm from "./NoticeFrm";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import axios from "axios";
+import TextEditor from "../utils/TextEditor";
 
 const NoticeWrite = () => {
   const [noticeTitle, setNoticeTitle] = useState("");
@@ -42,10 +43,20 @@ const NoticeWrite = () => {
         <div className="title">공지사항 작성</div>
       </div>
       <div className="frm-input-wrap">
-        <NoticeFrm />
+        <NoticeFrm
+          noticeTitle={noticeTitle}
+          setNoticeTitle={setNoticeTitle}
+          noticeFile={noticeFile}
+          setNoticeFile={setNoticeFile}
+        />
+        <div className="texteditor-wrap">
+          <TextEditor data={noticeContent} setData={setNoticeContent} />
+        </div>
       </div>
       <div className="btn-zone">
-        <button type="submit">등록하기</button>
+        <button type="submit" onClick={write}>
+          등록하기
+        </button>
       </div>
     </section>
   );

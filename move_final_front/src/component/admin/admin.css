@@ -2,13 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-.side-wrap{
-    width: 210px;
-    height: 52px;
-    background-color: #444;
-    line-height: 52px;
-    text-align: center;
-    border-radius: 8px;
+.side-wrap {
+  width: 210px;
+  height: 52px;
+  background-color: #444;
+  line-height: 52px;
+  text-align: center;
+  border-radius: 8px;
 }
 
 .side-menu-container{
@@ -55,11 +55,11 @@
 }
 
 .content-title {
-    font-size: 24px;
-    font-weight: 700;
-    padding: 6px;
-    width: 794px;
-    border-bottom: 2px solid #666;
+  font-size: 24px;
+  font-weight: 700;
+  padding: 6px;
+  width: 794px;
+  border-bottom: 2px solid #666;
 }
 
 .input-wrap {
@@ -70,11 +70,11 @@
 
 .search-item input {
   text-align: center;
-    height: 28px;
-    width: 210px;
-    border: 1px solid var(--gray4);
-    border-radius: 8px;
-    margin-left: 430px;
+  height: 28px;
+  width: 210px;
+  border: 1px solid var(--gray4);
+  border-radius: 8px;
+  margin-left: 430px;
 }
 
 .search-item input:focus {
@@ -94,16 +94,16 @@
   width: 130px;
   height: 36px;
   border: 1px solid #ccc;
-  border-radius: 6px ;
-  background-color: #fff ;
-  color: #333 ;
-  font-size: 14px ;
-  text-align: left ;
-  padding-left: 8px ;
+  border-radius: 6px;
+  background-color: #fff;
+  color: #333;
+  font-size: 14px;
+  text-align: left;
+  padding-left: 8px;
 }
 
 .updateStatus:hover {
-  border-color: #666 ;
+  border-color: #666;
 }
 
 .page-navi {
@@ -111,8 +111,6 @@
   justify-content: center;
   margin: 24px 0;
 }
-
-
 
 @layer base {
   :root {
@@ -169,8 +167,6 @@
     --chart-5: 340 75% 55%;
   }
 }
-
-
 
 @layer base {
   * {

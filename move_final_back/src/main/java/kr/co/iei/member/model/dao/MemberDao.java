@@ -13,5 +13,11 @@ public interface MemberDao {
 
 	int checkId(String memberId);
 
+	int insertMember(MemberDTO member);
+
+	int wellcomCoupon(MemberDTO member);
+
+	
+
 }
 

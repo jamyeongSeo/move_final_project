@@ -164,7 +164,7 @@ background-color, margin는 각자 개인 className에 설정해서 사용하면
 /* 헤더 */
 .header-wrap {
   width: 100%;
-  background: #fff;
+  background: var(--main1);
   border-bottom: 1px solid #cfcfcf;
 }
 
@@ -196,7 +196,7 @@ background-color, margin는 각자 개인 className에 설정해서 사용하면
 
 .nav-menu li a {
   text-decoration: none;
-  color: #222;
+  color: #fff;
   font-size: 15px;
   font-weight: 500;
   letter-spacing: 0.2px;
@@ -210,7 +210,7 @@ background-color, margin는 각자 개인 className에 설정해서 사용하면
   z-index: 2;
   font-size: 32px;
   font-family: ns-black;
-  background: #fff;
+  color: #fff;
   padding: 0 8px;
   line-height: 1;
   font-style: italic;
@@ -225,25 +225,34 @@ background-color, margin는 각자 개인 className에 설정해서 사용하면
   gap: 16px;
   align-items: center;
   font-size: 13px;
-  color: #333;
+  color: #fff;
 }
 
-.auth-nav span {
+.auth-nav a {
   cursor: pointer;
-  transition: color 0.15s;
 }
 
-.auth-nav span:hover {
-  color: #000;
-  text-decoration: underline;
+.auth-nav a:hover {
+  color: #fff;
 }
 
+.auth-nav a::after {
+  content: "";
+  display: block;
+  width: 0;
+  height: 2px;
+  background: #fff;
+  transition: width 0.25s;
+}
+.auth-nav a:hover::after {
+  width: 100%;
+}
 .nav-menu li a::after {
   content: "";
   display: block;
   width: 0;
   height: 2px;
-  background: #000;
+  background: #fff;
   margin-top: 6px;
   transition: width 0.25s;
 }
@@ -253,9 +262,7 @@ background-color, margin는 각자 개인 className에 설정해서 사용하면
 
 .footer-wrap {
   width: 100%;
-  background-color: #d9d9d9;
-  color: #333;
-  font-family: "Noto Sans KR", sans-serif;
+  background-color: var(--main1);
   padding: 16px 32px;
   border-top: 1px solid #ccc;
 }
@@ -280,27 +287,26 @@ background-color, margin는 각자 개인 className에 설정해서 사용하면
   align-items: center;
   gap: 35px;
   font-size: 14px;
-  color: #333;
   margin-right: 520px;
 }
 
 .footer-menu span {
   cursor: pointer;
   transition: color 0.2s;
+  color: var(--gray4);
 }
 
 .footer-menu span:hover {
-  color: #000;
-  text-decoration: underline;
+  color: #fff;
 }
 
 .footer-info {
   font-size: 11px;
   line-height: 1.7;
-  color: var(--gray4);
   font-weight: 500;
 }
 
 .footer-info p {
   margin: 0;
+  color: var(--gray4);
 }
