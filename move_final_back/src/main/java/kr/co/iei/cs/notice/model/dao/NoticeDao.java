@@ -27,5 +27,9 @@ public interface NoticeDao {
 
 	int insertNoticeFile(NoticeFileDTO noticeFile);
 
+	NoticeDTO selectOneNotice(int noticeNo);
+
+	List<NoticeFileDTO> selectNoticeFileList(int noticeNo);
+
 
 }

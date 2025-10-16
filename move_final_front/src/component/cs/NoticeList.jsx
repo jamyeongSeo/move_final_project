@@ -10,7 +10,6 @@ const NoticeList = () => {
   const [pi, setPi] = useState(null);
   const [totalCount, setTotalCount] = useState(0);
   const [search, setSearch] = useState("");
-
   const noticeFunc = () => {
     axios
       .get(
@@ -39,10 +38,10 @@ const NoticeList = () => {
   const navigate = useNavigate();
 
   return (
-    <section className="section notice-list">
+    <section className="section notice-list-wrap">
       <div className="title-wrap">
         <div className="title">공지사항</div>
-        <div className="add-icon" onClick={() => navigate("/cs/noticeFrm")}>
+        <div className="add-icon" onClick={() => navigate("/cs/notice/frm")}>
           <AddBoxIcon />
         </div>
       </div>
@@ -74,7 +73,12 @@ const NoticeList = () => {
           <tbody>
             {noticeList.map((notice, index) => {
               return (
-                <tr key={"notice-" + index}>
+                <tr
+                  key={"notice-" + index}
+                  onClick={() =>
+                    navigate(`/cs/notice/detail/${notice.noticeNo}`)
+                  }
+                >
                   <td>{notice.noticeNo}</td>
                   <td>{notice.noticeTitle}</td>
                   <td>{notice.noticeDate}</td>

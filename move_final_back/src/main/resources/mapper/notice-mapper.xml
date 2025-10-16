@@ -46,4 +46,12 @@
 	<select id="getNoticeNo" resultType="int">
 		select notice_seq.nextval from dual;
 	</select>
+	
+	<select id="selectOneNotice" resultType="notice">
+		select * from notice_tbl where notice_no = #{noticeNo}
+	</select>
+	
+	<select id="selectNoticeFileList" resultType="noticeFile">
+		select * from notice_file_tbl where notice_no = #{noticeNo}
+	</select>
 </mapper>
