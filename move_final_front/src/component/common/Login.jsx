@@ -9,9 +9,12 @@ import SearchPwModal from "../member/SearchPwModal";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useRecoilState } from "recoil";
+import { loginIdState, memberLevelState } from "../utils/RecoilData";
 const Login = () => {
-  //const [memberId, setMemberId] = useRecoilState();
-  //const [memberLevel, setmemberLevel] = useRecoilState();
+  const [memberId, setMemberId] = useRecoilState(loginIdState);
+  const [memberLevel, setmemberLevel] = useRecoilState(memberLevelState);
+  console.log(memberId, memberLevel);
+
   const [member, setMember] = useState({
     memberId: "",
     memberPw: "",
@@ -44,10 +47,13 @@ const Login = () => {
       axios
         .post(`${backServer}/member/login`, member)
         .then((res) => {
-          //setMemberId(res.data.memberId);
-          //setmemberLevel(res.data.memberLevel);
+          setMemberId(res.data.memberId);
+          setmemberLevel(res.data.memberLevel);
           //다시 보기
           //로그인 이후 axios 통한 요청을 수행하는경우 토큰값을 자동으로 axios에 추가하는 로직
+          axios.defaults.headers.common["Authorization"] = res.data.accessToken;
+          //로그인을 성공하면 갱신을위한 refreshToken을 브라우저에 저장
+          window.localStorage.setItem("refreshToken", res.data.refreshToken);
           navigate("/");
         })
         .catch((err) => {

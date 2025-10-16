@@ -13,8 +13,63 @@ import MemberMain from "./component/member/MemberMain";
 import MemberUpdate from "./component/member/MemberUpdate";
 import MemberDelete from "./component/member/MemberDelete";
 import MovieList from "./component/movie/MovieList";
+import { useRecoilState } from "recoil";
+import {
+  authReadyState,
+  loginIdState,
+  memberLevelState,
+} from "./component/utils/RecoilData";
+import axios from "axios";
+import { useEffect } from "react";
 
 function App() {
+  const [memberId, setMemberId] = useRecoilState(loginIdState);
+  const [memberLevel, setMemberLevel] = useRecoilState(memberLevelState);
+  const [authReady, setAuthReady] = useRecoilState(authReadyState);
+  console.log("잘 들어왔다" + memberId + ":" + memberLevel);
+
+  //다시보기 이해 요망
+  useEffect(() => {
+    refreshLogin();
+    window.setInterval(1000 * 60 * 50);
+  }, []);
+
+  const refreshLogin = () => {
+    //최초 화면을 접속시, localStorage에 저장되어있는 refreshToken을 가져와 자동 로그인 처리
+    const refreshToken = window.localStorage.getItem("refreshToken");
+
+    //한번도 로그인 x or 로그아웃 시
+    if (refreshToken !== null) {
+      //refreshToken존재시, 해당 토큰으로 인증 및 로그인 처리(accessToken, refreshToken 갱신)
+      axios.defaults.headers.common["Authorization"] = refreshToken;
+
+      axios
+        .get(`${import.meta.env.VITE_BACK_SERVER}/member/refresh`)
+        .then((res) => {
+          console.log("refresh");
+          console.log(res);
+          setMemberId(res.data.memberId);
+          setMemberLevel(res.data.memberLevel);
+          axios.defaults.headers.common["Authorization"] = res.data.accessToken;
+          window.localStorage.setItem("refreshToken", res.data.refreshToken);
+          setAuthReady(true);
+        })
+        .catch((err) => {
+          console.log(err);
+          setMemberId("");
+          setMemberLevel(0);
+          delete axios.defaults.headers.common["Authorization"];
+          window.localStorage.removeItem("refreshToken");
+          setAuthReady(true);
+        });
+    } else {
+      //재로그인 안하는 경우
+      console.log("refresh토큰이 없어!!!!!!!!!");
+      setAuthReady(true);
+    }
+
+    setAuthReady(true);
+  };
   return (
     <div className="wrap">
       <Header />
@@ -25,7 +80,7 @@ function App() {
           <Route path="/booking/main" element={<BookingMain />} />
 
           <Route path="/admin/main" element={<AdminMain />} />
-          
+
           <Route path="/member/join" element={<Join></Join>} />
           <Route path="/common/login" element={<Login></Login>} />
           <Route
