@@ -42,7 +42,12 @@ const Login = () => {
         .post(`${backServer}/member/login`, member)
         .then((res) => {
           console.log(res);
-          if (res.data == 1) {
+          if (res.data != null) {
+            Swal.fire({
+              title: "로그인 성공",
+              text: "안녕하세요! 즐거운 영화 관람 되세요",
+              icon: "success",
+            });
             navigate("/");
           } else {
             Swal.fire({
@@ -54,6 +59,11 @@ const Login = () => {
         })
         .catch((err) => {
           console.log(err);
+          Swal.fire({
+            title: "로그인 실패",
+            text: "아이디 또는 비밀번호를 확인하세요",
+            icon: "warning",
+          });
         });
     } else {
       Swal.fire({
@@ -68,7 +78,9 @@ const Login = () => {
     <div className="content-wrap section login-wrap">
       <div>
         <section>
-          <div className="title-logo">I_MOVE_U</div>
+          <div className="title-logo" style={{ fontSize: "32px" }}>
+            I_MOVE_U
+          </div>
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -98,7 +110,11 @@ const Login = () => {
               ></input>
             </div>
             <div className="login-button-box">
-              <button type="submit" className="btn-red login-btn">
+              <button
+                type="submit"
+                className="btn-red login-btn"
+                style={{ fontSize: "17px" }}
+              >
                 로그인
               </button>
             </div>

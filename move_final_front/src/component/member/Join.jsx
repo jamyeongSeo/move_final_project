@@ -364,11 +364,6 @@ const JoinMain = () => {
           })
           .catch((err) => {
             console.log(err);
-            Swal.fire({
-              title: "회원가입 실패",
-              text: "가입조건에 맞게 정보를 입력하세요",
-              icon: "warning",
-            });
           });
       }
     } else {
