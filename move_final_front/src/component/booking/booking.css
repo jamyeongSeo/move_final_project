@@ -2,10 +2,14 @@
   margin-bottom: 90px;
 }
 
-.page-title {
+.booking-page-title {
   margin-bottom: 30px;
 }
-.page-title > h3 {
+.booking-page-title > h3 {
+  padding: 30px;
+  text-align: center;
+  font-family: ns-b;
+  font-size: 25px;
   color: var(--main5);
 }
 .booking-content-wrap {

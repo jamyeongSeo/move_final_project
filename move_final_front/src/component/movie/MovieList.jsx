@@ -21,14 +21,16 @@ const MovieList = () => {
     <div className="content">
       <div className="movie-wrap">
         <div className="movie-header">
-          <div className="page-title">
+          <div className="movie-page-title">
             <h3>영화 리스트</h3>
           </div>
         </div>
         <div className="movie-list-box">
           <ul className="list-wrap">
             {movieAllList.map((movie, index) => {
-              return <MovieItem key={"movie-" + index} movie={movie} />;
+              return (
+                <MovieItem key={"movie-" + index} movie={movie} index={index} />
+              );
             })}
           </ul>
         </div>
@@ -46,6 +48,7 @@ const MovieItem = (props) => {
   };
   const [hoverText, setHoverText] = useState(1);
   const movie = props.movie;
+  const index = props.index;
   return (
     <li className="movie-item">
       <div
@@ -53,11 +56,15 @@ const MovieItem = (props) => {
         onMouseOver={viewContent}
         onMouseOut={hideContent}
       >
-        {hoverText === 1 ? (
-          <img src={movie.movieThumb} />
-        ) : (
-          <div className="movie-content">{movie.movieContent}</div>
-        )}
+        <img
+          src={movie.movieThumb}
+          className={hoverText !== 2 ? "movie-thumb" : "movie-thumb-hide"}
+        />
+        <div
+          className={hoverText === 2 ? "movie-content show" : "movie-content"}
+        >
+          {movie.movieContent}
+        </div>
       </div>
       <div className="movie-info">
         <div className="movie-grade">

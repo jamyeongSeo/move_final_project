@@ -1,0 +1,24 @@
+div.active-link > div {
+  background-color: var(--gray5);
+}
+.side-menu .active-link > div {
+  background-color: var(--gray4);
+  color: var(--gray7);
+}
+.side-menu {
+  margin-top: 25px;
+  background-color: var(--main3);
+  border: 2px solid var(--main1);
+  border-bottom: none;
+  border-radius: 5px;
+  width: 210px;
+}
+.left-side-menu-content {
+  border-bottom: 2px solid var(--main1);
+  color: var(--main1);
+  height: 50px;
+  text-align: center;
+  line-height: 50px;
+  font-size: 20px;
+  font-family: ns-b;
+}
