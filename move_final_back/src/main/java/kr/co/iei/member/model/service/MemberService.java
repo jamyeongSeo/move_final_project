@@ -6,21 +6,23 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.iei.member.model.dao.MemberDao;
+import kr.co.iei.member.model.dto.LoginMemberDTO;
 import kr.co.iei.member.model.dto.MemberDTO;
+import kr.co.iei.utils.JwtUtils;
 
 @Service
 public class MemberService {
 	@Autowired
 	private MemberDao memberDao;
-	@Autowired BCryptPasswordEncoder encoder;
+	@Autowired 
+	private BCryptPasswordEncoder encoder;
+	@Autowired
+	private JwtUtils jwtUtils;
 	
+	
+	//--------------회원가입----------------------
 	public int checkEmail(String memberEmail) {
 		int result = memberDao.checkEmail(memberEmail);
-		return result;
-	}
-
-	public int login(MemberDTO member) {
-		int result = memberDao.login(member);
 		return result;
 	}
 
@@ -44,6 +46,23 @@ public class MemberService {
 			}
 		}else{			
 			return 0;//회원가입 실패
+		}
+	}
+	
+	//-----------------로그인-------------------------
+	public LoginMemberDTO login(MemberDTO member) {
+		//1.encoder 비밀번호와 입력 비밀번호 동일 형태로 만들어서 맞는지 확인(로그인 성공 여부 확인)->하면서 memberLevel도 같이 들고오기
+		MemberDTO m = memberDao.login(member);
+		if(m != null && encoder.matches( m.getMemberPw(), member.getMemberPw())) {
+			//2.성공 시, token 생성 및 발행(//토큰 미발행 시, 오류:2  / 토큰 발행 성공 시, 1)
+			String accessToken = jwtUtils.createAccessToken(m.getMemberId(), m.getMemberLevel());
+			System.out.println("1시간 토큰"+accessToken);
+			String refreshToken = jwtUtils.createRefreshToken(m.getMemberId(), m.getMemberLevel());
+			System.out.println("1년 토큰"+refreshToken);
+			LoginMemberDTO loginMember = new LoginMemberDTO(accessToken, refreshToken, m.getMemberId(), m.getMemberLevel());
+			return loginMember;
+		}else {
+			return null;
 		}
 	}
 }

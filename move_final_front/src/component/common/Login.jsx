@@ -55,6 +55,12 @@ const Login = () => {
         .catch((err) => {
           console.log(err);
         });
+    } else {
+      Swal.fire({
+        title: "입력값 확인",
+        text: "입력값을 확인하세요",
+        icon: "warning",
+      });
     }
   };
 
