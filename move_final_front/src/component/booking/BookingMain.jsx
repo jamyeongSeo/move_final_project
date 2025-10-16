@@ -7,6 +7,7 @@ const BookingMain = () => {
     axios
       .get(`${import.meta.env.VITE_BACK_SERVER}/booking/list`)
       .then((res) => {
+        console.log(res);
         setMovie(res.data);
       })
       .catch((err) => {
@@ -14,6 +15,7 @@ const BookingMain = () => {
       });
   }, []);
   console.log(bookingMovieList);
+  console.log(movie);
   return (
     <div className="content-wrap">
       <div className="content">
