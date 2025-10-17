@@ -1,4 +1,6 @@
+import axios from "axios";
 import { useRef, useState } from "react";
+import Swal from "sweetalert2";
 
 const SearchIdModal = (props) => {
   const isModalId = props.isModalId;
@@ -6,24 +8,51 @@ const SearchIdModal = (props) => {
   const setIsModalId = props.setIsModalId;
 
   const [member, setMember] = useState({
-    memberPw: "",
     memberEmail: "",
     memberName: "",
   });
+  const [memberId, setMemberId] = useState("");
   const inputData = (e) => {
     const name = e.target.name;
     const value = e.target.value;
     const newMember = { ...member, [name]: value };
     setMember(newMember);
   };
+
+  //모달 열고 닫기
   const modal = useRef();
   const resultModal = useRef();
   const nextModal = () => {
-    modal.current.classList.add("membersearch-none");
-    resultModal.current.classList.remove("membersearchResult-none");
+    if (member.memberEmail != "" && member.memberName != "") {
+      axios
+        .get(
+          `${import.meta.env.VITE_BACK_SERVER}/member/searchId?memberName=${
+            member.memberName
+          }&&memberEmail=${member.memberEmail}`
+        )
+        .then((res) => {
+          setMemberId(res.data);
+          setMember({ memberEmail: "", memberName: "" });
+          modal.current.classList.add("membersearch-none");
+          resultModal.current.classList.remove("membersearchResult-none");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      Swal.fire({
+        title: "입력값 확인",
+        text: "입력값을 확인하세요",
+        icon: "info",
+      });
+    }
+
+    //
   };
 
   const closeModal = () => {
+    setMember({ memberEmail: "", memberName: "" });
+    setMemberId("");
     setIsModalId(false);
     resultModal.current.classList.add("membersearchResult-none");
     modal.current.classList.remove("membersearch-none");
@@ -57,18 +86,7 @@ const SearchIdModal = (props) => {
                         onChange={inputData}
                       />
                     </div>
-                    <div>
-                      <input
-                        style={{ width: "650px" }}
-                        className="input-line"
-                        type="password"
-                        name="memberPw"
-                        id="memberPw"
-                        placeholder="비밀번호 입력"
-                        value={member.memberPw}
-                        onChange={inputData}
-                      />
-                    </div>
+
                     <div>
                       <input
                         style={{ width: "650px" }}
@@ -102,7 +120,7 @@ const SearchIdModal = (props) => {
                 </form>
               </section>
               <section ref={resultModal} className="membersearchResult-none">
-                <SearchIdResult></SearchIdResult>
+                <SearchIdResult memberId={memberId}></SearchIdResult>
                 <div>
                   <button
                     type="button"
@@ -121,13 +139,16 @@ const SearchIdModal = (props) => {
   );
 };
 
-const SearchIdResult = () => {
+const SearchIdResult = (props) => {
+  const memberId = props.memberId;
   return (
     <section>
       <div className="memberModal-content-wrap">
         <div className="memberModal-searchResult-box">
           <span className="memberModal-searchResult">
-            아이디 : member.memberId
+            {memberId == ""
+              ? "아이디를 찾을 수 없습니다."
+              : `아이디 : ${memberId}`}
           </span>
         </div>
       </div>

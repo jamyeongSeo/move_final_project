@@ -67,4 +67,29 @@ public class MemberService {
 			
 		}
 	}
+
+	//-----------------아이디 찾기-------------------------
+	public String searchId(String memberName, String memberEmail) {
+		String searchId = memberDao.searchId(memberName, memberEmail);
+		if(searchId != null) {
+			return searchId;
+		}else {
+			return "";//아이디 조회 실패						
+		}
+	}
+
+	//-----------------비밀번호 찾기-------------------------
+	public int searchPw(String memberName, String memberId, String memberEmail) {
+		int result = memberDao.searchPw(memberName, memberId, memberEmail);
+		return result;
+	}
+	@Transactional
+	public int updatePw(String memberPw, String memberEmail) {
+		String encPw = encoder.encode(memberPw);
+		memberPw=encPw;
+		int result = memberDao.updatePw(memberPw,memberEmail);
+		return result;
+	}
+	
+	
 }

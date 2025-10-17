@@ -1,8 +1,20 @@
 import { useState } from "react";
 import LeftSideMenu from "../utils/LeftSideMenu";
 import { Link } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import { loginIdState, memberLevelState } from "../utils/RecoilData";
+import { Axis3dIcon } from "lucide-react";
 
 const MemberMain = () => {
+  const [memberId, setmemberId] = useRecoilState(loginIdState);
+  const [memberLevel, setMemberLevel] = useRecoilState(memberLevelState);
+  const [member, setMember] = useState({
+    memberNo: "",
+    memberId: "",
+    memberPw: "",
+    memberPw: "",
+    member,
+  });
   const [menus, setMenus] = useState([
     {
       url: [
@@ -15,6 +27,15 @@ const MemberMain = () => {
     { url: "/member/join", text: "내가 본 영화" },
     { url: "/member/join", text: "예약 / 결제" },
   ]);
+  const BackServer = import.meta.env.VITE_BACK_SERVER;
+  axios
+    .get(`${BackServer}/member/selectMember?memberId=${memberId}`)
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
   return (
     <div className="content-wrap">
       <section className="left-side-menu-side">

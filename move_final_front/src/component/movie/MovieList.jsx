@@ -2,21 +2,29 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import "./movie.css";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { isLoginState, loginIdState } from "../utils/RecoilData";
+import { red } from "@mui/material/colors";
+
 const MovieList = () => {
+  const isLogin = useRecoilValue(isLoginState);
+  const [memberId, setMemberId] = useRecoilState(loginIdState);
   const [movieAllList, setMovieAllList] = useState([]);
 
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_BACK_SERVER}/movie/list`)
+      .get(
+        `${import.meta.env.VITE_BACK_SERVER}/movie/list?memberId=${memberId}`
+      )
       .then((res) => {
-        console.log(res);
-        setMovieAllList(res.data.movieList);
+        if (movieAllList.length === 0) {
+          setMovieAllList(res.data.movieList);
+        }
       })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
+      .catch((err) => {});
+  }, [movieAllList]);
+  console.log(movieAllList);
   return (
     <div className="content">
       <div className="movie-wrap">
@@ -29,7 +37,15 @@ const MovieList = () => {
           <ul className="list-wrap">
             {movieAllList.map((movie, index) => {
               return (
-                <MovieItem key={"movie-" + index} movie={movie} index={index} />
+                <MovieItem
+                  key={"movie-" + index}
+                  movie={movie}
+                  index={index}
+                  isLogin={isLogin}
+                  memberId={memberId}
+                  movieAllList={movieAllList}
+                  setMovieAllList={setMovieAllList}
+                />
               );
             })}
           </ul>
@@ -49,6 +65,11 @@ const MovieItem = (props) => {
   const [hoverText, setHoverText] = useState(1);
   const movie = props.movie;
   const index = props.index;
+  const isLogin = props.isLogin;
+  const memberId = props.memberId;
+  const movieAllList = props.movieAllList;
+  const setMovieAllList = props.setMovieAllList;
+
   return (
     <li className="movie-item">
       <div
@@ -82,10 +103,76 @@ const MovieItem = (props) => {
           />
         </div>
         <div className="movie-title">{movie.movieTitle}</div>
-        <div className="btn-zone">
+        <div className="movie-btn-zone">
           <div className="like-btn">
-            <FavoriteBorderIcon className="like-img" />
+            {movie.like ? (
+              <span
+                className="like-img-pushed"
+                onClick={() => {
+                  if (isLogin) {
+                    axios
+                      .delete(
+                        `${
+                          import.meta.env.VITE_BACK_SERVER
+                        }/movie/likeUnPush?movieNo=${
+                          movie.movieNo
+                        }&memberId=${memberId}`
+                      )
+                      .then((res) => {
+                        console.log(res);
+                        if (res.data === 1) {
+                          const likePushList = movieAllList.map((item, i) => {
+                            console.log(index, i);
+                            return index === i
+                              ? { ...item, like: false }
+                              : item;
+                          });
+                          console.log(likePushList);
+                          setMovieAllList(likePushList);
+                        }
+                      })
+                      .catch((err) => {
+                        console.log(err);
+                      });
+                  }
+                }}
+              >
+                <FavoriteIcon sx={{ color: red[500] }} />
+              </span>
+            ) : (
+              <span
+                className="like-img"
+                onClick={() => {
+                  if (isLogin) {
+                    axios
+                      .post(
+                        `${
+                          import.meta.env.VITE_BACK_SERVER
+                        }/movie/likePush?movieNo=${
+                          movie.movieNo
+                        }&memberId=${memberId}`
+                      )
+                      .then((res) => {
+                        console.log(res);
+                        if (res.data === 1) {
+                          const likeUnPushList = movieAllList.map((item, i) => {
+                            return index === i ? { ...item, like: true } : item;
+                          });
+                          console.log(likeUnPushList);
+                          setMovieAllList(likeUnPushList);
+                        }
+                      })
+                      .catch((err) => {
+                        console.log(err);
+                      });
+                  }
+                }}
+              >
+                <FavoriteBorderIcon />
+              </span>
+            )}
           </div>
+          <div className="like-count"></div>
         </div>
         <div className="booking-zone">
           <button className="booking-btn">예매하기</button>

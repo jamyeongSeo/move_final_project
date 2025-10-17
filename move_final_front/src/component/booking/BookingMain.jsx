@@ -8,7 +8,7 @@ const BookingMain = () => {
       .get(`${import.meta.env.VITE_BACK_SERVER}/booking/list`)
       .then((res) => {
         console.log(res);
-        setMovie(res.data);
+        setBookingMovieList(res.data.bookingMovieList);
       })
       .catch((err) => {
         console.log(err);

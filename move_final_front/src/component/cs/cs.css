@@ -24,6 +24,9 @@
   width: 794px;
   border-bottom: 2px solid #666;
 }
+.detailWrap {
+  border: none;
+}
 .title {
   font-size: 24px;
   font-weight: 700;
@@ -40,6 +43,15 @@
   margin: 10px 0;
   justify-content: space-between;
   align-items: center;
+}
+.info-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 2px solid var(--gray3);
+  border-radius: 8px;
+  padding: 10px;
+  background-color: var(--gray5);
 }
 .input-wrap > input {
   text-align: center;
@@ -101,14 +113,22 @@
   width: 100%;
   margin: 16px 0;
   height: 42px;
+  padding: 0 20px;
 }
 .add-file {
-  display: inline-block;
+  display: flex;
+  min-height: 42px;
   border: 2px solid var(--gray3);
   border-radius: 8px;
   width: 100%;
   margin: 16px 0;
-  height: 42px;
+  flex-direction: column;
+  padding: 10px 20px;
+  justify-content: center;
+}
+.add-file p {
+  display: flex;
+  gap: 10px;
 }
 .quill {
   overflow-y: auto;
@@ -124,10 +144,33 @@
   display: flex;
   justify-content: center;
   margin-top: 32px;
+  gap: 18px;
 }
-.btn-zone > button {
-  background-color: var(--main5);
-  color: #fff;
-  padding: 8px 16px;
+.btn-zone > .btn-red {
+  width: 72px;
+}
+.writeBtn > .btn-red {
+  width: 96px;
+}
+.updateButton > .btn-red {
+  width: 96px;
+}
+.writer {
+  font-family: ns-b;
+}
+.notice-content-wrap {
+  height: 360px;
+  padding: 20px;
   border-radius: 8px;
+  border: 2px solid var(--gray3);
+  background-color: var(--main3);
+  overflow-y: auto;
+}
+.file-zone {
+  border: 2px solid var(--gray3);
+  background-color: var(--main3);
+  border-radius: 8px;
+  width: 100%;
+  margin: 16px 0;
+  height: 42px;
 }
