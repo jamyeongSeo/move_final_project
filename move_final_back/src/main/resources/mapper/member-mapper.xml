@@ -10,7 +10,7 @@
 		select count(*) from member_tbl where member_id = #{memberId}
 	</select>
 	<insert id="insertMember"> <!-- 관리자로 들어가게 해놈! 추후 회원으로 변경 예정 //멤버쉽은 회원가입시 동일하게 1(nomal)로 들어갈겨-->
-		insert into member_tbl values(member_seq.nextval, #{memberId}, #{memberPw},#{memberEmail},#{memberName},TO_DATE(#{memberBirth},'YYYY-MM-DD'), #{memberGender}, #{memberPhone},to_char(sysdate, 'yyyy-mm-dd'),1,1)
+		insert into member_tbl values(member_seq.nextval, #{memberId}, #{memberPw},#{memberEmail},#{memberName},TO_DATE(#{memberBirth},'YYYY-MM-DD'), #{memberGender}, #{memberPhone},to_char(sysdate, 'yyyy-mm-dd'),2,1)
 	</insert>
 	<!-- insertMember와 동시에 웰컴쿠폰 발급 -->
 	<insert id="wellcomCoupon">
@@ -21,8 +21,8 @@
 	
 	
 	<!-- Login -->
-	<select id="login">
-		select count(*) from member_tbl where member_id = #{memberId} and member_pw = #{memberPw} 
+	<select id="login" resultType="member">
+		select * from member_tbl where member_id = #{memberId}
 	</select>
 	
 </mapper>
