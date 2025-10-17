@@ -16,8 +16,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -71,6 +73,49 @@ public class NoticeController {
 	public ResponseEntity<NoticeDTO> selectOneNotice(@PathVariable int noticeNo){
 		NoticeDTO notice = noticeService.selectOneNotice(noticeNo);
 		return ResponseEntity.ok(notice);
+	}
+	@DeleteMapping(value="/delete/{noticeNo}")
+	public ResponseEntity<Integer> deleteNotice(@PathVariable int noticeNo){
+		NoticeDTO notice = noticeService.deleteNotice(noticeNo);
+		if(notice==null) {
+			return ResponseEntity.ok(0);
+		}else {
+			if(!notice.getNoticeFileList().isEmpty()) {
+				String savepath = root + "/notice/";
+				for(NoticeFileDTO fileDTO : notice.getNoticeFileList()) {
+					File delFile = new File(savepath);
+					delFile.delete();
+				}
+			}
+			return ResponseEntity.ok(1);
+		}
+	}
+	@PatchMapping(value="/update")
+	public ResponseEntity<Integer> updateNotice(@ModelAttribute NoticeDTO notice, @ModelAttribute MultipartFile[] noticeFile){
+		List<NoticeFileDTO> noticeFileList = new ArrayList<NoticeFileDTO>();
+		if(noticeFile != null) {
+			String savepath = root + "/notice/";
+			for(MultipartFile file : noticeFile) {
+				String filename = file.getOriginalFilename();
+				String filepath = fileUtil.upload(savepath, file);
+				NoticeFileDTO fileDTO = new NoticeFileDTO();
+				fileDTO.setFilename(filename);
+				fileDTO.setFilepath(filepath);
+				fileDTO.setNoticeNo(notice.getNoticeNo());
+				noticeFileList.add(fileDTO);
+			}
+		}
+		NoticeDTO nd = noticeService.updateNotice(notice,noticeFileList);
+		
+		if(nd.getNoticeFileList() != null) {
+			String savepath = root + "/board/";
+			for(NoticeFileDTO delFile : nd.getNoticeFileList()) {
+				File delNoticeFile = new File(savepath+delFile.getFilepath());
+				delNoticeFile.delete();
+			}
+		}
+		
+		return ResponseEntity.ok(1);
 	}
 	
 	

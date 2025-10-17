@@ -7,7 +7,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.iei.cs.notice.model.dao.NoticeDao;
 import kr.co.iei.cs.notice.model.dto.NoticeDTO;
@@ -63,6 +62,32 @@ public class NoticeService {
 		List<NoticeFileDTO> fileList = noticeDao.selectNoticeFileList(noticeNo);
 		notice.setNoticeFileList(fileList);
 		return notice;
+	}
+	@Transactional
+	public NoticeDTO deleteNotice(int noticeNo) {
+		NoticeDTO notice = noticeDao.selectOneNotice(noticeNo);
+		List<NoticeFileDTO> NoticeFilelist = noticeDao.selectNoticeFileList(noticeNo);
+		notice.setNoticeFileList(NoticeFilelist);
+		int result = noticeDao.deleteNotice(noticeNo);
+		if(result > 0) {
+			return notice;
+		}else {			
+			return null;
+		}
+	}
+	@Transactional
+	public NoticeDTO updateNotice(NoticeDTO notice, List<NoticeFileDTO> noticeFileList) {
+		NoticeDTO nd = noticeDao.selectOneNotice(notice.getNoticeNo());
+		int result = noticeDao.updateNotice(notice);
+		for(NoticeFileDTO noticeFile : noticeFileList) {
+			result += noticeDao.insertNoticeFile(noticeFile);
+		}
+		if (notice.getDelFileNo() != null) {
+			List<NoticeFileDTO> delFileList = noticeDao.selectDelNoticeFileList(notice.getDelFileNo());
+			nd.setNoticeFileList(delFileList);
+			result += noticeDao.deleteBoardFile(notice.getDelFileNo());
+		}
+		return nd;
 	}
 
 }

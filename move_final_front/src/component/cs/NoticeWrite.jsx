@@ -4,12 +4,13 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import axios from "axios";
 import TextEditor from "../utils/TextEditor";
+import { loginIdState } from "../utils/RecoilData";
 
 const NoticeWrite = () => {
   const [noticeTitle, setNoticeTitle] = useState("");
   const [noticeFile, setNoticeFile] = useState([]);
   const [noticeContent, setNoticeContent] = useState("");
-  //const [memberId, setMemberId] = useRecoilState(null);
+  const [memberId, setMemberId] = useRecoilState(loginIdState);
   const navigate = useNavigate();
   const write = () => {
     if (noticeTitle !== "" && noticeContent !== "") {
@@ -21,7 +22,7 @@ const NoticeWrite = () => {
         form.append("noticeFile", noticeFile[i]);
       }
       axios
-        .post(`${import.meta.env.VITE_BACK_SERVER}/cs`, form, {
+        .post(`${import.meta.env.VITE_BACK_SERVER}/cs/notice/frm`, form, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -54,8 +55,8 @@ const NoticeWrite = () => {
           <TextEditor data={noticeContent} setData={setNoticeContent} />
         </div>
       </div>
-      <div className="btn-zone">
-        <button type="submit" onClick={write}>
+      <div className="btn-zone writeBtn">
+        <button type="submit" onClick={write} className="btn-red">
           등록하기
         </button>
       </div>
