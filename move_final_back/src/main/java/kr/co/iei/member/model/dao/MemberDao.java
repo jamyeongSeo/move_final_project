@@ -20,6 +20,11 @@ public interface MemberDao {
 	
 	//------------아이디찾기---------------------
 	String searchId(String memberName, String memberEmail);
+	
+	//-----------비밀번호찾기-----------------------
+	int searchPw(String memberName, String memberId, String memberEmail);
+
+	int updatePw(MemberDTO member);
 
 
 }

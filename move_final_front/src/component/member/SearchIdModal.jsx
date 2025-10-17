@@ -31,8 +31,6 @@ const SearchIdModal = (props) => {
           }&&memberEmail=${member.memberEmail}`
         )
         .then((res) => {
-          console.log(res);
-
           setMemberId(res.data);
           setMember({ memberEmail: "", memberName: "" });
           modal.current.classList.add("membersearch-none");

@@ -77,4 +77,40 @@ public class MemberController {
 		String searchId = memberService.searchId(memberName, memberEmail);
 		return ResponseEntity.ok(searchId);
 	}
+	
+	/*-----------------------searchPwModal---------------------------*/
+	@GetMapping(value="/searchPw")
+	public ResponseEntity<Integer> searchPw(@RequestParam String memberName, @RequestParam String memberId, @RequestParam String memberEmail){
+		int result = memberService.searchPw(memberName, memberId, memberEmail);
+		return ResponseEntity.ok(result);
+	}
+	@PostMapping(value="/updatePw")
+	public ResponseEntity<Integer> updatePw(@RequestBody MemberDTO member){
+		int result = memberService.updatePw(member);
+		return ResponseEntity.ok(result);
+	}
+	
+	
+	
+	
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

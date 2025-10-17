@@ -97,6 +97,7 @@ const MemberUpdate = () => {
             </button>
           </div>
         </section>
+        {/*비밀번호 찾기 모달 시작 */}
         <section ref={searchPwModal} className="login-searchPwModal-none">
           <div>
             <div className="memberModal">
@@ -174,7 +175,9 @@ const MemberUpdate = () => {
                       ref={resultModal}
                       className="login-searchPwModal-none"
                     >
-                      <SearchPwResult></SearchPwResult>
+                      <SearchPwResult
+                        searchResult={searchResult}
+                      ></SearchPwResult>
                       <div>
                         <button
                           type="button"

@@ -28,4 +28,15 @@
 	<select id="searchId" resultType="string">
 		select member_id from member_tbl where member_name = #{memberName} and member_email=#{memberEmail}
 	</select>
+	
+	<!-- searchPwModal -->
+	<select id="searchPw" resultType="int">
+		select count(*) from member_tbl where member_name = #{memberName} and member_id = #{memberId} and member_email=#{memberEmail}
+	</select>
+	<update id="updatePw">
+		update member_tbl set
+  		member_pw = #{memberPw}
+  	where member_name = #{memberName} and member_id = #{memberId} and member_email=#{memberEmail}
+	</update>
+	
 </mapper>

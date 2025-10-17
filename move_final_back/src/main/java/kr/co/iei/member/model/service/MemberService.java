@@ -77,6 +77,19 @@ public class MemberService {
 			return "";//아이디 조회 실패						
 		}
 	}
+
+	//-----------------비밀번호 찾기-------------------------
+	public int searchPw(String memberName, String memberId, String memberEmail) {
+		int result = memberDao.searchPw(memberName, memberId, memberEmail);
+		return result;
+	}
+
+	public int updatePw(MemberDTO member) {
+		String encPw = encoder.encode(member.getMemberPw());
+		member.setMemberPw(encPw);
+		int result = memberDao.updatePw(member);
+		return result;
+	}
 	
 	
 }
