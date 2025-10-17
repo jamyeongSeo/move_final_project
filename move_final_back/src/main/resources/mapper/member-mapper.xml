@@ -36,7 +36,7 @@
 	<update id="updatePw">
 		update member_tbl set
   		member_pw = #{memberPw}
-  	where member_name = #{memberName} and member_id = #{memberId} and member_email=#{memberEmail}
+  	where member_email=#{memberEmail}
 	</update>
 	
 </mapper>

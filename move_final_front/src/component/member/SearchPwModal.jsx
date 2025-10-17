@@ -18,73 +18,32 @@ const SearchPwModal = (props) => {
     const newMember = { ...member, [name]: value };
     setMember(newMember);
   };
+  const loding = useRef(); //로딩중 false:로딩 안함 / true:로딩 중
   const modal = useRef();
   const resultModal = useRef();
+  const lodingIcon = useRef();
   const nextModal = () => {
+    loding.current.classList.remove("membersearch-none");
+
     if (
       member.memberName != "" &&
       member.memberId != "" &&
       member.memberEmail != ""
     ) {
+      //-1:회원조회 실패 /1: 메일전송 실패/ 2:업데이트만 실패/3:성공
       axios
         .get(
           `${import.meta.env.VITE_BACK_SERVER}/member/searchPw?memberName=${
             member.memberName
           }&&memberId=${member.memberId}&&memberEmail=${member.memberEmail}`
         )
+
         .then((res) => {
-          if (res.data == 1) {
-            //이메일로 임시비밀번로 전송
-            setSearchResult(1);
-            modal.current.classList.add("membersearch-none");
-            resultModal.current.classList.remove("membersearchResult-none");
-            axios
-              .get(
-                `${import.meta.env.VITE_BACK_SERVER}/email/newPw?memberEmail=${
-                  member.memberEmail
-                }
-              `
-              )
-              .then((res) => {
-                //이메일전송 완료 시, 새로운 비밀번호 업데이트
-                setMember({ ...member, memberEmail: res.data });
-                axios
-                  .post(
-                    `${import.meta.env.VITE_BACK_SERVER}/member/updatePw`,
-                    member
-                  )
-                  .then((res) => {
-                    console.log(res.data);
-                    if (res.data == 1) {
-                      setMember({
-                        memberName: "",
-                        memberId: "",
-                        memberEmail: "",
-                        memberPw: "",
-                      });
-                      setSearchResult(2);
-                    } else {
-                      setMember({
-                        memberName: "",
-                        memberId: "",
-                        memberEmail: "",
-                        memberPw: "",
-                      });
-                      Swal.fire({
-                        title: "임시 비밀번호 업데이트 실패",
-                        text: "죄송합니다. 비밀번호 찾기를 다시 진행해 주세요",
-                        icon: "error",
-                      });
-                    }
-                  })
-                  .catch((err) => {
-                    console.log("업데이트" + err);
-                  });
-              })
-              .catch((err) => {
-                console.log("메일발송 err" + err);
-              });
-          } else {
+          loding.current.classList.add("membersearch-none");
+          lodingIcon.current.classList.remove("loader");
+          console.log(res.data);
+          if (res.data == -1) {
+            //회원조회 실패
             setMember({
               memberName: "",
               memberId: "",
@@ -92,6 +51,35 @@ const SearchPwModal = (props) => {
               memberPw: "",
             });
             setSearchResult(-1);
+            modal.current.classList.add("membersearch-none");
+            resultModal.current.classList.remove("membersearchResult-none");
+          } else if (res.data == 1) {
+            Swal.fire({
+              title: "err",
+              text: "다시 시도해주세요",
+              icon: "error",
+            });
+          } else if (res.data == 2) {
+            setMember({
+              memberName: "",
+              memberId: "",
+              memberEmail: "",
+              memberPw: "",
+            });
+            Swal.fire({
+              title: "임시 비밀번호 업데이트 실패",
+              text: "죄송합니다. 비밀번호 찾기를 다시 진행해 주세요",
+              icon: "error",
+            });
+          } else if (res.data == 3) {
+            //성공
+            setMember({
+              memberName: "",
+              memberId: "",
+              memberEmail: "",
+              memberPw: "",
+            });
+            setSearchResult(2);
             modal.current.classList.add("membersearch-none");
             resultModal.current.classList.remove("membersearchResult-none");
           }
@@ -106,6 +94,7 @@ const SearchPwModal = (props) => {
           console.log("회원조회 err" + err);
         });
     } else {
+      loding.current.classList.add("membersearch-none");
       Swal.fire({
         title: "입력값 확인",
         text: "입력값을 확인하세요",
@@ -120,11 +109,22 @@ const SearchPwModal = (props) => {
     setIsModalPw(false);
     resultModal.current.classList.add("membersearchResult-none");
     modal.current.classList.remove("membersearch-none");
+    lodingIcon.current.classList.add("loader");
   };
   return (
     <div className={isModalPw ? "" : "memberModal-close"}>
       <div className="memberModal">
         <div className="memberModal-wrap">
+          <section
+            ref={loding}
+            className="membersearch-none memberModal_loding"
+          >
+            <div className="memberModal memberModal_loding">
+              <div className="memberModal-wrap">
+                <span ref={lodingIcon} class="loader"></span>
+              </div>
+            </div>
+          </section>
           <div className="memberModal-content-box-wrap">
             <div className="memberModal-content-box">
               <div className="memberModal-title">
@@ -162,6 +162,7 @@ const SearchPwModal = (props) => {
                         onChange={inputData}
                       />
                     </div>
+
                     <div>
                       <input
                         style={{ width: "650px" }}
@@ -204,6 +205,7 @@ const SearchPwModal = (props) => {
                   >
                     닫기
                   </button>
+                  <span className="loader"></span>
                 </div>
               </section>
             </div>
@@ -214,6 +216,8 @@ const SearchPwModal = (props) => {
   );
 };
 
+const Loding = () => {};
+
 const SearchPwResult = (props) => {
   const searchResult = props.searchResult;
   return (
@@ -223,9 +227,8 @@ const SearchPwResult = (props) => {
           <p className="memberModal-searchResult">
             {searchResult == -1
               ? "조회된 회원이 없습니다."
-              : searchResult == 1
-              ? "메일로 임시 비밀번호를 전송중입니다."
-              : "임시 비밀번호를 발송완료 (비밀번호 변경은 마이페이지 내정보에서 진행해주세요.)"}
+              : searchResult == 2 &&
+                "임시 비밀번호를 발송완료 (비밀번호 변경은 마이페이지 내정보에서 진행해주세요.)"}
           </p>
         </div>
       </div>

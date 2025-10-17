@@ -24,7 +24,7 @@ public interface MemberDao {
 	//-----------비밀번호찾기-----------------------
 	int searchPw(String memberName, String memberId, String memberEmail);
 
-	int updatePw(MemberDTO member);
+	int updatePw(String memberPw, String memberEmail);
 
 
 }

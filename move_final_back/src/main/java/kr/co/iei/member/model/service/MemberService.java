@@ -83,11 +83,11 @@ public class MemberService {
 		int result = memberDao.searchPw(memberName, memberId, memberEmail);
 		return result;
 	}
-
-	public int updatePw(MemberDTO member) {
-		String encPw = encoder.encode(member.getMemberPw());
-		member.setMemberPw(encPw);
-		int result = memberDao.updatePw(member);
+	@Transactional
+	public int updatePw(String memberPw, String memberEmail) {
+		String encPw = encoder.encode(memberPw);
+		memberPw=encPw;
+		int result = memberDao.updatePw(memberPw,memberEmail);
 		return result;
 	}
 	
