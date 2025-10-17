@@ -1,15 +1,16 @@
 div.active-link > div {
   background-color: var(--gray5);
 }
-.side-menu .active-link > div {
+
+.admin-side-menu .active-link > div {
   background-color: var(--gray4);
   color: var(--gray7);
 }
-.side-menu {
+.admin-side-menu {
   margin-top: 25px;
   background-color: var(--main3);
-  border: 2px solid var(--main1);
-  border-bottom: none;
+  /* border: 2px solid var(--main1); */
+  border-bottom: none;  
   border-radius: 5px;
   width: 210px;
 }
@@ -21,4 +22,84 @@ div.active-link > div {
   line-height: 50px;
   font-size: 20px;
   font-family: ns-b;
+}
+
+
+.admin-main-menu {
+  
+  width: 210px;
+  height: 52px;
+  background-color: #fff;
+  line-height: 52px;
+  text-align: center;
+  font-family: ns-b;
+  cursor: pointer;
+  border: 1px solid var(--gray5);
+  border-bottom: none;
+  border-radius: 8px;
+  transition: background-color 0.2s ease; 
+}
+
+.admin-main-menu.active {
+  background-color: var(--gray5);
+  color: red;
+  text-decoration: underline;
+}
+
+
+
+.sub-menu-list {
+  width: 210px;
+  overflow: hidden;
+  max-height: 0;
+  font-size: 20px;
+  transition: all 0.25s ease-in-out;
+  background-color: #fff;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.sub-menu-list.open {
+  max-height: 800px;
+  opacity: 1;
+}
+
+.sub-menu-list li {
+  border-top: 1px solid var(--gray5);
+  list-style: none;
+  background-color: #fff;
+  line-height: 44px;
+  text-align: center;
+}
+
+.sub-menu-list li:first-child {
+  border-top: none;
+}
+
+
+/* 선택 안 된 리스트들 */
+
+.sub-menu-list a {
+  display: block;
+  width: 100%;
+  color: var(--gray2);
+  text-decoration: none;
+  font-size: 15px;
+  font-family: ns-r;
+  transition: background-color 0.2s ease;
+}
+
+.sub-menu-list a:hover {
+  /* background-color: var(--gray6); */
+  color: var(--gray1);
+}
+
+.sub-menu-list a.active-link {
+  background-color: blu;
+  color: var(--gray1);
+  font-size: 17px;
+  font-family: ns-b;
+  /* padding-left: 6px; */
+  text-decoration: underline;
 }

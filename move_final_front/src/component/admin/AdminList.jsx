@@ -70,10 +70,8 @@ return (
                 }}
                 placeholder="영화 제목 검색"
                 />
+                <button type="button" className="admin-search-btn">검색</button>
             </div>
-            <button className="admin-search-btn">
-                
-            </button>
             </div>
         </section>
 

@@ -22,7 +22,7 @@ public class AdminService {
 	private PageInfoUtils pageInfoUtil;
 	
 	//영화 목록
-	public Map adminMovieList(int reqPage, String movieTitle) {
+	public Map adminMovieList(int reqPage) {
 		int numPerPage = 15;
 		int pageNaviSize = 5;
 		int totalCount = adminDao.totalCount();
@@ -34,18 +34,18 @@ public class AdminService {
 		return map;
 	}
 	
-	//영화 제목 검색
-	public Map searchMovieTitle(int reqPage) {
-		int numPerPAge = 15;
-		int pageNaviSize = 5;
-		int totalSearchTitle = adminDao.totalSearchTitle();
-		PageInfo pi = pageInfoUtil.getPageInfo(reqPage, numPerPAge, pageNaviSize, totalSearchTitle);
-		List<MovieDTO> searchMovieTitle = adminDao.searchMovieTitle(reqPage);
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("movieList", searchMovieTitle);
-		map.put("pi", pi);
-		return map;
-	}
+//	//영화 제목 검색
+//	public Map searchMovieTitle(int reqPage) {
+//		int numPerPAge = 15;
+//		int pageNaviSize = 5;
+//		int totalSearchTitle = adminDao.totalSearchTitle();
+//		PageInfo pi = pageInfoUtil.getPageInfo(reqPage, numPerPAge, pageNaviSize, totalSearchTitle);
+//		List<MovieDTO> searchMovieTitle = adminDao.searchMovieTitle(reqPage);
+//		Map<String, Object> map = new HashMap<String, Object>();
+//		map.put("movieList", searchMovieTitle);
+//		map.put("pi", pi);
+//		return map;
+//	}
 
 	public int insertMovieInfo(MovieDTO movie, MultipartFile movieThumbImg) {
 			int movieNo = adminDao.getMovieNo();

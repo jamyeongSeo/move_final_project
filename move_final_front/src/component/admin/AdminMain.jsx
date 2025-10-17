@@ -3,7 +3,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import Swal from "sweetalert2";
 import axios from "axios";
-//import LeftSideMenu from "../utils/LeftSideMenu";
+import LeftSideMenu from "../utils/LeftSideMenu";
 import "./admin.css";
 import "../common/default.css";
 import AdminSideMenu from "./AdminSideMenu";
@@ -54,7 +54,7 @@ const AdminMain = () => {
     <div className="admin-list-wrap">
       <AdminSideMenu menus={menus} subMenus={subMenus} />
       <div className="admin-main-content">
-        {/*<AdminList />*/}
+        {/* <AdminList /> */}
       </div>
       {/*하위 라우트 불러오는 outlet  */}
       <Outlet />

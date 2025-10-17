@@ -36,13 +36,10 @@ public class AdminController {
 
 	/*영화 목록*/
 	@GetMapping(value="/movie")
-	public ResponseEntity<Map> adminMovieList(@RequestParam int reqPage, @RequestParam String movieTitle){
-		Map map = adminService.adminMovieList(reqPage, movieTitle);
+	public ResponseEntity<Map> adminMovieList(@RequestParam int reqPage){
+		Map map = adminService.adminMovieList(reqPage);
 		return ResponseEntity.ok(map);
 	}
-	
-	
-	
 	
 	@PostMapping
 	public ResponseEntity<Integer> insertMoiveInfo(@ModelAttribute MovieDTO movie,
@@ -53,8 +50,8 @@ public class AdminController {
 			int result = adminService.insertMovieInfo(movie, movieThumbImg);
 			
 			return ResponseEntity.ok(result);
-			
 		}
-
+	
+	
 	
 }

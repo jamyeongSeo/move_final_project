@@ -16,7 +16,7 @@ public interface AdminDao {
 
 	List<MovieDTO> adminMovieList(PageInfo pi);
 
-	List<MovieDTO> searchMovieTitle(int reqPage);
+//	List<MovieDTO> searchMovieTitle(int reqPage);
 
 	int getMovieNo();
 
