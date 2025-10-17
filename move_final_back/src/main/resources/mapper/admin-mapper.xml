@@ -1,46 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace = "kr.co.iei.admin.model.dao.AdminDao">
+<mapper namespace="kr.co.iei.admin.model.dao.AdminDao">
 	<!-- 관리자 메인(영화 리스트 출력) -->
 	<select id="adminMovieList" resultType="movie">
-		select * from
-			(select rownum as rnum, m.*
-				from
-				(select
-					movie_no, movie_title, movie_grade, movie_release, movie_status
-				from movie_tbl where movie_status =1 order by movie_no desc
-			) m)
-		where rnum between #{start} and #{end}
+	select * from movie_tbl
 	</select>
 	<!-- 영화 수 -->
-	<select id="totalCount" resultType = "int">
-		select count(*) from movie_tbl
-	</select>
-	
-	<select id="searchMovieTitle" resultType="movie">
-		select * from
-			(select rownum as rnum, m.*
-				from (movie_no, movie_title, movie_grade, movie_release, movie_status
-					from movie_tbl where movie_status like '%'||'${movieTitle}'||'%' order by movie_no
-					)m
-				)
-			where rnum between #{start} and #{end}
+	<select id="totalCount" resultType="int">
+		select count(*) from
+		movie_tbl
 	</select>
 
-	
+	<select id="searchMovieTitle" resultType="movie">
+		select * from
+		(select rownum as rnum, m.*
+		from (movie_no, movie_title, movie_grade, movie_release, movie_status
+		from movie_tbl where movie_status like '%'||'${movieTitle}'||'%' order by
+		movie_no
+		)m
+		)
+		where rnum between #{start} and #{end}
+	</select>
+
+
 	<!-- 영화 상태 변경(상영중/개봉예정,...) -->
 	<update id="updateMovieStatus">
 		update movie_tbl set
-			movie_status = #{movieStatus}
+		movie_status = #{movieStatus}
 		where movie_no = #{movieNo}
 	</update>
-	
-	
+
+
 	<!-- 영화 정보 등록 -->
 	<insert id="insertMovieInfo">
-		insert into movie_tbl values (movie_seq.nextval,#{movieNo}, #{movieTitle}, #{movieType}, #{movieStatus}, #{movieContent},
-										#{movieThumb}, #{movieGenre}, #{movieGrade}, #{movieRuntime}, #{movieDirector},
-										#{movieActor}, #{movieRelease} )
+		insert into movie_tbl values
+		(movie_seq.nextval,#{movieNo}, #{movieTitle}, #{movieType},
+		#{movieStatus}, #{movieContent},
+		#{movieThumb}, #{movieGenre}, #{movieGrade}, #{movieRuntime}, #{movieDirector},
+		#{movieActor}, #{movieRelease} )
 	</insert>
-	
+
 </mapper>
