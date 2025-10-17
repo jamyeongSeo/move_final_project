@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import Swal from "sweetalert2";
 import axios from "axios";
 //import LeftSideMenu from "../utils/LeftSideMenu";
 import "./admin.css";
+import "../common/default.css";
 import AdminSideMenu from "./AdminSideMenu";
 import { authReadyState, isLoginState, loginIdState, memberLevelState } from "../utils/RecoilData";
 
@@ -17,14 +18,14 @@ const AdminMain = () => {
   ];
   const subMenus = {
     "/admin/main": [
-      { text: "영화 목록", url: "/admin/movie/list" },
-      { text: "영화 등록", url: "/admin/movie/regist" },
-      { text: "스케줄 등록", url: "/admin/schedule/regist" },
-      { text: "관객 수 조회", url: "/admin/movieGoer" },
+      { text: "영화 목록", url: "movie/list" },
+      { text: "영화 등록", url: "movie/regist" },
+      { text: "스케줄 등록", url: "schedule/regist" },
+      { text: "관객 수 조회", url: "movieGoer" },
     ],
     "/admin/sales": [
-      { text: "전체 매출 조회", url: "/admin/salesAll" },
-      { text: "각 영화 매출 조회", url: "/admin/salesOne" },
+      { text: "전체 매출 조회", url: "salesAll" },
+      { text: "각 영화 매출 조회", url: "salesOne" },
     ],
   };
   const [openMenu, setOpenMenu] = useState(null);
@@ -55,6 +56,8 @@ const AdminMain = () => {
       <div className="admin-main-content">
         {/*<AdminList />*/}
       </div>
+      {/*하위 라우트 불러오는 outlet  */}
+      <Outlet />
     </div>
   );
 };

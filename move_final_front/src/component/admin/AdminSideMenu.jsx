@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import "../utils/sideMenu.css";
 import "./admin.css";
 import { useState } from "react";
+import "../common/default.css";
 
 const AdminSideMenu = ({ menus, subMenus }) => {
 

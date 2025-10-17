@@ -34,33 +34,27 @@ public class AdminController {
 	@Value("${file.root}")
 	private String root;
 
+	/*영화 목록*/
 	@GetMapping(value="/movie")
-	public ResponseEntity<Map> adminMovieList(@RequestParam int reqPage){
-		Map map = adminService.adminMovieList(reqPage);
+	public ResponseEntity<Map> adminMovieList(@RequestParam int reqPage, @RequestParam String movieTitle){
+		Map map = adminService.adminMovieList(reqPage, movieTitle);
 		return ResponseEntity.ok(map);
 	}
 	
-	@PostMapping(value="/image")
-	public ResponseEntity<String> editorImageUpload(@ModelAttribute MultipartFile image){
-		String savepath = root + "/editor/";
-		String filepath = fileUtil.upload(savepath, image);
-		return ResponseEntity.ok(filepath);			
-	}
 	
-	@PostMapping()
-	public ResponseEntity<Integer> insertMoive(@ModelAttribute MovieDTO movie,
-												@ModelAttribute MultipartFile movieThumb){
-		List<MovieDTO> movieInfoList = new ArrayList<MovieDTO>();
-		String savepath = root +"/thumb/";
-		String filepath = fileUtil.upload(savepath, movieThumb);
-		String filename = movieThumb.getOriginalFilename();
-		
+	
+	
+	@PostMapping
+	public ResponseEntity<Integer> insertMoiveInfo(@ModelAttribute MovieDTO movie,
+												@ModelAttribute MultipartFile movieThumbImg){		
+			String savepath = root + "/thumb/";
+			String filepath = fileUtil.upload(savepath, movieThumbImg);
+			movie.setMovieThumb(filepath);
+			int result = adminService.insertMovieInfo(movie, movieThumbImg);
+			
+			return ResponseEntity.ok(result);
 			
 		}
-		
-	
-	
-	
-	
+
 	
 }

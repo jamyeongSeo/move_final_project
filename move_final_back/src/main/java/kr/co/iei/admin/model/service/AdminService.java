@@ -6,8 +6,10 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.iei.admin.model.dao.AdminDao;
+import kr.co.iei.movie.model.dao.MovieDao;
 import kr.co.iei.movie.model.dto.MovieDTO;
 import kr.co.iei.utils.PageInfoUtils;
 import kr.co.iei.utils.PageInfo;
@@ -18,8 +20,9 @@ public class AdminService {
 	private AdminDao adminDao;
 	@Autowired
 	private PageInfoUtils pageInfoUtil;
-
-	public Map adminMovieList(int reqPage) {
+	
+	//영화 목록
+	public Map adminMovieList(int reqPage, String movieTitle) {
 		int numPerPage = 15;
 		int pageNaviSize = 5;
 		int totalCount = adminDao.totalCount();
@@ -30,5 +33,26 @@ public class AdminService {
 		map.put("pi",pi);
 		return map;
 	}
+	
+	//영화 제목 검색
+	public Map searchMovieTitle(int reqPage) {
+		int numPerPAge = 15;
+		int pageNaviSize = 5;
+		int totalSearchTitle = adminDao.totalSearchTitle();
+		PageInfo pi = pageInfoUtil.getPageInfo(reqPage, numPerPAge, pageNaviSize, totalSearchTitle);
+		List<MovieDTO> searchMovieTitle = adminDao.searchMovieTitle(reqPage);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("movieList", searchMovieTitle);
+		map.put("pi", pi);
+		return map;
+	}
+
+	public int insertMovieInfo(MovieDTO movie, MultipartFile movieThumbImg) {
+			int movieNo = adminDao.getMovieNo();
+			movie.setMovieNo(movieNo);
+			int result = adminDao.insertMovieInfo(movie);
+			return result;
+	}
+	
 
 }

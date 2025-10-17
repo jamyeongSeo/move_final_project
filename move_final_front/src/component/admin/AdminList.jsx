@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import LeftSideMenu from "../utils/LeftSideMenu";
+
 import PageNavigation from "../utils/PageNavigation";
 import "./admin.css";
 import {
@@ -19,18 +19,20 @@ const MovieItem = (props) =>{
     const movie = props.movie;
     const navigate = useNavigate();
     return (
-        <li className="movieList-item"
+        <li className="admin-movieList-item"
         onClick={()=>{
             navigate(`/admin/update/${movie.movieNo}`);
         }}>
         <div className="movie-info">
-            <div className="movie-title" onClick={()=>{
+            <div className="admin-movie-title" onClick={()=>{
                     navigate(`/admin/update/${movie.movieNo}`);
             }}>{movie.movieTitle}
             </div>
-            <div className="movie-grade">{movie.movieGrade}</div>
-                <div className="movie-release">{movie.movieRelease}</div>
-                <div className="movie-status">{movie.movieStatus}</div>
+            <div>
+                <div className="admin-movie-grade">{movie.movieGrade}</div>
+                    <div className="admin-movie-release">{movie.movieRelease}</div>
+                    <div className="admin-movie-status">{movie.movieStatus}</div>
+                </div>
             </div>
         </li>
         )
@@ -53,11 +55,11 @@ const MovieItem = (props) =>{
     }, [reqPage]);
 
 return (
-    <div className="admin-main-content">
+    <div className="admin-main-wrap">
         <section className="admin-header">
-            <div className="content-title">영화 리스트</div>
-            <div className="input-search-wrap">
-            <div className="search-item">
+            <div className="admin-content-title">영화 리스트</div>
+            <div className="admin-input-search-wrap">
+            <div className="admin-search-item">
                 <input
                 type="text"
                 id="movieTitle"
@@ -69,10 +71,13 @@ return (
                 placeholder="영화 제목 검색"
                 />
             </div>
+            <button className="admin-search-btn">
+                
+            </button>
             </div>
         </section>
 
-        <div className="content-box">
+        <div className="admin-content-box">
             <table className="tbl">
             <thead>
             <tr>
@@ -85,8 +90,8 @@ return (
             </thead>
             <tbody>
                 {movieList.map((movie, index) => {
-                const statusChange = (value) => {
-                    const newStatus = value;
+                const statusChange = (e) => {
+                    const newStatus = e.target.value;
                     const obj = {
                     movieNo: movie.movieNo,
                     movieStatus: newStatus,
@@ -105,6 +110,7 @@ return (
                     .catch((err) => {
                     console.log(err);
                     });
+                    console.log(movieStatus);
                 };
                 return (
                 <tr key={`movie-${index}`}>
@@ -119,10 +125,10 @@ return (
                         </SelectTrigger>
                         <SelectContent>
                         <SelectGroup>
-                            <SelectItem value="release">개봉예정</SelectItem>
-                            <SelectItem value="show">상영중</SelectItem>
-                            <SelectItem value="end">상영종료</SelectItem>
-                            <SelectItem value="reopen">재개봉</SelectItem>
+                            <SelectItem value="1">개봉예정</SelectItem>
+                            <SelectItem value="2">상영중</SelectItem>
+                            <SelectItem value="3">상영종료</SelectItem>
+                            <SelectItem value="4">재개봉</SelectItem>
                         </SelectGroup>
                         </SelectContent>
                     </Select>

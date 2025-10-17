@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+a {
+  text-decoration: none;
+}
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  min-width: 1080px;
+  position: relative;
+  background-color: var(--main3);
+}
 .admin-side-menu {
   display: flex;
   gap: 60px;
@@ -9,6 +20,9 @@
   align-items: center;
   gap: 0;
   width: 210px;
+  min-height: 100vh;
+  float: left;
+  padding-right: 60px;
 }
 
 .admin-menu-list{
@@ -16,7 +30,7 @@
   background-color: var(--main3);
   border: 2px solid var(--main1);
   border-bottom: none;
-  border-radius: 5px;
+  border-radius: 8px;
   width: 210px;
 }
 
@@ -35,6 +49,34 @@
   font-weight: 700;
 }
 
+.admin-main-wrap{
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.admin-content-box{
+  width: 100%;
+  max-width: 1080px;
+  margin: 30px auto;
+  flex: 1;
+  text-align: center;
+}
+
+
+.admin-search-item{
+    text-align: center;
+    height: 28px;
+    width: 210px;
+    border: 1px solid var(--gray4);
+    border-radius: 8px;
+    margin-left: 580px;
+    margin-top: 30px;
+}
+.admin-search-item > input {
+  width: 210px;
+}
+
 .admin-main-menu {
   width: 210px;
   height: 52px;
@@ -46,6 +88,18 @@
   border: 1px solid var(--gray5);
   border-bottom: none;
   transition: background-color 0.2s ease;
+}
+
+.admin-content-title{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+    padding: 6px;
+    width: 870px;
+    border-bottom: 2px solid #666;
+    font-size: 24px;
+    font-weight: 700;
 }
 
 .admin-main-menu.active {
@@ -66,12 +120,10 @@
   padding: 0;
 }
 
-
 .sub-menu-list.open {
   max-height: 400px;
   opacity: 1;
 }
-
 
 .sub-menu-list li {
   border-top: 1px solid var(--gray5);
@@ -114,6 +166,17 @@
   border-radius: 0 0 8px 8px;
 }
 
+.regist-movie{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+    padding: 6px;
+    width: 794px;
+    border-bottom: 2px solid #666;
+    font-size: 24px;
+    font-weight: 700;
+}
 
 @layer base {
   :root {
