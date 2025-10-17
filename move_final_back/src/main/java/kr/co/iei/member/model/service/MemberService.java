@@ -67,4 +67,16 @@ public class MemberService {
 			
 		}
 	}
+
+	//-----------------아이디 찾기-------------------------
+	public String searchId(MemberDTO member) {
+		MemberDTO m = memberDao.searchId(member);
+		if(m != null && encoder.matches(member.getMemberPw(), m.getMemberPw())) {
+			return m.getMemberId();
+		}else {
+			return "";//아이디 조회 실패						
+		}
+	}
+	
+	
 }

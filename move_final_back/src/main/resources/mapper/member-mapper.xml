@@ -18,11 +18,14 @@
 	</insert>
 	<!-- 쿠폰 만료시점 자동 소멸 구현 예정 -->
 	
-	
-	
-	<!-- Login -->
+
+	<!--Login -->
 	<select id="login" resultType="member">
 		select * from member_tbl where member_id = #{memberId}
 	</select>
 	
+	<!-- searchIdModal -->
+	<select id="searchId" resultType="member">
+		select * from member_tbl where member_name = #{memberName} and member_email=#{memberEmail}
+	</select>
 </mapper>

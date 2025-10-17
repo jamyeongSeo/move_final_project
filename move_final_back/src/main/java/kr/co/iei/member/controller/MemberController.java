@@ -27,7 +27,7 @@ public class MemberController {
 	@Autowired
 	private JwtUtils jwtUtils;
 	
-	
+	/*-----------------------join---------------------------*/
 	@GetMapping("/checkEmail")
 	public ResponseEntity<Integer> checkEmail(@RequestParam String memberEmail){
 		int result = memberService.checkEmail(memberEmail);
@@ -46,6 +46,8 @@ public class MemberController {
 		return ResponseEntity.ok(result);
 	}
 	
+
+	/*-----------------------login---------------------------*/
 	@PostMapping("/login")
 	public ResponseEntity<LoginMemberDTO> login(@RequestBody MemberDTO member){
 		//암호화, jwt 해야 함
@@ -56,6 +58,7 @@ public class MemberController {
 			return ResponseEntity.status(404).build();
 		}
 	}
+	
 	@GetMapping(value ="/refresh")
 	public ResponseEntity<LoginMemberDTO> refresh(@RequestHeader("Authorization") String token){
 		LoginMemberDTO loginMember = jwtUtils.checkToken(token);
@@ -68,5 +71,10 @@ public class MemberController {
 		return ResponseEntity.ok(loginMember);
 	}
 	
-	
+	/*-----------------------searchIdModal---------------------------*/
+	@PostMapping(value="/searchId")
+	public ResponseEntity<String> searchId(@RequestBody MemberDTO member){
+		String searchId = memberService.searchId(member);
+		return ResponseEntity.ok(searchId);
+	}
 }

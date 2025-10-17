@@ -1,4 +1,6 @@
+import axios from "axios";
 import { useRef, useState } from "react";
+import Swal from "sweetalert2";
 
 const SearchIdModal = (props) => {
   const isModalId = props.isModalId;
@@ -10,17 +12,45 @@ const SearchIdModal = (props) => {
     memberEmail: "",
     memberName: "",
   });
+  const [memberId, setMemberId] = useState("");
   const inputData = (e) => {
     const name = e.target.name;
     const value = e.target.value;
     const newMember = { ...member, [name]: value };
     setMember(newMember);
   };
+
+  //모달 열고 닫기
   const modal = useRef();
   const resultModal = useRef();
   const nextModal = () => {
-    modal.current.classList.add("membersearch-none");
-    resultModal.current.classList.remove("membersearchResult-none");
+    if (
+      member.memberPw != "" &&
+      member.memberEmail != "" &&
+      member.memberName != ""
+    ) {
+      axios
+        .post(`${import.meta.env.VITE_BACK_SERVER}/member/searchId`, member)
+        .then((res) => {
+          console.log(res);
+
+          setMemberId(res.data);
+          setMember({ memberPw: "", memberEmail: "", memberName: "" });
+          modal.current.classList.add("membersearch-none");
+          resultModal.current.classList.remove("membersearchResult-none");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      Swal.fire({
+        title: "입력값 확인",
+        text: "입력값을 확인하세요",
+        icon: "info",
+      });
+    }
+
+    //
   };
 
   const closeModal = () => {
@@ -102,7 +132,7 @@ const SearchIdModal = (props) => {
                 </form>
               </section>
               <section ref={resultModal} className="membersearchResult-none">
-                <SearchIdResult></SearchIdResult>
+                <SearchIdResult memberId={memberId}></SearchIdResult>
                 <div>
                   <button
                     type="button"
@@ -121,13 +151,16 @@ const SearchIdModal = (props) => {
   );
 };
 
-const SearchIdResult = () => {
+const SearchIdResult = (props) => {
+  const memberId = props.memberId;
   return (
     <section>
       <div className="memberModal-content-wrap">
         <div className="memberModal-searchResult-box">
           <span className="memberModal-searchResult">
-            아이디 : member.memberId
+            {memberId == ""
+              ? "아이디를 찾을 수 없습니다."
+              : `아이디 : ${memberId}`}
           </span>
         </div>
       </div>
