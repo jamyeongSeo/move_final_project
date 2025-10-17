@@ -19,4 +19,5 @@ public class NoticeDTO {
 	private String noticeContent;
 	private String noticeDate;
 	private List<NoticeFileDTO> noticeFileList;
+	private int[] delFileNo;
 }

@@ -5,6 +5,7 @@ import NoticeList from "./NoticeList";
 import "./cs.css";
 import NoticeWrite from "./NoticeWrite";
 import NoticeDetail from "./NoticeDetail";
+import NoticeUpdate from "./NoticeUpdate";
 
 const CSMain = () => {
   const [menus, setMenus] = useState([
@@ -28,6 +29,7 @@ const CSMain = () => {
             <Route path="notice" element={<NoticeList />} />
             <Route path="notice/frm" element={<NoticeWrite />} />
             <Route path="notice/detail/:noticeNo" element={<NoticeDetail />} />
+            <Route path="notice/update/:noticeNo" element={<NoticeUpdate />} />
           </Routes>
         </section>
       </div>

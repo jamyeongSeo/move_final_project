@@ -113,7 +113,7 @@ body {
   text-align: center;
   font-family: ns-b;
   border-radius: 5px;
-  border: noen;
+  border: none;
   box-sizing: border-box;
   border: 1px solid var(--main5);
   padding: 3px 8px;
