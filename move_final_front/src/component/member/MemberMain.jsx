@@ -22,6 +22,14 @@ const MemberMain = () => {
     memberDate: "",
     memberLevel: "",
     memberGrade: "",
+    couponCount: "",
+    watchingMovieCount: "",
+  });
+  const [coupon, setCoupon] = useState({
+    couponBoxNo: "",
+    couponNo: "",
+    memberNo: "",
+    useStatus: "",
   });
   const [menus, setMenus] = useState([
     {
@@ -45,6 +53,10 @@ const MemberMain = () => {
     .catch((err) => {
       console.log(err);
     });
+  /*쿠폰 버튼 클랙 시-> 모달에서 select 해올 예정
+    axios.get(`${BackServer}/member/selectCoupon?memberId=${memberId}`).then((res)=>{
+
+    })*/
   return (
     <div className="content-wrap">
       <section className="left-side-menu-side">
@@ -56,12 +68,15 @@ const MemberMain = () => {
 
       <section className="left-side-menu-other member-mypage-wrap">
         <div className="memberMain-title">
-          <h1>member.memberName</h1>
+          <h1>{member.memberName}</h1>
         </div>
         <div className="member-mypage-content-wrap">
           <div className="member-mypage-content">
-            <div className="member-mypage-content-left">보유 쿠폰 수 : 1개</div>
+            <div className="member-mypage-content-left">
+              보유 쿠폰 수 : {member.couponCount} 개
+            </div>
             <div className="member-mypage-content-right">
+              {/*버튼 누르면 쿠폰 띄우기 */}
               <select
                 className="member-mypage-coupon"
                 name="coupon"
@@ -77,33 +92,33 @@ const MemberMain = () => {
             style={{ marginBottom: "60px" }}
           >
             <div className="member-mypage-content-left">
-              관람한 영화 수 : 1건
+              관람한 영화 수 : {member.watchingMovieCount} 건
             </div>
           </div>
 
           <div className="member-mypage-content">
             <div className="member-mypage-content-left">
-              아이디 : member.memberId
+              아이디 : {member.memberId}
             </div>
           </div>
 
           <div className="member-mypage-content">
             <div className="member-mypage-content-left">
-              생년월일 : member.memberBirth
+              생년월일 : {member.memberBirth}
             </div>
             <div className="member-mypage-content-right">
-              성별 : (member.memberGender == 1 ? 남자 : 여자)
+              성별 : {member.memberGender == 1 ? "남자" : "여자"}
             </div>
           </div>
 
           <div className="member-mypage-content">
             <div className="member-mypage-content-left">
-              휴대폰번호 : member.memberPhone
+              휴대폰번호 : {member.memberPhone}
             </div>
           </div>
           <div className="member-mypage-content">
             <div className="member-mypage-content-left">
-              이메일 : member.memberEmail
+              이메일 : {member.memberEmail}
             </div>
           </div>
         </div>

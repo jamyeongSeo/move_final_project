@@ -28,6 +28,10 @@ public interface MemberDao {
 
 	MemberDTO selectMember(String memberId);
 
+	int memberCouponCount(int memberNo);
+
+	int memberWatchingMovieCount(int memberNo);
+
 
 }
 

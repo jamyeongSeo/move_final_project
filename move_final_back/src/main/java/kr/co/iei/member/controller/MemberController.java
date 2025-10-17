@@ -146,12 +146,11 @@ public class MemberController {
 	}
 	
 	//--------------memberMain-------------
-	@GetMapping(value="memberId")
+	@GetMapping(value="selectMember")
 	public ResponseEntity<MemberDTO> selectMember(@RequestParam String memberId){
 		MemberDTO m = memberService.selectMember(memberId);
 		return ResponseEntity.ok(m);
 	}
-	
 	
 	
 }

@@ -1,5 +1,8 @@
 package kr.co.iei.member.model.service;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -92,6 +95,10 @@ public class MemberService {
 	//-----------------회원정보-------------------------
 	public MemberDTO selectMember(String memberId) {
 		MemberDTO m = memberDao.selectMember(memberId);
+		int couponCount = memberDao.memberCouponCount(m.getMemberNo());
+		m.setCouponCount(couponCount);
+		int watchingMovieCount = memberDao.memberWatchingMovieCount(m.getMemberNo()); 
+		m.setWatchingMovieCount(watchingMovieCount);
 		return m;
 	}
 	
