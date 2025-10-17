@@ -44,7 +44,7 @@
 	</insert>
 	
 	<select id="getNoticeNo" resultType="int">
-		select notice_seq.nextval from dual;
+		select notice_seq.nextval from dual
 	</select>
 	
 	<select id="selectOneNotice" resultType="notice">
@@ -54,4 +54,26 @@
 	<select id="selectNoticeFileList" resultType="noticeFile">
 		select * from notice_file_tbl where notice_no = #{noticeNo}
 	</select>
+	
+	<delete id="deleteNotice">
+		delete from notice_tbl where noticeNo = #{noticeNo}
+	</delete>
+	
+	<update id="updateNotice">
+		update notice_tbl set notice_title = #{noticeTitle}, notice_content = #{noticeContent} where notice_no = #{noticeNo}
+	</update>
+	
+	<select id="selectDelNoticeFileList" resultType="noticeFile">
+		select * from notice_file_tbl where notice_file_no in
+		<foreach collection="array" item="noticeFileNo" open="(" close=")" separator=",">
+			#{noticeFileNo}
+		</foreach>
+	</select>
+	
+	<delete id="deleteBoardFile">
+		delete from notice_file_tbl where notice_no in
+		<foreach collection="array" item="noticeFileNo" open="(" close=")" separator=",">
+			#{noticeFileNo}
+		</foreach>
+	</delete>
 </mapper>

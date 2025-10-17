@@ -31,5 +31,13 @@ public interface NoticeDao {
 
 	List<NoticeFileDTO> selectNoticeFileList(int noticeNo);
 
+	int deleteNotice(int noticeNo);
+
+	int updateNotice(NoticeDTO notice);
+
+	List<NoticeFileDTO> selectDelNoticeFileList(int[] delFileNo);
+
+	int deleteBoardFile(int[] delFileNo);
+
 
 }
