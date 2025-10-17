@@ -26,7 +26,6 @@ function App() {
   const [memberId, setMemberId] = useRecoilState(loginIdState);
   const [memberLevel, setMemberLevel] = useRecoilState(memberLevelState);
   const [authReady, setAuthReady] = useRecoilState(authReadyState);
-  console.log("잘 들어왔다" + memberId + ":" + memberLevel);
 
   //다시보기 이해 요망
   useEffect(() => {
