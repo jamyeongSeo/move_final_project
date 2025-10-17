@@ -83,7 +83,7 @@
 .movie-grade {
   width: 20%;
   display: flex;
-  justify-content: center;
+  justify-content: left;
 }
 .movie-grade > img {
   width: 50%;
@@ -100,17 +100,30 @@
   text-overflow: ellipsis;
 }
 
+.movie-btn-zone {
+  width: 25%;
+  border: 2px solid var(--gray4);
+  border-radius: 5px;
+  text-align: left;
+  height: 43.99px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.movie-btn-zone > path {
+  line-height: 43.99px;
+}
 .like-btn {
   width: 20%;
+  cursor: pointer;
 }
-
+.like-count {
+  margin-right: 5px;
+}
 .booking-zone {
   width: 70%;
-}
-
-.like-btn {
-  cursor: pointer;
-  margin: 0 auto;
 }
 
 .like-img {

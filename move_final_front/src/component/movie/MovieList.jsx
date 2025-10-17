@@ -82,10 +82,11 @@ const MovieItem = (props) => {
           />
         </div>
         <div className="movie-title">{movie.movieTitle}</div>
-        <div className="btn-zone">
+        <div className="movie-btn-zone">
           <div className="like-btn">
             <FavoriteBorderIcon className="like-img" />
           </div>
+          <div className="like-count">1.4k</div>
         </div>
         <div className="booking-zone">
           <button className="booking-btn">예매하기</button>
