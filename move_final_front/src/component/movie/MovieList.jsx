@@ -69,6 +69,7 @@ const MovieItem = (props) => {
   const memberId = props.memberId;
   const movieAllList = props.movieAllList;
   const setMovieAllList = props.setMovieAllList;
+  const [likeCount, setLikeCount] = useState(movie.likeCount);
 
   return (
     <li className="movie-item">
@@ -124,7 +125,11 @@ const MovieItem = (props) => {
                           const likePushList = movieAllList.map((item, i) => {
                             console.log(index, i);
                             return index === i
-                              ? { ...item, like: false }
+                              ? {
+                                  ...item,
+                                  like: false,
+                                  likeCount: Number(likeCount),
+                                }
                               : item;
                           });
                           console.log(likePushList);
@@ -156,7 +161,13 @@ const MovieItem = (props) => {
                         console.log(res);
                         if (res.data === 1) {
                           const likeUnPushList = movieAllList.map((item, i) => {
-                            return index === i ? { ...item, like: true } : item;
+                            return index === i
+                              ? {
+                                  ...item,
+                                  like: true,
+                                  likeCount: Number(likeCount),
+                                }
+                              : item;
                           });
                           console.log(likeUnPushList);
                           setMovieAllList(likeUnPushList);
@@ -172,7 +183,7 @@ const MovieItem = (props) => {
               </span>
             )}
           </div>
-          <div className="like-count"></div>
+          <div className="like-count">{movie.likeCount}</div>
         </div>
         <div className="booking-zone">
           <button className="booking-btn">예매하기</button>

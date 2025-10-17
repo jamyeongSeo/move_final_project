@@ -45,7 +45,7 @@ public class MovieController {
 		return ResponseEntity.ok(result);
 	}
 	
-	@DeleteMapping
+	@DeleteMapping(value="/likeUnPush")
 	public ResponseEntity<Integer> likeUnPush(@RequestParam int movieNo, @RequestParam String memberId){
 		System.out.println(movieNo);
 		System.out.println(memberId);

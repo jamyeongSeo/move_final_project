@@ -21,6 +21,8 @@ public interface MovieDao {
 
 	MovieDTO selectOneMovie(int movieNo);
 
+	int totalLike(int movieNo);
+
 	
 
 	
