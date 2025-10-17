@@ -26,7 +26,6 @@ function App() {
   const [memberId, setMemberId] = useRecoilState(loginIdState);
   const [memberLevel, setMemberLevel] = useRecoilState(memberLevelState);
   const [authReady, setAuthReady] = useRecoilState(authReadyState);
-  console.log("잘 들어왔다" + memberId + ":" + memberLevel);
 
   //다시보기 이해 요망
   useEffect(() => {
@@ -46,8 +45,6 @@ function App() {
       axios
         .get(`${import.meta.env.VITE_BACK_SERVER}/member/refresh`)
         .then((res) => {
-          console.log("refresh");
-          console.log(res);
           setMemberId(res.data.memberId);
           setMemberLevel(res.data.memberLevel);
           axios.defaults.headers.common["Authorization"] = res.data.accessToken;
@@ -64,7 +61,6 @@ function App() {
         });
     } else {
       //재로그인 안하는 경우
-      console.log("refresh토큰이 없어!!!!!!!!!");
       setAuthReady(true);
     }
 

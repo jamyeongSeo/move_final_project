@@ -57,9 +57,7 @@ public class MemberService {
 		if(m != null && encoder.matches( member.getMemberPw(), m.getMemberPw())) {
 			//2.성공 시, token 생성 및 발행(//토큰 미발행 시, 오류:2  / 토큰 발행 성공 시, 1)
 			String accessToken = jwtUtils.createAccessToken(m.getMemberId(), m.getMemberLevel());
-			System.out.println("1시간 토큰"+accessToken);
 			String refreshToken = jwtUtils.createRefreshToken(m.getMemberId(), m.getMemberLevel());
-			System.out.println("1년 토큰"+refreshToken);
 			LoginMemberDTO loginMember = new LoginMemberDTO(accessToken, refreshToken, m.getMemberId(), m.getMemberLevel());
 			return loginMember;
 		}else {

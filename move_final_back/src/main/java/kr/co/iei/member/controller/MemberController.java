@@ -71,7 +71,6 @@ public class MemberController {
 		String refreshToken = jwtUtils.createRefreshToken(loginMember.getMemberId(), loginMember.getMemberLevel());
 		loginMember.setAccessToken(accessToken);
 		loginMember.setRefreshToken(refreshToken);
-		System.out.println(loginMember);
 		return ResponseEntity.ok(loginMember);
 	}
 	
