@@ -88,6 +88,12 @@ public class MemberService {
 		int result = memberDao.updatePw(memberPw,memberEmail);
 		return result;
 	}
+
+	//-----------------회원정보-------------------------
+	public MemberDTO selectMember(String memberId) {
+		MemberDTO m = memberDao.selectMember(memberId);
+		return m;
+	}
 	
 	
 }

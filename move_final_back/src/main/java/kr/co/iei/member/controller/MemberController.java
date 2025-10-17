@@ -145,7 +145,12 @@ public class MemberController {
 		return ResponseEntity.ok(-1);
 	}
 	
-	
+	//--------------memberMain-------------
+	@GetMapping(value="memberId")
+	public ResponseEntity<MemberDTO> selectMember(@RequestParam String memberId){
+		MemberDTO m = memberService.selectMember(memberId);
+		return ResponseEntity.ok(m);
+	}
 	
 	
 	

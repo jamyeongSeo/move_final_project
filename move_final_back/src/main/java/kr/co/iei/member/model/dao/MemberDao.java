@@ -26,6 +26,8 @@ public interface MemberDao {
 
 	int updatePw(String memberPw, String memberEmail);
 
+	MemberDTO selectMember(String memberId);
+
 
 }
 

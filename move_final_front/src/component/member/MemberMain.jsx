@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { loginIdState, memberLevelState } from "../utils/RecoilData";
 import { Axis3dIcon } from "lucide-react";
+import axios from "axios";
 
 const MemberMain = () => {
   const [memberId, setmemberId] = useRecoilState(loginIdState);
@@ -12,8 +13,15 @@ const MemberMain = () => {
     memberNo: "",
     memberId: "",
     memberPw: "",
-    memberPw: "",
-    member,
+    memberEmail: "",
+    memberName: "",
+    memberBirth: "",
+    memberGender: "",
+    memberPhone: "",
+    memberEnrollDate: "",
+    memberDate: "",
+    memberLevel: "",
+    memberGrade: "",
   });
   const [menus, setMenus] = useState([
     {
@@ -32,6 +40,7 @@ const MemberMain = () => {
     .get(`${BackServer}/member/selectMember?memberId=${memberId}`)
     .then((res) => {
       console.log(res);
+      setMember(res.data);
     })
     .catch((err) => {
       console.log(err);
