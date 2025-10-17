@@ -19,7 +19,12 @@
   	select count(*) from movie_like_tbl where movie_no =#{movieNo} and member_id = #{memberId}
   </select>
   
+  <select id="totalLike" resultType="int">
+  	select count(*) from movie_like_tbl where movie_no =#{movieNo}
+  </select>
+  
   <delete id="likeUnPush">
   	delete from movie_like_tbl where movie_no =#{movieNo} and member_id = #{memberId}
   </delete>
+  
 </mapper>

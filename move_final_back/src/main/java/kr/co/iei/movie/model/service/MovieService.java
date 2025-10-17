@@ -24,6 +24,8 @@ public class MovieService {
 			map.put("movieNo", m.getMovieNo());
 			map.put("memberId", memberId);
 			int result = movieDao.isLike(map);
+			int totalLike = movieDao.totalLike(m.getMovieNo());
+			m.setLikeCount(totalLike);
 			if(result==1) {
 				m.setLike(true);
 			}else {
