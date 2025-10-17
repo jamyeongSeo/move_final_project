@@ -19,7 +19,7 @@ public interface MemberDao {
 	MemberDTO login(MemberDTO member);
 	
 	//------------아이디찾기---------------------
-	MemberDTO searchId(MemberDTO member);
+	String searchId(String memberName, String memberEmail);
 
 
 }

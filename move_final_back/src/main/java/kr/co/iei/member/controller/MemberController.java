@@ -72,9 +72,9 @@ public class MemberController {
 	}
 	
 	/*-----------------------searchIdModal---------------------------*/
-	@PostMapping(value="/searchId")
-	public ResponseEntity<String> searchId(@RequestBody MemberDTO member){
-		String searchId = memberService.searchId(member);
+	@GetMapping(value="/searchId")
+	public ResponseEntity<String> searchId(@RequestParam String memberName, @RequestParam String memberEmail){
+		String searchId = memberService.searchId(memberName, memberEmail);
 		return ResponseEntity.ok(searchId);
 	}
 }

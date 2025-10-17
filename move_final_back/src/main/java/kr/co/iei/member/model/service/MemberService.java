@@ -69,10 +69,10 @@ public class MemberService {
 	}
 
 	//-----------------아이디 찾기-------------------------
-	public String searchId(MemberDTO member) {
-		MemberDTO m = memberDao.searchId(member);
-		if(m != null && encoder.matches(member.getMemberPw(), m.getMemberPw())) {
-			return m.getMemberId();
+	public String searchId(String memberName, String memberEmail) {
+		String searchId = memberDao.searchId(memberName, memberEmail);
+		if(searchId != null) {
+			return searchId;
 		}else {
 			return "";//아이디 조회 실패						
 		}

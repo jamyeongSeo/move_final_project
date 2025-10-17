@@ -8,7 +8,6 @@ const SearchIdModal = (props) => {
   const setIsModalId = props.setIsModalId;
 
   const [member, setMember] = useState({
-    memberPw: "",
     memberEmail: "",
     memberName: "",
   });
@@ -24,18 +23,18 @@ const SearchIdModal = (props) => {
   const modal = useRef();
   const resultModal = useRef();
   const nextModal = () => {
-    if (
-      member.memberPw != "" &&
-      member.memberEmail != "" &&
-      member.memberName != ""
-    ) {
+    if (member.memberEmail != "" && member.memberName != "") {
       axios
-        .post(`${import.meta.env.VITE_BACK_SERVER}/member/searchId`, member)
+        .get(
+          `${import.meta.env.VITE_BACK_SERVER}/member/searchId?memberName=${
+            member.memberName
+          }&&memberEmail=${member.memberEmail}`
+        )
         .then((res) => {
           console.log(res);
 
           setMemberId(res.data);
-          setMember({ memberPw: "", memberEmail: "", memberName: "" });
+          setMember({ memberEmail: "", memberName: "" });
           modal.current.classList.add("membersearch-none");
           resultModal.current.classList.remove("membersearchResult-none");
         })
@@ -54,6 +53,8 @@ const SearchIdModal = (props) => {
   };
 
   const closeModal = () => {
+    setMember({ memberEmail: "", memberName: "" });
+    setMemberId("");
     setIsModalId(false);
     resultModal.current.classList.add("membersearchResult-none");
     modal.current.classList.remove("membersearch-none");
@@ -87,18 +88,7 @@ const SearchIdModal = (props) => {
                         onChange={inputData}
                       />
                     </div>
-                    <div>
-                      <input
-                        style={{ width: "650px" }}
-                        className="input-line"
-                        type="password"
-                        name="memberPw"
-                        id="memberPw"
-                        placeholder="비밀번호 입력"
-                        value={member.memberPw}
-                        onChange={inputData}
-                      />
-                    </div>
+
                     <div>
                       <input
                         style={{ width: "650px" }}

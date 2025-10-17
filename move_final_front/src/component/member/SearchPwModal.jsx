@@ -8,6 +8,7 @@ const SearchPwModal = (props) => {
     memberId: "",
     memberEmail: "",
   });
+  const [memberPw, setMemberPw] = useState("");
   const inputData = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -22,6 +23,8 @@ const SearchPwModal = (props) => {
   };
 
   const closeModal = () => {
+    setMember({ memberName: "", memberId: "", memberEmail: "" });
+    setMemberPw("");
     setIsModalPw(false);
     resultModal.current.classList.add("membersearchResult-none");
     modal.current.classList.remove("membersearch-none");

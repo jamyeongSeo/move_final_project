@@ -25,7 +25,7 @@
 	</select>
 	
 	<!-- searchIdModal -->
-	<select id="searchId" resultType="member">
-		select * from member_tbl where member_name = #{memberName} and member_email=#{memberEmail}
+	<select id="searchId" resultType="string">
+		select member_id from member_tbl where member_name = #{memberName} and member_email=#{memberEmail}
 	</select>
 </mapper>
