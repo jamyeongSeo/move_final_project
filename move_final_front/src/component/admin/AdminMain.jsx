@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
+import { useNavigate } from "react-router-dom";
+import { useRecoilState, useRecoilValue } from "recoil";
 import Swal from "sweetalert2";
 import axios from "axios";
 //import LeftSideMenu from "../utils/LeftSideMenu";
 import "./admin.css";
 import AdminSideMenu from "./AdminSideMenu";
+import { authReadyState, isLoginState, loginIdState, memberLevelState } from "../utils/RecoilData";
 
 
 const AdminMain = () => {
@@ -31,14 +32,13 @@ const AdminMain = () => {
     setOpenMenu((prev) => (prev === menuUrl ? null : menuUrl));
   };
 
-  //const [authReady, setAuthReady] = useRecoilState(authReadyState);
-  //const [memberType, setMemberType] = useRecoilState(memberTypeState);
-
+  const [authReady, setAuthReady] = useRecoilState(authReadyState);
+  const [memberLevel, setMemberLevel] = useRecoilState(memberLevelState);
   const navigate = useNavigate();
+  //const isLogin = useRecoilValue(loginIdState);
 
-  {
-    /*useEffect(()=>{
-        if(authReady && memberType !== 1){
+  useEffect(()=>{
+        if(authReady && memberLevel !== 1){
             Swal.fire({
                 title: "관리자페이지입니다.",
                 text: "관리자만 접근이 가능합니다.",
@@ -48,13 +48,12 @@ const AdminMain = () => {
             });
         }
     },[authReady]);
-    */
-  }
 
   return (
     <div className="admin-list-wrap">
       <AdminSideMenu menus={menus} subMenus={subMenus} />
       <div className="admin-main-content">
+        {/*<AdminList />*/}
       </div>
     </div>
   );
