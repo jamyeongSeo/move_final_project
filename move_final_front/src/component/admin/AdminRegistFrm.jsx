@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { Menu, MenuItem, Select } from "@mui/material";
 const AdminRegistFrm = (props) => {
     console.log(props);
     const movieTitle = props.movieTitle;
@@ -31,9 +33,62 @@ const AdminRegistFrm = (props) => {
         setSelectedValue(e.target.value);
     }
     */}
+    //포스터 화면 출력용 state
+    const [showThumb, setShowThumb] = useState(null);
+
+    // const thumbRef = useRef("");
+    //포스터 변경 시 동작 함수
+    const changeThumbnail = (e) => {
+        const thumb = e.target.files;
+        if (files.length !== 0){
+            setThumbnail(files[0]);
+            const reader = new FileReader();
+            reader.readAsDataURL(files[0]);
+            reader.onloadend = () => {
+                setMovieThumb(reader.result);
+                //수정 시 , 이미지를 바꾸면 날려야되니까
+                if(movieThumb){
+                    setMovieThumb(null);
+                }
+            };
+        }else{
+            setThumbnail(null);
+            setShowThumb(null);
+        }
+    };
 
     return (
         <div className="regist-info-wrap">
+            <div className="regist-thumb-wrap">
+                {movieThumb ? (
+                    <img
+                    onClick={() =>{
+                        thumbRef.current.click();
+                    }}
+                    src={`${import.meta.env.VITE_BACK_SERVER}/movie/thumb/${movieThumb}`}/>
+                ) : showThumb === null ? (
+                    <img
+                    src="/image/default_img.png"
+                    onClick={()=>{
+                        thumbRef.current.click();
+                    }}/>
+                ) : (
+                    <img
+                    src={showThumb}
+                    onClick={()=>{
+                        thumbRef.current.click();
+                    }}
+                    />
+                )}
+                <input
+                // ref={thumbRef}
+                type="file"
+                accept="image/*"
+                style={{display:"none"}}
+                onchange={changeThumbnail}
+                />
+                <div className="regist-thumb-img">포스터 등록</div>
+            </div>
             <table className="regist-info-tbl">
                 <tr>
                     <th>
@@ -58,18 +113,14 @@ const AdminRegistFrm = (props) => {
                         <label htmlFor="regist-info">등급</label>
                     </th>
                     <td>
-                        <Select value={movieGrade}
-                        onValueChange={setMovieGrade}>
-                        <SelectTrigger className="movieGrade">
-                        </SelectTrigger>
-                        <SelectContent>
-                        <SelectGroup>
-                            <SelectItem value="1">개봉예정</SelectItem>
-                            <SelectItem value="2">상영중</SelectItem>
-                            <SelectItem value="3">상영종료</SelectItem>
-                            <SelectItem value="4">재개봉</SelectItem>
-                        </SelectGroup>
-                        </SelectContent>
+                    <Select
+                        value={movieGrade}
+                        onChange={setMovieGrade}
+                    >
+                        <MenuItem value="1">개봉예정</MenuItem>
+                        <MenuItem value="2">상영중</MenuItem>
+                        <MenuItem value="3">상영종료</MenuItem>
+                        <MenuItem value="4">재개봉</MenuItem>
                     </Select>
                     </td>
                 </tr>
@@ -92,38 +143,23 @@ const AdminRegistFrm = (props) => {
                 </tr>
                 <tr>
                     <th>
-                        <label htmlFor="regist-info">영화 포스터</label>
-                    </th>
-                    <td>
-                        <div className="input-info">
-                            <input
-                            type="text"
-                            id="regist-movie-thumb"
-                            name="regist-movie-thumb"
-                            value={movieThumb}
-                            onchange={(e)=>{
-                                setMovieThumb(e.target.value);
-                            }}
-                            />
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
                         <label htmlFor="regist-info">영화 장르</label>
                     </th>
                     <td>
-                        <div className="input-info">
-                            <input
-                            type="number"
-                            id="regist-movie-genre"
-                            name="regist-movie-genre"
+                        <Select
                             value={movieGenre}
-                            onChange={onchange=(e)=>{
-                                setMovieGenre(e.target.value);
-                            }}
-                            />
-                        </div>
+                            onchange={setMovieGenre}
+                            sx={{width:"120px", height: "50px"}}
+                            >
+                            <MenuItem value="1">액션</MenuItem>
+                            <MenuItem value="2">애니메이션</MenuItem>
+                            <MenuItem value="3">코미디</MenuItem>        
+                            <MenuItem value="4">공포</MenuItem>        
+                            <MenuItem value="5">스릴러</MenuItem>        
+                            <MenuItem value="6">SF</MenuItem>
+                            <MenuItem value="7">범죄</MenuItem>
+                            <MenuItem value="8">판타지</MenuItem>                        
+                        </Select>
                     </td>
                 </tr>
                 <tr>
@@ -204,7 +240,15 @@ const AdminRegistFrm = (props) => {
                     </th>
                     <td>
                         <div className="input-info"></div>
-                        {/*달력으로 날짜 받기 */}
+                        <input
+                        type="date"
+                        id="regist-movie-release"
+                        name="regist-movie-release"
+                        value={movieRelease}
+                        onchange={(e)=>{
+                            setMovieRelease(e.target.value);
+                        }}
+                        />
                     </td>
                 </tr>
                 <tr>
@@ -212,9 +256,20 @@ const AdminRegistFrm = (props) => {
                         <label htmlFor="regist-info">영화 상태</label>
                     </th>
                     <td>
-                        <div className="input-info">
-                            {/*셀렉트 버튼 사용 */}
-                        </div>
+                        <Select
+                            value={movieStatus}
+                            onchange={setMovieGenre}
+                            sx={{width:"120px", height: "50px"}}
+                            >
+                            <MenuItem value="1">액션</MenuItem>
+                            <MenuItem value="2">애니메이션</MenuItem>
+                            <MenuItem value="3">코미디</MenuItem>        
+                            <MenuItem value="4">공포</MenuItem>        
+                            <MenuItem value="5">스릴러</MenuItem>        
+                            <MenuItem value="6">SF</MenuItem>
+                            <MenuItem value="7">범죄</MenuItem>
+                            <MenuItem value="8">판타지</MenuItem>                        
+                        </Select>
                     </td>
                 </tr>
             </table>

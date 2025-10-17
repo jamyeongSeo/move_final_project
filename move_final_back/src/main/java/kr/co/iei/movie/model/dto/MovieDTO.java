@@ -25,4 +25,6 @@ public class MovieDTO {
 	private String movieDirector;
 	private String movieActor;
 	private Date movieRelease;
+	private boolean like;
+	private int likeCount;
 }

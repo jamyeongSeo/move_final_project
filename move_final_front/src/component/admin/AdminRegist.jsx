@@ -7,13 +7,13 @@ const AdminRegist = () =>{
     const [movieTitle, setMovieTitle] = useState("");
     const [movieStatus, setMovieStatus] = useState(0);
     const [movieContent, setMovieContent] = useState("");
-    const [movieThumb, setMovieThumb] = useState("");
+    const [movieThumb, setMovieThumb] = useState(null);
     const [movieGenre, setMovieGenre] = useState(0);
     const [movieGrade, setMovieGrade] = useState(0);
-    const [movieRuntime, setMovieRuntime] = useState(time);
+    const [movieRuntime, setMovieRuntime] = useState(0);
     const [movieDirector, setMovieDirector] = useState("");
-    const [movieActor, setMovieActor] = useState("");
-    const [movieRelease, setMovieRelease] = useState(date);
+    const [movieActor, setMovieActor] = useState(0);
+    const [movieRelease, setMovieRelease] = useState(0);
     const [movieType, setMovieType] = useState(0);
 
     const adminRegist = () =>{
