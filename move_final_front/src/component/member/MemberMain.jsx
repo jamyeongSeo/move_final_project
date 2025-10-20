@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import LeftSideMenu from "../utils/LeftSideMenu";
 import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
@@ -46,18 +46,16 @@ const MemberMain = () => {
   ]);
 
   const BackServer = import.meta.env.VITE_BACK_SERVER;
-  axios
-    .get(`${BackServer}/member/selectMember?memberId=${memberId}`)
-    .then((res) => {
-      setMember(res.data);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  /*쿠폰 버튼 클랙 시-> 모달에서 select 해올 예정
-    axios.get(`${BackServer}/member/selectCoupon?memberId=${memberId}`).then((res)=>{
-
-    })*/
+  useEffect(() => {
+    axios
+      .get(`${BackServer}/member/selectMember?memberId=${memberId}`)
+      .then((res) => {
+        setMember(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
   return (
     <>
       {memberId === "" ? (
@@ -81,7 +79,7 @@ const MemberMain = () => {
                   보유 쿠폰 수 : {member.couponCount} 개
                 </div>
                 <div className="member-mypage-content-right">
-                  <CouponModal></CouponModal>
+                  <CouponModal memberId={memberId}></CouponModal>
                 </div>
               </div>
 
@@ -142,7 +140,7 @@ const MemberMain = () => {
   );
 };
 
-const CouponModal = () => {
+const CouponModal = (props) => {
   const style = {
     position: "absolute",
     top: "50%",
@@ -158,75 +156,71 @@ const CouponModal = () => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const memberId = props.memberId;
+  const [couponBox, setCouponBox] = useState([]);
+
+  const BackServer = import.meta.env.VITE_BACK_SERVER;
+
+  useEffect(() => {
+    axios
+      .get(`${BackServer}/member/selectCoupon?memberId=${memberId}`)
+      .then((res) => {
+        setCouponBox(res.data);
+        console.log(couponBox);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   return (
     <>
-      <div onClick={handleOpen} className="btn-gray">
+      <div
+        onClick={handleOpen}
+        style={{
+          border: "3px solid var(--gray5)",
+          backgroundColor: "var(--main3)",
+        }}
+        className="btn-gray"
+      >
         보유 쿠폰
       </div>
       <Modal open={open} onClose={handleClose}>
         <Box sx={style}>
           <div className="memberMain-coupon-wrap">
-            <div
-              style={{ marginTop: "65px" }}
-              className="memberMain-coupon-box"
-            >
-              <img
-                src="/image/free-icon-ticket-7937886.png"
-                className="memberMain-coupon-img"
-              ></img>
-              <div>
-                <ul>
-                  <li style={{ marginBottom: "7px" }}>
-                    <h3>coupon_name</h3>
-                  </li>
-                  <li>할인금액 : couponValid</li>
-                  <li>유효기간 : couponBoxIssueDt ~ couponBoxExpireDt</li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="memberMain-coupon-box">
-              <img
-                src="/image/free-icon-ticket-7937886.png"
-                className="memberMain-coupon-img"
-              ></img>
-              <div>
-                <ul>
-                  <li style={{ marginBottom: "7px" }}>
-                    <h3>coupon_name</h3>
-                  </li>
-                  <li>할인금액 : couponValid</li>
-                  <li>유효기간 : couponStart ~ couponEnd</li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="memberMain-coupon-box">
-              <img
-                src="/image/free-icon-ticket-7937886.png"
-                className="memberMain-coupon-img"
-              ></img>
-              <div>
-                <ul>
-                  <li style={{ marginBottom: "7px" }}>
-                    <h3>coupon_name</h3>
-                  </li>
-                  <li>할인금액 : couponValid</li>
-                  <li>유효기간 : couponStart ~ couponEnd</li>
-                </ul>
-              </div>
-            </div>
+            {couponBox.map((coupon, index) => {
+              return (
+                <div
+                  key={"coupon-" + index}
+                  style={{ marginTop: "65px" }}
+                  className="memberMain-coupon-box"
+                >
+                  <img
+                    src="/image/free-icon-ticket-7937886.png"
+                    className="memberMain-coupon-img"
+                  ></img>
+                  <div>
+                    <ul>
+                      <li style={{ marginBottom: "7px" }}>
+                        <h3>{coupon.couponName}</h3>
+                      </li>
+                      <li style={{ marginBottom: "5px" }}>
+                        할인금액 : {coupon.couponDisscount}
+                      </li>
+                      <li>
+                        유효기간 : {coupon.couponBoxIssueDt} ~{" "}
+                        {coupon.couponBoxExpireDt}
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              );
+            })}
           </div>
-
           <div style={{ justifySelf: "center", color: "var(--main5)" }}>
             창을 닫으려면 배경 클릭
           </div>
-          {/*
-                <div style={{justifySelf:"center", color:"var(--main5)"}}>
-                    화면을 나가려면 배경 클릭
-                    <button onClick={handleClose}  className="btn-red">창 닫기</button>
-                </div>
-                */}
         </Box>
       </Modal>
     </>

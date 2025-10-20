@@ -10,11 +10,11 @@
 		select count(*) from member_tbl where member_id = #{memberId}
 	</select>
 	<insert id="insertMember"> <!-- 회원으로 가입 //멤버쉽은 회원가입시 동일하게 1(nomal)로 들어갈겨-->
-		insert into member_tbl values(member_seq.nextval, #{memberId}, #{memberPw},#{memberEmail},#{memberName},TO_DATE(#{memberBirth},'YYYY-MM-DD'), #{memberGender}, #{memberPhone},to_char(sysdate, 'yyyy-mm-dd'),2,1)
+		insert into member_tbl values(member_seq.nextval, #{memberId}, #{memberPw},#{memberEmail},#{memberName},to_char(to_date(#{memberBirth}),'YYYY-MM-DD'), #{memberGender}, #{memberPhone},to_char(sysdate, 'yyyy-mm-dd'),2,1)
 	</insert>
-	<!-- insertMember와 동시에 웰컴쿠폰 발급 -->
+	<!-- insertMember와 동시에 웰컴쿠폰 발급          // 컬럼 추가 예정-> 수정 필요 -->
 	<insert id="wellcomCoupon">
-		insert into coupon_box_tbl values(coupon_box_seq.nextval, 1, (select member_no from member_tbl where member_id=#{memberId}), 'n')
+		insert into coupon_box_tbl values(coupon_box_seq.nextval, 1, (select member_no from member_tbl where member_id=#{memberId}), 'n', to_char(sysdate,'YYYY-MM-DD'), to_char(sysdate+365,'YYYY-MM-DD'))
 	</insert>
 	<!-- 쿠폰 만료시점 자동 소멸 구현 예정 -->
 	
@@ -52,5 +52,14 @@
 			join book_seat_tbl s on(s.book_no = b.book_no)
 			join pay_tbl p on (s.book_seat_no = p.book_detail_no)
 		where b.member_no = #{memberNo}
+	</select>
+	<!-- 쿠폰 모달 -->
+	<select id="selectCoupon" resultType="coupon">
+		select c.coupon_name, c.coupon_disscount, b.coupon_box_issue_dt, b.coupon_box_expire_dt 
+			from coupon_tbl c
+			join coupon_box_tbl b on (b.coupon_no = c.coupon_no) 
+			join member_tbl m on (m.member_no= b.member_no)
+			where member_id=#{memberId} and use_status='n'
+		order by coupon_box_issue_dt asc
 	</select>
 </mapper>
