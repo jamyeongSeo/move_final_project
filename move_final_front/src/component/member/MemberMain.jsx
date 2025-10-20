@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import LeftSideMenu from "../utils/LeftSideMenu";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { loginIdState, memberLevelState } from "../utils/RecoilData";
 import axios from "axios";
 import { Box, Modal } from "@mui/material";
+import NoMemberInfo from "./NoMemberInfo";
 
 const MemberMain = () => {
   const [memberId, setmemberId] = useRecoilState(loginIdState);
@@ -43,6 +44,7 @@ const MemberMain = () => {
     { url: "/member/watchedMovieList", text: "내가 본 영화" },
     { url: "/member/bookingMovieList", text: "예약 / 결제" },
   ]);
+
   const BackServer = import.meta.env.VITE_BACK_SERVER;
   axios
     .get(`${BackServer}/member/selectMember?memberId=${memberId}`)
@@ -57,74 +59,86 @@ const MemberMain = () => {
 
     })*/
   return (
-    <div className="content-wrap">
-      <section className="left-side-menu-side">
-        <Link to="/member/memberMain">
-          <div className="left-side-menu-title">마이페이지</div>
-        </Link>
-        <LeftSideMenu menus={menus}></LeftSideMenu>
-      </section>
+    <>
+      {memberId === "" ? (
+        <NoMemberInfo></NoMemberInfo>
+      ) : (
+        <div className="content-wrap">
+          <section className="left-side-menu-side">
+            <Link to="/member/memberMain">
+              <div className="left-side-menu-title">마이페이지</div>
+            </Link>
+            <LeftSideMenu menus={menus}></LeftSideMenu>
+          </section>
 
-      <section className="left-side-menu-other member-mypage-wrap">
-        <div className="memberMain-title">
-          <h1>{member.memberName}</h1>
+          <section className="left-side-menu-other member-mypage-wrap">
+            <div className="memberMain-title">
+              <h1>{member.memberName}</h1>
+            </div>
+            <div className="member-mypage-content-wrap">
+              <div className="member-mypage-content">
+                <div className="member-mypage-content-left">
+                  보유 쿠폰 수 : {member.couponCount} 개
+                </div>
+                <div className="member-mypage-content-right">
+                  <CouponModal></CouponModal>
+                </div>
+              </div>
+
+              <div
+                className="member-mypage-content"
+                style={{ marginBottom: "60px" }}
+              >
+                <div className="member-mypage-content-left">
+                  관람한 영화 수 : {member.watchingMovieCount} 건
+                </div>
+              </div>
+
+              <div className="member-mypage-content">
+                <div className="member-mypage-content-left">
+                  아이디 : {member.memberId}
+                </div>
+              </div>
+
+              <div className="member-mypage-content">
+                <div className="member-mypage-content-left">
+                  생년월일 : {member.memberBirth}
+                </div>
+                <div className="member-mypage-content-right">
+                  성별 : {member.memberGender == 1 ? "남자" : "여자"}
+                </div>
+              </div>
+
+              <div className="member-mypage-content">
+                <div className="member-mypage-content-left">
+                  휴대폰번호 : {member.memberPhone}
+                </div>
+              </div>
+              <div className="member-mypage-content">
+                <div className="member-mypage-content-left">
+                  이메일 : {member.memberEmail}
+                </div>
+              </div>
+            </div>
+
+            <div className="member-mypage-btn-wrap">
+              <Link
+                to="/member/memberUpdate"
+                className="btn-red member-mypage-btn"
+              >
+                회원정보 수정
+              </Link>
+              <Link
+                to="/member/memberDelete"
+                className="btn-red member-mypage-btn"
+              >
+                회원 탈퇴
+              </Link>
+            </div>
+          </section>
         </div>
-        <div className="member-mypage-content-wrap">
-          <div className="member-mypage-content">
-            <div className="member-mypage-content-left">
-              보유 쿠폰 수 : {member.couponCount} 개
-            </div>
-            <div className="member-mypage-content-right">
-              <CouponModal></CouponModal>
-            </div>
-          </div>
-
-          <div
-            className="member-mypage-content"
-            style={{ marginBottom: "60px" }}
-          >
-            <div className="member-mypage-content-left">
-              관람한 영화 수 : {member.watchingMovieCount} 건
-            </div>
-          </div>
-
-          <div className="member-mypage-content">
-            <div className="member-mypage-content-left">
-              아이디 : {member.memberId}
-            </div>
-          </div>
-
-          <div className="member-mypage-content">
-            <div className="member-mypage-content-left">
-              생년월일 : {member.memberBirth}
-            </div>
-            <div className="member-mypage-content-right">
-              성별 : {member.memberGender == 1 ? "남자" : "여자"}
-            </div>
-          </div>
-
-          <div className="member-mypage-content">
-            <div className="member-mypage-content-left">
-              휴대폰번호 : {member.memberPhone}
-            </div>
-          </div>
-          <div className="member-mypage-content">
-            <div className="member-mypage-content-left">
-              이메일 : {member.memberEmail}
-            </div>
-          </div>
-        </div>
-
-        <div className="member-mypage-btn-wrap">
-          <Link to="/member/memberUpdate" className="btn-red member-mypage-btn">
-            회원정보 수정
-          </Link>
-          <Link to="/member/memberDelete" className="btn-red member-mypage-btn">
-            회원 탈퇴
-          </Link>
-        </div>
-      </section>
-    </div>
+      )}
+    </>
   );
 };
 

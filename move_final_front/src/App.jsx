@@ -24,6 +24,7 @@ import { useEffect } from "react";
 import AdminRegist from "./component/admin/AdminRegist";
 import WatchedMovieList from "./component/member/WatchedMovieList";
 import BookingMovieList from "./component/member/BookingMovieList";
+import NoMemberInfo from "./component/member/NoMemberInfo";
 
 function App() {
   const [memberId, setMemberId] = useRecoilState(loginIdState);
@@ -105,6 +106,10 @@ function App() {
           <Route
             path="/member/bookingMovieList"
             element={<BookingMovieList></BookingMovieList>}
+          />
+          <Route
+            path="/membewr/noMemberInfo"
+            element={<NoMemberInfo></NoMemberInfo>}
           />
         </Routes>
       </main>
