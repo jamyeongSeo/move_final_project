@@ -24,7 +24,7 @@ const MovieList = () => {
       })
       .catch((err) => {});
   }, [movieAllList]);
-  console.log(movieAllList);
+
   return (
     <div className="content">
       <div className="movie-wrap">
@@ -120,10 +120,8 @@ const MovieItem = (props) => {
                         }&memberId=${memberId}`
                       )
                       .then((res) => {
-                        console.log(res);
                         if (res.data === 1) {
                           const likePushList = movieAllList.map((item, i) => {
-                            console.log(index, i);
                             return index === i
                               ? {
                                   ...item,
@@ -132,13 +130,11 @@ const MovieItem = (props) => {
                                 }
                               : item;
                           });
-                          console.log(likePushList);
+
                           setMovieAllList(likePushList);
                         }
                       })
-                      .catch((err) => {
-                        console.log(err);
-                      });
+                      .catch((err) => {});
                   }
                 }}
               >
@@ -158,7 +154,6 @@ const MovieItem = (props) => {
                         }&memberId=${memberId}`
                       )
                       .then((res) => {
-                        console.log(res);
                         if (res.data === 1) {
                           const likeUnPushList = movieAllList.map((item, i) => {
                             return index === i
@@ -169,13 +164,11 @@ const MovieItem = (props) => {
                                 }
                               : item;
                           });
-                          console.log(likeUnPushList);
+
                           setMovieAllList(likeUnPushList);
                         }
                       })
-                      .catch((err) => {
-                        console.log(err);
-                      });
+                      .catch((err) => {});
                   }
                 }}
               >

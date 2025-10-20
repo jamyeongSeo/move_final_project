@@ -22,8 +22,9 @@ const SearchPwModal = (props) => {
   const modal = useRef();
   const resultModal = useRef();
   const lodingIcon = useRef();
+  const [isLoding, setIsLoding] = useState(false);
   const nextModal = () => {
-    loding.current.classList.remove("membersearch-none");
+    setIsLoding(true);
 
     if (
       member.memberName != "" &&
@@ -39,8 +40,7 @@ const SearchPwModal = (props) => {
         )
 
         .then((res) => {
-          loding.current.classList.add("membersearch-none");
-          lodingIcon.current.classList.remove("loader");
+          setIsLoding(false);
           console.log(res.data);
           if (res.data == -1) {
             //회원조회 실패
@@ -94,7 +94,6 @@ const SearchPwModal = (props) => {
           console.log("회원조회 err" + err);
         });
     } else {
-      loding.current.classList.add("membersearch-none");
       Swal.fire({
         title: "입력값 확인",
         text: "입력값을 확인하세요",
@@ -109,22 +108,20 @@ const SearchPwModal = (props) => {
     setIsModalPw(false);
     resultModal.current.classList.add("membersearchResult-none");
     modal.current.classList.remove("membersearch-none");
-    lodingIcon.current.classList.add("loader");
   };
   return (
     <div className={isModalPw ? "" : "memberModal-close"}>
       <div className="memberModal">
         <div className="memberModal-wrap">
-          <section
-            ref={loding}
-            className="membersearch-none memberModal_loding"
-          >
-            <div className="memberModal memberModal_loding">
-              <div className="memberModal-wrap">
-                <span ref={lodingIcon} class="loader"></span>
+          {isLoding && (
+            <section className="memberModal_loding">
+              <div className="memberModal memberModal_loding">
+                <div className="memberModal-wrap">
+                  <span class="loader"></span>
+                </div>
               </div>
-            </div>
-          </section>
+            </section>
+          )}
           <div className="memberModal-content-box-wrap">
             <div className="memberModal-content-box">
               <div className="memberModal-title">
@@ -205,7 +202,6 @@ const SearchPwModal = (props) => {
                   >
                     닫기
                   </button>
-                  <span className="loader"></span>
                 </div>
               </section>
             </div>

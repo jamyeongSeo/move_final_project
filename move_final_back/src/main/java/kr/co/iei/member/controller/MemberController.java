@@ -71,7 +71,6 @@ public class MemberController {
 		String refreshToken = jwtUtils.createRefreshToken(loginMember.getMemberId(), loginMember.getMemberLevel());
 		loginMember.setAccessToken(accessToken);
 		loginMember.setRefreshToken(refreshToken);
-		System.out.println(loginMember);
 		return ResponseEntity.ok(loginMember);
 	}
 	
@@ -146,8 +145,12 @@ public class MemberController {
 		return ResponseEntity.ok(-1);
 	}
 	
-	
-	
+	//--------------memberMain-------------
+	@GetMapping(value="selectMember")
+	public ResponseEntity<MemberDTO> selectMember(@RequestParam String memberId){
+		MemberDTO m = memberService.selectMember(memberId);
+		return ResponseEntity.ok(m);
+	}
 	
 	
 }
