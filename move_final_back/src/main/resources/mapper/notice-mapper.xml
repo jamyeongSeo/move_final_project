@@ -16,7 +16,7 @@
 	                (select 
 	                    notice_no, 
 	                    notice_title, 
-	                    notice_date
+	                    to_char(sysdate,'yyyy-mm-dd') notice_date
 	                from notice_tbl order by notice_no desc)b)
 	    where rnum between #{start} and #{end}
 	</select>
@@ -36,7 +36,7 @@
 	</select>
 	
 	<insert id="insertNotice">
-		insert into notice_tbl values(notice_seq.nextval,#{memberId},#{noticeTitle},#{noticeContent},to_char(sysdate,'yyyy-mm-dd'))
+		insert into notice_tbl values(#{noticeNo},#{memberId},#{noticeTitle},#{noticeContent},to_char(sysdate,'yyyy-mm-dd'))
 	</insert>
 	
 	<insert id="insertNoticeFile">
@@ -70,8 +70,8 @@
 		</foreach>
 	</select>
 	
-	<delete id="deleteBoardFile">
-		delete from notice_file_tbl where notice_no in
+	<delete id="deleteNoticeFile">
+		delete from notice_file_tbl where notice_file_no in
 		<foreach collection="array" item="noticeFileNo" open="(" close=")" separator=",">
 			#{noticeFileNo}
 		</foreach>

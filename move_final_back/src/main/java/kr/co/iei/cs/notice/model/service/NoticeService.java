@@ -85,7 +85,7 @@ public class NoticeService {
 		if (notice.getDelFileNo() != null) {
 			List<NoticeFileDTO> delFileList = noticeDao.selectDelNoticeFileList(notice.getDelFileNo());
 			nd.setNoticeFileList(delFileList);
-			result += noticeDao.deleteBoardFile(notice.getDelFileNo());
+			result += noticeDao.deleteNoticeFile(notice.getDelFileNo());
 		}
 		return nd;
 	}
