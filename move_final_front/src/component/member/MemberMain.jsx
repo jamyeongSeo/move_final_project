@@ -1,10 +1,10 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import LeftSideMenu from "../utils/LeftSideMenu";
 import { Link } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { loginIdState, memberLevelState } from "../utils/RecoilData";
-import { Axis3dIcon } from "lucide-react";
 import axios from "axios";
+import { Box, Modal } from "@mui/material";
 
 const MemberMain = () => {
   const [memberId, setmemberId] = useRecoilState(loginIdState);
@@ -47,7 +47,6 @@ const MemberMain = () => {
   axios
     .get(`${BackServer}/member/selectMember?memberId=${memberId}`)
     .then((res) => {
-      console.log(res);
       setMember(res.data);
     })
     .catch((err) => {
@@ -76,14 +75,7 @@ const MemberMain = () => {
               보유 쿠폰 수 : {member.couponCount} 개
             </div>
             <div className="member-mypage-content-right">
-              {/*버튼 누르면 쿠폰 띄우기 */}
-              <select
-                className="member-mypage-coupon"
-                name="coupon"
-                id="coupon"
-              >
-                <option value="coupon">보유쿠폰</option>
-              </select>
+              <CouponModal></CouponModal>
             </div>
           </div>
 
@@ -135,4 +127,96 @@ const MemberMain = () => {
     </div>
   );
 };
+
+const CouponModal = () => {
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 670,
+    bgcolor: "background.paper",
+    border: "2px solid #000",
+    boxShadow: 24,
+    p: 4,
+  };
+
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  return (
+    <>
+      <div onClick={handleOpen} className="btn-gray">
+        보유 쿠폰
+      </div>
+      <Modal open={open} onClose={handleClose}>
+        <Box sx={style}>
+          <div className="memberMain-coupon-wrap">
+            <div
+              style={{ marginTop: "65px" }}
+              className="memberMain-coupon-box"
+            >
+              <img
+                src="/image/free-icon-ticket-7937886.png"
+                className="memberMain-coupon-img"
+              ></img>
+              <div>
+                <ul>
+                  <li style={{ marginBottom: "7px" }}>
+                    <h3>coupon_name</h3>
+                  </li>
+                  <li>할인금액 : couponValid</li>
+                  <li>유효기간 : couponBoxIssueDt ~ couponBoxExpireDt</li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="memberMain-coupon-box">
+              <img
+                src="/image/free-icon-ticket-7937886.png"
+                className="memberMain-coupon-img"
+              ></img>
+              <div>
+                <ul>
+                  <li style={{ marginBottom: "7px" }}>
+                    <h3>coupon_name</h3>
+                  </li>
+                  <li>할인금액 : couponValid</li>
+                  <li>유효기간 : couponStart ~ couponEnd</li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="memberMain-coupon-box">
+              <img
+                src="/image/free-icon-ticket-7937886.png"
+                className="memberMain-coupon-img"
+              ></img>
+              <div>
+                <ul>
+                  <li style={{ marginBottom: "7px" }}>
+                    <h3>coupon_name</h3>
+                  </li>
+                  <li>할인금액 : couponValid</li>
+                  <li>유효기간 : couponStart ~ couponEnd</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div style={{ justifySelf: "center", color: "var(--main5)" }}>
+            창을 닫으려면 배경 클릭
+          </div>
+          {/*
+                <div style={{justifySelf:"center", color:"var(--main5)"}}>
+                    화면을 나가려면 배경 클릭
+                    <button onClick={handleClose}  className="btn-red">창 닫기</button>
+                </div>
+                */}
+        </Box>
+      </Modal>
+    </>
+  );
+};
+
 export default MemberMain;

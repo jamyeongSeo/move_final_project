@@ -304,6 +304,21 @@
   padding: 5px 75px;
   font-size: 17px;
 }
+/*---------- couponModal--------*/
+.memberMain-coupon-box {
+  overflow: hidden;
+  justify-self: center;
+  margin: 75px auto;
+}
+.memberMain-coupon-img {
+  width: 230px;
+  color: var(--main5);
+  float: left;
+}
+.memberMain-coupon-box > div {
+  float: left;
+  padding: 0px 35px;
+}
 
 /*memberUpdate*/
 .member-mypage-content-line {
