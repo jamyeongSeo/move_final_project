@@ -23,6 +23,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import AdminRegist from "./component/admin/AdminRegist";
 import WatchedMovieList from "./component/member/WatchedMovieList";
+import BookingMovieList from "./component/member/BookingMovieList";
 
 function App() {
   const [memberId, setMemberId] = useRecoilState(loginIdState);
@@ -98,8 +99,12 @@ function App() {
           ></Route>
           <Route path="/movie/list" element={<MovieList />} />
           <Route
-            path="/member/WatchedMovieList"
+            path="/member/watchedMovieList"
             element={<WatchedMovieList></WatchedMovieList>}
+          />
+          <Route
+            path="/member/bookingMovieList"
+            element={<BookingMovieList></BookingMovieList>}
           />
         </Routes>
       </main>
