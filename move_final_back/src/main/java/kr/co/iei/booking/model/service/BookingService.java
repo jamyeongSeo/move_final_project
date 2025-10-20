@@ -22,4 +22,12 @@ public class BookingService {
 		return map;
 	}
 
+	public Map selectDateList() {
+		List dateList = bookingDao.selectDateList();
+		Map map = new HashMap<String, Object>();
+		
+		map.put("dateList", dateList);
+		return map;
+	}
+
 }

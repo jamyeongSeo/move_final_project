@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 import PageNavigation from "../utils/PageNavigation";
@@ -13,8 +13,13 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
+import AdminRegistFrm from "./AdminRegistFrm";
 
 const AdminList = () => {
+    //수정화면 넘어가려고 영화버노 받아오기..맞나?
+    const params = useParams();
+    const movieNo = params.movieNo;
+
 const MovieItem = (props) =>{
     const movie = props.movie;
     const navigate = useNavigate();
@@ -113,7 +118,10 @@ return (
                 return (
                 <tr key={`movie-${index}`}>
                     <td>{movie.movieNo}</td>
-                    <td>{movie.movieTitle}</td>
+                    <td>
+                        <Link to={`/movie/update/${movieNo}`} 
+                        className="movie-info-update">{movie.movieTitle}</Link>
+                    </td>
                     <td>{movie.movieGrade}</td>
                     <td>{movie.movieRelease}</td>
                     <td>

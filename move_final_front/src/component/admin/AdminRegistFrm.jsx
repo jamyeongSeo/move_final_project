@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Menu, MenuItem, Select } from "@mui/material";
+import TextEditor from "../utils/TextEditor";
 const AdminRegistFrm = (props) => {
     console.log(props);
     const movieTitle = props.movieTitle;
@@ -36,7 +37,7 @@ const AdminRegistFrm = (props) => {
     //포스터 화면 출력용 state
     const [showThumb, setShowThumb] = useState(null);
 
-    // const thumbRef = useRef("");
+    //const thumbRef = useRef("");
     //포스터 변경 시 동작 함수
     const changeThumbnail = (e) => {
         const thumb = e.target.files;
@@ -81,7 +82,7 @@ const AdminRegistFrm = (props) => {
                     />
                 )}
                 <input
-                // ref={thumbRef}
+                //ref={thumbRef}
                 type="file"
                 accept="image/*"
                 style={{display:"none"}}
@@ -95,7 +96,7 @@ const AdminRegistFrm = (props) => {
                         <label htmlFor="reigst-info">영화 제목</label>
                     </th>
                     <td>
-                        <div className="regist-input">
+                        <div className="admin-regist-input">
                             <input 
                             type="text"
                             name="regist-title"
@@ -129,7 +130,7 @@ const AdminRegistFrm = (props) => {
                         <label htmlFor="regist-info">영화 소개</label>
                     </th>
                     <td>
-                        <div className="input-info">
+                        <div className="admin-regist-info">
                             <input
                             type="text"
                             id="regist-movie-content"
@@ -167,7 +168,7 @@ const AdminRegistFrm = (props) => {
                         <label htmlFor="regist-info">영화 등급</label>
                     </th>
                     <td>
-                        <div className="input-info">
+                        <div className="admin-regist-input">
                             <input
                             type="number"
                             id="regist-movie-grade"
@@ -185,7 +186,7 @@ const AdminRegistFrm = (props) => {
                         <label htmlFor="regist-info">상영시간</label>
                     </th>
                     <td>
-                        <div className="input-info">
+                        <div className="admin-regist-input">
                             <input
                             type="number"
                             id="regist-movie-runtime"
@@ -203,7 +204,7 @@ const AdminRegistFrm = (props) => {
                         <label htmlFor="regist-info">감독명</label>
                     </th>
                     <td>
-                        <div className="input-info">
+                        <div className="admin-regist-input">
                             <input 
                             type="text"
                             id="regist-movie-director"
@@ -221,7 +222,7 @@ const AdminRegistFrm = (props) => {
                         <label htmlFor="regist-info">주연</label>
                     </th>
                     <td>
-                        <div className="input-info">
+                        <div className="admin-regist-input">
                             <input
                                 type="text"
                                 id="regist-movie-actor"
@@ -239,7 +240,7 @@ const AdminRegistFrm = (props) => {
                         <label htmlFor="regist-info">개봉일</label>
                     </th>
                     <td>
-                        <div className="input-info"></div>
+                        <div className="admin-regist-input">
                         <input
                         type="date"
                         id="regist-movie-release"
@@ -249,6 +250,7 @@ const AdminRegistFrm = (props) => {
                             setMovieRelease(e.target.value);
                         }}
                         />
+                        </div>
                     </td>
                 </tr>
                 <tr>
@@ -258,20 +260,44 @@ const AdminRegistFrm = (props) => {
                     <td>
                         <Select
                             value={movieStatus}
-                            onchange={setMovieGenre}
+                            onchange={setMovieStatus}
                             sx={{width:"120px", height: "50px"}}
                             >
                             <MenuItem value="1">액션</MenuItem>
                             <MenuItem value="2">애니메이션</MenuItem>
                             <MenuItem value="3">코미디</MenuItem>        
-                            <MenuItem value="4">공포</MenuItem>        
-                            <MenuItem value="5">스릴러</MenuItem>        
-                            <MenuItem value="6">SF</MenuItem>
-                            <MenuItem value="7">범죄</MenuItem>
-                            <MenuItem value="8">판타지</MenuItem>                        
+                            <MenuItem value="4">공포</MenuItem>                       
                         </Select>
                     </td>
                 </tr>
+                <tr>
+                    <th>
+                        <label htmlFor="regist-info">상영타입</label>
+                    </th>
+                    <td>
+                        <Select
+                            value={movieType}
+                            onchange={setMovieType}
+                            sx={{width:"120px", height:"50px"}}>
+                                <MenuItem value ="1"></MenuItem>
+                            </Select>
+                            </td>
+                </tr>
+                <th>
+                    <label htmlFor="regist-info">영화 소개글</label>
+                </th>
+                <td>
+                    <div className="admin-input-movieContent-box">
+                        <input
+                        type="text"
+                        id="movieContent"
+                        name="movieContent"
+                        value={movieContent}
+                        onchange={(e)=>{
+                            setMovieContent(e.target.value);
+                        }}/>
+                    </div>
+                </td>
             </table>
         </div>
     )

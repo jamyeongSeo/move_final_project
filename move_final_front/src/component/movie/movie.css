@@ -70,6 +70,8 @@
   display: flex;
   justify-content: space-around;
   border: none;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 .movie-item {
   width: 25%;

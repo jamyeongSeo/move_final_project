@@ -2,6 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="kr.co.iei.booking.model.dao.BookingDao">
   <select id="selectMovieList" resultType="movie">
-  	select * from movie_tbl where movie_status = 1
+  	select * from movie_tbl where movie_status = 2
+  </select>
+  
+  <select id="selectDateList" resultType="string">
+  	select to_char(sysdate + (level-1), 'yyyy-mm-dd') as week  
+	from dual connect by level <![CDATA[ <= ]]>7 
   </select>
 </mapper>
