@@ -396,3 +396,118 @@
 .login-searchPwModal-none {
   display: none;
 }
+
+/*---------- WatchedMovieList ----------*/
+.memberMovie-set-wrap {
+  height: 60px;
+}
+.memberMovie-set {
+  overflow: hidden;
+}
+.memberMovie-interval-wrap {
+  justify-self: center;
+  font-family: ns-b;
+}
+.memberMovie-interval {
+  float: right;
+  font-family: ns-b;
+}
+.memberMovie-count {
+  float: right;
+  font-family: ns-b;
+}
+.memberMovie-interval-icon-btn {
+  margin-top: 2px;
+  border: none;
+  background-color: var(--gray7);
+}
+.memberMovie-interval-icon-btn > svg:hover {
+  fill: var(--gray4);
+}
+.memberMovie-interval-icon-btn-click {
+  margin-top: 2px;
+  border: none;
+  background-color: var(--gray7);
+}
+.memberMovie-interval-icon-btn-click > svg {
+  fill: var(--gray4);
+}
+.memberMovie-interval-select-wrap {
+  display: none;
+}
+.memberMovie-interval-btn {
+  border: none;
+  background-color: var(--gray7);
+  font-family: ns-b;
+  font-size: 16px;
+  padding: 4px 28px;
+  border-top: 2px solid var(--main1);
+  border-bottom: 2px solid var(--main1);
+}
+.memberMovie-interval-3 {
+  border-left: 2px solid var(--main1);
+  border-top-left-radius: 50px;
+  border-bottom-left-radius: 50px;
+}
+.memberMovie-interval-6 {
+  border-left: 2px solid var(--main1);
+}
+.memberMovie-interval-9 {
+  border-left: 2px solid var(--main1);
+}
+.memberMovie-interval-12 {
+  border-left: 2px solid var(--main1);
+}
+.memberMovie-interval-0 {
+  border-left: 2px solid var(--main1);
+  border-right: 2px solid var(--main1);
+  border-top-right-radius: 50px;
+  border-bottom-right-radius: 50px;
+}
+.memberMovie-interval-select {
+  background-color: var(--gray4);
+  color: var(--gray7);
+}
+.memberMovie-box {
+  margin: 10px 0px;
+  border: 2px solid var(--gray4);
+  padding: 20px 35px;
+  overflow: hidden;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+.memberMovie-post {
+  float: left;
+}
+.memberMovie-post > img {
+  width: 175px;
+  float: left;
+}
+.memberMovie-info {
+  float: left;
+  padding-left: 45px;
+  text-align: left;
+}
+.memberMovie-review {
+  margin-top: 20px;
+}
+.memberMovie-review-box {
+  border: 1px solid var(--main6);
+  background-color: var(--main6);
+  height: 110px;
+  width: 496px;
+  border-radius: 3px;
+  opacity: 0.3;
+  position: relative;
+}
+.memberMovie-review-text {
+  position: absolute;
+  text-align: center;
+  justify-self: center;
+  padding: 10px 10px;
+}
+.memberMovie-review-text {
+  text-align: center;
+  justify-items: center;
+  width: 496px;
+}

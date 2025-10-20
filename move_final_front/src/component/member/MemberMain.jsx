@@ -40,8 +40,8 @@ const MemberMain = () => {
       ],
       text: "내 정보",
     },
-    { url: "/member/join", text: "내가 본 영화" },
-    { url: "/member/join", text: "예약 / 결제" },
+    { url: "/member/watchedMovieList", text: "내가 본 영화" },
+    { url: "/member/bookingMovieList", text: "예약 / 결제" },
   ]);
   const BackServer = import.meta.env.VITE_BACK_SERVER;
   axios
