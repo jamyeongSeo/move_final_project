@@ -108,5 +108,16 @@ public class MemberService {
 		return couponList;
 	}
 	
+	/*----------deleteMember-----------
+	public int deleteMember(MemberDTO member) {
+		MemberDTO m = memberDao.selectMember(member.getMemberId());
+		if(encoder.matches(member.getMemberPw(), m.getMemberPw())) {
+			int result = memberDao.deleteMember(member);	
+			return result;
+		}
+		return -1;
+		
+	}*/
+	
 	
 }

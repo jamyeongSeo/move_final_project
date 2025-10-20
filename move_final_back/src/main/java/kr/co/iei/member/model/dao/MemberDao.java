@@ -37,6 +37,9 @@ public interface MemberDao {
 
 	List<CouponDTO> selectCoupon(String memberId);
 
+	//------------회원탈퇴
+	//int deleteMember(MemberDTO member);
+
 	
 
 }
