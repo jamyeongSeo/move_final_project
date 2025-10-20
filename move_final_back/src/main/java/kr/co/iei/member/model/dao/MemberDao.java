@@ -26,6 +26,12 @@ public interface MemberDao {
 
 	int updatePw(String memberPw, String memberEmail);
 
+	MemberDTO selectMember(String memberId);
+
+	int memberCouponCount(int memberNo);
+
+	int memberWatchingMovieCount(int memberNo);
+
 
 }
 

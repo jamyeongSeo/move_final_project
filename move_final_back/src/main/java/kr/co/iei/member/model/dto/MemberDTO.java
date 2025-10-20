@@ -1,5 +1,6 @@
 package kr.co.iei.member.model.dto;
 
+import java.util.List;
 import org.apache.ibatis.type.Alias;
 
 import lombok.AllArgsConstructor;
@@ -22,6 +23,9 @@ public class MemberDTO {
 	private String enrollDate;
 	private int memberLevel;
 	private int memberGrade;
+	
+	private int couponCount;
+	private int watchingMovieCount;
 }
 
 /*

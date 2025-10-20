@@ -6,7 +6,7 @@ import CSMain from "./component/cs/CSMain";
 import BookingMain from "./component/booking/BookingMain";
 
 import AdminMain from "./component/admin/AdminMain";
-
+import AdminList from "./component/admin/AdminList";
 import Join from "./component/member/join";
 import Login from "./component/common/Login";
 import MemberMain from "./component/member/MemberMain";
@@ -21,6 +21,7 @@ import {
 } from "./component/utils/RecoilData";
 import axios from "axios";
 import { useEffect } from "react";
+import AdminRegist from "./component/admin/AdminRegist";
 
 function App() {
   const [memberId, setMemberId] = useRecoilState(loginIdState);
@@ -45,8 +46,6 @@ function App() {
       axios
         .get(`${import.meta.env.VITE_BACK_SERVER}/member/refresh`)
         .then((res) => {
-          console.log("refresh");
-          console.log(res);
           setMemberId(res.data.memberId);
           setMemberLevel(res.data.memberLevel);
           axios.defaults.headers.common["Authorization"] = res.data.accessToken;
@@ -63,7 +62,6 @@ function App() {
         });
     } else {
       //재로그인 안하는 경우
-      console.log("refresh토큰이 없어!!!!!!!!!");
       setAuthReady(true);
     }
 
@@ -78,7 +76,11 @@ function App() {
           <Route path="/cs/*" element={<CSMain />} />
           <Route path="/booking/main" element={<BookingMain />} />
 
-          <Route path="/admin/main" element={<AdminMain />} />
+          <Route path="/admin/main" element={<AdminMain />}>
+            <Route path="movie/list" element={<AdminList/>}/>
+            <Route path="movie/regist" element={<AdminRegist />}/>
+          </Route>
+          
 
           <Route path="/member/join" element={<Join></Join>} />
           <Route path="/common/login" element={<Login></Login>} />

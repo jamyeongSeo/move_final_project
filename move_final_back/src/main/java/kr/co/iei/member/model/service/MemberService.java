@@ -1,5 +1,8 @@
 package kr.co.iei.member.model.service;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -57,9 +60,7 @@ public class MemberService {
 		if(m != null && encoder.matches( member.getMemberPw(), m.getMemberPw())) {
 			//2.성공 시, token 생성 및 발행(//토큰 미발행 시, 오류:2  / 토큰 발행 성공 시, 1)
 			String accessToken = jwtUtils.createAccessToken(m.getMemberId(), m.getMemberLevel());
-			System.out.println("1시간 토큰"+accessToken);
 			String refreshToken = jwtUtils.createRefreshToken(m.getMemberId(), m.getMemberLevel());
-			System.out.println("1년 토큰"+refreshToken);
 			LoginMemberDTO loginMember = new LoginMemberDTO(accessToken, refreshToken, m.getMemberId(), m.getMemberLevel());
 			return loginMember;
 		}else {
@@ -89,6 +90,16 @@ public class MemberService {
 		memberPw=encPw;
 		int result = memberDao.updatePw(memberPw,memberEmail);
 		return result;
+	}
+
+	//-----------------회원정보-------------------------
+	public MemberDTO selectMember(String memberId) {
+		MemberDTO m = memberDao.selectMember(memberId);
+		int couponCount = memberDao.memberCouponCount(m.getMemberNo());
+		m.setCouponCount(couponCount);
+		int watchingMovieCount = memberDao.memberWatchingMovieCount(m.getMemberNo()); 
+		m.setWatchingMovieCount(watchingMovieCount);
+		return m;
 	}
 	
 	
