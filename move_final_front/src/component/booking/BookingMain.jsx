@@ -14,7 +14,7 @@ const BookingMain = () => {
         console.log(err);
       });
   }, []);
-  console.log(bookingMovieList);
+  const today = new Date();
 
   return (
     <div className="content-wrap">
