@@ -23,6 +23,8 @@
     "npm": "^10.9.4",
     "quill-image-resize-module-react": "^3.0.0",
     "react": "^18.3.1",
+    "react-calendar": "^6.0.0",
+    "react-day-scheduler": "^0.3.5-beta3.3",
     "react-dom": "^18.3.1",
     "react-quill": "^2.0.0",
     "react-router-dom": "^6.30.1",

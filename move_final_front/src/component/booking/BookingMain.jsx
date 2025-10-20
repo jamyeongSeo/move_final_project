@@ -1,21 +1,22 @@
 import { useEffect, useState } from "react";
 import "./booking.css";
 import axios from "axios";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
+import BookingSchedule from "./BookingSchedule";
+
 const BookingMain = () => {
   const [bookingMovieList, setBookingMovieList] = useState([]);
   useEffect(() => {
     axios
       .get(`${import.meta.env.VITE_BACK_SERVER}/booking/list`)
       .then((res) => {
-        console.log(res);
         setBookingMovieList(res.data.bookingMovieList);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
-  const today = new Date();
-  const date = new Date();
 
   return (
     <div className="content-wrap">
@@ -39,7 +40,9 @@ const BookingMain = () => {
               <div className="header-design-white"></div>
             </div>
             <div className="booking-content-box">
-              <div className="booking-date-select"></div>
+              <div className="booking-date-select">
+                <BookingSchedule />
+              </div>
               <div className="booking-movie-select">
                 <div className="booking-category-title">
                   <h3>영화</h3>
