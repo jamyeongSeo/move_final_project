@@ -15,6 +15,7 @@ const BookingMain = () => {
       });
   }, []);
   const today = new Date();
+  const date = new Date();
 
   return (
     <div className="content-wrap">
