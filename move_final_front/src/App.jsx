@@ -26,6 +26,8 @@ import WatchedMovieList from "./component/member/WatchedMovieList";
 import BookingMovieList from "./component/member/BookingMovieList";
 import NoMemberInfo from "./component/member/NoMemberInfo";
 
+import AdminScheduleRegist from "./component/admin/AdminScheduleRegist";
+
 function App() {
   const [memberId, setMemberId] = useRecoilState(loginIdState);
   const [memberLevel, setMemberLevel] = useRecoilState(memberLevelState);
@@ -82,6 +84,7 @@ function App() {
           <Route path="/admin/main" element={<AdminMain />}>
             <Route path="movie/list" element={<AdminList />} />
             <Route path="movie/regist" element={<AdminRegist />} />
+            <Route path="schedule/regist" element={<AdminScheduleRegist />} />
           </Route>
 
           <Route path="/member/join" element={<Join></Join>} />

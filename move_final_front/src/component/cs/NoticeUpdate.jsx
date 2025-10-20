@@ -12,9 +12,9 @@ const NoticeUpdate = () => {
     axios
       .get(`${import.meta.env.VITE_BACK_SERVER}/cs/notice/detail/${noticeNo}`)
       .then((res) => {
-        console.log(res);
+        console.log(res.data);
         setNoticeTitle(res.data.noticeTitle);
-        setFileList(res.data.fileList);
+        setFileList(res.data.noticeFileList);
         setNoticeContent(res.data.noticeContent);
       })
       .catch((err) => {
@@ -22,7 +22,7 @@ const NoticeUpdate = () => {
       });
   }, []);
   const [noticeTitle, setNoticeTitle] = useState("");
-  const [noticeFile, setNoticeFile] = useState([]);
+  const [noticeFileList, setNoticeFileList] = useState([]);
   const [noticeContent, setNoticeContent] = useState("");
   const [fileList, setFileList] = useState([]);
   const [delFileNo, setDelFileNo] = useState([]);
@@ -33,14 +33,14 @@ const NoticeUpdate = () => {
       form.append("noticeNo", noticeNo);
       form.append("noticeTitle", noticeTitle);
       form.append("noticeContent", noticeContent);
-      for (let i = 0; i < noticeFile.length; i++) {
-        form.append("noticeFile", noticeFile[i]);
+      for (let i = 0; i < noticeFileList.length; i++) {
+        form.append("noticefile", noticeFileList[i]);
       }
       for (let i = 0; i < delFileNo.length; i++) {
         form.append("delFileNo", delFileNo[i]);
       }
       axios
-        .patch(`${import.meta.env.VITE_BACK_SERVER}/cs/notice/update`, form, {
+        .patch(`${import.meta.env.VITE_BACK_SERVER}/cs/notice`, form, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -50,6 +50,7 @@ const NoticeUpdate = () => {
         });
     }
   };
+
   return (
     <section className="section update-wrap">
       <div className="title-wrap">
@@ -58,8 +59,8 @@ const NoticeUpdate = () => {
       <NoticeFrm
         noticeTitle={noticeTitle}
         setNoticeTitle={setNoticeTitle}
-        noticefile={noticeFile}
-        setNoticeFile={setNoticeFile}
+        noticeFile={noticeFileList}
+        setNoticeFile={setNoticeFileList}
         fileList={fileList}
         setFileList={setFileList}
         delFileNo={delFileNo}

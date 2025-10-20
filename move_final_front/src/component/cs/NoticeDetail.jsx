@@ -77,10 +77,17 @@ const NoticeDetail = () => {
           ></div>
           {memberId === notice.memberId && (
             <div className="btn-zone">
-              <Link to={`/cs/notice/update/${noticeNo}`} className="btn-red">
+              <Link
+                to={`/cs/notice/update/${noticeNo}`}
+                className="btn-red noticeUpdate"
+              >
                 수정
               </Link>
-              <button type="button" className="btn-gray" onClick={deleteNotice}>
+              <button
+                type="button"
+                className="btn-gray noticeDelete"
+                onClick={deleteNotice}
+              >
                 삭제
               </button>
             </div>

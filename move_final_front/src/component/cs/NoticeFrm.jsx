@@ -8,7 +8,6 @@ const NoticeFrm = (props) => {
   const setNoticeTitle = props.setNoticeTitle;
   const noticeFile = props.noticeFile;
   const setNoticeFile = props.setNoticeFile;
-
   const fileList = props.fileList;
   const setFileList = props.setFileList;
   const delFileNo = props.delFileNo;
@@ -25,11 +24,12 @@ const NoticeFrm = (props) => {
       fileNameArr.push(files[i].name);
     }
     setNoticeFile([...noticeFile, ...fileArr]);
-    setShowFileList([...showFileList, fileNameArr]);
+    setShowFileList([...showFileList, ...fileNameArr]);
   };
-
+  console.log("update fileList =", fileList);
   return (
     <div className="frm-wrap">
+      <div className="input-title">작성자 : {memberId}</div>
       <div className="input-title">제목</div>
       <input
         type="text"
@@ -40,7 +40,7 @@ const NoticeFrm = (props) => {
           setNoticeTitle(e.target.value);
         }}
       ></input>
-      <div className="input-title">첨부파일</div>
+      <div className="input-title ">첨부파일</div>
       <input
         type="file"
         id="noticeFile"
@@ -48,7 +48,11 @@ const NoticeFrm = (props) => {
         style={{ display: "none" }}
         onChange={addNoticeFile}
       ></input>
-      <label htmlFor="noticeFile" className="add-file">
+      <label htmlFor="noticeFile" className="btn-gray fileInput">
+        파일첨부
+      </label>
+      <div className="input-title">첨부목록</div>
+      <div className="file-zone">
         {fileList &&
           fileList.map((noticeFile, i) => {
             const deleteFile = () => {
@@ -84,7 +88,7 @@ const NoticeFrm = (props) => {
             </p>
           );
         })}
-      </label>
+      </div>
     </div>
   );
 };

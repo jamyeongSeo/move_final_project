@@ -107,6 +107,10 @@
   font-family: ns-b;
   font-size: 20px;
 }
+.frm-wrap {
+  display: flex;
+  flex-direction: column;
+}
 .frm-wrap input {
   border: 2px solid var(--gray3);
   border-radius: 8px;
@@ -146,9 +150,6 @@
   margin-top: 32px;
   gap: 18px;
 }
-.btn-zone > .btn-red {
-  width: 72px;
-}
 .writeBtn > .btn-red {
   width: 96px;
 }
@@ -167,10 +168,31 @@
   overflow-y: auto;
 }
 .file-zone {
+  display: flex;
+  flex-direction: column;
   border: 2px solid var(--gray3);
   background-color: var(--main3);
   border-radius: 8px;
   width: 100%;
   margin: 16px 0;
-  height: 42px;
+  min-height: 42px;
+  padding: 8px;
+}
+.notice-file {
+  display: flex;
+}
+.fileInput {
+  margin: 16px 0;
+}
+.file-zone p {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-left: 20px;
+}
+.noticeDelete {
+  width: 72px;
+}
+.noticeUpdate {
+  width: 72px;
 }

@@ -23,7 +23,7 @@ public class FileUtil {
 		int count = 0;
 		while(true) {
 			if(count==0) {
-				filepath = filename + onlyFilename;
+				filepath = onlyFilename + extention;
 			}else {
 				filepath = filename + "_" + count + extention;
 			}
@@ -48,7 +48,7 @@ public class FileUtil {
 	
 	public void downloadFile(String savepath, String filepath, String filename, HttpServletResponse response) {
 		
-		String downFile = filepath + savepath;
+		String downFile = savepath + filepath;
 		
 		try {
 			FileInputStream fis = new FileInputStream(downFile);

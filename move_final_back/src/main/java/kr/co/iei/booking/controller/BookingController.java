@@ -28,7 +28,11 @@ public class BookingController {
 		return ResponseEntity.ok(map);
 	}
 
-		
+	@GetMapping(value="/date")
+	public ResponseEntity<Map> getDate(){
+		Map map = bookingService.selectDateList();
+		return ResponseEntity.ok(map);
+	}
 	
 
 }

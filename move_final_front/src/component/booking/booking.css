@@ -32,7 +32,8 @@
   margin: 0 auto;
   width: 80%;
   border: 3px solid var(--gray3);
-
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
   height: 500px;
   margin-top: 30px;
 }
@@ -50,4 +51,56 @@
 .header-design-white {
   width: 10%;
   background-color: white;
+}
+
+.schedule-select-box {
+  display: flex;
+  width: 100%;
+  border-bottom: 1px solid var(--gray3);
+  align-items: center;
+  justify-content: space-between;
+}
+[class^="one-schedule"] {
+  display: flex;
+  height: 50px;
+  flex-direction: column;
+  border-left: 1px solid var(--gray3);
+  border-right: 1px solid var(--gray3);
+  align-items: center;
+  flex-grow: 1;
+}
+.schedule-date-box {
+  display: flex;
+  justify-content: center;
+}
+[class^="one-schedule"] > div:not([class$="-day"]) {
+  width: 100%;
+}
+
+[class$="arrow-box"] {
+  width: 5%;
+  align-content: center;
+}
+
+.side-back-arrow-box {
+  border-right: 1px solid var(--gray3);
+  height: 50px;
+}
+
+.side-forward-arrow-box {
+  border-left: 1px solid var(--gray3);
+  height: 50px;
+}
+
+[class^="schedule-"] {
+  font-family: ns-b;
+  cursor: pointer;
+}
+
+[class$="sat"] {
+  color: blue;
+}
+
+[class$="sun"] {
+  color: var(--main5);
 }

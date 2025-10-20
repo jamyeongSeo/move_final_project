@@ -9,4 +9,6 @@ public interface BookingDao {
 
 	List selectMovieList();
 
+	List selectDateList();
+
 }
