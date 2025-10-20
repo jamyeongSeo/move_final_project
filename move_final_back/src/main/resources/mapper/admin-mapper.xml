@@ -39,5 +39,30 @@
 		#{movieThumb}, #{movieGenre}, #{movieGrade}, #{movieRuntime}, #{movieDirector},
 		#{movieActor}, #{movieRelease} )
 	</insert>
+	
+	<!-- 스케줄 등록 -->
+	<insert id="insertSchedule" parameterType="schedule">
+	    insert into schedule_tbl (
+	        schedule_no,
+	        movie_no,
+	        screen_no,
+	        movie_title,
+	        schedule_time_start,
+	        schedule_time_end,
+	        schedule_open,
+	        schedule_close
+	    )
+	    values (
+	        schedule_seq.nextval, 
+	        #{movieNo}, 
+	        #{screenNo}, 
+	        #{movieTitle},
+	        #{scheduleTimeStart}, 
+	        #{scheduleTimeEnd}, 
+	        #{scheduleOpen}, 
+	        #{scheduleClose}
+	    )
+</insert>
+
 
 </mapper>

@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import kr.co.iei.movie.model.dto.MovieDTO;
+import kr.co.iei.admin.model.dto.ScheduleDTO;
 import kr.co.iei.utils.PageInfo;
 
 @Mapper
@@ -22,7 +23,7 @@ public interface AdminDao {
 
 	int insertMovieInfo(MovieDTO movie);
 
-
+	int insertSchedule(ScheduleDTO schedule);
 
 
 

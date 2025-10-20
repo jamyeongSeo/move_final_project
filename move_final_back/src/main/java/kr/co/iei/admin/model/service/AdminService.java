@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.iei.admin.model.dao.AdminDao;
+import kr.co.iei.admin.model.dto.ScheduleDTO;
 import kr.co.iei.movie.model.dao.MovieDao;
 import kr.co.iei.movie.model.dto.MovieDTO;
 import kr.co.iei.utils.PageInfoUtils;
@@ -53,6 +54,16 @@ public class AdminService {
 			int result = adminDao.insertMovieInfo(movie);
 			return result;
 	}
+	
+	//스케줄 등록
+	public ScheduleDTO insertSchedule(ScheduleDTO schedule) {
+        int result = adminDao.insertSchedule(schedule);
+        if (result > 0) {
+            return schedule;
+        } else {
+            return null;
+        }
+    }
 	
 
 }
