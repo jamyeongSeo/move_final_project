@@ -1,7 +1,10 @@
 package kr.co.iei.member.model.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
+import kr.co.iei.coupon.model.dto.CouponDTO;
 import kr.co.iei.member.model.dto.MemberDTO;
 
 @Mapper
@@ -32,6 +35,12 @@ public interface MemberDao {
 
 	int memberWatchingMovieCount(int memberNo);
 
+	List<CouponDTO> selectCoupon(String memberId);
+
+	//------------회원탈퇴
+	//int deleteMember(MemberDTO member);
+
+	
 
 }
 

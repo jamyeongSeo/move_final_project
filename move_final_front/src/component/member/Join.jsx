@@ -39,7 +39,9 @@ const Join = () => {
       joinMainStart.current.classList.remove("joinMain-none");
     } else {
       Swal.fire({
-        title: "필수 약관에 모두 동의 후 회원가입 진행 가능합니다",
+        title: "약관 동의 확인",
+        text: "필수 약관에 모두 동의 후 회원가입 진행 가능합니다",
+        icon: "info",
       });
     }
   };
