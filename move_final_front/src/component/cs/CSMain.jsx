@@ -6,6 +6,7 @@ import "./cs.css";
 import NoticeWrite from "./NoticeWrite";
 import NoticeDetail from "./NoticeDetail";
 import NoticeUpdate from "./NoticeUpdate";
+import PQList from "./PQList";
 
 const CSMain = () => {
   const [menus, setMenus] = useState([
@@ -30,6 +31,7 @@ const CSMain = () => {
             <Route path="notice/frm" element={<NoticeWrite />} />
             <Route path="notice/detail/:noticeNo" element={<NoticeDetail />} />
             <Route path="notice/update/:noticeNo" element={<NoticeUpdate />} />
+            <Route path="pq" element={<PQList />} />
           </Routes>
         </section>
       </div>
