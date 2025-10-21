@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import Header from "./component/common/Header";
 import Footer from "./component/common/Footer";
 import Main from "./component/common/Main";
@@ -72,52 +72,68 @@ function App() {
 
     setAuthReady(true);
   };
+  const location = useLocation();
   return (
-    <div className="wrap">
-      <Header />
-      <main className="content">
-        <Routes>
-          <Route path="/" element={<Main />} />
-          <Route path="/cs/*" element={<CSMain />} />
-          <Route path="/booking/main" element={<BookingMain />} />
+    <>
+      {location.pathname === "/" ? (
+        <div className="wrap">
+          <Header />
+          <Routes>
+            <Route path="/" element={<Main></Main>} />
+          </Routes>
+          <Footer />
+        </div>
+      ) : (
+        <div className="wrap">
+          <Header />
+          <main className="content">
+            <Routes>
+              <Route path="/" element={<Main />} />
+              <Route path="/cs/*" element={<CSMain />} />
+              <Route path="/booking/main" element={<BookingMain />} />
 
-          <Route path="/admin/main" element={<AdminMain />}>
-            <Route path="movie/list" element={<AdminList />} />
-            <Route path="movie/regist" element={<AdminRegist />} />
-            <Route path="schedule/regist" element={<AdminScheduleRegist />} />
-          </Route>
+              <Route path="/admin/main" element={<AdminMain />}>
+                <Route path="movie/list" element={<AdminList />} />
+                <Route path="movie/regist" element={<AdminRegist />} />
+                <Route
+                  path="schedule/regist"
+                  element={<AdminScheduleRegist />}
+                />
+              </Route>
 
-          <Route path="/member/join" element={<Join></Join>} />
-          <Route path="/common/login" element={<Login></Login>} />
-          <Route
-            path="/member/memberMain"
-            element={<MemberMain></MemberMain>}
-          />
-          <Route
-            path="/member/memberUpdate"
-            element={<MemberUpdate></MemberUpdate>}
-          ></Route>
-          <Route
-            path="/member/memberDelete"
-            element={<MemberDelete></MemberDelete>}
-          ></Route>
-          <Route path="/movie/list" element={<MovieList />} />
-          <Route
-            path="/member/watchedMovieList"
-            element={<WatchedMovieList></WatchedMovieList>}
-          />
-          <Route
-            path="/member/bookingMovieList"
-            element={<BookingMovieList></BookingMovieList>}
-          />
-          <Route
-            path="/membewr/noMemberInfo"
-            element={<NoMemberInfo></NoMemberInfo>}
-          />
-        </Routes>
-      </main>
-      <Footer />
-    </div>
+              <Route path="/member/join" element={<Join></Join>} />
+              <Route path="/common/login" element={<Login></Login>} />
+              <Route
+                path="/member/memberMain"
+                element={<MemberMain></MemberMain>}
+              />
+              <Route
+                path="/member/memberUpdate"
+                element={<MemberUpdate></MemberUpdate>}
+              ></Route>
+              <Route
+                path="/member/memberDelete"
+                element={<MemberDelete></MemberDelete>}
+              ></Route>
+              <Route path="/movie/list" element={<MovieList />} />
+              <Route
+                path="/member/watchedMovieList"
+                element={<WatchedMovieList></WatchedMovieList>}
+              />
+              <Route
+                path="/member/bookingMovieList"
+                element={<BookingMovieList></BookingMovieList>}
+              />
+              <Route
+                path="/membewr/noMemberInfo"
+                element={<NoMemberInfo></NoMemberInfo>}
+              />
+            </Routes>
+          </main>
+          <Footer />
+        </div>
+      )}
+    </>
   );
 }
 

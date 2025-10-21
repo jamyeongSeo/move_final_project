@@ -1,8 +1,15 @@
+import { Margin } from "@mui/icons-material";
+
 const Main = () => {
   return (
-    <section className="section">
-      <div className="page-title">박스오피스</div>
-    </section>
+    <body
+      style={{
+        backgroundColor: "var(--main1)",
+        margin: "0px",
+        width: "100%",
+        height: "100%",
+      }}
+    ></body>
   );
 };
 export default Main;

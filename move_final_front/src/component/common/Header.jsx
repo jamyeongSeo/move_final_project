@@ -1,14 +1,20 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./default.css";
 import { useRecoilState } from "recoil";
 import { loginIdState, memberLevelState } from "../utils/RecoilData";
 import axios from "axios";
 
 const Header = () => {
+  const location = useLocation();
   return (
     <header className="header-wrap">
       <div className="header-div">
-        <Link to="/" className="header-logo">
+        <Link
+          to="/"
+          className={
+            location.pathname === "/" ? "header-logo-main" : "header-logo"
+          }
+        >
           I_MOVE_U
         </Link>
         <HeaderNavi />
