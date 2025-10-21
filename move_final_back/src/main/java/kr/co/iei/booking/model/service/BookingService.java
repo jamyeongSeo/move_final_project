@@ -30,4 +30,11 @@ public class BookingService {
 		return map;
 	}
 
+	public Map selectSchedule(int movieNo) {
+		List oneSchedule = bookingDao.selectSchedule(movieNo);
+		Map map = new HashMap<String, Object>();
+		map.put("oneSchedule", oneSchedule);
+		return map;
+	}
+
 }
