@@ -1,6 +1,7 @@
 package kr.co.iei.cs.notice.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.web.multipart.MultipartFile;
@@ -8,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import kr.co.iei.cs.notice.model.dto.NoticeDTO;
 import kr.co.iei.cs.notice.model.dto.NoticeFileDTO;
 import kr.co.iei.utils.PageInfo;
-import kr.co.iei.utils.SearchPageInfo;
+
 
 @Mapper
 public interface NoticeDao {
@@ -19,7 +20,7 @@ public interface NoticeDao {
 
 	int searchTotalCount(String noticeTitle);
 
-	List searchNoticeList(SearchPageInfo spi);
+	List searchNoticeList(Map map);
 
 	int insertNotice(NoticeDTO notice);
 
