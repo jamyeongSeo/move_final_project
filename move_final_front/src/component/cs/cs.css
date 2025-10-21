@@ -150,6 +150,12 @@
   margin-top: 32px;
   gap: 18px;
 }
+.btn-zone > .btn-red {
+  width: 72px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .writeBtn > .btn-red {
   width: 96px;
 }

@@ -205,6 +205,10 @@
 .memberModal-content-wrap > div {
   margin: 20px 0px;
 }
+.memberModal-content-wrap > div > input {
+  font-size: 15px;
+  margin-bottom: 3px;
+}
 .memberModal-btn {
   padding: 5px 75px;
 }
@@ -519,7 +523,9 @@
   border-radius: 9px;
   font-family: ns-r;
   background-color: var(--main1);
-  padding: 5px 7px;
+  padding: 4px 7px;
+  font-size: 15px;
+  height: 36px;
   border: 1px solid var(--main1);
 }
 .memberMovie-booking-btn > button:hover {

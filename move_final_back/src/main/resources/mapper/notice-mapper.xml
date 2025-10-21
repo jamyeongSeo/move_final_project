@@ -56,7 +56,7 @@
 	</select>
 	
 	<delete id="deleteNotice">
-		delete from notice_tbl where noticeNo = #{noticeNo}
+		delete from notice_tbl where notice_no = #{noticeNo}
 	</delete>
 	
 	<update id="updateNotice">

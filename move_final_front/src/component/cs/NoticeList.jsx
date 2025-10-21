@@ -3,6 +3,12 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import PageNavigation from "../utils/PageNavigation";
 import AddBoxIcon from "@mui/icons-material/AddBox";
+import { useRecoilState } from "recoil";
+import {
+  authReadyState,
+  loginIdState,
+  memberLevelState,
+} from "../utils/RecoilData";
 
 const NoticeList = () => {
   const [noticeList, setNoticeList] = useState([]);
@@ -10,6 +16,9 @@ const NoticeList = () => {
   const [pi, setPi] = useState(null);
   const [totalCount, setTotalCount] = useState(0);
   const [search, setSearch] = useState("");
+  const [authReady, setAuthReady] = useRecoilState(authReadyState);
+  const [memberLevel, setMemberLevel] = useRecoilState(memberLevelState);
+  const [memberId, setMemberId] = useRecoilState(loginIdState);
   const noticeFunc = () => {
     axios
       .get(
@@ -41,9 +50,11 @@ const NoticeList = () => {
     <section className="section notice-list-wrap">
       <div className="title-wrap">
         <div className="title">공지사항</div>
-        <div className="add-icon" onClick={() => navigate("/cs/notice/frm")}>
-          <AddBoxIcon />
-        </div>
+        {authReady && memberLevel === 1 && (
+          <div className="add-icon" onClick={() => navigate("/cs/notice/frm")}>
+            <AddBoxIcon />
+          </div>
+        )}
       </div>
       <div className="input-wrap">
         <div className="list-count">전체 : {totalCount}건</div>
