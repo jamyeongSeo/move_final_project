@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./booking.css";
 import axios from "axios";
 import Calendar from "react-calendar";
@@ -7,6 +7,7 @@ import BookingSchedule from "./BookingSchedule";
 
 const BookingMain = () => {
   const [bookingMovieList, setBookingMovieList] = useState([]);
+
   useEffect(() => {
     axios
       .get(`${import.meta.env.VITE_BACK_SERVER}/booking/list`)
@@ -17,7 +18,7 @@ const BookingMain = () => {
         console.log(err);
       });
   }, []);
-
+  useEffect(() => {}, []);
   return (
     <div className="content-wrap">
       <div className="content">
