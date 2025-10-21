@@ -136,6 +136,11 @@ const SearchIdModal = (props) => {
                     type="button"
                     className="btn-red memberModal-btn"
                     onClick={closeModal}
+                    style={{
+                      padding: "3px 8px",
+                      height: "33px",
+                      width: "100px",
+                    }}
                   >
                     닫기
                   </button>
