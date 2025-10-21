@@ -50,10 +50,15 @@ const BookingMovieList = () => {
                   </ul>
                 </div>
                 <div className="memberMovie-booking-btn">
-                  <button style={{ marginRight: "5px" }} className="btn-red">
+                  <button
+                    style={{ marginRight: "5px", width: "110px" }}
+                    className="btn-red"
+                  >
                     예매내역 발송
                   </button>
-                  <button className="btn-red">예매 취소</button>
+                  <button style={{ width: "80px" }} className="btn-red">
+                    예매 취소
+                  </button>
                 </div>
               </div>
             </div>

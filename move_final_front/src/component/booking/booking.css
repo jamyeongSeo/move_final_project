@@ -27,14 +27,16 @@
   margin-bottom: 20px;
   padding-left: 10px;
 }
-
+.booking-select-wrap {
+  display: flex;
+  justify-content: left;
+}
 .booking-content-box {
   margin: 0 auto;
   width: 80%;
   border: 3px solid var(--gray3);
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
-  height: 500px;
   margin-top: 30px;
 }
 
@@ -58,7 +60,7 @@
   width: 100%;
   border-bottom: 1px solid var(--gray3);
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
 }
 [class^="one-schedule"] {
   display: flex;
@@ -103,4 +105,92 @@
 
 [class$="sun"] {
   color: var(--main5);
+}
+.booking-movie-select {
+  display: flex;
+  width: 40%;
+  justify-content: left;
+  padding-left: 20px;
+  flex-wrap: wrap;
+}
+.booking-movie-list {
+  height: 500px;
+  margin: 0 auto;
+  text-align: center;
+  overflow-y: scroll;
+  padding-right: 20px;
+}
+
+.booking-movie-content {
+  border: 1px solid var(--gray3);
+  border-radius: 10px;
+  text-align: center;
+  padding: 5px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.booking-movie-content:hover {
+  box-shadow: 0px 1px 1px var(--gray6);
+  text-shadow: 0px 1px 1px var(--gray4);
+}
+
+.booking-category-title {
+  margin: 10 auto;
+  width: 202px;
+  text-align: center;
+}
+
+.booking-category-title > h3 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.booking-movie-title-box {
+  text-align: left;
+}
+.booking-movie-grade {
+  width: 20%;
+  display: flex;
+  justify-content: center;
+}
+
+.booking-movie-grade > img {
+  width: 50%;
+  object-fit: scale-down;
+  height: 35.99px;
+}
+
+.booking-schedule-select {
+  width: 50%;
+}
+.booking-schedule-content {
+  display: flex;
+  width: 100%;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.booking-schedule-zone {
+  width: 45%;
+  border: 1px solid var(--gray5);
+  height: 70px;
+  border-radius: 8px;
+}
+
+.booking-schedule-title {
+  text-align: center;
+
+  margin: 10 auto;
+}
+.booking-schedule-title > h3 {
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+.booking-schedule-box {
+  padding: 10px;
+  display: flex;
 }

@@ -11,4 +11,6 @@ public interface BookingDao {
 
 	List selectDateList();
 
+	List selectSchedule(int movieNo);
+
 }

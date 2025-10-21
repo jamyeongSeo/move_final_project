@@ -3,29 +3,33 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import "./booking.css";
 import { useEffect, useState } from "react";
 
-const BookingSchedule = () => {
-  const [bookingDate, setBookingDate] = useState(0);
+const BookingSchedule = (props) => {
+  const setSelectedDate = props.setSelectedDate;
   const [bookingSchedule, setBookingSchedule] = useState([]);
 
+  const [scheduleList, setScheduleList] = useState([]);
   const date = new Date();
-  const today = new Date(date.setDate(date.getDate() + bookingDate));
-  const currentDay = new Date();
-  const scheduleList = [];
-  scheduleList.push(currentDay);
 
-  for (let i = 0; scheduleList.length < 7; i++) {
-    const nextDay = new Date(today.setDate(today.getDate() + 1));
-    scheduleList.push(nextDay);
-  }
-  //다음날로 바꾸고
-  console.log(scheduleList);
+  const [bookingDate, setBookingDate] = useState(new Date(date));
+  useEffect(() => {
+    scheduleList.length = 0;
+    for (let i = 0; i < 7; i++) {
+      const nextDay = new Date(bookingDate);
+      nextDay.setDate(bookingDate.getDate() + i);
+      scheduleList.push(nextDay);
+    }
+    setScheduleList(scheduleList);
+  }, [bookingDate]);
+
   return (
     <ul className="schedule-select-box">
       <li className="side-back-arrow-box">
         <div>
           <span
             onClick={() => {
-              setBookingDate(bookingDate - 7);
+              const prevWeek = new Date(bookingDate);
+              prevWeek.setDate(bookingDate.getDate() - 7);
+              setBookingDate(prevWeek);
             }}
           >
             <ArrowBackIosNewIcon />
@@ -34,7 +38,15 @@ const BookingSchedule = () => {
       </li>
       {scheduleList.map((schedule, index) => {
         return (
-          <li key={"one-schedule-" + index} className="one-schedule">
+          <li
+            key={"one-schedule-" + index}
+            className="one-schedule"
+            onClick={() => {
+              setSelectedDate(
+                "" + (schedule.getMonth() + 1) + schedule.getDate()
+              );
+            }}
+          >
             <div className="schedule-date-box">
               <div
                 className={
@@ -101,7 +113,9 @@ const BookingSchedule = () => {
         <div>
           <span
             onClick={() => {
-              setBookingDate(bookingDate + 7);
+              const nextWeek = new Date(bookingDate);
+              nextWeek.setDate(bookingDate.getDate() + 7);
+              setBookingDate(nextWeek);
             }}
           >
             <ArrowForwardIosIcon />
