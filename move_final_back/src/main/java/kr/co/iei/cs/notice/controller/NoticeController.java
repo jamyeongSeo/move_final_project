@@ -74,6 +74,22 @@ public class NoticeController {
 		NoticeDTO notice = noticeService.selectOneNotice(noticeNo);
 		return ResponseEntity.ok(notice);
 	}
+	@GetMapping(value="/file/{filepath}")
+	public ResponseEntity<Resource> fileDown(@PathVariable String filepath) throws FileNotFoundException{
+		String savepath = root +"/notice/";
+		File file = new File(savepath+filepath);
+		System.out.println(file.exists());
+		Resource resource = new InputStreamResource(new FileInputStream(file));
+		HttpHeaders header = new HttpHeaders();
+		header.add("Cache-Control", "no-cache, no-store, must-revalidate"); //캐시 사용안하고 저장도 안할거고 무조건 나한테 와서 받아가라
+		
+		return ResponseEntity
+				.status(HttpStatus.OK)
+				.headers(header)
+				.contentLength(file.length())
+				.contentType(MediaType.APPLICATION_OCTET_STREAM)
+				.body(resource);
+	}
 	@DeleteMapping(value="/delete/{noticeNo}")
 	public ResponseEntity<Integer> deleteNotice(@PathVariable int noticeNo){
 		NoticeDTO notice = noticeService.deleteNotice(noticeNo);
@@ -90,7 +106,7 @@ public class NoticeController {
 			return ResponseEntity.ok(1);
 		}
 	}
-	@PatchMapping(value="/update")
+	@PatchMapping
 	public ResponseEntity<Integer> updateNotice(@ModelAttribute NoticeDTO notice, @ModelAttribute MultipartFile[] noticeFile){
 		List<NoticeFileDTO> noticeFileList = new ArrayList<NoticeFileDTO>();
 		if(noticeFile != null) {
@@ -108,7 +124,7 @@ public class NoticeController {
 		NoticeDTO nd = noticeService.updateNotice(notice,noticeFileList);
 		
 		if(nd.getNoticeFileList() != null) {
-			String savepath = root + "/board/";
+			String savepath = root + "/notice/";
 			for(NoticeFileDTO delFile : nd.getNoticeFileList()) {
 				File delNoticeFile = new File(savepath+delFile.getFilepath());
 				delNoticeFile.delete();

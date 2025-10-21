@@ -22,6 +22,7 @@ import kr.co.iei.admin.model.service.AdminService;
 import kr.co.iei.movie.model.dto.MovieDTO;
 import kr.co.iei.movie.model.dto.MovieFileDTO;
 import kr.co.iei.utils.FileUtil;
+import kr.co.iei.admin.model.dto.ScheduleDTO;
 
 @CrossOrigin("*")
 @RestController
@@ -41,7 +42,7 @@ public class AdminController {
 		return ResponseEntity.ok(map);
 	}
 	
-	@PostMapping
+	@PostMapping(value="/movie")
 	public ResponseEntity<Integer> insertMoiveInfo(@ModelAttribute MovieDTO movie,
 												@ModelAttribute MultipartFile movieThumbImg){		
 			String savepath = root + "/thumb/";
@@ -52,6 +53,16 @@ public class AdminController {
 			return ResponseEntity.ok(result);
 		}
 	
-	
+	/*스케줄 등록*/
+	@PostMapping(value="/schedule")
+	public ResponseEntity<ScheduleDTO> insertMovieSchedule(@RequestBody ScheduleDTO schedule) {
+		ScheduleDTO s = adminService.insertSchedule(schedule);
+		if(s != null) {
+			return ResponseEntity.ok(s);
+		}else {
+			return ResponseEntity.status(404).build();
+		}
+	}
+
 	
 }

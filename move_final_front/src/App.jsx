@@ -22,6 +22,11 @@ import {
 import axios from "axios";
 import { useEffect } from "react";
 import AdminRegist from "./component/admin/AdminRegist";
+import WatchedMovieList from "./component/member/WatchedMovieList";
+import BookingMovieList from "./component/member/BookingMovieList";
+import NoMemberInfo from "./component/member/NoMemberInfo";
+
+import AdminScheduleRegist from "./component/admin/AdminScheduleRegist";
 
 function App() {
   const [memberId, setMemberId] = useRecoilState(loginIdState);
@@ -77,10 +82,10 @@ function App() {
           <Route path="/booking/main" element={<BookingMain />} />
 
           <Route path="/admin/main" element={<AdminMain />}>
-            <Route path="movie/list" element={<AdminList/>}/>
-            <Route path="movie/regist" element={<AdminRegist />}/>
+            <Route path="movie/list" element={<AdminList />} />
+            <Route path="movie/regist" element={<AdminRegist />} />
+            <Route path="schedule/regist" element={<AdminScheduleRegist />} />
           </Route>
-          
 
           <Route path="/member/join" element={<Join></Join>} />
           <Route path="/common/login" element={<Login></Login>} />
@@ -97,6 +102,18 @@ function App() {
             element={<MemberDelete></MemberDelete>}
           ></Route>
           <Route path="/movie/list" element={<MovieList />} />
+          <Route
+            path="/member/watchedMovieList"
+            element={<WatchedMovieList></WatchedMovieList>}
+          />
+          <Route
+            path="/member/bookingMovieList"
+            element={<BookingMovieList></BookingMovieList>}
+          />
+          <Route
+            path="/membewr/noMemberInfo"
+            element={<NoMemberInfo></NoMemberInfo>}
+          />
         </Routes>
       </main>
       <Footer />

@@ -15,9 +15,10 @@ const NoticeWrite = () => {
   const write = () => {
     if (noticeTitle !== "" && noticeContent !== "") {
       const form = new FormData();
+      console.log(memberId);
       form.append("noticeTitle", noticeTitle);
       form.append("noticeContent", noticeContent);
-      form.append("noticeWriter", memberId);
+      form.append("memberId", memberId);
       for (let i = 0; i < noticeFile.length; i++) {
         form.append("noticeFile", noticeFile[i]);
       }
@@ -45,6 +46,8 @@ const NoticeWrite = () => {
       </div>
       <div className="frm-input-wrap">
         <NoticeFrm
+          memberId={memberId}
+          setMemberId={setMemberId}
           noticeTitle={noticeTitle}
           setNoticeTitle={setNoticeTitle}
           noticeFile={noticeFile}

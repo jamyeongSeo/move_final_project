@@ -4,35 +4,35 @@ import Swal from "sweetalert2";
 import { iconButtonClasses } from "@mui/material";
 
 const AdminRegist = () =>{
-    const [movieTitle, setMovieTitle] = useState("");
-    const [movieStatus, setMovieStatus] = useState(0);
-    const [movieContent, setMovieContent] = useState("");
-    const [movieThumb, setMovieThumb] = useState(null);
-    const [movieGenre, setMovieGenre] = useState(0);
-    const [movieGrade, setMovieGrade] = useState(0);
-    const [movieRuntime, setMovieRuntime] = useState(0);
-    const [movieDirector, setMovieDirector] = useState("");
-    const [movieActor, setMovieActor] = useState(0);
-    const [movieRelease, setMovieRelease] = useState(0);
-    const [movieType, setMovieType] = useState(0);
+    const [movieTitle, setMovieTitle] = useState(""); //영화이름
+    const [movieStatus, setMovieStatus] = useState(""); //영화 상태 --1:개봉예정 2:상영중 3:상영종료 4:재개봉
+    const [movieContent, setMovieContent] = useState(""); //영화 소개
+    const [movieThumb, setMovieThumb] = useState(null); //영화 포스터
+    const [movieGenre, setMovieGenre] = useState(0); //영화 장르
+    const [movieGrade, setMovieGrade] = useState(0); //영화 등급
+    const [movieRuntime, setMovieRuntime] = useState(0); //상영시간
+    const [movieDirector, setMovieDirector] = useState(""); //감독
+    const [movieActor, setMovieActor] = useState(""); //주연
+    const [movieRelease, setMovieRelease] = useState(0); //개봉일자
+    const [movieType, setMovieType] = useState(0); //영화 등급
 
     const adminRegist = () =>{
         if (AdminRegist !== "") {
             const registForm = new FormData();
-            form.append("movieTitle", movieTitle);
-            form.append("movieStatus", movieStatus);
-            form.append("movieContent", movieContent);
-            form.append("movieThumb", movieThumb);
-            form.append("movieGenre", movieGenre);
-            form.append("movieGrade", movieGrade);
-            form.append("movieRuntime", movieRuntime);
-            form.append("movieDirector", movieDirector);
-            form.append("movieActor", movieActor);
-            form.append("movieRelease", movieRelease);
-            form.append("movieType", movieType);
+            registForm.append("movieTitle", movieTitle);
+            registForm.append("movieStatus", movieStatus);
+            registForm.append("movieContent", movieContent);
+            registForm.append("movieThumb", movieThumb);
+            registForm.append("movieGenre", movieGenre);
+            registForm.append("movieGrade", movieGrade);
+            registForm.append("movieRuntime", movieRuntime);
+            registForm.append("movieDirector", movieDirector);
+            registForm.append("movieActor", movieActor);
+            registForm.append("movieRelease", movieRelease);
+            registForm.append("movieType", movieType);
         }
         axios
-        .post(`${import.meta.env.VITE_BACK_SERVER}/movie`, form)
+        .post(`${import.meta.env.VITE_BACK_SERVER}/movie`, registForm)
         .then((res)=>{
             console.log(res);
             Swal.fire({
@@ -44,7 +44,7 @@ const AdminRegist = () =>{
                 console.log(err);
                 Swal.fire({
                     title:"등록 실패",
-                    text:"등록이 실패했습니다",
+                    text:"등록이 실패했습니다.",
                     icon:"warning"
                 })
             })

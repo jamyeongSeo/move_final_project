@@ -15,8 +15,8 @@ const MemberUpdate = () => {
       ],
       text: "내 정보",
     },
-    { url: "/member/join", text: "내가 본 영화" },
-    { url: "/member/join", text: "예약 / 결제" },
+    { url: "/member/watchedMovieList", text: "내가 본 영화" },
+    { url: "/member/bookingMovieList", text: "예약 / 결제" },
   ]);
 
   const updateCheckPw = useRef();
@@ -95,6 +95,9 @@ const MemberUpdate = () => {
             >
               확인
             </button>
+            <Link to="/member/memberMain" className="btn-red member-mypage-btn">
+              취소
+            </Link>
           </div>
         </section>
         <section ref={searchPwModal} className="login-searchPwModal-none">
