@@ -107,17 +107,22 @@ public class MemberService {
 		List<CouponDTO> couponList = memberDao.selectCoupon(memberId);
 		return couponList;
 	}
+
 	
-	/*----------deleteMember-----------
-	public int deleteMember(MemberDTO member) {
-		MemberDTO m = memberDao.selectMember(member.getMemberId());
-		if(encoder.matches(member.getMemberPw(), m.getMemberPw())) {
-			int result = memberDao.deleteMember(member);	
-			return result;
+	/*----------deleteMember-----------*/
+	public int searchMember(String memberId, String memberPw) {
+		MemberDTO m = memberDao.selectMember(memberId);
+		if(encoder.matches(memberPw, m.getMemberPw())) {
+			return 1;//조회 결과 있음
 		}
-		return -1;
+		return 0;//조회 결과 없음
+	}
+	
+	public int deleteMember(String memberId) {
+		int result = memberDao.deleteMember(memberId);
+		return result;
 		
-	}*/
+	}
 	
 	
 }

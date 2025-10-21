@@ -63,8 +63,8 @@
 		order by coupon_box_issue_dt asc
 	</select>
 	
-	<!-- 회원 탈퇴 
+	<!-- 회원 탈퇴 -->
 	<delete id="deleteMember">
-		delete from member_tbl where member_id=#{memberId} and member_pw=#{memberPw}
-	</delete>-->
+		delete from member_tbl where member_id=#{memberId}
+	</delete>
 </mapper>

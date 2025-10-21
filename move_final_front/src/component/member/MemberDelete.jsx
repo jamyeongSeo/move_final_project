@@ -1,19 +1,16 @@
 import { useState } from "react";
 import LeftSideMenu from "../utils/LeftSideMenu";
 import { Link, useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import { loginIdState } from "../utils/RecoilData";
 import NoMemberInfo from "./NoMemberInfo";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useRecoilState } from "recoil";
+import { loginIdState } from "../utils/RecoilData";
 
 const MemberDelete = () => {
-  const memberId = useRecoilState(loginIdState);
-  const [memberPw, setMemberPw] = useState();
-  const [member, setMember] = useState({
-    memberId: memberId,
-    memberPw: memberPw,
-  });
+  const [memberId, setmemberId] = useRecoilState(loginIdState);
+  const [memberPw, setMemberPw] = useState("");
+
   const [menus, setMenus] = useState([
     {
       url: [
@@ -29,29 +26,45 @@ const MemberDelete = () => {
   const navigate = useNavigate();
   const BackServer = import.meta.env.VITE_BACK_SERVER;
   const memberDelete = () => {
-    /*
     axios
-      .delete(`${BackServer}/member`, member)
+      .post(
+        `${BackServer}/member/searchMember?memberId=${memberId}&&memberPw=${memberPw}`
+      )
       .then((res) => {
-        console.log(res.data);
         if (res.data == 1) {
-          Swal.fire({
-            title: "탈퇴 완료",
-            icon: "success",
-          });
-          navigate("/");
+          axios
+            .delete(`${BackServer}/member/${memberId}`)
+            .then((res) => {
+              console.log(res.data);
+              if (res.data == 1) {
+                Swal.fire({
+                  title: "탈퇴 완료",
+                  icon: "success",
+                });
+                navigate("/");
+              } else {
+                Swal.fire({
+                  title: "탈퇴 실패",
+                  text: "회원탈퇴 실패했습니다.",
+                  icon: "error",
+                });
+                navigate("/member/memberMain");
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         } else {
           Swal.fire({
-            title: "탈퇴 실패",
-            text: "입력정보를 다시 확인해주세요",
+            title: "조회 실패",
+            text: "비밀번호를 재확인 해주세요",
             icon: "info",
           });
-          navigate("/member/memberMain");
         }
       })
       .catch((err) => {
         console.log(err);
-      });*/
+      });
   };
   return (
     <>
