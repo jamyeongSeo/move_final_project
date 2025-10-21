@@ -315,18 +315,3 @@ background-color, margin는 각자 개인 className에 설정해서 사용하면
   margin: 0;
   color: var(--gray4);
 }
-
-.header-logo-main {
-  position: absolute;
-  left: 50%;
-  top: 24px;
-  transform: translateX(-50%);
-  z-index: 2;
-  font-size: 32px;
-  font-family: ns-black;
-  color: var(--main5);
-  padding: 0 8px;
-  line-height: 1;
-  font-style: italic;
-  margin-bottom: 8px;
-}

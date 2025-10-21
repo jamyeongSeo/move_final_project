@@ -1,0 +1,25 @@
+.main-box-office-wrap {
+  width: 915px;
+  margin: 85px auto;
+  overflow: hidden;
+}
+.main-box-office-title {
+  color: var(--main5);
+  font-size: 20px;
+  font-family: ns-b;
+  margin-bottom: 40px;
+}
+.main-box-office-post-wrap {
+}
+.main-box-office-post {
+  display: flex;
+  justify-content: space-between;
+}
+.main-movie-schedule-wrap {
+  margin-top: 135px;
+  background-color: var(--main3);
+  border: 1px solid var(--main3);
+  min-height: 780px;
+  border-top-left-radius: 88px;
+  border-top-right-radius: 88px;
+}
