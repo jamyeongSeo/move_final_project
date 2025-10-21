@@ -40,6 +40,9 @@ public interface MemberDao {
 	//------------회원탈퇴
 	int deleteMember(String memberId);
 
+	//----------회원정보수정
+	int updateMember(MemberDTO member);
+
 	
 
 }

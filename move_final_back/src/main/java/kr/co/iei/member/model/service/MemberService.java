@@ -112,8 +112,10 @@ public class MemberService {
 	/*----------deleteMember-----------*/
 	public int searchMember(String memberId, String memberPw) {
 		MemberDTO m = memberDao.selectMember(memberId);
-		if(encoder.matches(memberPw, m.getMemberPw())) {
-			return 1;//조회 결과 있음
+		if(m != null) {
+			if(encoder.matches(memberPw, m.getMemberPw())) {
+				return 1;//조회 결과 있음
+			}			
 		}
 		return 0;//조회 결과 없음
 	}
@@ -122,6 +124,15 @@ public class MemberService {
 		int result = memberDao.deleteMember(memberId);
 		return result;
 		
+	}
+	
+	/*----------updateMember----------*/
+	@Transactional
+	public int updateMember(MemberDTO member) {
+		String memberPw = encoder.encode(member.getMemberPw());
+		member.setMemberPw(memberPw);
+		int result = memberDao.updateMember(member);
+		return result;
 	}
 	
 	

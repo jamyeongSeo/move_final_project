@@ -103,7 +103,10 @@ const MemberMain = () => {
                   생년월일 : {member.memberBirth}
                 </div>
                 <div className="member-mypage-content-right">
-                  성별 : {member.memberGender == 1 ? "남자" : "여자"}
+                  성별 :{" "}
+                  {member.memberGender == 1
+                    ? "남자"
+                    : member.memberGender == 2 && "여자"}
                 </div>
               </div>
 

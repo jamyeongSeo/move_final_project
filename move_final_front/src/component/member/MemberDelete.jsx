@@ -26,45 +26,53 @@ const MemberDelete = () => {
   const navigate = useNavigate();
   const BackServer = import.meta.env.VITE_BACK_SERVER;
   const memberDelete = () => {
-    axios
-      .post(
-        `${BackServer}/member/searchMember?memberId=${memberId}&&memberPw=${memberPw}`
-      )
-      .then((res) => {
-        if (res.data == 1) {
-          axios
-            .delete(`${BackServer}/member/${memberId}`)
-            .then((res) => {
-              console.log(res.data);
-              if (res.data == 1) {
-                Swal.fire({
-                  title: "탈퇴 완료",
-                  icon: "success",
-                });
-                navigate("/");
-              } else {
-                Swal.fire({
-                  title: "탈퇴 실패",
-                  text: "회원탈퇴 실패했습니다.",
-                  icon: "error",
-                });
-                navigate("/member/memberMain");
-              }
-            })
-            .catch((err) => {
-              console.log(err);
+    if (memberId != "" && memberPw != "") {
+      axios
+        .post(
+          `${BackServer}/member/searchMember?memberId=${memberId}&&memberPw=${memberPw}`
+        )
+        .then((res) => {
+          if (res.data == 1) {
+            axios
+              .delete(`${BackServer}/member/${memberId}`)
+              .then((res) => {
+                console.log(res.data);
+                if (res.data == 1) {
+                  Swal.fire({
+                    title: "탈퇴 완료",
+                    icon: "success",
+                  });
+                  navigate("/");
+                } else {
+                  Swal.fire({
+                    title: "탈퇴 실패",
+                    text: "회원탈퇴 실패했습니다.",
+                    icon: "error",
+                  });
+                  navigate("/member/memberMain");
+                }
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          } else {
+            Swal.fire({
+              title: "조회 실패",
+              text: "비밀번호를 재확인 해주세요",
+              icon: "info",
             });
-        } else {
-          Swal.fire({
-            title: "조회 실패",
-            text: "비밀번호를 재확인 해주세요",
-            icon: "info",
-          });
-        }
-      })
-      .catch((err) => {
-        console.log(err);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      Swal.fire({
+        title: "입력갑 확인",
+        text: "비밀번호를 입력해주세요",
+        icon: "info",
       });
+    }
   };
   return (
     <>
