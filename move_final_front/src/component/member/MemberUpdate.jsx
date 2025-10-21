@@ -8,6 +8,7 @@ import { useRecoilState } from "recoil";
 import { loginIdState } from "../utils/RecoilData";
 import Swal from "sweetalert2";
 import JoinEmailCode from "./JoinEmailCode";
+import NoMemberInfo from "./NoMemberInfo";
 
 const MemberUpdate = () => {
   const [memberId, setMemberId] = useRecoilState(loginIdState);
