@@ -136,6 +136,12 @@ const MemberUpdate = () => {
 
               <div className="member-mypage-btn-wrap">
                 <button
+                  style={{
+                    marginRight: "10px",
+                    padding: "3px 8px",
+                    height: "36.67px",
+                    width: "145px",
+                  }}
                   type="button"
                   className="btn-red member-mypage-btn"
                   onClick={nextUpdate}
@@ -143,6 +149,7 @@ const MemberUpdate = () => {
                   확인
                 </button>
                 <Link
+                  style={{ padding: "5px 56px" }}
                   to="/member/memberMain"
                   className="btn-red member-mypage-btn"
                 >
@@ -537,10 +544,23 @@ const MemberUpdateMain = (props) => {
           </div>
         </div>
         <div className="member-mypage-btn-wrap">
-          <button type="submit" className="btn-red member-mypage-btn">
+          <button
+            style={{
+              marginRight: "10px",
+              padding: "3px 8px",
+              height: "36.67px",
+              width: "145px",
+            }}
+            type="submit"
+            className="btn-red member-mypage-btn"
+          >
             수정
           </button>
-          <Link to="/member/memberMain" className="btn-red member-mypage-btn">
+          <Link
+            style={{ padding: "5px 56px" }}
+            to="/member/memberMain"
+            className="btn-red member-mypage-btn"
+          >
             취소
           </Link>
         </div>

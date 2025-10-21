@@ -119,10 +119,20 @@ const MemberDelete = () => {
                 </div>
 
                 <div className="member-mypage-btn-wrap">
-                  <button type="submit" className="btn-red member-mypage-btn">
+                  <button
+                    style={{
+                      marginRight: "10px",
+                      padding: "3px 8px",
+                      height: "36.67px",
+                      width: "145px",
+                    }}
+                    type="submit"
+                    className="btn-red member-mypage-btn"
+                  >
                     탈퇴
                   </button>
                   <Link
+                    style={{ padding: "5px 56px" }}
                     to="/member/memberMain"
                     className="btn-red member-mypage-btn"
                   >

@@ -124,6 +124,9 @@ const MemberMain = () => {
 
             <div className="member-mypage-btn-wrap">
               <Link
+                style={{
+                  padding: "5px 60px",
+                }}
                 to="/member/memberUpdate"
                 className="btn-red member-mypage-btn"
               >
