@@ -4,16 +4,18 @@ import "./booking.css";
 import { useEffect, useState } from "react";
 
 const BookingSchedule = (props) => {
+  const setSelectedDate = props.setSelectedDate;
   const [bookingSchedule, setBookingSchedule] = useState([]);
 
   const [scheduleList, setScheduleList] = useState([]);
   const date = new Date();
 
-  const [bookingDate, setBookingDate] = useState(new Date());
+  const [bookingDate, setBookingDate] = useState(new Date(date));
   useEffect(() => {
-    scheduleList.push(bookingDate);
+    scheduleList.length = 0;
     for (let i = 0; i < 7; i++) {
-      const nextDay = new Date(bookingDate.setDate(bookingDate.getDate() + 1));
+      const nextDay = new Date(bookingDate);
+      nextDay.setDate(bookingDate.getDate() + i);
       scheduleList.push(nextDay);
     }
     setScheduleList(scheduleList);
@@ -23,14 +25,28 @@ const BookingSchedule = (props) => {
     <ul className="schedule-select-box">
       <li className="side-back-arrow-box">
         <div>
-          <span onClick={() => {}}>
+          <span
+            onClick={() => {
+              const prevWeek = new Date(bookingDate);
+              prevWeek.setDate(bookingDate.getDate() - 7);
+              setBookingDate(prevWeek);
+            }}
+          >
             <ArrowBackIosNewIcon />
           </span>
         </div>
       </li>
       {scheduleList.map((schedule, index) => {
         return (
-          <li key={"one-schedule-" + index} className="one-schedule">
+          <li
+            key={"one-schedule-" + index}
+            className="one-schedule"
+            onClick={() => {
+              setSelectedDate(
+                "" + (schedule.getMonth() + 1) + schedule.getDate()
+              );
+            }}
+          >
             <div className="schedule-date-box">
               <div
                 className={
@@ -97,7 +113,9 @@ const BookingSchedule = (props) => {
         <div>
           <span
             onClick={() => {
-              setBookingDate(bookingDate.setDate(bookingDate.getDate() + 7));
+              const nextWeek = new Date(bookingDate);
+              nextWeek.setDate(bookingDate.getDate() + 7);
+              setBookingDate(nextWeek);
             }}
           >
             <ArrowForwardIosIcon />
