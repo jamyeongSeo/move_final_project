@@ -13,4 +13,5 @@ public class PageInfo {
 	private int pageNo;
 	private int totalPage;
 	private int pageNaviSize;
+
 }

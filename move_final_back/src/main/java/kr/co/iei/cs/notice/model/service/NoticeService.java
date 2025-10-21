@@ -13,8 +13,7 @@ import kr.co.iei.cs.notice.model.dto.NoticeDTO;
 import kr.co.iei.cs.notice.model.dto.NoticeFileDTO;
 import kr.co.iei.utils.PageInfo;
 import kr.co.iei.utils.PageInfoUtils;
-import kr.co.iei.utils.SearchPageInfo;
-import kr.co.iei.utils.SearchPageInfoUtils;
+
 
 @Service
 public class NoticeService {
@@ -22,8 +21,7 @@ public class NoticeService {
 	private NoticeDao noticeDao;
 	@Autowired
 	private PageInfoUtils pageInfoUtil;
-	@Autowired
-	private SearchPageInfoUtils searchPageInfoUtil;
+
 
 	public Map selectNoticeList(int reqPage, String noticeTitle) {
 
@@ -35,15 +33,13 @@ public class NoticeService {
 							:noticeDao.searchTotalCount(noticeTitle);
 		
 		PageInfo pi = pageInfoUtil.getPageInfo(reqPage, numPerPage, pageNaviSize, totalCount);
-		SearchPageInfo spi = searchPageInfoUtil.getSearchPageInfo(reqPage, numPerPage, pageNaviSize, totalCount, noticeTitle);
-		
-		List noticeList = (noticeTitle==null||noticeTitle.isEmpty())
-							?noticeDao.selectNoticeList(pi)
-							:noticeDao.searchNoticeList(spi);
+							
+		List noticeList = noticeDao.selectNoticeList(pi);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("noticeList", noticeList);
 		map.put("pi", pi);
 		map.put("totalCount", totalCount);
+		List searchNoticeList = noticeDao.searchNoticeList(map);
 		return map;
 	}
 	@Transactional
