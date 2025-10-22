@@ -1,6 +1,7 @@
 package kr.co.iei.booking.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -11,6 +12,8 @@ public interface BookingDao {
 
 	List selectDateList();
 
-	List selectSchedule(int movieNo);
+	List selectSchedule(Map<String,Object> selectMap);
+
+	List selectOneSchedule(String currentDate);
 
 }
