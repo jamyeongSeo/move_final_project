@@ -53,6 +53,7 @@
   padding: 10px;
   background-color: var(--gray5);
 }
+
 .input-wrap > input {
   text-align: center;
   height: 28px;
