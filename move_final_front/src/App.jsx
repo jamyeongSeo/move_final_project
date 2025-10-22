@@ -23,6 +23,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import AdminRegist from "./component/admin/AdminRegist";
 import AdminScheduleRegist from "./component/admin/AdminScheduleRegist";
+import AdminView from "./component/admin/AdminView";
 
 function App() {
   const [memberId, setMemberId] = useRecoilState(loginIdState);
@@ -82,7 +83,7 @@ function App() {
             <Route path="movie/regist" element={<AdminRegist />}/>
             <Route path="schedule/regist" element={<AdminScheduleRegist />}/>
           </Route>
-          
+        
 
           <Route path="/member/join" element={<Join></Join>} />
           <Route path="/common/login" element={<Login></Login>} />
