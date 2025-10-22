@@ -8,9 +8,27 @@
 		select count(*) from pq_tbl where pq_title like '%'||#{pqTitle}||'%'
 	</select>
 	<select id="selectPQList" resultType="pq">
-		select pq_no, member_id, pq_title, (to_char(sysdate,'yyyy-mm-dd'))pq_date from pq_tbl
+		select * from
+			(select rownum as rnum, p.*
+				from
+					(select pq_no, 
+						member_id, 
+						pq_title, 
+						(to_char(sysdate,'yyyy-mm-dd')) pq_date 
+					from pq_tbl order by pq_no)p)
+		where rnum between #{start} and #{end}
 	</select>
 	<select id="searchPQList" resultType="pq">
-		select pq_no, member_id, pq_title, (to_char(sysdate,'yyyy-mm-dd'))pq_date from pq_tbl where pq_title=#{pqTitle}
+		select * from
+		(select rownum as rnum, p.*
+			from
+			(select pq_no, 
+				member_id, 
+				pq_title, 
+				(to_char(sysdate,'yyyy-mm-dd')) pq_date 
+			from pq_tbl 
+			where pq_title like '%'||#{pqTitle}||'%' 
+			order by pq_no)p)
+		where rnum between #{start} and #{end}
 	</select>
 </mapper>

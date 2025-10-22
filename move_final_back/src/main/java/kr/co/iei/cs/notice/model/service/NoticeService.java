@@ -27,19 +27,27 @@ public class NoticeService {
 
 		int numPerPage = 10; 
 		int pageNaviSize = 5; 
-		
+		 
 		int totalCount = (noticeTitle==null||noticeTitle.isEmpty())
 							?noticeDao.totalCount()
 							:noticeDao.searchTotalCount(noticeTitle);
 		
 		PageInfo pi = pageInfoUtil.getPageInfo(reqPage, numPerPage, pageNaviSize, totalCount);
-							
-		List noticeList = noticeDao.selectNoticeList(pi);
+		int start = pi.getStart();
+		int end = pi.getEnd();
+		HashMap<String, Object> noticeListSet = new HashMap<>();
+		noticeListSet.put("start", start);
+		noticeListSet.put("end", end);
+		noticeListSet.put("noticeTitle", noticeTitle);
+		
+		List noticeList = (noticeTitle==null||noticeTitle.isEmpty())
+						?noticeDao.selectNoticeList(noticeListSet)
+						:noticeDao.searchNoticeList(noticeListSet);
+		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("noticeList", noticeList);
 		map.put("pi", pi);
 		map.put("totalCount", totalCount);
-		List searchNoticeList = noticeDao.searchNoticeList(map);
 		return map;
 	}
 	@Transactional

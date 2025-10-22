@@ -1,6 +1,8 @@
 package kr.co.iei.cs.pq.model.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -12,10 +14,10 @@ public interface PQDao {
 
 	int totalCount();
 
-	int searchTotalCount(int reqPage);
+	int searchTotalCount(String pqTitle);
 
-	List selectPQList(PageInfo pi);
+	List selectPQList(Map map);
 
-	List searchPQList(PageInfo pi);
+	List searchPQList(Map map);
 	
 }
