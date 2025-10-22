@@ -1,6 +1,8 @@
 package kr.co.iei.cs.notice.model.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.web.multipart.MultipartFile;
@@ -8,18 +10,18 @@ import org.springframework.web.multipart.MultipartFile;
 import kr.co.iei.cs.notice.model.dto.NoticeDTO;
 import kr.co.iei.cs.notice.model.dto.NoticeFileDTO;
 import kr.co.iei.utils.PageInfo;
-import kr.co.iei.utils.SearchPageInfo;
+
 
 @Mapper
 public interface NoticeDao {
 
 	int totalCount();
 
-	List selectNoticeList(PageInfo pi);
+	List selectNoticeList(HashMap<String, Object> noticeListSet);
 
 	int searchTotalCount(String noticeTitle);
 
-	List searchNoticeList(SearchPageInfo spi);
+	List searchNoticeList(Map map);
 
 	int insertNotice(NoticeDTO notice);
 
@@ -37,7 +39,7 @@ public interface NoticeDao {
 
 	List<NoticeFileDTO> selectDelNoticeFileList(int[] delFileNo);
 
-	int deleteBoardFile(int[] delFileNo);
+	int deleteNoticeFile(int[] delFileNo);
 
 
 }

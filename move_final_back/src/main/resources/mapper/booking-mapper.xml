@@ -9,4 +9,20 @@
   	select to_char(sysdate + (level-1), 'yyyy-mm-dd') as week  
 	from dual connect by level <![CDATA[ <= ]]>7 
   </select>
+  <select id="selectSchedule" resultType="schedule">
+  	select *
+  		from schedule_tbl s
+  		join movie_tbl m using(movie_no)
+  	<if test="movieNo != -1 and movieDate == ''">
+  		where schedule_time_start >= sysdate and movie_no = #{movieNo}
+  	</if>
+  	<if test="movieNo == -1 and movieDate != ''">
+  		where schedule_time_start >= sysdate and to_char(schedule_time_start, 'yyyy-mm-dd') like '%'||#{movieDate}||'%'
+  	</if>
+  	<if test="movieNo != -1 and movieDate != ''">
+  		where schedule_time_start >= sysdate and movie_no = #{movieNo} and to_char(schedule_time_start, 'yyyy-mm-dd') like '%'||#{movieDate}||'%'
+  	</if>
+  	
+  </select>
+  <select id="selectOneSchedule" resultType="schedule"></select>
 </mapper>

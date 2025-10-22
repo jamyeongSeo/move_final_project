@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.co.iei.cs.pq.model.dao.PQDao">
+	<select id="totalCount" resultType="int">
+		select count(*) from pq_tbl
+		<where>
+		    <if test="memberLevel != 1 and memberId != null and memberId != ''">
+		      member_id = #{memberId}
+		    </if>
+		    <if test="pqTitle != null and pqTitle != ''">
+		      <if test="memberLevel != 1 and memberId != null and memberId != ''">
+		        and
+		      </if>
+		      pq_title LIKE '%' || #{pqTitle} || '%'
+		    </if>
+		</where>
+	</select>
+	<select id="selectPQList" resultType="pq">
+		select * from
+			(select rownum as rnum, p.*
+				from
+					(select pq_no, 
+						member_id, 
+						pq_title, 
+						(to_char(pq_date,'yyyy-mm-dd')) as pq_date
+					 from pq_tbl 
+					<where>
+				        <if test="memberLevel != 1 and memberId != null and memberId != ''">
+				          member_id = #{memberId}
+				        </if>
+				        <if test="pqTitle != null and pqTitle != ''">
+				          <if test="memberLevel != 1 and memberId != null and memberId != ''">
+				            and
+				          </if>
+				          pq_title LIKE '%' || #{pqTitle} || '%'
+				        </if>
+				    </where>
+					order by pq_no)p)
+		where rnum between #{start} and #{end}
+	</select>
+	<!-- <select id="searchPQList" resultType="pq">
+		select * from
+		(select rownum as rnum, p.*
+			from
+			(select pq_no, 
+				member_id, 
+				pq_title, 
+				(to_char(sysdate,'yyyy-mm-dd')) pq_date 
+			from pq_tbl 
+			where pq_title like '%'||#{pqTitle}||'%' 
+			order by pq_no)p)
+		where rnum between #{start} and #{end}
+	</select>
+	<select id="selectMyPQList" resultType="pq">
+		select * from
+		(select rownum as rnum, p.*
+			from
+			(select pq_no, 
+				member_id, 
+				pq_title, 
+				(to_char(sysdate,'yyyy-mm-dd')) pq_date 
+			from pq_tbl 
+			where member_id = #{memberId}
+			order by pq_no)p)
+		where rnum between #{start} and #{end}
+	</select>
+	<select id="searchMyPQList" resultType="pq">
+		select * from
+		(select rownum as rnum, p.*
+			from
+			(select pq_no, 
+				member_id, 
+				pq_title, 
+				(to_char(sysdate,'yyyy-mm-dd')) pq_date 
+			from pq_tbl 
+			where pq_title like '%'||#{pqTitle}||'%' 
+			and member_id = #{memberId}
+			order by pq_no)p)
+		where rnum between #{start} and #{end}
+	</select> -->
+</mapper>

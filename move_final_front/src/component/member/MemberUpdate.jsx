@@ -4,8 +4,15 @@ import { Link, useNavigate } from "react-router-dom";
 import SearchIdModal from "./SearchIdModal";
 import SearchPwModal from "./SearchPwModal";
 import axios from "axios";
+import { useRecoilState } from "recoil";
+import { loginIdState } from "../utils/RecoilData";
+import Swal from "sweetalert2";
+import JoinEmailCode from "./JoinEmailCode";
+import NoMemberInfo from "./NoMemberInfo";
 
 const MemberUpdate = () => {
+  const [memberId, setMemberId] = useRecoilState(loginIdState);
+  const [memberPw, setMemberPw] = useState("");
   const [menus, setMenus] = useState([
     {
       url: [
@@ -15,16 +22,43 @@ const MemberUpdate = () => {
       ],
       text: "내 정보",
     },
-    { url: "/member/join", text: "내가 본 영화" },
-    { url: "/member/join", text: "예약 / 결제" },
+    { url: "/member/watchedMovieList", text: "내가 본 영화" },
+    { url: "/member/bookingMovieList", text: "예약 / 결제" },
   ]);
 
   const updateCheckPw = useRef();
   const memberUpdateMain = useRef();
-
+  const BackServer = import.meta.env.VITE_BACK_SERVER;
+  const [changeFrm, setChangeFrm] = useState(false);
   const nextUpdate = () => {
-    updateCheckPw.current.classList.add("updateCheckPw-none");
-    memberUpdateMain.current.classList.remove("memberUpdateMain-none");
+    if (memberId != "" && memberPw != "") {
+      axios
+        .post(
+          `${BackServer}/member/searchMember?memberId=${memberId}&&memberPw=${memberPw}`
+        )
+        .then((res) => {
+          if (res.data == 1) {
+            updateCheckPw.current.classList.add("updateCheckPw-none");
+            memberUpdateMain.current.classList.remove("memberUpdateMain-none");
+            setChangeFrm(true);
+          } else {
+            Swal.fire({
+              title: "조회 실패",
+              text: "비밀번호를 재확인해주세요",
+              icon: "info",
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      Swal.fire({
+        title: "입력값 확인",
+        text: "비밀번호를 입력해주세요",
+        icon: "info",
+      });
+    }
   };
 
   const [member, setMember] = useState({
@@ -42,7 +76,7 @@ const MemberUpdate = () => {
   const modal = useRef();
   const resultModal = useRef();
   const openPwModal = () => {
-    searchPwModal.current.classList.remove("login-searchPwModal-none");
+    setIsModalPw(true);
   };
   const nextModal = () => {
     modal.current.classList.add("login-searchPwModal-none");
@@ -53,237 +87,345 @@ const MemberUpdate = () => {
     modal.current.classList.remove("login-searchPwModal-none");
     searchPwModal.current.classList.add("login-searchPwModal-none");
   };
+  const [isModalPw, setIsModalPw] = useState(false);
 
   return (
-    <div className="content-wrap">
-      <section className="left-side-menu-side">
-        <Link to="/member/memberMain">
-          <div className="left-side-menu-title">마이페이지</div>
-        </Link>
-        <LeftSideMenu menus={menus}></LeftSideMenu>
-      </section>
+    <>
+      {memberId === "" ? (
+        <NoMemberInfo></NoMemberInfo>
+      ) : (
+        <div className="content-wrap">
+          <section className="left-side-menu-side">
+            <Link to="/member/memberMain">
+              <div className="left-side-menu-title">마이페이지</div>
+            </Link>
+            <LeftSideMenu menus={menus}></LeftSideMenu>
+          </section>
 
-      <div className="left-side-menu-other member-mypage-wrap">
-        <section ref={updateCheckPw}>
-          <div className="memberMain-title">
-            <h1>회원 정보 수정</h1>
-            <span className="memberUpdate-title-contnet">
-              회원님의 정보보호를 위한 확인 절차입니다
-            </span>
-          </div>
+          <div className="left-side-menu-other member-mypage-wrap">
+            <section ref={updateCheckPw}>
+              <div className="memberMain-title">
+                <h1>회원 정보 수정</h1>
+                <span className="memberUpdate-title-contnet">
+                  회원님의 정보보호를 위한 확인 절차입니다
+                </span>
+              </div>
 
-          <div className="member-mypage-content-wrap">
-            <div className="member-mypage-content-line input-line">
-              <input
-                className="member-mypage-content-left"
-                placeholder="비밀번호를 입력하세요"
-              ></input>
-            </div>
-            <div className="memberUpdate-searchPw">
-              <span>비밀번호가 기억나지 않는다면?</span>
-              <button type="button" className="input-box" onClick={openPwModal}>
-                비밀번호 찾기
-              </button>
-            </div>
-          </div>
-
-          <div className="member-mypage-btn-wrap">
-            <button
-              type="button"
-              className="btn-red member-mypage-btn"
-              onClick={nextUpdate}
-            >
-              확인
-            </button>
-          </div>
-        </section>
-        <section ref={searchPwModal} className="login-searchPwModal-none">
-          <div>
-            <div className="memberModal">
-              <div className="memberModal-wrap">
-                <div className="memberModal-content-box-wrap">
-                  <div className="memberModal-content-box">
-                    <div className="memberModal-title">
-                      <h2>비밀번호 찾기</h2>
-                    </div>
-                    <section ref={modal}>
-                      <form
-                        onSubmit={(e) => {
-                          e.preventDefault();
-                          nextModal();
-                        }}
-                      >
-                        <div className="memberModal-content-wrap">
-                          <div>
-                            <input
-                              style={{ width: "650px" }}
-                              className="input-line"
-                              type="text"
-                              name="memberName"
-                              id="memberName"
-                              placeholder="이름 입력"
-                              value={member.memberName}
-                              onChange={inputData}
-                            />
-                          </div>
-                          <div>
-                            <input
-                              style={{ width: "650px" }}
-                              className="input-line"
-                              type="text"
-                              name="memberId"
-                              id="memberId"
-                              placeholder="아이디 입력"
-                              value={member.memberId}
-                              onChange={inputData}
-                            />
-                          </div>
-                          <div>
-                            <input
-                              style={{ width: "650px" }}
-                              className="input-line"
-                              type="text"
-                              name="memberEmail"
-                              id="memberEmail"
-                              placeholder="이메일주소 입력"
-                              value={member.memberEmail}
-                              onChange={inputData}
-                            />
-                          </div>
-                        </div>
-
-                        <div>
-                          <button
-                            style={{ marginRight: "10px" }}
-                            type="submit"
-                            className="btn-red memberModal-btn"
-                          >
-                            확인
-                          </button>
-                          <button
-                            type="button"
-                            className="btn-red memberModal-btn"
-                            onClick={closeModal}
-                          >
-                            닫기
-                          </button>
-                        </div>
-                      </form>
-                    </section>
-                    <section
-                      ref={resultModal}
-                      className="login-searchPwModal-none"
-                    >
-                      <SearchPwResult></SearchPwResult>
-                      <div>
-                        <button
-                          type="button"
-                          className="btn-red memberModal-btn"
-                          onClick={closeModal}
-                        >
-                          닫기
-                        </button>
-                      </div>
-                    </section>
-                  </div>
+              <div className="member-mypage-content-wrap">
+                <div className="member-mypage-content-line input-line">
+                  <input
+                    type="password"
+                    className="member-mypage-content-left"
+                    placeholder="비밀번호를 입력하세요"
+                    value={memberPw}
+                    onChange={(e) => {
+                      setMemberPw(e.target.value);
+                    }}
+                  ></input>
+                </div>
+                <div className="memberUpdate-searchPw">
+                  <span>비밀번호가 기억나지 않는다면?</span>
+                  <button type="button" onClick={openPwModal}>
+                    비밀번호 찾기
+                  </button>
+                  <SearchPwModal
+                    isModalPw={isModalPw}
+                    setIsModalPw={setIsModalPw}
+                  ></SearchPwModal>
                 </div>
               </div>
-            </div>
-          </div>
-        </section>
 
-        <section ref={memberUpdateMain} className="memberUpdateMain-none">
-          <MemberUpdateMain></MemberUpdateMain>
-        </section>
-      </div>
-    </div>
+              <div className="member-mypage-btn-wrap">
+                <button
+                  style={{
+                    marginRight: "10px",
+                    padding: "3px 8px",
+                    height: "36.67px",
+                    width: "145px",
+                  }}
+                  type="button"
+                  className="btn-red member-mypage-btn"
+                  onClick={nextUpdate}
+                >
+                  확인
+                </button>
+                <Link
+                  style={{ padding: "5px 56px" }}
+                  to="/member/memberMain"
+                  className="btn-red member-mypage-btn"
+                >
+                  취소
+                </Link>
+              </div>
+            </section>
+            <section ref={memberUpdateMain} className="memberUpdateMain-none">
+              {changeFrm && (
+                <MemberUpdateMain memberPw={memberPw}></MemberUpdateMain>
+              )}
+            </section>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
-const MemberUpdateMain = () => {
+const MemberUpdateMain = (props) => {
+  const navigate = useNavigate();
+  const memberPw = props.memberPw;
+  const [memberId, setMemberId] = useRecoilState(loginIdState);
+  const BackServer = import.meta.env.VITE_BACK_SERVER;
+  const [memberEmail, setMemberEmail] = useState("");
+  const [memberPhone, setMemberPhone] = useState("");
   const [member, setMember] = useState({
-    memberPw: "member.memberPw",
-    memberEmail: "member.memberEmail",
-    memberPhone: "member.memberPhone",
+    memberId: memberId,
+    memberPw: memberPw,
+    memberEmail: "",
+    memberPhone: "",
   });
   const [memberPwRe, setMemberPwRe] = useState("");
   const [memberEmailRe, setMemberEmailRe] = useState("");
   const pwMsgRef = useRef(null);
+  const [updatePw, setUpdatePw] = useState(false);
+  const [updateEmail, setUpdateEmail] = useState(false);
+
+  useEffect(() => {
+    axios
+      .get(`${BackServer}/member/selectMember?memberId=${memberId}`)
+      .then((res) => {
+        setMember({
+          ...member,
+          memberPhone: res.data.memberPhone,
+          memberEmail: res.data.memberEmail,
+        });
+        setMemberEmail(res.data.memberEmail);
+        setMemberPhone(res.data.memberPhone);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+  console.log(member);
   const inputData = (e) => {
     const name = e.target.name;
     const value = e.target.value;
     const newMember = { ...member, [name]: value };
     setMember(newMember);
   };
-
-  const checkPwRe = (e) => {
-    setMemberPwRe(e.target.value);
-  };
+  const changePw = useRef();
+  const noChangePwMsg = useRef();
+  //비밀번호
   const checkPw = () => {
     pwMsgRef.current.classList.remove("join-su");
     pwMsgRef.current.classList.remove("join-f");
-    if (memberPwRe !== "") {
-      if (member.memberPw === memberPwRe) {
-        pwMsgRef.current.classList.add("join-su");
-        pwMsgRef.current.innerText = "비밀번호 일치";
+    if (member.memberPw !== "") {
+      if (member.memberPw === memberPw) {
+        changePw.current.classList.add("memberUpdatePw-not");
+        noChangePwMsg.current.classList.add("join-su");
+        noChangePwMsg.current.innerText = "기존 비밀번호 사용";
+        setUpdatePw(false);
       } else {
-        pwMsgRef.current.classList.add("join-f");
-        pwMsgRef.current.innerText = "비밀번호가 일치하지 않습니다.";
+        noChangePwMsg.current.classList.remove("join-su");
+        noChangePwMsg.current.innerText = "";
+        setUpdatePw(true);
+        changePw.current.classList.remove("memberUpdatePw-not");
+        if (memberPwRe != "") {
+          if (member.memberPw === memberPwRe) {
+            pwMsgRef.current.classList.add("join-su");
+            pwMsgRef.current.innerText = "비밀번호 일치";
+          } else {
+            pwMsgRef.current.classList.add("join-f");
+            pwMsgRef.current.innerText = "비밀번호가 일치하지 않습니다.";
+          }
+        }
       }
-    } else {
-      pwMsgRef.current.classList.remove("join-su");
-      pwMsgRef.current.classList.remove("join-f");
-      pwMsgRef.current.innerText = "";
     }
   };
-  const changePw = useRef();
-  const inputDataPw = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
-    const newMember = { ...member, [name]: value };
-    setMember(newMember);
-    changePw.current.classList.remove("memberUpdatePw-not");
+  const checkPwRe = (e) => {
+    setMemberPwRe(e.target.value);
   };
 
+  //이메일
   const [joinEmailRe, setJoinEmailRe] = useState(false);
-  const [memberEmail, setMemberEmail] = useState("");
-  const [checkEmailMsg, setCheckEailMsg] = useState("");
-
-  const inputDataEmail = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
-    const newMember = { ...member, [name]: value };
-    setMember(newMember);
-    joinEmailRe.current.classList.remove("join-item-none");
-    joinEmailRe.current.classList.add("join-item");
-  };
+  const [checkEmailMsg, setCheckEmailMsg] = useState("");
+  const [joinEmailReCss, setJoinEmailReCss] = useState(false);
   useEffect(() => {
     setJoinEmailRe(false);
-    setMemberEmail("");
-    setCheckEailMsg("");
+    setCheckEmailMsg("");
   }, [member.memberEmail]);
+
+  //이메일 코드 인증 결과
+  const [emailCodeCheck, setEmailCodeCheck] = useState(false);
+
   const backServer = import.meta.env.VITE_BACK_SERVER;
   const checkEmail = () => {
-    if (member.memberEmail != "") {
-      axios
-        .get(
-          `${backServer}/member/checkEmail?memberEmail=${member.memberEmail}`
-        )
-        .then((res) => {
-          console.log(res);
-          if (res.data == 1) {
-            setJoinEmailRe(false);
-            setCheckEailMsg("이미 사용 중인 이메일입니다");
-          } else {
-            //사용 가능 이메일이면.
-            setMemberEmail(memberEmail.memberEmail);
-            setJoinEmailRe(true);
-            setCheckEailMsg("사용 가능한 이메일입니다");
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    console.log(member);
+    if (member.memberEmail !== "") {
+      if (member.memberEmail !== memberEmail) {
+        setUpdateEmail(true);
+        axios
+          .get(
+            `${backServer}/member/checkEmail?memberEmail=${member.memberEmail}`
+          )
+          .then((res) => {
+            if (res.data != 0) {
+              if (member.memberEmail != memberEmail) {
+                setJoinEmailRe(false);
+                setJoinEmailReCss(false);
+                setCheckEmailMsg("이미 사용 중인 이메일입니다");
+              }
+            } else {
+              //사용 가능 이메일이면.
+              setJoinEmailRe(true);
+              setJoinEmailReCss(true);
+              setCheckEmailMsg("사용 가능한 이메일입니다");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else if (member.memberEmail === memberEmail) {
+        setUpdateEmail(false);
+        //인증번호 발송 창 나올 필요 없음
+        setCheckEmailMsg("기존 이메일 사용");
+        setJoinEmailRe(false);
+        setJoinEmailReCss(true);
+      }
+    }
+  };
+
+  const updateMember = () => {
+    //모든 값 입력 확인
+    if (
+      member.memberPw != "" &&
+      member.memberEmail &&
+      member.memberPhone != ""
+    ) {
+      if (!updatePw && !updateEmail) {
+        //1.비밀번호, 이메일 기존 사용
+        axios
+          .patch(`${backServer}/member`, member)
+          .then((res) => {
+            if (res.data == 1) {
+              Swal.fire({
+                title: "회원정보 수정 성공",
+                text: "회원정보 수정이 완료되었습니다. ",
+                icon: "success",
+              });
+
+              navigate("/member/memberMain");
+            } else {
+              Swal.fire({
+                title: "회원정보 수정 실패",
+                text: "다시 시도해 주세요",
+                icon: "error",
+              });
+              navigate("/member/memberMain");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else if (updatePw && !updateEmail) {
+        //2. 비밀번호 변경 , 이메일 기존 사용
+        if (member.memberPw == memberPwRe) {
+          axios
+            .patch(`${backServer}/member`, member)
+            .then((res) => {
+              if (res.data == 1) {
+                Swal.fire({
+                  title: "회원정보 수정 성공",
+                  text: "회원정보 수정이 완료되었습니다. ",
+                  icon: "success",
+                });
+
+                navigate("/member/memberMain");
+              } else {
+                Swal.fire({
+                  title: "회원정보 수정 실패",
+                  text: "다시 시도해 주세요",
+                  icon: "error",
+                });
+                navigate("/member/memberMain");
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        } else {
+          Swal.fire({
+            title: "입력값 확인",
+            text: "비밀번호 일치 여부를 확인하세요",
+            icon: "info",
+          });
+        }
+      } else if (!updatePw && updateEmail) {
+        //3. 비밀번호 기존 사용, 이메일 변경
+        if (emailCodeCheck) {
+          axios
+            .patch(`${backServer}/member`, member)
+            .then((res) => {
+              if (res.data == 1) {
+                Swal.fire({
+                  title: "회원정보 수정 성공",
+                  text: "회원정보 수정이 완료되었습니다. ",
+                  icon: "success",
+                });
+
+                navigate("/member/memberMain");
+              } else {
+                Swal.fire({
+                  title: "회원정보 수정 실패",
+                  text: "다시 시도해 주세요",
+                  icon: "error",
+                });
+                navigate("/member/memberMain");
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        } else {
+          Swal.fire({
+            title: "입력값 확인",
+            text: "이메일 인증코드를 확인하세요",
+            icon: "info",
+          });
+        }
+      } else if (updatePw && updateEmail) {
+        //4. 이메일, 비밀번호 변경
+        if (member.memberPw == memberPwRe && emailCodeCheck) {
+          axios
+            .patch(`${backServer}/member`, member)
+            .then((res) => {
+              if (res.data == 1) {
+                Swal.fire({
+                  title: "회원정보 수정 성공",
+                  text: "회원정보 수정이 완료되었습니다. ",
+                  icon: "success",
+                });
+
+                navigate("/member/memberMain");
+              } else {
+                Swal.fire({
+                  title: "회원정보 수정 실패",
+                  text: "다시 시도해 주세요",
+                  icon: "error",
+                });
+                navigate("/member/memberMain");
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        } else {
+          Swal.fire({
+            text: "입력값 확인",
+            title: "비밀번호 일치여부, 이메일 인증코드를 확인하세요 ",
+            icon: "info",
+          });
+        }
+      }
     }
   };
 
@@ -292,12 +434,13 @@ const MemberUpdateMain = () => {
       <div className="memberMain-title">
         <h1>회원 정보 수정</h1>
         <span className="memberUpdate-title-contnet">
-          변경 할 정보를 수정해주세요
+          변경 할 정보만 수정해주세요
         </span>
       </div>
       <form
         onSubmit={(e) => {
           e.preventDefault();
+          updateMember();
         }}
       >
         <div className="member-mypage-content-wrap">
@@ -331,33 +474,30 @@ const MemberUpdateMain = () => {
                       name="memberPw"
                       id="memberPw"
                       value={member.memberPw}
-                      onChange={inputDataPw}
+                      onChange={inputData}
                       onBlur={checkPw}
                     />
                   </li>
                   <li className="join-span">
-                    <span className="join-f">
-                      영문, 숫자 4~12 글자로 입력하세요
-                    </span>
+                    <span className="" ref={noChangePwMsg}></span>
                   </li>
                 </label>
               </ul>
             </div>
 
-            {/*비밀번호 변경하면 뜨도록 구현*/}
             <div
               ref={changePw}
               className="memberUpdate-item memberUpdatePw-not"
             >
-              <label htmlFor="memberPwRe">변경 비밀번호 확인</label>
+              <label htmlFor="memberPwRe">비밀번호 확인</label>
               <ul className="input-line memberUpdate-line">
                 <label htmlFor="memberPwRe">
                   <li className="join-input">
                     <input
-                      className="memberUpdate-input-content"
                       type="password"
                       name="memberPwRe"
                       id="memberPwRe"
+                      placeholder="비밀번호 확인"
                       value={memberPwRe}
                       onChange={checkPwRe}
                       onBlur={checkPw}
@@ -371,7 +511,7 @@ const MemberUpdateMain = () => {
             </div>
 
             <div className="memberUpdate-item">
-              <label htmlFor="memberEmail">이메일 변경</label>
+              <label htmlFor="memberEmail">이메일</label>
               <ul className="input-line memberUpdate-line">
                 <label htmlFor="memberEmail">
                   <li className="join-input">
@@ -380,13 +520,14 @@ const MemberUpdateMain = () => {
                       type="text"
                       name="memberEmail"
                       id="memberEmail"
+                      placeholder="이메일주소 입력"
                       value={member.memberEmail}
-                      onChange={inputDataEmail}
+                      onChange={inputData}
                       onBlur={checkEmail}
                     />
                   </li>
                   <li className="join-span">
-                    <span className={joinEmailRe ? "join-su" : "join-f"}>
+                    <span className={joinEmailReCss ? "join-su" : "join-f"}>
                       {member.memberEmail == "" ? "" : checkEmailMsg}
                     </span>
                   </li>
@@ -397,81 +538,34 @@ const MemberUpdateMain = () => {
             <section>
               <JoinEmailCode
                 joinEmailRe={joinEmailRe}
-                memberEmail={memberEmail}
+                memberEmail={member.memberEmail}
+                setEmailCodeCheck={setEmailCodeCheck}
               ></JoinEmailCode>
             </section>
           </div>
         </div>
         <div className="member-mypage-btn-wrap">
-          <button type="submit" className="btn-red member-mypage-btn">
+          <button
+            style={{
+              marginRight: "10px",
+              padding: "3px 8px",
+              height: "36.67px",
+              width: "145px",
+            }}
+            type="submit"
+            className="btn-red member-mypage-btn"
+          >
             수정
           </button>
-          <Link to="/member/memberMain" className="btn-red member-mypage-btn">
+          <Link
+            style={{ padding: "5px 56px" }}
+            to="/member/memberMain"
+            className="btn-red member-mypage-btn"
+          >
             취소
           </Link>
         </div>
       </form>
-    </section>
-  );
-};
-
-const JoinEmailCode = (props) => {
-  const memberEmail = props.memberEmail;
-  const joinEmailRe = props.joinEmailRe;
-  const [memberEmailRe, setMemberEmailRe] = useState("");
-  const [emailCodeCheck, setEmailCodeCheck] = useState();
-  const emailRe = () => {
-    //if 이메일 발송 성공하면
-    emailTimeRe.current.innerText = "3:00";
-  };
-  const emailTimeRe = useRef(null);
-  const emailMsgRe = useRef(null);
-  return (
-    <section>
-      <div className={joinEmailRe ? "join-item" : "join-item-none"}>
-        <div style={{ overflow: "hidden" }}>
-          <div className="join-btn">
-            <button type="button" className="input-box" onClick={emailRe}>
-              인증번호 발송
-            </button>
-            {/*이메일발송하면 btn-red 로 변경하고, 인증번호 시간 끝나면 원래 색상으로 변경 할 수 있으면 ㄱㄱ*/}
-            <span ref={emailTimeRe}></span>
-          </div>
-          <ul className="input-line">
-            <label htmlFor="memberEmailRe">
-              <li className="join-input">
-                <input
-                  type="text"
-                  name="memberEmailRe"
-                  id="memberEmailRe"
-                  placeholder="인증번호 입력"
-                  value={memberEmailRe}
-                  onChange={(e) => {
-                    setMemberEmailRe(e.target.value);
-                  }}
-                />
-              </li>
-              <li className="join-span">
-                <span className="join-f">인증 실패</span>
-              </li>
-            </label>
-          </ul>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-const SearchPwResult = () => {
-  return (
-    <section>
-      <div className="memberModal-content-wrap">
-        <div className="memberModal-searchResult-box">
-          <span className="memberModal-searchResult">
-            메일로 임시 비밀번호를 발송했습니다
-          </span>
-        </div>
-      </div>
     </section>
   );
 };

@@ -103,13 +103,23 @@ const SearchIdModal = (props) => {
 
                   <div>
                     <button
-                      style={{ marginRight: "10px" }}
+                      style={{
+                        marginRight: "10px",
+                        padding: "1px 8px",
+                        height: "33px",
+                        width: "100px",
+                      }}
                       type="submit"
                       className="btn-red memberModal-btn"
                     >
                       확인
                     </button>
                     <button
+                      style={{
+                        padding: "3px 8px",
+                        height: "33px",
+                        width: "100px",
+                      }}
                       type="button"
                       className="btn-red memberModal-btn"
                       onClick={closeModal}
@@ -126,6 +136,11 @@ const SearchIdModal = (props) => {
                     type="button"
                     className="btn-red memberModal-btn"
                     onClick={closeModal}
+                    style={{
+                      padding: "3px 8px",
+                      height: "33px",
+                      width: "100px",
+                    }}
                   >
                     닫기
                   </button>

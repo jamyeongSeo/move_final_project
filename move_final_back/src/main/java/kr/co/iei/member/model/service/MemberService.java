@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.co.iei.coupon.model.dto.CouponDTO;
 import kr.co.iei.member.model.dao.MemberDao;
 import kr.co.iei.member.model.dto.LoginMemberDTO;
 import kr.co.iei.member.model.dto.MemberDTO;
@@ -100,6 +101,38 @@ public class MemberService {
 		int watchingMovieCount = memberDao.memberWatchingMovieCount(m.getMemberNo()); 
 		m.setWatchingMovieCount(watchingMovieCount);
 		return m;
+	}
+	//쿠폰 모달
+	public List<CouponDTO> selectCoupon(String memberId) {
+		List<CouponDTO> couponList = memberDao.selectCoupon(memberId);
+		return couponList;
+	}
+
+	
+	/*----------deleteMember-----------*/
+	public int searchMember(String memberId, String memberPw) {
+		MemberDTO m = memberDao.selectMember(memberId);
+		if(m != null) {
+			if(encoder.matches(memberPw, m.getMemberPw())) {
+				return 1;//조회 결과 있음
+			}			
+		}
+		return 0;//조회 결과 없음
+	}
+	
+	public int deleteMember(String memberId) {
+		int result = memberDao.deleteMember(memberId);
+		return result;
+		
+	}
+	
+	/*----------updateMember----------*/
+	@Transactional
+	public int updateMember(MemberDTO member) {
+		String memberPw = encoder.encode(member.getMemberPw());
+		member.setMemberPw(memberPw);
+		int result = memberDao.updateMember(member);
+		return result;
 	}
 	
 	

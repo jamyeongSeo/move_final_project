@@ -13,8 +13,7 @@ import kr.co.iei.cs.notice.model.dto.NoticeDTO;
 import kr.co.iei.cs.notice.model.dto.NoticeFileDTO;
 import kr.co.iei.utils.PageInfo;
 import kr.co.iei.utils.PageInfoUtils;
-import kr.co.iei.utils.SearchPageInfo;
-import kr.co.iei.utils.SearchPageInfoUtils;
+
 
 @Service
 public class NoticeService {
@@ -22,24 +21,29 @@ public class NoticeService {
 	private NoticeDao noticeDao;
 	@Autowired
 	private PageInfoUtils pageInfoUtil;
-	@Autowired
-	private SearchPageInfoUtils searchPageInfoUtil;
+
 
 	public Map selectNoticeList(int reqPage, String noticeTitle) {
 
 		int numPerPage = 10; 
 		int pageNaviSize = 5; 
-		
+		 
 		int totalCount = (noticeTitle==null||noticeTitle.isEmpty())
 							?noticeDao.totalCount()
 							:noticeDao.searchTotalCount(noticeTitle);
 		
 		PageInfo pi = pageInfoUtil.getPageInfo(reqPage, numPerPage, pageNaviSize, totalCount);
-		SearchPageInfo spi = searchPageInfoUtil.getSearchPageInfo(reqPage, numPerPage, pageNaviSize, totalCount, noticeTitle);
+		int start = pi.getStart();
+		int end = pi.getEnd();
+		HashMap<String, Object> noticeListSet = new HashMap<>();
+		noticeListSet.put("start", start);
+		noticeListSet.put("end", end);
+		noticeListSet.put("noticeTitle", noticeTitle);
 		
 		List noticeList = (noticeTitle==null||noticeTitle.isEmpty())
-							?noticeDao.selectNoticeList(pi)
-							:noticeDao.searchNoticeList(spi);
+						?noticeDao.selectNoticeList(noticeListSet)
+						:noticeDao.searchNoticeList(noticeListSet);
+		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("noticeList", noticeList);
 		map.put("pi", pi);
@@ -85,7 +89,7 @@ public class NoticeService {
 		if (notice.getDelFileNo() != null) {
 			List<NoticeFileDTO> delFileList = noticeDao.selectDelNoticeFileList(notice.getDelFileNo());
 			nd.setNoticeFileList(delFileList);
-			result += noticeDao.deleteBoardFile(notice.getDelFileNo());
+			result += noticeDao.deleteNoticeFile(notice.getDelFileNo());
 		}
 		return nd;
 	}

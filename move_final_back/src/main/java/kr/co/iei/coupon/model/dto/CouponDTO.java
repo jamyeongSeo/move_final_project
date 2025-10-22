@@ -15,4 +15,8 @@ public class CouponDTO {
 	private String couponName;
 	private int couponDisscount;
 	private int couponValidDate;
+	private int couponBoxNo;
+	private String useStatus;
+	private String couponBoxIssueDt;
+	private String couponBoxExpireDt;
 }

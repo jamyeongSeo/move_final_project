@@ -16,6 +16,11 @@ npm install @radix-ui/react-select lucide-react clsx class-variance-authority ta
 npm install -D tailwindcss postcss autoprefixer
 npx shadcn@latest add select
 
+2025-10-20  10:00 서자명
+npm install styled-components
+npm install @mui/material @mui/styled-engine-sc styled-components
+
 2025-10-20 10:04 심재현
 npm install react-calendar
 npm install react-day-scheduler
+
