@@ -65,6 +65,7 @@ const Main = () => {
   const [firstCss, setFirstCss] = useState(true);
   const [changeCss, setChangeCss] = useState(false);
 
+  //상영 스케줄 날짜 확인 및 back 갈 date 값 넣어줄 배열 생성
   const [dateCss, setDateCss] = useState([
     {
       className: "main-schedule-day-map main-schedule-day-map-click",
@@ -99,6 +100,12 @@ const Main = () => {
       date: today.getDate() + 7,
     },
   ]);
+  const [dateSchedule, setDateSchedule] = useState(today);
+  useEffect(() => {
+    //axios
+  }, [dateSchedule]);
+  console.log(dateCss);
+  console.log(dateSchedule);
   return (
     <body
       style={{
@@ -151,6 +158,7 @@ const Main = () => {
                           });
                         }
                         setDateCss(newDateCss);
+                        setDateSchedule(dateCss[index].date);
                       }}
                       className={dateCss[index].className}
                       key={"main-schedul-" + index}
