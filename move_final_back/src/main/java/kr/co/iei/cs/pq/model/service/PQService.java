@@ -21,30 +21,40 @@ public class PQService {
 	private PageInfoUtils piu;
 
 
-	public Map PQList(int reqPage, String pqTitle) {
-		int numPerPage = 10; //한 페이지 당 게시물 수
-		int pageNaviSize=5;	// 페이지 네비게이션 크기
-		int totalCount = (pqTitle==null||pqTitle.isEmpty())//pqTitle = 검색창에 검색한 값
-							?pqDao.totalCount()
-							:pqDao.searchTotalCount(pqTitle);
+	public Map PQList(int reqPage, String pqTitle, String memberId, int memberLevel) {
+		int numPerPage = 10;
+		int pageNaviSize=5;	
+		HashMap<String, Object> pqListSet = new HashMap<>();
+
+		pqListSet.put("pqTitle", pqTitle);
+		pqListSet.put("memberId", memberId);
+		pqListSet.put("memberLevel", memberLevel);
+		int totalCount = pqDao.totalCount(pqListSet);
+		
 		
 		PageInfo pi = piu.getPageInfo(reqPage, numPerPage, pageNaviSize, totalCount);
 		
 		int start = pi.getStart();
 		int end = pi.getEnd();
 		
-		HashMap<String, Object> pqListSet = new HashMap<>();
 		pqListSet.put("start", start);
 		pqListSet.put("end", end);
-		pqListSet.put("pqTitle", pqTitle);
-		
-		List pqList = (pqTitle==null||pqTitle.isEmpty())?pqDao.selectPQList(pqListSet):pqDao.searchPQList(pqListSet);
-		
+		List pqList = pqDao.selectPQList(pqListSet);
+
 		Map<String, Object> map = new HashMap<>();
 		map.put("pqList", pqList);
 		map.put("totalCount", totalCount);
 		map.put("pi", pi);
-		
 		return map;
+		/*
+		 	}else{
+			List myPqList = (pqTitle==null||pqTitle.isEmpty())?pqDao.selectMyPQList(pqListSet):pqDao.searchMyPQList(pqListSet);
+			Map<String, Object> myMap = new HashMap<>();
+			myMap.put("pqList", myPqList);
+			myMap.put("totalCount", totalCount);
+			myMap.put("pi", pi);
+			return myMap;
+		}
+		*/
 	}
 }
