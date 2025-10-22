@@ -10,6 +10,8 @@ import {
 import axios from "axios";
 import PageNavigation from "../utils/PageNavigation";
 import Swal from "sweetalert2";
+import Select from "@mui/material/Select";
+import { Box, FormControl, InputLabel, MenuItem } from "@mui/material";
 
 const PQList = () => {
   const [pqList, setPqList] = useState([]); //1:1문의 리스트를 저장하는 state
@@ -20,13 +22,14 @@ const PQList = () => {
   const [authReady, setAuthReady] = useRecoilState(authReadyState); //refresh 초기회 확인용 데이터를 저장하는 recoil
   const [memberLevel, setMemberLevel] = useRecoilState(memberLevelState); //해당 recoil 계정의 memberLevel값을 갖고있는 state
   const [loginId, setLoginId] = useRecoilState(loginIdState);
+  const [category, setCategory] = useState(0);
   const navigate = useNavigate();
   const pqFunc = () => {
     axios
       .get(
         `${
           import.meta.env.VITE_BACK_SERVER
-        }/cs/pq?reqPage=${reqPage}&pqTitle=${search}&memberId=${loginId}&memberLevel=${memberLevel}`
+        }/cs/pq?reqPage=${reqPage}&pqTitle=${search}&memberId=${loginId}&memberLevel=${memberLevel}&category=${category}`
       )
       .then((res) => {
         console.log(res);
@@ -52,12 +55,17 @@ const PQList = () => {
     } else if (authReady) {
       pqFunc();
     }
-  }, [reqPage, authReady]);
+  }, [reqPage, authReady, category]);
 
   const searchInput = () => {
     setReqPage(1);
     pqFunc();
   };
+  const handleCategoryChange = (e) => {
+    setCategory(e.target.value);
+    switchList(1, value);
+  };
+  const switchList = () => {};
 
   return (
     <section className="section pq-list-wrap">
@@ -75,20 +83,58 @@ const PQList = () => {
       </div>
 
       <div className="input-wrap">
-        <div className="list-count">전체 : {totalCount}건</div>
-        <input
-          type="text"
-          id="pqTitle"
-          name="pqTitle"
-          value={search}
-          onChange={(e) => {
-            setSearch(e.target.value);
-          }}
-          placeholder="검색어를 입력하십시오"
-        ></input>
-        <button type="submit" onClick={searchInput}>
-          입력
-        </button>
+        <div className="select-wrap">
+          <div className="list-count">전체 : {totalCount}건</div>
+          <div
+            className="select-box"
+            style={{ display: "flex", alignItems: "center", gap: "4px" }}
+          >
+            <Box size="small" sx={{ minWidth: 100 }}>
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">문의 유형</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={category}
+                  label="문의 유형"
+                  onChange={handleCategoryChange}
+                  sx={{
+                    height: 32,
+                    fontSize: "16px",
+                    ".MuiSelect-select": {
+                      paddingTop: "4px",
+                      paddingBottom: "4px",
+                      textAlign: "center",
+                    },
+                  }}
+                >
+                  <MenuItem value={0}>전체</MenuItem>
+                  <MenuItem value={1}>영화정보</MenuItem>
+                  <MenuItem value={2}>회원</MenuItem>
+                  <MenuItem value={3}>결제</MenuItem>
+                  <MenuItem value={4}>예매</MenuItem>
+                  <MenuItem value={5}>기타</MenuItem>
+                  <MenuItem value={6}>제안/건의</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
+          </div>
+        </div>
+        <div className="input-wrap2">
+          <input
+            type="text"
+            id="pqTitle"
+            name="pqTitle"
+            value={search}
+            onChange={(e) => {
+              setSearch(e.target.value);
+            }}
+            placeholder="검색어를 입력하십시오"
+          ></input>
+          <button type="submit" onClick={searchInput}>
+            입력
+          </button>
+        </div>
       </div>
       <div className="list-wrap">
         <table className="tbl">

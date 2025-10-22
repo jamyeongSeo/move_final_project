@@ -58,19 +58,21 @@ const NoticeList = () => {
       </div>
       <div className="input-wrap">
         <div className="list-count">전체 : {totalCount}건</div>
-        <input
-          type="text"
-          id="noticeTitle"
-          name="noticeTitle"
-          value={search}
-          onChange={(e) => {
-            setSearch(e.target.value);
-          }}
-          placeholder="검색어를 입력하십시오"
-        ></input>
-        <button type="submit" onClick={searchInput}>
-          입력
-        </button>
+        <div className="input-wrap2">
+          <input
+            type="text"
+            id="noticeTitle"
+            name="noticeTitle"
+            value={search}
+            onChange={(e) => {
+              setSearch(e.target.value);
+            }}
+            placeholder="검색어를 입력하십시오"
+          ></input>
+          <button type="submit" onClick={searchInput}>
+            입력
+          </button>
+        </div>
       </div>
       <div className="list-wrap">
         <table className="tbl">

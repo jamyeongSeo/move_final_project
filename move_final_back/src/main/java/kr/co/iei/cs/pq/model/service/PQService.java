@@ -21,7 +21,7 @@ public class PQService {
 	private PageInfoUtils piu;
 
 
-	public Map PQList(int reqPage, String pqTitle, String memberId, int memberLevel) {
+	public Map PQList(int reqPage, String pqTitle, String memberId, int memberLevel, int category) {
 		int numPerPage = 10;
 		int pageNaviSize=5;	
 		HashMap<String, Object> pqListSet = new HashMap<>();
@@ -31,6 +31,9 @@ public class PQService {
 		pqListSet.put("memberLevel", memberLevel);
 		int totalCount = pqDao.totalCount(pqListSet);
 		
+		if (category != 0) { 
+		    pqListSet.put("category", category);
+		}
 		
 		PageInfo pi = piu.getPageInfo(reqPage, numPerPage, pageNaviSize, totalCount);
 		
