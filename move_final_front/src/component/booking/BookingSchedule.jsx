@@ -14,6 +14,7 @@ const BookingSchedule = (props) => {
   const [classList, setClassList] = useState("one-schedule");
   const [refresh, setRefresh] = useState(false);
   const [bookingDate, setBookingDate] = useState(new Date(date));
+  const [clickState, setClickState] = useState(-1);
   const datebox = document.querySelectorAll("one-schedule");
   useEffect(() => {
     scheduleList.length = 0;
@@ -30,12 +31,17 @@ const BookingSchedule = (props) => {
     prevWeek.setDate(bookingDate.getDate() - 7);
     setBookingDate(prevWeek);
     setRefresh(true);
+    const selectDate = document.querySelector(".one-schedule.select");
+
+    selectDate.click();
   };
-  const nextWeek = () => {
+  const nextWeek = (e) => {
     const nextWeek = new Date(bookingDate);
     nextWeek.setDate(bookingDate.getDate() + 7);
     setBookingDate(nextWeek);
     setRefresh(true);
+    const selectDate = document.querySelector(".one-schedule.select");
+    selectDate.click();
   };
   return (
     <ul className="schedule-select-box">
@@ -50,10 +56,12 @@ const BookingSchedule = (props) => {
         return (
           <li
             key={"one-schedule-" + index}
-            className={classList}
+            className={
+              clickState === index ? "one-schedule select" : "one-schedule"
+            }
             onClick={(e) => {
               setClassList("one-schedule");
-              e.currentTarget.className = "one-schedule select";
+              setClickState(index);
 
               const currentYear = schedule.getFullYear();
               const currentMonth = String(schedule.getMonth() + 1).padStart(

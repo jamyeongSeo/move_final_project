@@ -4,6 +4,8 @@ import axios from "axios";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import BookingSchedule from "./BookingSchedule";
+import { useRecoilValue } from "recoil";
+import { isLoginState } from "../utils/RecoilData";
 
 const BookingMain = () => {
   const [bookingMovieList, setBookingMovieList] = useState([]);
@@ -13,7 +15,7 @@ const BookingMain = () => {
   const [movieSelect, setMovieSelect] = useState(0);
   const movieContent = useRef();
   const movieContentSelect = useRef();
-
+  const isLogin = useRecoilValue(isLoginState);
   useEffect(() => {
     axios
       .get(`${import.meta.env.VITE_BACK_SERVER}/booking/list`)
