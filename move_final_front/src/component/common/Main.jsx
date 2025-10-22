@@ -25,6 +25,49 @@ const Main = () => {
       })
       .catch((err) => {});
   }, [movieAllList]);
+
+  //상영스케줄 일자 (오늘 포함 8일)
+  const [scheduleDate, setScheduleDate] = useState([
+    {
+      month: "",
+      day: "",
+      week: "",
+    },
+  ]);
+  const today = new Date(); //오늘날짜
+  useEffect(() => {
+    if (scheduleDate.length > 8) {
+      setScheduleDate([
+        {
+          month: "",
+          day: "",
+          week: "",
+        },
+      ]);
+    }
+    const newScheduleDate = [];
+    for (let i = 0; i < 8; i++) {
+      today.setDate(today.getDate() + i);
+      //월
+      const month = ("0" + (today.getMonth() + 1)).slice(-2);
+      //일
+      const date = ("0" + today.getDate()).slice(-2);
+      //요일
+      const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
+      const dayOfWeekIndex = today.getDay(); //일=0
+      const dayOfWeek = daysOfWeek[dayOfWeekIndex];
+
+      const oneScheduleDate = {
+        month: month,
+        date: date,
+        dayOfWeek: dayOfWeek,
+      };
+      newScheduleDate.push({ oneScheduleDate });
+      today.setDate(today.getDate() - i);
+    }
+    //set은 for문 안에서 해주면 안됨!!!
+    setScheduleDate(newScheduleDate);
+  }, []);
   return (
     <body
       style={{
@@ -57,7 +100,45 @@ const Main = () => {
             </div>
           </div>
 
-          <div className="main-movie-schedule-wrap"></div>
+          <div className="main-schedule-wrap">
+            <div className="main-schedule-title">상영스케줄</div>
+            <div className="main-schedule-day-wrap">
+              {scheduleDate.map((date, index) => {
+                console.log(date);
+                console.log(date.oneScheduleDate.dayOfWeek);
+                return (
+                  <div
+                    className="main-schedule-day-map"
+                    key={"main-schedul-" + index}
+                  >
+                    <ul>
+                      <li
+                        className={
+                          date.oneScheduleDate.dayOfWeek == "토"
+                            ? "main-shedule-week-b"
+                            : date.oneScheduleDate.dayOfWeek == "일"
+                            ? "main-shedule-week-r"
+                            : "main-shedule-week-w"
+                        }
+                      >
+                        {date.oneScheduleDate.dayOfWeek}
+                      </li>
+                      <li className="main-shedule-month-date">
+                        {date.oneScheduleDate.date !== 1 ? (
+                          <h3>{date.oneScheduleDate.date}</h3>
+                        ) : (
+                          <h3>
+                            {date.oneScheduleDate.month}.
+                            {date.oneScheduleDate.date}
+                          </h3>
+                        )}
+                      </li>
+                    </ul>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
     </body>

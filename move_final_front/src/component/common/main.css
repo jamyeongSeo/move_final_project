@@ -1,6 +1,6 @@
 .main-box-office-wrap {
   width: 915px;
-  margin: 85px auto;
+  margin: 80px auto;
   overflow: hidden;
 }
 .main-box-office-title {
@@ -15,11 +15,55 @@
   display: flex;
   justify-content: space-between;
 }
-.main-movie-schedule-wrap {
+.main-schedule-wrap {
   margin-top: 135px;
   background-color: var(--main3);
   border: 1px solid var(--main3);
-  min-height: 780px;
+  min-height: 785px;
   border-top-left-radius: 88px;
   border-top-right-radius: 88px;
+  padding: 30px 50px;
+  overflow: hidden;
+}
+.main-schedule-title {
+  color: var(--main1);
+  font-size: 20px;
+  font-family: ns-b;
+  margin-bottom: 35px;
+}
+.main-schedule-day-wrap {
+  border: 1px solid var(--main1);
+  height: 70px;
+  background-color: var(--main1);
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+}
+.main-schedule-day-map {
+  border: 1px solid var(--main5);
+  border-radius: 13px;
+  padding-left: 20px;
+  padding-right: 20px;
+  float: left;
+  margin: 4px 0px;
+  display: flex;
+  justify-content: space-between;
+}
+.main-schedule-day-map-click {
+  background-color: var(--main3);
+}
+.main-schedule-day-map > ul {
+}
+.main-shedule-week-w {
+  color: var(--main3);
+}
+.main-shedule-week-r {
+  color: var(--main5);
+}
+.main-shedule-week-b {
+  color: var(--main10);
+}
+.main-shedule-month-date {
+  color: var(--main3);
 }
