@@ -51,7 +51,7 @@
   justify-content: space-between;
 }
 .main-schedule-day-map-click {
-  background-color: var(--main3);
+  background-color: var(--gray3);
 }
 .main-schedule-day-map > ul {
 }

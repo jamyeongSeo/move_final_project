@@ -27,16 +27,10 @@ const Main = () => {
   }, [movieAllList]);
 
   //상영스케줄 일자 (오늘 포함 8일)
-  const [scheduleDate, setScheduleDate] = useState([
-    {
-      month: "",
-      day: "",
-      week: "",
-    },
-  ]);
+  const [scheduleDate, setScheduleDate] = useState(null);
   const today = new Date(); //오늘날짜
   useEffect(() => {
-    if (scheduleDate.length > 8) {
+    if (scheduleDate && scheduleDate.length > 8) {
       setScheduleDate([
         {
           month: "",
@@ -103,40 +97,41 @@ const Main = () => {
           <div className="main-schedule-wrap">
             <div className="main-schedule-title">상영스케줄</div>
             <div className="main-schedule-day-wrap">
-              {scheduleDate.map((date, index) => {
-                console.log(date);
-                console.log(date.oneScheduleDate.dayOfWeek);
-                return (
-                  <div
-                    className="main-schedule-day-map"
-                    key={"main-schedul-" + index}
-                  >
-                    <ul>
-                      <li
-                        className={
-                          date.oneScheduleDate.dayOfWeek == "토"
-                            ? "main-shedule-week-b"
-                            : date.oneScheduleDate.dayOfWeek == "일"
-                            ? "main-shedule-week-r"
-                            : "main-shedule-week-w"
-                        }
-                      >
-                        {date.oneScheduleDate.dayOfWeek}
-                      </li>
-                      <li className="main-shedule-month-date">
-                        {date.oneScheduleDate.date !== 1 ? (
-                          <h3>{date.oneScheduleDate.date}</h3>
-                        ) : (
-                          <h3>
-                            {date.oneScheduleDate.month}.
-                            {date.oneScheduleDate.date}
-                          </h3>
-                        )}
-                      </li>
-                    </ul>
-                  </div>
-                );
-              })}
+              {scheduleDate &&
+                scheduleDate.map((date, index) => {
+                  console.log(date);
+                  console.log(date.oneScheduleDate.dayOfWeek);
+                  return (
+                    <div
+                      className="main-schedule-day-map"
+                      key={"main-schedul-" + index}
+                    >
+                      <ul>
+                        <li
+                          className={
+                            date.oneScheduleDate.dayOfWeek == "토"
+                              ? "main-shedule-week-b"
+                              : date.oneScheduleDate.dayOfWeek == "일"
+                              ? "main-shedule-week-r"
+                              : "main-shedule-week-w"
+                          }
+                        >
+                          {date.oneScheduleDate.dayOfWeek}
+                        </li>
+                        <li className="main-shedule-month-date">
+                          {date.oneScheduleDate.date !== 1 ? (
+                            <h3>{date.oneScheduleDate.date}</h3>
+                          ) : (
+                            <h3>
+                              {date.oneScheduleDate.month}.
+                              {date.oneScheduleDate.date}
+                            </h3>
+                          )}
+                        </li>
+                      </ul>
+                    </div>
+                  );
+                })}
             </div>
           </div>
         </div>
