@@ -21,7 +21,7 @@
   margin: auto;
   width: 80%;
   border: 3px solid transparent;
-  background-color: black;
+  background-color: var(--main1);
   overflow: hidden;
   transform: rotate(175deg);
   margin-bottom: 20px;
@@ -48,7 +48,7 @@
 
 .header-design-black {
   width: 10%;
-  background-color: black;
+  background-color: var(--main1);
 }
 .header-design-white {
   width: 10%;
@@ -195,6 +195,9 @@
   padding: 10px;
   display: flex;
   gap: 10px;
+}
+.booking-schedule-box:hover {
+  cursor: pointer;
 }
 
 .one-schedule.select {

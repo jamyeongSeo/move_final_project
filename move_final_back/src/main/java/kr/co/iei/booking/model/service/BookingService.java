@@ -34,8 +34,6 @@ public class BookingService {
 		Map selectMap = new HashMap<String, Object>();
 		selectMap.put("movieNo", movieNo);
 		selectMap.put("movieDate", movieDate);
-		System.out.println("서비스 movie_no : " +movieNo);
-		System.out.println("서비스 movie_date : " +movieDate);
 		List oneSchedule = bookingDao.selectSchedule(selectMap);
 		System.out.println("서비스 oneSchedule:"+oneSchedule);
 		Map map = new HashMap<String, Object>();
