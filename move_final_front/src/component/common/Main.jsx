@@ -62,6 +62,43 @@ const Main = () => {
     //set은 for문 안에서 해주면 안됨!!!
     setScheduleDate(newScheduleDate);
   }, []);
+  const [firstCss, setFirstCss] = useState(true);
+  const [changeCss, setChangeCss] = useState(false);
+
+  const [dateCss, setDateCss] = useState([
+    {
+      className: "main-schedule-day-map main-schedule-day-map-click",
+      date: today.getDate(),
+    },
+    {
+      className: "main-schedule-day-map",
+      date: today.getDate() + 1,
+    },
+    {
+      className: "main-schedule-day-map",
+      date: today.getDate() + 2,
+    },
+    {
+      className: "main-schedule-day-map",
+      date: today.getDate() + 3,
+    },
+    {
+      className: "main-schedule-day-map",
+      date: today.getDate() + 4,
+    },
+    {
+      className: "main-schedule-day-map",
+      date: today.getDate() + 5,
+    },
+    {
+      className: "main-schedule-day-map",
+      date: today.getDate() + 6,
+    },
+    {
+      className: "main-schedule-day-map",
+      date: today.getDate() + 7,
+    },
+  ]);
   return (
     <body
       style={{
@@ -99,11 +136,23 @@ const Main = () => {
             <div className="main-schedule-day-wrap">
               {scheduleDate &&
                 scheduleDate.map((date, index) => {
-                  console.log(date);
-                  console.log(date.oneScheduleDate.dayOfWeek);
                   return (
                     <div
-                      className="main-schedule-day-map"
+                      onClick={() => {
+                        const newDateCss = [...dateCss];
+                        {
+                          newDateCss.map((css, i) => {
+                            if (css.date != dateCss[index].date) {
+                              newDateCss[i].className = "main-schedule-day-map";
+                            } else if (css.date == dateCss[index].date) {
+                              newDateCss[i].className =
+                                "main-schedule-day-map main-schedule-day-map-click";
+                            }
+                          });
+                        }
+                        setDateCss(newDateCss);
+                      }}
+                      className={dateCss[index].className}
                       key={"main-schedul-" + index}
                     >
                       <ul>
