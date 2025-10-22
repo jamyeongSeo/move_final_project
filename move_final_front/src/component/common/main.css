@@ -39,6 +39,7 @@
   display: flex;
   justify-content: center;
   gap: 40px;
+  margin-bottom: 20px;
 }
 .main-schedule-day-map {
   border-radius: 13px;
@@ -65,4 +66,69 @@
 }
 .main-shedule-month-date {
   color: var(--main3);
+}
+/*영화별 상영 스케줄*/
+.main-schedul-movie-box {
+  border-top: 1px solid var(--gray5);
+}
+.main-schedul-movie-title-wrap {
+  border-bottom: 1px solid var(--gray5);
+  background-color: var(--gray6);
+  padding: 10px 10px;
+  border-radius: 5px;
+  overflow: hidden;
+  line-height: 35px;
+}
+
+.main-schedul-movie-title-wrap > div {
+  display: flex;
+  float: left;
+}
+.main-schedul-movie-show {
+  font-weight: 600;
+  font-size: 23px;
+  margin-right: 10px;
+  color: var(--gray3);
+}
+.main-schedul-movie-show:hover {
+  color: var(--main7);
+}
+.main-schedul-movie-age > img {
+  width: 23px;
+  padding-top: 6px;
+  margin-right: 5px;
+}
+.main-schedul-movie-time-wrap {
+  padding: 10px 10px;
+}
+.main-schedul-movie-time-wrap > div:last-child {
+  margin-bottom: 10px;
+}
+.main-schedul-movie-time-type-wrap {
+  padding: 15px 0px;
+}
+.main-schedul-movie-time-type {
+  text-align: left;
+  margin-bottom: 8px;
+  color: var(--gray2);
+  font-weight: 600;
+}
+.main-schedul-movie-time-box-wrap {
+  display: flex;
+  gap: 17px;
+}
+.main-schedul-movie-time-box {
+  border: 1px solid var(--gray4);
+  border-radius: 4px;
+  padding: 3px 20px;
+  width: 95px;
+}
+.main-schedul-movie-time-content {
+  font-weight: 600;
+  color: var(--gray2);
+}
+.main-schedul-movie-time-seat > span {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gray2);
 }
