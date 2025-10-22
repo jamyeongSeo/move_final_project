@@ -8,10 +8,12 @@ import BookingSchedule from "./BookingSchedule";
 const BookingMain = () => {
   const [bookingMovieList, setBookingMovieList] = useState([]);
   const [bookingSchedule, setBookingSchedule] = useState([]);
-  const [selectedDate, setSelectedDate] = useState("");
   const [movieDate, setMovieDate] = useState("");
-  console.log(bookingMovieList);
-  console.log(selectedDate);
+  const [movieNo, setMovieNo] = useState(-1);
+  const [movieSelect, setMovieSelect] = useState(0);
+  const movieContent = useRef();
+  const movieContentSelect = useRef();
+
   useEffect(() => {
     axios
       .get(`${import.meta.env.VITE_BACK_SERVER}/booking/list`)
@@ -46,7 +48,12 @@ const BookingMain = () => {
             </div>
             <div className="booking-content-box">
               <div className="booking-date-select">
-                <BookingSchedule setSelectedDate={setSelectedDate} />
+                <BookingSchedule
+                  movieNo={movieNo}
+                  movieDate={movieDate}
+                  setMovieDate={setMovieDate}
+                  setBookingSchedule={setBookingSchedule}
+                />
               </div>
               <div className="booking-select-wrap">
                 <div className="booking-movie-select">
@@ -61,34 +68,29 @@ const BookingMain = () => {
                             key={"booking-movie-" + index}
                             className="booking-movie-content"
                             onClick={() => {
+                              console.log(movieNo);
+                              console.log(movieDate);
+                              setMovieNo(bookingMovie.movieNo);
+
                               axios
                                 .get(
                                   `${
                                     import.meta.env.VITE_BACK_SERVER
                                   }/booking/schedule?movieNo=${
                                     bookingMovie.movieNo
-                                  }`
+                                  }&movieDate=${movieDate}`
                                 )
                                 .then((res) => {
                                   console.log(res);
 
                                   setBookingSchedule(res.data.oneSchedule);
-                                  bookingSchedule.map((schedule, index) => {
-                                    const scheduleStart = new Date(
-                                      schedule.scheduleTimeStart
-                                    );
-                                    setMovieDate(
-                                      "" +
-                                        (scheduleStart.getMonth() + 1) +
-                                        scheduleStart.getDate()
-                                    );
-                                    console.log(movieDate);
-                                  });
                                 })
+
                                 .catch((err) => {
                                   console.log(err);
                                 });
                             }}
+                            ref={movieContent}
                           >
                             <div className="booking-movie-grade">
                               <img
@@ -121,14 +123,23 @@ const BookingMain = () => {
                       </li>
                       <li className="booking-schedule-content">
                         {bookingSchedule.map((one, index) => {
+                          console.log(typeof one.scheduleTimeStart);
                           return (
                             <div
                               key={"booking-schedule-" + index}
                               className="booking-schedule-zone"
                             >
                               <div className="booking-schedule-box">
-                                <div>{one.screenNo}</div>
-                                <div>{one.scheduleTimeStart}</div>
+                                <div>{one.movieTitle}</div>
+                                <div>
+                                  {one.screenNo === 1
+                                    ? "1관"
+                                    : one.screenNo === 2
+                                    ? "2관"
+                                    : "3관"}
+                                </div>
+                                <div>{one.scheduleTimeStart.slice(0, 16)}</div>
+                                <div>{one.scheduleTimeEnd.slice(0, 15)}</div>
                               </div>
                             </div>
                           );
