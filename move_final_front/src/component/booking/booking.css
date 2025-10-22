@@ -175,7 +175,7 @@
 }
 
 .booking-schedule-zone {
-  width: 45%;
+  width: 100%;
   border: 1px solid var(--gray5);
   height: 70px;
   border-radius: 8px;
@@ -191,6 +191,18 @@
   margin-top: 10px;
 }
 .booking-schedule-box {
+  width: 100%;
   padding: 10px;
   display: flex;
+  gap: 10px;
+}
+
+.one-schedule.select {
+  background-color: var(--main1);
+  color: var(--main3);
+}
+
+.one-schedule.select * {
+  background-color: var(--main1);
+  color: var(--main3);
 }

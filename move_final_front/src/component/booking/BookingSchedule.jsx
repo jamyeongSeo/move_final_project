@@ -1,16 +1,20 @@
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import "./booking.css";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import axios from "axios";
 
 const BookingSchedule = (props) => {
-  const setSelectedDate = props.setSelectedDate;
-  const [bookingSchedule, setBookingSchedule] = useState([]);
-
+  const setBookingSchedule = props.setBookingSchedule;
+  const movieNo = props.movieNo;
+  const movieDate = props.movieDate;
+  const setMovieDate = props.setMovieDate;
   const [scheduleList, setScheduleList] = useState([]);
   const date = new Date();
+  const [classList, setClassList] = useState("one-schedule");
 
   const [bookingDate, setBookingDate] = useState(new Date(date));
+  const datebox = document.querySelectorAll("one-schedule");
   useEffect(() => {
     scheduleList.length = 0;
     for (let i = 0; i < 7; i++) {
@@ -40,11 +44,35 @@ const BookingSchedule = (props) => {
         return (
           <li
             key={"one-schedule-" + index}
-            className="one-schedule"
-            onClick={() => {
-              setSelectedDate(
-                "" + (schedule.getMonth() + 1) + schedule.getDate()
+            className={classList}
+            onClick={(e) => {
+              setClassList("one-schedule");
+              e.currentTarget.className = "one-schedule select";
+
+              const currentYear = schedule.getFullYear();
+              const currentMonth = String(schedule.getMonth() + 1).padStart(
+                2,
+                "0"
               );
+              const currentDay = String(schedule.getDate()).padStart(2, "0");
+
+              const currentDate =
+                currentYear + "-" + currentMonth + "-" + currentDay;
+              console.log(currentDate);
+              setMovieDate(currentDate);
+              axios
+                .get(
+                  `${
+                    import.meta.env.VITE_BACK_SERVER
+                  }/booking/schedule?movieNo=${movieNo}&movieDate=${currentDate}`
+                )
+                .then((res) => {
+                  console.log(res);
+                  setBookingSchedule(res.data.oneSchedule);
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
             }}
           >
             <div className="schedule-date-box">

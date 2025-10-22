@@ -13,6 +13,16 @@
   	select *
   		from schedule_tbl s
   		join movie_tbl m using(movie_no)
-  	where movie_no = #{movieNo}
+  	<if test="movieNo != -1 and movieDate == ''">
+  		where schedule_time_start >= sysdate and movie_no = #{movieNo}
+  	</if>
+  	<if test="movieNo == -1 and movieDate != ''">
+  		where schedule_time_start >= sysdate and to_char(schedule_time_start, 'yyyy-mm-dd') like '%'||#{movieDate}||'%'
+  	</if>
+  	<if test="movieNo != -1 and movieDate != ''">
+  		where schedule_time_start >= sysdate and movie_no = #{movieNo} and to_char(schedule_time_start, 'yyyy-mm-dd') like '%'||#{movieDate}||'%'
+  	</if>
+  	
   </select>
+  <select id="selectOneSchedule" resultType="schedule"></select>
 </mapper>
