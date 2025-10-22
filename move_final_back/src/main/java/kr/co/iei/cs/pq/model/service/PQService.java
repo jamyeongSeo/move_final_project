@@ -26,12 +26,20 @@ public class PQService {
 		int pageNaviSize=5;	// 페이지 네비게이션 크기
 		int totalCount = (pqTitle==null||pqTitle.isEmpty())//pqTitle = 검색창에 검색한 값
 							?pqDao.totalCount()
-							:pqDao.searchTotalCount(reqPage);
+							:pqDao.searchTotalCount(pqTitle);
 		
-		PageInfo pi = piu.getPageInfo(reqPage, numPerPage, pageNaviSize, totalCount);//전체 게시물 정보
-
+		PageInfo pi = piu.getPageInfo(reqPage, numPerPage, pageNaviSize, totalCount);
 		
-		List pqList = (pqTitle==null||pqTitle.isEmpty())?pqDao.selectPQList(pi):pqDao.searchPQList(pi);
+		int start = pi.getStart();
+		int end = pi.getEnd();
+		
+		HashMap<String, Object> pqListSet = new HashMap<>();
+		pqListSet.put("start", start);
+		pqListSet.put("end", end);
+		pqListSet.put("pqTitle", pqTitle);
+		
+		List pqList = (pqTitle==null||pqTitle.isEmpty())?pqDao.selectPQList(pqListSet):pqDao.searchPQList(pqListSet);
+		
 		Map<String, Object> map = new HashMap<>();
 		map.put("pqList", pqList);
 		map.put("totalCount", totalCount);

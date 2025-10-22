@@ -1,5 +1,6 @@
 package kr.co.iei.cs.notice.model.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +17,7 @@ public interface NoticeDao {
 
 	int totalCount();
 
-	List selectNoticeList(PageInfo pi);
+	List selectNoticeList(HashMap<String, Object> noticeListSet);
 
 	int searchTotalCount(String noticeTitle);
 
