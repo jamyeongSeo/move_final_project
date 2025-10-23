@@ -15,6 +15,7 @@ const BookingSchedule = (props) => {
   const [refresh, setRefresh] = useState(false);
   const [bookingDate, setBookingDate] = useState(new Date(date));
   const [clickState, setClickState] = useState(-1);
+  const setMovieSelect = props.setMovieSelect;
   const datebox = document.querySelectorAll("one-schedule");
   useEffect(() => {
     scheduleList.length = 0;
@@ -40,8 +41,6 @@ const BookingSchedule = (props) => {
     nextWeek.setDate(bookingDate.getDate() + 7);
     setBookingDate(nextWeek);
     setRefresh(true);
-    const selectDate = document.querySelector(".one-schedule.select");
-    selectDate.click();
   };
   return (
     <ul className="schedule-select-box">
@@ -74,6 +73,7 @@ const BookingSchedule = (props) => {
                 currentYear + "-" + currentMonth + "-" + currentDay;
               console.log(currentDate);
               setMovieDate(currentDate);
+              setMovieSelect(-1);
               axios
                 .get(
                   `${

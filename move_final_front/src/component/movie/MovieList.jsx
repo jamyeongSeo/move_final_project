@@ -11,7 +11,7 @@ const MovieList = () => {
   const isLogin = useRecoilValue(isLoginState);
   const [memberId, setMemberId] = useRecoilState(loginIdState);
   const [movieAllList, setMovieAllList] = useState([]);
-
+  const [likeCount, setLikeCount] = useState(0);
   useEffect(() => {
     axios
       .get(
@@ -23,7 +23,7 @@ const MovieList = () => {
         }
       })
       .catch((err) => {});
-  }, [movieAllList]);
+  }, [movieAllList, likeCount]);
 
   return (
     <div className="content">
@@ -45,6 +45,8 @@ const MovieList = () => {
                   memberId={memberId}
                   movieAllList={movieAllList}
                   setMovieAllList={setMovieAllList}
+                  likeCount={likeCount}
+                  setLikeCount={setLikeCount}
                 />
               );
             })}
@@ -69,7 +71,8 @@ const MovieItem = (props) => {
   const memberId = props.memberId;
   const movieAllList = props.movieAllList;
   const setMovieAllList = props.setMovieAllList;
-  const [likeCount, setLikeCount] = useState(movie.likeCount);
+  const likeCount = props.likeCount;
+  const setLikeCount = props.setLikeCount;
 
   return (
     <li className="movie-item">
@@ -130,7 +133,7 @@ const MovieItem = (props) => {
                                 }
                               : item;
                           });
-
+                          setLikeCount(Number(likeCount));
                           setMovieAllList(likePushList);
                         }
                       })
@@ -138,7 +141,7 @@ const MovieItem = (props) => {
                   }
                 }}
               >
-                <FavoriteIcon sx={{ color: red[500] }} />
+                <FavoriteIcon sx={{ fill: "#ff2b2b" }} />
               </span>
             ) : (
               <span
@@ -164,7 +167,7 @@ const MovieItem = (props) => {
                                 }
                               : item;
                           });
-
+                          setLikeCount(Number(likeCount));
                           setMovieAllList(likeUnPushList);
                         }
                       })

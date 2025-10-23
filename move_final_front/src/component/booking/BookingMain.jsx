@@ -4,18 +4,29 @@ import axios from "axios";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import BookingSchedule from "./BookingSchedule";
-import { useRecoilValue } from "recoil";
-import { isLoginState } from "../utils/RecoilData";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { isLoginState, loginIdState } from "../utils/RecoilData";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const BookingMain = () => {
   const [bookingMovieList, setBookingMovieList] = useState([]);
   const [bookingSchedule, setBookingSchedule] = useState([]);
   const [movieDate, setMovieDate] = useState("");
   const [movieNo, setMovieNo] = useState(-1);
-  const [movieSelect, setMovieSelect] = useState(0);
+  const [movieScheduleSelect, setmovieScheduleSelect] = useState(-1);
+  const [movieSelect, setMovieSelect] = useState(-1);
   const movieContent = useRef();
-  const movieContentSelect = useRef();
+  const [memberId, setMemberId] = useRecoilState(loginIdState);
   const isLogin = useRecoilValue(isLoginState);
+  const [refresh, setRefresh] = useState(false);
+  const [changeView, setChangeView] = useState("/booking/main");
+  const [booking, setBooking] = useState({
+    memberId: memberId,
+    scheduleNo: 0,
+    priceNo: 0,
+  });
+  const navigate = useNavigate();
   useEffect(() => {
     axios
       .get(`${import.meta.env.VITE_BACK_SERVER}/booking/list`)
@@ -25,7 +36,7 @@ const BookingMain = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [booking, movieScheduleSelect, movieSelect]);
 
   return (
     <div className="content-wrap">
@@ -55,6 +66,8 @@ const BookingMain = () => {
                   movieDate={movieDate}
                   setMovieDate={setMovieDate}
                   setBookingSchedule={setBookingSchedule}
+                  setmovieScheduleSelect={setmovieScheduleSelect}
+                  setMovieSelect={setMovieSelect}
                 />
               </div>
               <div className="booking-select-wrap">
@@ -68,12 +81,15 @@ const BookingMain = () => {
                         return (
                           <li
                             key={"booking-movie-" + index}
-                            className="booking-movie-content"
+                            className={
+                              movieSelect === index
+                                ? "booking-movie select"
+                                : "booking-movie"
+                            }
                             onClick={() => {
-                              console.log(movieNo);
-                              console.log(movieDate);
                               setMovieNo(bookingMovie.movieNo);
-
+                              setmovieScheduleSelect(-1);
+                              setMovieSelect(index);
                               axios
                                 .get(
                                   `${
@@ -125,18 +141,46 @@ const BookingMain = () => {
                       </li>
                       <li className="booking-schedule-content">
                         {bookingSchedule.map((one, index) => {
-                          console.log(typeof one.scheduleTimeStart);
                           return (
                             <div
                               key={"booking-schedule-" + index}
-                              className="booking-schedule-zone"
+                              className={
+                                movieScheduleSelect === index
+                                  ? "booking-schedule-zone.select"
+                                  : "booking-schedule-zone"
+                              }
                             >
-                              <div className="booking-schedule-box">
+                              <div
+                                className="booking-schedule-box"
+                                onClick={() => {
+                                  setmovieScheduleSelect(index);
+                                  setMovieNo(one.movieNo);
+                                  setBooking({
+                                    ...booking,
+                                    scheduleNo: one.scheduleNo,
+                                  });
+                                  if (!isLogin) {
+                                    Swal.fire({
+                                      title: "로그인 필요",
+                                      text: "예매를 이용하시려면 로그인이 필요합니다.",
+                                      icon: "warning",
+                                      confirmButtonText: "로그인 화면으로",
+                                    }).then((confirm) => {
+                                      if (confirm.isConfirmed) {
+                                        navigate(`/common/login`);
+                                      }
+                                    });
+                                  }
+                                  navigate(
+                                    `/booking/bookingSeat/${one.screenNo}`
+                                  );
+                                }}
+                              >
                                 <div>{one.movieTitle}</div>
                                 <div>
-                                  {one.screenNo === 1
+                                  {one.screenNo === "1"
                                     ? "1관"
-                                    : one.screenNo === 2
+                                    : one.screenNo === "2"
                                     ? "2관"
                                     : "3관"}
                                 </div>

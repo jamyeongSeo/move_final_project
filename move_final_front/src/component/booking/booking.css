@@ -121,7 +121,7 @@
   padding-right: 20px;
 }
 
-.booking-movie-content {
+.booking-movie {
   border: 1px solid var(--gray3);
   border-radius: 10px;
   text-align: center;
@@ -201,11 +201,45 @@
 }
 
 .one-schedule.select {
-  background-color: var(--main1);
+  background-color: var(--gray4);
   color: var(--main3);
 }
 
 .one-schedule.select * {
-  background-color: var(--main1);
+  background-color: var(--gray4);
   color: var(--main3);
+}
+
+.booking-schedule-zone.select {
+  background-color: var(--gray4);
+  color: var(--main3);
+}
+
+.booking-movie.select {
+  background-color: var(--gray4);
+}
+.booking-movie.select > div {
+  color: var(--main3);
+}
+
+/*-----------------BookingSeat--------------------*/
+
+.screen-select-box {
+  width: 1080;
+  display: flex;
+  justify-content: space-between;
+}
+
+.seat-select-box {
+  width: 70%;
+  height: 700px;
+  background-color: var(--gray5);
+  border-radius: 8px;
+}
+
+.seat-amount-box {
+  width: 20%;
+  height: 500px;
+  background-color: var(--gray5);
+  border-radius: 8px;
 }
