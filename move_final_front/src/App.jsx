@@ -28,6 +28,7 @@ import NoMemberInfo from "./component/member/NoMemberInfo";
 
 import AdminScheduleRegist from "./component/admin/AdminScheduleRegist";
 import AdminView from "./component/admin/AdminView";
+import BookingSeat from "./component/booking/BookingSeat";
 
 function App() {
   const [memberId, setMemberId] = useRecoilState(loginIdState);
