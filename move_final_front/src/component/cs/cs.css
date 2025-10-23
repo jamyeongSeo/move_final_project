@@ -227,3 +227,57 @@
 .noticeUpdate {
   width: 72px;
 }
+.pqFileZone {
+  width: 100%;
+}
+.pqFileInput {
+  display: flex;
+  justify-content: center;
+  width: 25%;
+  height: 32px;
+  align-items: center;
+  font-size: 16px;
+}
+.file-input-wrap {
+  width: 50%;
+}
+.pqFileTitle {
+  display: flex;
+  width: 50%;
+  margin-right: 0;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 20px;
+}
+.sub-title-wrap {
+  display: flex;
+  gap: 1%;
+}
+.sub-input-wrap {
+  display: flex;
+  gap: 2%;
+}
+.MuiBox-root {
+  display: flex;
+  align-items: center;
+
+  height: 42px;
+}
+.category-zone {
+  display: flex;
+  align-items: center;
+  width: 50%;
+}
+.MuiBox-root label {
+  line-height: 1;
+  font-family: ns-b;
+  color: var(--gray3);
+}
+.category-zone fieldset {
+  border-radius: 8px;
+  border: 2px solid;
+}
+.css-18jp67o-MuiNativeSelect-root-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-18jp67o-MuiNativeSelect-root-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-18jp67o-MuiNativeSelect-root-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
+  font-family: ns-b;
+  color: var(--gray3);
+}
