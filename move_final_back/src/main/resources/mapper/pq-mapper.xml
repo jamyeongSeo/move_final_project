@@ -26,8 +26,16 @@
 	    select * from
 	    (select rownum as rnum, p.*
 	        from
-	        (select pq_no, member_id, pq_title, pq_category,
-	                to_char(pq_date,'yyyy-mm-dd') as pq_date
+	        (select pq_no, member_id, pq_title, 
+	        	case pq_category
+			        when 1 then '영화 정보'
+			        when 2 then '회원'
+			        when 3 then '결제'
+			        when 4 then '예매'
+			        when 5 then '기타'
+			        when 6 then '제안/건의'
+					end as pq_category_name,
+	            to_char(pq_date,'yyyy-mm-dd') as pq_date
 	         from pq_tbl
 	         <where>
 	             <if test="memberLevel != 1">
@@ -56,7 +64,11 @@
 		select pq_seq.nextval from dual
 	</select>
 	<insert id="insertPQ">
-		insert into pq_tbl values(#{pqNo},#{memberId},#{pqTitle},#{pqContent},null,#{pqCategory},to_char(sysdate,'yyyy-mm-dd'))
+		insert into pq_tbl values(#{pqNo},#{memberId},#{pqTitle},#{pqContent}, null
+		<if test="pqCategory != 0">
+        	, #{pqCategory}
+    	</if>
+    		,to_char(sysdate,'yyyy-mm-dd'))
 	</insert>
 	<insert id="insertPQFile">
 		insert into pq_file_tbl values(pq_file_seq.nextval,#{memberId},#{filename},#{filepath})

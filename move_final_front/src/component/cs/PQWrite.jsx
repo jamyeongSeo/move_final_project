@@ -10,6 +10,7 @@ const PQWrite = () => {
   const [pqTitle, setPqTitle] = useState("");
   const [pqFile, setPqFile] = useState([]);
   const [pqContent, setPqContent] = useState([]);
+  const [pqCategory, setPqCategory] = useState(0);
   const [memberId, setMemberId] = useRecoilState(loginIdState);
   const navigate = useNavigate();
   const write = () => {
@@ -18,6 +19,7 @@ const PQWrite = () => {
       form.append("pqTitle", pqTitle);
       form.append("pqContent", pqContent);
       form.append("memberId", memberId);
+      form.append("pqCategory", pqCategory === 0 ? null : pqCategory);
       for (let i = 0; i < pqFile.length; i++) {
         form.append("pqFile", pqFile[i]);
       }
@@ -38,6 +40,9 @@ const PQWrite = () => {
         });
     }
   };
+  const backBtn = () => {
+    navigate("/cs/pq");
+  };
   return (
     <section className="section pq-write-wrap">
       <div className="title-wrap">
@@ -51,6 +56,8 @@ const PQWrite = () => {
           setPqTitle={setPqTitle}
           pqFile={pqFile}
           setPqFile={setPqFile}
+          pqCategory={pqCategory}
+          setPqCategory={setPqCategory}
         />
         <div className="texteditor-wrap">
           <div className="input-title">내용</div>
@@ -60,6 +67,9 @@ const PQWrite = () => {
       <div className="btn-zone writeBtn">
         <button type="submit" onClick={write} className="btn-red">
           등록하기
+        </button>
+        <button type="button" onClick={backBtn} className="btn-gray">
+          돌아가기
         </button>
       </div>
     </section>

@@ -12,8 +12,8 @@ const PQFrm = (props) => {
   const setFileList = props.setFileList;
   const delFileNo = props.delFileNo;
   const setDelFileNo = props.setDelFileNo;
-  const category = props.category;
-  const setCategory = props.setCategory;
+  const pqCategory = props.pqCategory;
+  const setPqCategory = props.setPqCategory;
   const [memberId, setMemberId] = useRecoilState(loginIdState);
   const [showFileList, setShowFileList] = useState([]);
   const [categoryValue, setCategoryValue] = useState(0);
@@ -31,6 +31,7 @@ const PQFrm = (props) => {
   };
   const handleCategoryChange = (e) => {
     setCategoryValue(e.target.value);
+    setPqCategory(e.target.value);
   };
   return (
     <div className="frm-wrap">

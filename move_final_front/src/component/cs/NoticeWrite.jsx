@@ -53,8 +53,6 @@ const NoticeWrite = () => {
           setNoticeTitle={setNoticeTitle}
           noticeFile={noticeFile}
           setNoticeFile={setNoticeFile}
-          category={category}
-          setCategory={setCategory}
         />
         <div className="texteditor-wrap">
           <div className="input-title">내용</div>

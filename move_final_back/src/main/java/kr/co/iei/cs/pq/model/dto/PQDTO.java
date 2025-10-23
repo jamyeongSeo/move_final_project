@@ -22,4 +22,5 @@ public class PQDTO {
 	private String pqDate;
 	private List<PQFileDTO>pqFileList;
 	private int[] delFileNo;
+	private String pqCategoryName;
 }

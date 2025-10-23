@@ -184,6 +184,9 @@
 .writeBtn > .btn-red {
   width: 96px;
 }
+.writeBtn > .btn-gray {
+  width: 96px;
+}
 .updateButton > .btn-red {
   width: 96px;
 }
