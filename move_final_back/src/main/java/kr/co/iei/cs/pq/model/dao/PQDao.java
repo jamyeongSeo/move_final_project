@@ -6,6 +6,8 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import kr.co.iei.cs.pq.model.dto.PQDTO;
+import kr.co.iei.cs.pq.model.dto.PQFileDTO;
 import kr.co.iei.utils.PageInfo;
 
 
@@ -17,6 +19,12 @@ public interface PQDao {
 	//int searchTotalCount(String pqTitle);
 
 	List selectPQList(Map map);
+
+	int getPqNo();
+
+	int insertPQ(PQDTO pq);
+
+	int insertPQFile(PQFileDTO pqFile);
 
 	//List searchPQList(Map map);
 

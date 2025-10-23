@@ -11,6 +11,7 @@ const NoticeWrite = () => {
   const [noticeFile, setNoticeFile] = useState([]);
   const [noticeContent, setNoticeContent] = useState("");
   const [memberId, setMemberId] = useRecoilState(loginIdState);
+  const [category, setCategory] = useState(0);
   const navigate = useNavigate();
   const write = () => {
     if (noticeTitle !== "" && noticeContent !== "") {
@@ -52,6 +53,8 @@ const NoticeWrite = () => {
           setNoticeTitle={setNoticeTitle}
           noticeFile={noticeFile}
           setNoticeFile={setNoticeFile}
+          category={category}
+          setCategory={setCategory}
         />
         <div className="texteditor-wrap">
           <div className="input-title">내용</div>
