@@ -18,4 +18,6 @@ public interface BookingDao {
 
 	List selectScreenSeat(int screenNo);
 
+	List selectRowList(int screenNo);
+
 }

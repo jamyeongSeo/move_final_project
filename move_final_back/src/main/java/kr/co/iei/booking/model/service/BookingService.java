@@ -42,8 +42,10 @@ public class BookingService {
 
 	public Map selectScreenSeat(int screenNo) {
 		List seatList = bookingDao.selectScreenSeat(screenNo);
+		List rowList = bookingDao.selectRowList(screenNo);
 		Map map = new HashMap<String, Object>();
 		map.put("seatList", seatList);
+		map.put("rowList",rowList);
 		return map;
 	}
 
