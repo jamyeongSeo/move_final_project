@@ -1,10 +1,11 @@
 import { MenuItem, Select } from "@mui/material";
-
+import { useState } from "react";
 
 const AdminScheduleRegistFrm = (props) =>{
-    const movieList = props.movieList;
     const movieTitle = props.movieTitle;
     const setMovieTitle = props.setMovieTitle;
+    const movieThumb = props.movieThumb;
+    const setmMovieThumb = props.setmMovieThumb;
     const scheduleTimeStart = props.scheduleTimeStart;
     const setScheduleTimeStart = props.setScheduleTimeStart;
     const scheduleTimeEnd = props.scheduleTimeEnd;
@@ -15,6 +16,18 @@ const AdminScheduleRegistFrm = (props) =>{
     const setScheuduleClose = props.setScheuduleClose;
     const screenNo = props.screenNo;
     const setScreenNo = props.setScreenNo;
+    const movieNo = props.movieNo;
+    //각 영화 해당 포스터 출력용 state
+    const [showThumb] = useState(null);
+    
+    //영화 포스터 읽어오기
+    const showMovieThumb = (e) =>{
+        const reader = new FileReader();
+        reader.readAsDataURL(files[0]);
+        reader.onloadend = () =>{
+            showThumb(reader.result);
+        }
+    }
 
     return(
     <section className="admin-schedule-registFrm-wrap">
@@ -29,14 +42,15 @@ const AdminScheduleRegistFrm = (props) =>{
             value={movieTitle}
             onChange={(e) => setMovieTitle(e.target.value)}
             sx={{ width: "180px" }}
-        >
-            {movieList.map((movie) => (
-            <MenuItem key={movie.movieNo} value={movie.movieTitle}>
-                {movie.movieTitle}
+            onClick={showMovieThumb}>
+            <MenuItem key={movieNo} value={movieTitle}>
+                {movieTitle}
             </MenuItem>
-            ))}
         </Select>
         </td>
+        <div className="showMovieThumb">{showThumb}
+            <img src={`${import.meta.emv.VITE_BACK_SERVER}/admin/movie/${movieThumb}`} />
+        </div>
     </tr>
     <tr>
         <th>

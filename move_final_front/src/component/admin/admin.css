@@ -2,9 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+/*기본 설정*/
 a {
   text-decoration: none;
 }
+
 body {
   min-height: 100vh;
   display: flex;
@@ -13,12 +15,12 @@ body {
   position: relative;
   background-color: var(--main3);
 }
+
+/*사이드 메뉴 */
 .admin-side-menu {
   display: flex;
-  gap: 60px;
   flex-direction: column;
   align-items: center;
-  gap: 0;
   width: 210px;
   min-height: 100vh;
   float: left;
@@ -35,149 +37,235 @@ body {
   margin-bottom: 20px;
 }
 
-.side-title > div{
+.side-title > div {
   color: #fff;
   font-size: 24px;
   font-weight: 700;
 }
 
-.admin-main-wrap{
+/*메인 래퍼 */
+.admin-main-wrap {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
-.admin-content-box{
+.admin-content-box {
   width: 100%;
   max-width: 1080px;
   margin: 30px auto;
   flex: 1;
   text-align: center;
 }
-.tbl{
-  width: 100%;
-}
-.admin-search-item{
-    text-align: center;
-    height: 28px;
-    border-radius: 8px;
-    float: right;
-    margin-top: 30px;
-}
-.admin-input-search-wrap{
+
+/* 검색 영역 */
+.admin-input-search-wrap {
   display: flex;
   justify-content: flex-end;
 }
+
+.admin-search-item {
+  text-align: center;
+  height: 28px;
+  border-radius: 8px;
+  float: right;
+  margin-top: 30px;
+}
+
 .admin-search-item > input {
   width: 210px;
-  border: 1px solid black;
+  border-radius: 8px;
   box-sizing: border-box;
-  padding: 3px 0px;
-  padding-left: 5px;
+  padding: 3px 5px;
+
 }
-.admin-search-btn{
+
+.admin-search-btn {
   width: 100px;
   height: 32px;
   background-color: red;
   color: #fff;
   margin-left: 10px;
-}
-.admin-content-title{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    align-content: center;
-    padding: 6px;
-    width: 870px;
-    border-bottom: 2px solid #666;
-    font-size: 24px;
-    font-weight: 700;
-}
-.regist-movie{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    align-content: center;
-    padding: 6px;
-    width: 794px;
-    border-bottom: 2px solid #666;
-    font-size: 24px;
-    font-weight: 700;
+  border-radius: 6px;
+  transition: 0.2s;
 }
 
-.admin-schedule-regist-title{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    align-content: center;
-    padding: 6px;
-    width: 870px;
-    border-bottom: 2px solid #666;
-    font-size: 24px;
-    font-weight: 700;
+.admin-search-btn:hover {
+  background-color: #b30000;
 }
 
-.admin-schedule-info{
+/*제목 영역 */
+.admin-content-title,
+.regist-movie,
+.admin-schedule-regist-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+  padding: 6px;
+  width: 870px;
+  border-bottom: 2px solid #666;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+/*스케줄 등록 */
+.admin-schedule-info {
   display: flex;
   font-size: 18px;
-  padding-bottom: 30px;
-  padding-top: 30px;
+  padding: 30px 0;
 }
 
-.admin-schedule-registFrm-wrap{
+.admin-schedule-registFrm-wrap {
   display: flex;
   flex-direction: column;
   min-height: 50vh;
-  height: auto;
   margin-top: 45px;
   padding-left: 175px;
   background-color: #fff;
   border-radius: 8px;
 }
 
-.admin-schedule-regist-btn-zone{
+.admin-schedule-regist-btn-zone {
   display: flex;
   margin-left: 600px;
   padding-top: 55px;
 }
 
-/*AdminRegistFrm*/
-.regist-info-tbl{
+/* AdminRegistFrm 폼 */
+.regist-info-wrap {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  align-items: center;
+  margin-top: 40px;
+  background: #fff;
+  padding: 40px 60px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.regist-info-tbl {
+  width: 100%;
+  max-width: 780px;
   border-collapse: separate;
-  border-spacing: 25px;
-  padding-left: 60px;
+  border-spacing: 0 18px;
 }
 
-.admin-regist-input {
-  color: #ff2b2b;
-  font-weight: bold;
-  font-size: 22px;
-  border-bottom: 1px solid #444444;
+.regist-info-tbl tr {
+  vertical-align: middle;
 }
 
-.admin-input-movieContent-box > input{
-  width: 400px;
-  height: auto;
-  min-height: 120px;
-  font-size: 20px;
-  font-weight: 10%;
-  color: none;
+.regist-info-tbl th {
+  width: 180px;
+  text-align: left;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  padding-right: 10px;
 }
 
-.regist-thumb-wrap{
-  cursor: pointer;
+/*입력 필드*/
+.admin-regist-input input,
+.admin-input-movieContent-box input {
+  width: 100%;
+  max-width: 500px;
+  height: 46px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  padding: 0 12px;
+  box-sizing: border-box;
+  transition: all 0.2s ease-in-out;
 }
 
-/*AdminRegist*/
-.admin-regist-btn-zone{
+.admin-regist-input input:focus,
+.admin-input-movieContent-box input:focus {
+  outline: none;
+  border-color: #ff4b4b;
+  box-shadow: 0 0 6px rgba(255, 75, 75, 0.4);
+}
+
+/* ====== 소개글 input (textarea 느낌) ====== */
+.admin-input-movieContent-box input {
+  height: 120px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+
+/* ====== 포스터 썸네일 ====== */
+.regist-thumb-wrap {
   display: flex;
-  margin-left: 600px;
-  padding-top: 55px;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40px;
+  margin-top: 20px;
 }
 
+.regist-thumb-img-preview {
+  width: 240px;
+  height: 240px;
+  object-fit: cover;
+  border-radius: 10px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease-in-out;
+}
+
+.regist-thumb-img-preview:hover {
+  transform: scale(1.03);
+}
+
+.regist-thumb-label {
+  margin-top: 10px;
+  font-weight: 600;
+  color: #333;
+  font-size: 16px;
+}
+
+/* ====== 등록 버튼 ====== */
+.admin-regist-btn-zone {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 120px;
+  padding-top: 40px;
+}
+
+
+/*AdminList*/
+
+.admin-content-tbl{
+  width: 100%;
+  background-color: var(--gray5);
+  height: 40px;
+  text-align: center;
+  border-radius: 8px;
+}
+.admin-content-tbl > th{
+  text-align: center;
+  
+}
+/* 
+.btn-red {
+  background-color: #ff4b4b;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 14px 28px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out; 
+}
+
+.btn-red:hover {
+  background-color: #e73535;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(255, 75, 75, 0.4);
+} */
 
 
 @layer base {
@@ -234,40 +322,6 @@ body {
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
-
-  /* ====== AdminRegistFrm 썸네일 ====== */
-.regist-thumb-wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 30px;
-  cursor: pointer;
-}
-
-/* 썸네일 이미지 */
-.regist-thumb-img-preview {
-  width: 240px;          /* 고정 너비 */
-  height: 240px;         /* 고정 높이 */
-  object-fit: cover;     /* 비율 유지하면서 영역 채움 */
-  border-radius: 10px;
-  background-color: #f0f0f0;
-  border: 1px solid #ccc;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-  transition: all 0.2s ease-in-out;
-}
-
-.regist-thumb-img-preview:hover {
-  transform: scale(1.03);
-}
-
-/* 포스터 등록 텍스트 */
-.regist-thumb-label {
-  margin-top: 10px;
-  font-weight: 600;
-  color: #333;
-  font-size: 16px;
-}
-
 }
 
 @layer base {

@@ -38,14 +38,14 @@ const AdminRegistFrm = (props) => {
 
     return (
         <div className="regist-info-wrap">
-            {/* 포스터 등록 영역 */}
+            
             <div className="regist-thumb-wrap">
                 <img
                     src={
                         showThumb
                             ? showThumb
                             : movieThumb
-                            ? `${import.meta.env.VITE_BACK_SERVER}/admin/thumb/${movieThumb}`
+                            ? `${import.meta.env.VITE_BACK_SERVER}/admin/movie/${movieThumb}`
                             : "/image/default_img.png"
                     }
                     onClick={() => thumbRef.current.click()}
@@ -64,7 +64,6 @@ const AdminRegistFrm = (props) => {
                 <div className="regist-thumb-label">포스터 등록</div>
             </div>
 
-            {/* 영화 정보 입력 테이블 */}
             <table className="regist-info-tbl">
                 <tr>
                     <th><label htmlFor="regist-title">영화 제목</label></th>
@@ -117,7 +116,7 @@ const AdminRegistFrm = (props) => {
                         <Select
                             value={movieGenre}
                             onChange={(e) => setMovieGenre(e.target.value)}
-                            sx={{ width: "120px", height: "50px" }}
+                            sx={{ width: "160px", height: "50px" }}
                         >
                             <MenuItem value="1">액션</MenuItem>
                             <MenuItem value="2">애니메이션</MenuItem>
@@ -137,7 +136,7 @@ const AdminRegistFrm = (props) => {
                         <Select
                             value={movieGrade}
                             onChange={(e) => setMovieGrade(e.target.value)}
-                            sx={{ width: "120px", height: "50px" }}
+                            sx={{ width: "190px", height: "50px" }}
                         >
                             <MenuItem value="1">전체 관람가</MenuItem>
                             <MenuItem value="2">12세 이상 관람가</MenuItem>
