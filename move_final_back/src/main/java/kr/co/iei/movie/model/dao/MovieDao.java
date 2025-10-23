@@ -22,7 +22,10 @@ public interface MovieDao {
 	MovieDTO selectOneMovie(int movieNo);
 
 	int totalLike(int movieNo);
-
+	
+	/*------Main------*/
+	List<MovieDTO> selectBoxOffice();
+	/*------Main 끝------*/
 	
 
 	
