@@ -71,6 +71,27 @@ public class MovieService {
 		System.out.println(result);
 		return result;
 	}
-	
+
+	/*------------------Main---------------*/
+	public Map selectBoxOffice(String memberId) {
+		List<MovieDTO> boxOffice = movieDao.selectBoxOffice();
+		Map map = new HashMap<String, Object>();
+		for(MovieDTO m : boxOffice) {
+			
+			map.put("movieNo", m.getMovieNo());
+			map.put("memberId", memberId);
+			int result = movieDao.isLike(map);
+			int totalLike = movieDao.totalLike(m.getMovieNo());
+			m.setLikeCount(totalLike);
+			if(result==1) {
+				m.setLike(true);
+			}else {
+				m.setLike(false);
+			}
+		}
+		map.put("boxOfficeList", boxOffice);
+		return map;
+	}
+	/*----------------Main 끝----------------*/
 	
 }
