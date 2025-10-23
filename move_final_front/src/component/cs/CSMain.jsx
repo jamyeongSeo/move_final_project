@@ -7,6 +7,8 @@ import NoticeWrite from "./NoticeWrite";
 import NoticeDetail from "./NoticeDetail";
 import NoticeUpdate from "./NoticeUpdate";
 import PQList from "./PQList";
+import { useRecoilState } from "recoil";
+import { authReadyState } from "../utils/RecoilData";
 
 const CSMain = () => {
   const [menus, setMenus] = useState([
@@ -14,6 +16,7 @@ const CSMain = () => {
     { url: "/cs/faq", text: "FAQ" },
     { url: "/cs/pq", text: "1:1 문의" },
   ]);
+  const [authReady, setAuthReady] = useRecoilState(authReadyState);
   return (
     <div className="cs-wrap">
       <div className="cs-side">

@@ -2,23 +2,56 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="kr.co.iei.cs.pq.model.dao.PQDao">
 	<select id="totalCount" resultType="int">
-		select count(*) from pq_tbl
-	</select>
-	<select id="searchTotalCount" resultType="int">
-		select count(*) from pq_tbl where pq_title like '%'||#{pqTitle}||'%'
-	</select>
-	<select id="selectPQList" resultType="pq">
-		select * from
-			(select rownum as rnum, p.*
-				from
-					(select pq_no, 
-						member_id, 
-						pq_title, 
-						(to_char(sysdate,'yyyy-mm-dd')) pq_date 
-					from pq_tbl order by pq_no)p)
-		where rnum between #{start} and #{end}
-	</select>
-	<select id="searchPQList" resultType="pq">
+    select count(*) from pq_tbl
+    <where>
+        <if test="memberLevel != 1">
+            member_id = #{memberId}
+        </if>
+        <if test="pqTitle != null and pqTitle != ''">
+            <if test="memberLevel != 1">
+                and
+            </if>
+            pq_title like '%' || #{pqTitle} || '%'
+        </if>
+        <if test="category != null and category != '0'">
+            <if test="memberLevel != 1 or (pqTitle != null and pqTitle != '')">
+                and
+            </if>
+            pq_category = #{category}
+        </if>
+    </where>
+</select>
+
+<select id="selectPQList" resultType="pq">
+    select * from
+    (select rownum as rnum, p.*
+        from
+        (select pq_no, member_id, pq_title, pq_category,
+                to_char(pq_date,'yyyy-mm-dd') as pq_date
+         from pq_tbl
+         <where>
+             <if test="memberLevel != 1">
+                 member_id = #{memberId}
+             </if>
+             <if test="pqTitle != null and pqTitle != ''">
+                 <if test="memberLevel != 1">
+                     and
+                 </if>
+                 pq_title like '%' || #{pqTitle} || '%'
+             </if>
+             <if test="category != null and category != '0'">
+                 <if test="memberLevel != 1 or (pqTitle != null and pqTitle != '')">
+                     and
+                 </if>
+                 pq_category = #{category}
+             </if>
+         </where>
+         order by pq_no
+        ) p
+    )
+    where rnum between #{start} and #{end}
+</select>
+	<!-- <select id="searchPQList" resultType="pq">
 		select * from
 		(select rownum as rnum, p.*
 			from
@@ -31,4 +64,31 @@
 			order by pq_no)p)
 		where rnum between #{start} and #{end}
 	</select>
+	<select id="selectMyPQList" resultType="pq">
+		select * from
+		(select rownum as rnum, p.*
+			from
+			(select pq_no, 
+				member_id, 
+				pq_title, 
+				(to_char(sysdate,'yyyy-mm-dd')) pq_date 
+			from pq_tbl 
+			where member_id = #{memberId}
+			order by pq_no)p)
+		where rnum between #{start} and #{end}
+	</select>
+	<select id="searchMyPQList" resultType="pq">
+		select * from
+		(select rownum as rnum, p.*
+			from
+			(select pq_no, 
+				member_id, 
+				pq_title, 
+				(to_char(sysdate,'yyyy-mm-dd')) pq_date 
+			from pq_tbl 
+			where pq_title like '%'||#{pqTitle}||'%' 
+			and member_id = #{memberId}
+			order by pq_no)p)
+		where rnum between #{start} and #{end}
+	</select> -->
 </mapper>

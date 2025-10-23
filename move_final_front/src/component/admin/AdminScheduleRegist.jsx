@@ -48,10 +48,10 @@
         }
         const scheduleData = {
         movieTitle: movieTitle,
-        scheduleTimeStart: Number(scheduleTimeStart),
-        scheduleTimeEnd: Number(scheduleTimeEnd),
-        scheduleOpen: Number(scheduleOpen),
-        scheduleClose: Number(scheduleClose),
+        scheduleTimeStart: Date(scheduleTimeStart),
+        scheduleTimeEnd: Date(scheduleTimeEnd),
+        scheduleOpen: Date(scheduleOpen),
+        scheduleClose: Date(scheduleClose),
         screenNo: Number(screenNo),
         };
 

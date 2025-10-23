@@ -53,4 +53,12 @@ public class MovieController {
 		System.out.println(result);
 		return ResponseEntity.ok(result);
 	}
+	
+	/*-----------------Main-----------------*/
+	@GetMapping(value= "/boxOffice")
+	public ResponseEntity<Map> selectBoxOffice(@RequestParam String memberId){
+		Map map = movieService.selectBoxOffice(memberId);
+		return ResponseEntity.ok(map);
+	}
+	/*-----------------Main 끝-----------------*/
 }

@@ -1,6 +1,7 @@
 package kr.co.iei.member.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import org.apache.ibatis.annotations.Delete;
@@ -182,6 +183,8 @@ public class MemberController {
 		int result = memberService.updateMember(member);
 		return ResponseEntity.ok(result);
 	}
+	
+	
 	
 }
 

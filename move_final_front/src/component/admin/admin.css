@@ -141,11 +141,6 @@ body {
   padding-top: 55px;
 }
 
-.btn-red{
-  width: 90px;
-  height: 45px;
-}
-
 /*AdminRegistFrm*/
 .regist-info-tbl{
   display: flex;
@@ -160,7 +155,7 @@ body {
   color: #ff2b2b;
   font-weight: bold;
   font-size: 22px;
-  border-bottom: 2px solid #ff2b2b;
+  border-bottom: 1px solid #444444;
 }
 
 .admin-input-movieContent-box > input{
@@ -170,6 +165,17 @@ body {
   font-size: 20px;
   font-weight: 10%;
   color: none;
+}
+
+.regist-thumb-wrap{
+  cursor: pointer;
+}
+
+/*AdminRegist*/
+.admin-regist-btn-zone{
+  display: flex;
+  margin-left: 600px;
+  padding-top: 55px;
 }
 
 
@@ -228,6 +234,40 @@ body {
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
+
+  /* ====== AdminRegistFrm 썸네일 ====== */
+.regist-thumb-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px;
+  cursor: pointer;
+}
+
+/* 썸네일 이미지 */
+.regist-thumb-img-preview {
+  width: 240px;          /* 고정 너비 */
+  height: 240px;         /* 고정 높이 */
+  object-fit: cover;     /* 비율 유지하면서 영역 채움 */
+  border-radius: 10px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease-in-out;
+}
+
+.regist-thumb-img-preview:hover {
+  transform: scale(1.03);
+}
+
+/* 포스터 등록 텍스트 */
+.regist-thumb-label {
+  margin-top: 10px;
+  font-weight: 600;
+  color: #333;
+  font-size: 16px;
+}
+
 }
 
 @layer base {

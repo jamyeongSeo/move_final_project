@@ -27,4 +27,23 @@
   	delete from movie_like_tbl where movie_no =#{movieNo} and member_id = #{memberId}
   </delete>
   
+  <select id="selectBoxOffice" resultType="movie">
+  <![CDATA[
+  	select 
+    	m.movie_no,
+    	m.movie_title, 
+    	m.movie_thumb, 
+    	m.movie_grade, 
+    	m.movie_content,
+    	count(c.book_no) gallery_count 
+	from movie_tbl m 
+	left join price_tbl p on (p.movie_no = m.movie_no)
+	left join book_tbl b on (b.price_no = p.price_no)
+	left join (select bs.book_no from pay_tbl p join book_seat_tbl bs on (bs.book_seat_no = p.book_seat_no)) c on (c.book_no = b.book_no) 
+	where (m.movie_status != 3 and to_number(sysdate-b.booking_date) <= 7) or (m.movie_status != 3 and b.booking_date is null)
+	group by m.movie_no,m.movie_title, m.movie_thumb, m.movie_grade, m.movie_content
+	order by gallery_count desc
+	 ]]>
+  </select>
+  
 </mapper>

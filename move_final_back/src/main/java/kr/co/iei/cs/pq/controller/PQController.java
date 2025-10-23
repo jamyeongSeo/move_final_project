@@ -21,8 +21,8 @@ public class PQController {
 	private PQService pqService;
 	
 	@GetMapping
-	public ResponseEntity<Map> PQList(@RequestParam int reqPage, @RequestParam String pqTitle){
-		Map map = pqService.PQList(reqPage,pqTitle);
+	public ResponseEntity<Map> PQList(@RequestParam int reqPage, @RequestParam String pqTitle, @RequestParam String memberId, @RequestParam int memberLevel, @RequestParam int category){
+		Map map = pqService.PQList(reqPage,pqTitle, memberId, memberLevel, category);
 		return ResponseEntity.ok(map);
 	}
 }

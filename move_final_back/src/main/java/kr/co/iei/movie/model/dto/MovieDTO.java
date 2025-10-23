@@ -27,4 +27,6 @@ public class MovieDTO {
 	private Date movieRelease;
 	private boolean like;
 	private int likeCount;
+	
+	private int galleryCount; 
 }

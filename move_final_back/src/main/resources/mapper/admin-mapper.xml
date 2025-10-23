@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="kr.co.iei.admin.model.dao.AdminDao">
+
 	<!-- 관리자 메인(영화 리스트 출력) -->
 	<select id="adminMovieList" resultType="movie">
-	select * from movie_tbl
+		select * from movie_tbl
 	</select>
-	<!-- 영화 수 -->
-	<select id="totalCount" resultType="int">
-		select count(*) from
-		movie_tbl
-	</select>
-
+	
+	<!-- 영화 제목 검색 -->
 	<select id="searchMovieTitle" resultType="movie">
 		select * from
 		(select rownum as rnum, m.*
@@ -21,7 +18,21 @@
 		)
 		where rnum between #{start} and #{end}
 	</select>
+	
 
+	
+	<!-- 영화 수 -->
+	<select id="totalCount" resultType="int">
+		select count(*) from
+		movie_tbl
+	</select>
+
+	
+
+	<!-- 영화 정보 상세페이지 -->
+	<select id="selectOneMovie" resultType="movie">
+		select * from movie_tbl where movie_no = #{movieNo}
+	</select>
 
 	<!-- 영화 상태 변경(상영중/개봉예정,...) -->
 	<update id="updateMovieStatus">
@@ -29,7 +40,6 @@
 		movie_status = #{movieStatus}
 		where movie_no = #{movieNo}
 	</update>
-
 
 	<!-- 영화 정보 등록 -->
 	<insert id="insertMovieInfo">
@@ -62,7 +72,5 @@
 	        #{scheduleOpen}, 
 	        #{scheduleClose}
 	    )
-</insert>
-
-
+	</insert>
 </mapper>

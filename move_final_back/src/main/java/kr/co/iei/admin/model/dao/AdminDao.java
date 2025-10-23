@@ -15,15 +15,22 @@ public interface AdminDao {
 
 	int totalCount();
 
+	int insertMovieInfo(MovieDTO movie);
+
 	List<MovieDTO> adminMovieList(PageInfo pi);
 
 //	List<MovieDTO> searchMovieTitle(int reqPage);
 
 	int getMovieNo();
 
-	int insertMovieInfo(MovieDTO movie);
 
 	int insertSchedule(ScheduleDTO schedule);
+
+	MovieDTO selectOneMovie(int movieNo);
+
+	int updateMovieStatus(int movieNo, int movieStatus);
+
+	List<MovieDTO> getMovieTitle(PageInfo pi);
 
 
 

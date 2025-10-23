@@ -53,13 +53,18 @@
   padding: 10px;
   background-color: var(--gray5);
 }
+.select-wrap {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
 .input-wrap > input {
   text-align: center;
-  height: 28px;
+  height: 30px;
   width: 210px;
   border: 1px solid var(--gray4);
   border-radius: 8px;
-  margin-left: 430px;
+  margin-left: 60px;
 }
 .input-wrap > button {
   width: 64px;
@@ -71,9 +76,29 @@
   font-family: ns-b;
   cursor: pointer;
 }
-.list-wrap {
-  padding: 8px;
+.input-wrap2 {
+  display: flex;
+  gap: 10px;
 }
+.input-wrap2 > input {
+  text-align: center;
+  height: 30px;
+  width: 210px;
+  border: 1px solid var(--gray4);
+  border-radius: 8px;
+  margin-left: 60px;
+}
+.input-wrap2 > button {
+  width: 64px;
+  height: 30px;
+  border: none;
+  border-radius: 8px;
+  background-color: var(--main5);
+  color: #fff;
+  font-family: ns-b;
+  cursor: pointer;
+}
+
 .list-wrap .tbl {
   width: 100%;
   text-align: center;

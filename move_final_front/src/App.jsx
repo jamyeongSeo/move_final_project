@@ -27,7 +27,7 @@ import BookingMovieList from "./component/member/BookingMovieList";
 import NoMemberInfo from "./component/member/NoMemberInfo";
 
 import AdminScheduleRegist from "./component/admin/AdminScheduleRegist";
-import BookingSeat from "./component/booking/BookingSeat";
+import AdminView from "./component/admin/AdminView";
 
 function App() {
   const [memberId, setMemberId] = useRecoilState(loginIdState);
