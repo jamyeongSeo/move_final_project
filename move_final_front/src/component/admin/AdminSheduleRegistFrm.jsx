@@ -1,133 +1,170 @@
-import { MenuItem, Select } from "@mui/material";
-import { useState } from "react";
+import { Select, MenuItem } from "@mui/material";
 
-const AdminScheduleRegistFrm = (props) =>{
-    const movieTitle = props.movieTitle;
-    const setMovieTitle = props.setMovieTitle;
-    const movieThumb = props.movieThumb;
-    const setmMovieThumb = props.setmMovieThumb;
-    const scheduleTimeStart = props.scheduleTimeStart;
-    const setScheduleTimeStart = props.setScheduleTimeStart;
-    const scheduleTimeEnd = props.scheduleTimeEnd;
-    const setScheduleTimeEnd = props.setScheduleTimeEnd;
-    const scheduleOpen = props.scheduleOpen;
-    const setScheduleOpen = props.setScheduleOpen;
-    const scheduleClose = props.scheduleClose;
-    const setScheuduleClose = props.setScheuduleClose;
-    const screenNo = props.screenNo;
-    const setScreenNo = props.setScreenNo;
-    const movieNo = props.movieNo;
-    //각 영화 해당 포스터 출력용 state
-    const [showThumb] = useState(null);
-    
-    //영화 포스터 읽어오기
-    const showMovieThumb = (e) =>{
-        const reader = new FileReader();
-        reader.readAsDataURL(files[0]);
-        reader.onloadend = () =>{
-            showThumb(reader.result);
-        }
-    }
+const AdminScheduleRegistFrm = (props) => {
+  const {
+    movieList,
+    selectedMovie,
+    setSelectedMovie,
+    scheduleOpen,
+    setScheduleOpen,
+    scheduleClose,
+    setScheduleClose,
+    scheduleTimeStart,
+    setScheduleTimeStart,
+    scheduleTimeEnd,
+    setScheduleTimeEnd,
+    screenNo,
+    setScreenNo,
+  } = props;
 
-    return(
+  return (
     <section className="admin-schedule-registFrm-wrap">
-    <table>
-    <tbody>
-    <tr>
-        <th>
-            <div className="admin-schedule-info">영화 선택</div>
-        </th>
-        <td>
-        <Select
-            value={movieTitle}
-            onChange={(e) => setMovieTitle(e.target.value)}
-            sx={{ width: "180px" }}
-            onClick={showMovieThumb}>
-            <MenuItem key={movieNo} value={movieTitle}>
-                {movieTitle}
-            </MenuItem>
-        </Select>
-        </td>
-        <div className="showMovieThumb">{showThumb}
-            <img src={`${import.meta.emv.VITE_BACK_SERVER}/admin/movie/${movieThumb}`} />
-        </div>
-    </tr>
-    <tr>
-        <th>
-            <div className="admin-schedule-info">상영 시작 시간</div>
-        </th>
-        <td>
-            <input
-            type="time"
-            id="scheduleTimeStart"
-            value={scheduleTimeStart}
-            onChange={(e) => setScheduleTimeStart(e.target.value)}
-            />
-        </td>
-    </tr>
+      <table className="admin-schedule-table">
+        <tbody>
+      
+          <tr>
+            <th>
+              <div className="admin-schedule-info">영화 선택</div>
+            </th>
+            <td>
+              <Select
+                value={selectedMovie ? selectedMovie.movieNo : ""}
+                onChange={(e) => {
+                  const movie = movieList.find(
+                    (m) => m.movieNo === e.target.value
+                  );
+                  setSelectedMovie(movie);
+                }}
+                sx={{ width: "200px" }}
+              >
+                {movieList.map((movie) => (
+                  <MenuItem key={movie.movieNo} value={movie.movieNo}>
+                    {movie.movieTitle}
+                  </MenuItem>
+                ))}
+              </Select>
 
-    <tr>
-        <th>
-            <div className="admin-schedule-info">상영 종료 시간</div>
-        </th>
-        <td>
-            <input
-            type="time"
-            id="scheduleTimeEnd"
-            value={scheduleTimeEnd}
-            onChange={(e) => setScheduleTimeEnd(e.target.value)}
-            />
-        </td>
-    </tr>
+              {selectedMovie && (
+                <div className="movie-thumb-preview">
+                  <img
+                    src={`${import.meta.env.VITE_BACK_SERVER}/admin/movie/thumb/${selectedMovie.movieThumb}`}
+                    alt={selectedMovie.movieTitle}
+                    className="movie-thumb-img"
+                  />
+                </div>
+              )}
+            </td>
+          </tr>
 
-    <tr>
-        <th>
-            <div className="admin-schedule-info">상영 시작일</div>
-        </th>
-    <td>
-        <input
-            type="date"
-            id="scheduleOpen"
-            value={scheduleOpen}
-            onChange={(e) => setScheduleOpen(e.target.value)}
-            />
-        </td>
-    </tr>
+       
+          <tr>
+            <th>
+              <div className="admin-schedule-info">상영 시작 시간</div>
+            </th>
+            <td>
+              <select
+                type="time"
+                className="admin-schedule-input"
+                value={scheduleTimeStart}
+                onChange={(e) => setScheduleTimeStart(e.target.value)}
+              >
+              
+                <option value=""></option>
+                  {Array.from({ length: 12 * 6 }, (_, i) => {
+                    const totalMinutes = (i + 1) * 10;
+                    const hours = Math.floor(totalMinutes / 60);
+                    const minutes = totalMinutes % 60;
+                    const label = `${hours > 0 ? hours + "시 " : ""}`
+                    const labelMinuts = `${minutes > 0 ? minutes +"분" : ""}`
+                    return (
+                      <option key={i} value={totalMinutes}>
+                        {label}
+                      </option>
+                      // <option key={i} value={minutes}>
+                      //   {labelMinutes}
+                      // </option>
+                    );
+                  })}
+                  </select>
+            </td>
+          </tr>
 
-    <tr>
-        <th>
-            <div className="admin-schedule-info">상영 종료일</div>
-        </th>
-        <td>
-        <input
-            type="date"
-            id="scheduleClose"
-            value={scheduleClose}
-            onChange={(e) => setScheuduleClose(e.target.value)}
-            />
-        </td>
-    </tr>
+          <tr>
+            <th>
+              <div className="admin-schedule-info">상영 종료 시간</div>
+            </th>
+            <td>
+              <select
+                type="time"
+                className="admin-schedule-input"
+                value={scheduleTimeEnd}
+                onChange={(e) => setScheduleTimeEnd(e.target.value)}>
 
-    <tr>
-        <th>
-            <div className="admin-schedule-info">관 선택</div>
-        </th>
-        <td>
-        <Select
-            value={screenNo}
-            onChange={(e) => setScreenNo(e.target.value)}
-            sx={{ width: "180px" }}
-            >
-            <MenuItem value={1}>2D</MenuItem>
-            <MenuItem value={2}>3D</MenuItem>
-            <MenuItem value={3}>4DX</MenuItem>
-        </Select>
-        </td>
-    </tr>
-    </tbody>
-    </table>
+                  <option value=""></option>
+                  {Array.from({ length: 6 * 6 }, (_, i) => {
+                    const totalMinutes = (i + 1) * 10;
+                    const hours = Math.floor(totalMinutes / 60);
+                    const minutes = totalMinutes % 60;
+                    const label = `${hours > 0 ? hours + "시간 " : ""}${
+                      minutes > 0 ? minutes + "분" : ""
+                    }`;
+                    return (
+                      <option key={i} value={totalMinutes}>
+                        {label}
+                      </option>
+                    );
+                  })}
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th>
+              <div className="admin-schedule-info">상영 시작일</div>
+            </th>
+            <td>
+              <input
+                type="date"
+                className="admin-schedule-input"
+                value={scheduleOpen}
+                onChange={(e) => setScheduleOpen(e.target.value)}
+              />
+            </td>
+          </tr>
+          <tr>
+            <th>
+              <div className="admin-schedule-info">상영 종료일</div>
+            </th>
+            <td>
+              <input
+                type="date"
+                className="admin-schedule-input"
+                value={scheduleClose}
+                onChange={(e) => setScheduleClose(e.target.value)}
+              />
+            </td>
+          </tr>
+
+          <tr>
+            <th>
+              <div className="admin-schedule-info">관 선택</div>
+            </th>
+            <td>
+              <Select
+                value={screenNo || selectedMovie?.movieType || ""}
+                onChange={(e) => setScreenNo(e.target.value)}
+                sx={{ width: "200px" }}
+                className="admin-schedule-select"
+              >
+                <MenuItem value="2D">2D</MenuItem>
+                <MenuItem value="3D">3D</MenuItem>
+                <MenuItem value="4DX">4DX</MenuItem>
+              </Select>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </section>
-    )
-}
+  );
+};
 
 export default AdminScheduleRegistFrm;

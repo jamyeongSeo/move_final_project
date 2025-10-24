@@ -26,7 +26,7 @@
 	    select * from
 	    (select rownum as rnum, p.*
 	        from
-	        (select pq_no, member_id, pq_title, 
+	        (select pq_no, member_id, pq_title, pq_answer,
 	        	case pq_category
 			        when 1 then '영화 정보'
 			        when 2 then '회원'
@@ -34,7 +34,7 @@
 			        when 4 then '예매'
 			        when 5 then '기타'
 			        when 6 then '제안/건의'
-					end as pq_category_name,
+					end as pq_category_name,	
 	            to_char(pq_date,'yyyy-mm-dd') as pq_date
 	         from pq_tbl
 	         <where>
@@ -73,6 +73,15 @@
 	<insert id="insertPQFile">
 		insert into pq_file_tbl values(pq_file_seq.nextval,#{memberId},#{filename},#{filepath})
 	</insert>
+	<select id="selectOnePQ" resultType="pq">
+		select * from pq_tbl where pq_no = #{pqNo}
+	</select>
+	<select id="selectPqFileList" resultType="pqFile">
+		select * from pq_file_tbl where pq_no = #{pqNo}
+	</select>
+	<update id="updatePQAnswer">
+		update pq_tbl set pq_answer = #{pqAnswer} where pq_no = #{pqNo}
+	</update>
 	<!-- <select id="searchPQList" resultType="pq">
 		select * from
 		(select rownum as rnum, p.*

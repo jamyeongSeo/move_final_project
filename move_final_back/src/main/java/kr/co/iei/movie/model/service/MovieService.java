@@ -92,6 +92,14 @@ public class MovieService {
 		map.put("boxOfficeList", boxOffice);
 		return map;
 	}
+	
+	public Map selectSchedule(int dateSchedule) {
+		List list = movieDao.selectSchedule(dateSchedule);
+		Map map = new HashMap<String, Object>();
+		map.put("movieSchedule", list);
+		return map;
+	}
 	/*----------------Main 끝----------------*/
+
 	
 }

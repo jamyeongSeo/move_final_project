@@ -10,7 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -56,6 +59,16 @@ public class PQController {
 			}
 		}
 		int result = pqService.insertPQ(pq, pqFileList);
+		return ResponseEntity.ok(result);
+	}
+	@GetMapping(value="/detail/{pqNo}")
+	public ResponseEntity<PQDTO> selectOnePQ(@PathVariable int pqNo){
+		PQDTO pq = pqService.selectOnePQ(pqNo);
+		return ResponseEntity.ok(pq);
+	}
+	@PatchMapping(value="/pqAnswer")
+	public ResponseEntity<Integer> UpdatePQAnswer(@RequestBody PQDTO pq){
+		int result = pqService.updatePQAnswer(pq);
 		return ResponseEntity.ok(result);
 	}
 }

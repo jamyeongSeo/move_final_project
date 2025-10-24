@@ -26,6 +26,12 @@ public interface PQDao {
 
 	int insertPQFile(PQFileDTO pqFile);
 
+	PQDTO selectOnePQ(int pqNo);
+
+	List<PQFileDTO> selectPqFileList(int pqNo);
+
+	int updatePQAnswer(PQDTO pq);
+
 	//List searchPQList(Map map);
 
 	//List selectMyPQList(HashMap<String, Object> pqListSet);

@@ -129,6 +129,7 @@
 }
 .input-title {
   margin: 16px 24px 0 0;
+  padding-left: 6px;
   font-family: ns-b;
   font-size: 20px;
 }
@@ -198,14 +199,23 @@
   padding: 20px;
   border-radius: 8px;
   border: 2px solid var(--gray3);
-  background-color: var(--main3);
+  background-color: var(--gray6);
+  overflow-y: auto;
+}
+.pq-content-wrap {
+  margin: 16px 0;
+  height: 240px;
+  padding: 20px;
+  border-radius: 8px;
+  border: 2px solid var(--gray3);
+  background-color: var(--gray6);
   overflow-y: auto;
 }
 .file-zone {
   display: flex;
   flex-direction: column;
   border: 2px solid var(--gray3);
-  background-color: var(--main3);
+  background-color: var(--gray6);
   border-radius: 8px;
   width: 100%;
   margin: 16px 0;
@@ -263,7 +273,6 @@
 .MuiBox-root {
   display: flex;
   align-items: center;
-
   height: 42px;
 }
 .category-zone {
@@ -278,9 +287,78 @@
 }
 .category-zone fieldset {
   border-radius: 8px;
-  border: 2px solid;
+  border: 2px solid #333;
 }
 .css-18jp67o-MuiNativeSelect-root-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-18jp67o-MuiNativeSelect-root-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-18jp67o-MuiNativeSelect-root-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
   font-family: ns-b;
   color: var(--gray3);
+}
+.pq-answer-wrap {
+  margin: 20px 0;
+  padding: 16px;
+  border: 2px solid #333;
+  border-radius: 8px;
+  background-color: var(--gray6);
+  font-family: ns-r;
+}
+
+.pq-answer-wrap.no-answer {
+  border-left: 4px solid #ccc;
+  color: #666;
+  font-style: italic;
+}
+
+.pq-admin-name {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+.pq-answer-content-frm {
+  color: #333;
+  font-size: 16px;
+}
+.pq-answer-content {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+}
+.pq-answer-content > button {
+  width: 96px;
+}
+.pq-answer-wrap.not-answered textarea {
+  min-height: 180px;
+  width: 100%;
+  padding: 16px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  resize: none;
+}
+
+.pq-answer-wrap.not-answered .btn-red {
+  margin-top: 10px;
+  padding: 6px 14px;
+  background-color: var(--main6);
+  color: #666;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.2s;
+}
+
+.pq-answer-wrap.not-answered .btn-red:hover {
+  background-color: var(--main5);
+  color: #fff;
+}
+.btn-zone > .backBtn {
+  background-color: var(--main6);
+  color: #666;
+  padding: 6px 14px;
+  width: 96px;
+  transition: 0.2s;
+  border: none;
+}
+.btn-zone > .backBtn:hover {
+  background-color: var(--main5);
+  color: #fff;
 }

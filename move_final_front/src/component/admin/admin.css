@@ -97,7 +97,8 @@ body {
 /*제목 영역 */
 .admin-content-title,
 .regist-movie,
-.admin-schedule-regist-title {
+.admin-schedule-regist-title, 
+.admin-schedule-list-title{
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -163,6 +164,8 @@ body {
   color: #333;
   padding-right: 10px;
 }
+
+
 
 /*입력 필드*/
 .admin-regist-input input,
@@ -246,8 +249,63 @@ body {
 }
 .admin-content-tbl > th{
   text-align: center;
+}
+/*AdminScheduleList - 영화 스케줄 목록*/
+
+.admin-schedule-list-tbl > thead {
+  display: block;
+  margin-bottom: 25px;
+  background-color: #666;
+  margin-top: 20px;
+  border-radius: 8px;
+  padding: 10px;
+  color: #fff;
+}
+
+.admin-schedule-list-tbl > tbody{
+  display: block
+}
+
+.admin-schedule-list-tbl>tr{
+  width: 100%;
+  vertical-align: middle;
   
 }
+
+.admin-schedule-list-tbl>th{
+  padding-left: 20px;
+  width: 180px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  vertical-align: middle;
+  padding-right: 10px;
+  border-bottom: 20px;
+}
+/* .admin-schedule-content-box{
+  display: flex;
+  align-items: center;
+  margin-top: 40px;
+  border-radius: 12px;
+} */
+.admin-schedule-list-tbl > tbody {
+  width: 870px;
+  background-color: #fff;
+  min-height: 100vh;
+  text-align: center;
+  align-items: center;
+  margin-top: 20px;
+  border-radius: 12px;
+  min-height: 170vh;
+  box-shadow:  0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.admin-schedule-list-tbl > tbody >td{
+  text-align: center;
+}
+
+
+
+
 /* 
 .btn-red {
   background-color: #ff4b4b;

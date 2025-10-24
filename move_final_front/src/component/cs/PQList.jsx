@@ -23,7 +23,6 @@ const PQList = () => {
   const [memberLevel, setMemberLevel] = useRecoilState(memberLevelState); //해당 recoil 계정의 memberLevel값을 갖고있는 state
   const [loginId, setLoginId] = useRecoilState(loginIdState);
   const [pqCategory, setPqCategory] = useState(0); //카테고리 데이터 값을 저장하는 state
-
   const navigate = useNavigate();
   const pqFunc = () => {
     axios
@@ -140,7 +139,7 @@ const PQList = () => {
         <table className="tbl">
           <thead>
             <tr>
-              <th style={{ width: "15%" }}>유형</th>
+              <th style={{ width: "15%" }}>문의유형</th>
               <th style={{ width: "20%" }}>아이디</th>
               <th style={{ width: "40%" }}>제목</th>
               <th style={{ width: "25%" }}>등록일</th>

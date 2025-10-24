@@ -54,7 +54,6 @@ const MainBoxOffice = () => {
         }/movie/boxOffice?memberId=${memberId}`
       )
       .then((res) => {
-        console.log(res.data);
         setMovieBoxOffice(res.data.boxOfficeList.slice(0, 3));
       })
       .catch((err) => {});
@@ -268,48 +267,62 @@ const MainMovieSchedul = () => {
   const [dateCss, setDateCss] = useState([
     {
       className: "main-schedule-day-map main-schedule-day-map-click",
-      date: today.getDate(),
+      dateAdd: 0,
     },
     {
       className: "main-schedule-day-map",
-      date: today.getDate() + 1,
+      dateAdd: 1,
     },
     {
       className: "main-schedule-day-map",
-      date: today.getDate() + 2,
+      dateAdd: 2,
     },
     {
       className: "main-schedule-day-map",
-      date: today.getDate() + 3,
+      dateAdd: 3,
     },
     {
       className: "main-schedule-day-map",
-      date: today.getDate() + 4,
+      dateAdd: 4,
     },
     {
       className: "main-schedule-day-map",
-      date: today.getDate() + 5,
+      dateAdd: 5,
     },
     {
       className: "main-schedule-day-map",
-      date: today.getDate() + 6,
+      dateAdd: 6,
     },
     {
       className: "main-schedule-day-map",
-      date: today.getDate() + 7,
+      dateAdd: 7,
     },
   ]);
-  const [dateSchedule, setDateSchedule] = useState(today);
-  useEffect(() => {
-    //axios
-  }, [dateSchedule]);
-  console.log(dateCss);
-  console.log(dateSchedule);
+
+  // console.log(dateCss);
 
   const movieTimeBtn = useRef();
   const [movieTimeShow, setMovieTimeShow] = useState(true);
   //기본 세팅값
   //movieTimeBtn.current.innerText.add = "-";
+
+  const [dateSchedule, setDateSchedule] = useState(0);
+
+  //스케줄 가져오기
+  const [schedul, setSchedule] = useState([]);
+  const backServer = import.meta.env.VITE_BACK_SERVER;
+  useEffect(() => {
+    axios
+      .get(`${backServer}/movie/schedule?dateSchedule=${dateSchedule}`)
+      .then((res) => {
+        setSchedule(res.data.movieSchedule);
+      })
+      .catch((err) => {
+        console.log(err.data);
+      });
+  }, [dateSchedule]);
+  console.log(schedul);
+  console.log(dateSchedule);
   return (
     <div>
       <div className="main-schedule-day-wrap">
@@ -321,19 +334,19 @@ const MainMovieSchedul = () => {
                   const newDateCss = [...dateCss];
                   {
                     newDateCss.map((css, i) => {
-                      if (css.date != dateCss[index].date) {
+                      if (css.dateAdd != dateCss[index].dateAdd) {
                         newDateCss[i].className = "main-schedule-day-map";
-                      } else if (css.date == dateCss[index].date) {
+                      } else if (css.dateAdd == dateCss[index].dateAdd) {
                         newDateCss[i].className =
                           "main-schedule-day-map main-schedule-day-map-click";
                       }
                     });
                   }
                   setDateCss(newDateCss);
-                  setDateSchedule(dateCss[index].date);
+                  setDateSchedule(dateCss[index].dateAdd);
                 }}
                 className={dateCss[index].className}
-                key={"main-schedul-" + index}
+                key={"main-schedul-date" + index}
               >
                 <ul>
                   <li
@@ -362,87 +375,110 @@ const MainMovieSchedul = () => {
           })}
       </div>
       <div className="main-schedul-movie-list">
-        {/*map 구간 */}
-        <div className="main-schedul-movie-box">
-          <div className="main-schedul-movie-title-wrap">
-            <div>
-              <div className="main-schedul-movie-age">
-                <img src="/image/ALL.png"></img>
-              </div>
-              {/* map 돌리면 사용 예정
-                  <img
-                    src={
-                      bookingMovie.movieGrade == 1
-                        ? "/image/ALL.png"
-                        : bookingMovie.movieGrade == 2
-                        ? "/image/12.png"
-                        : bookingMovie.movieGrade == 3
-                        ? "/image/15.png"
-                        : "/image/19.png"
-                    }
-                    className="grade-img"
-                  />*/}
-              <div className="main-schedul-movie-title">
-                <h3>뽀로뽀로뽀로롱</h3>
-              </div>
-            </div>
-            <div
-              ref={movieTimeBtn}
-              className="main-schedul-movie-show"
-              style={{ float: "right" }}
-              onClick={() => {
-                if (movieTimeShow) {
-                  movieTimeBtn.current.innerText = "+";
-                  setMovieTimeShow(false);
-                } else {
-                  movieTimeBtn.current.innerText = "ㅡ";
-                  setMovieTimeShow(true);
-                }
-              }}
-            >
-              ㅡ
-            </div>
-          </div>
-          {!movieTimeShow ? (
-            <></>
-          ) : (
-            <div className="main-schedul-movie-time-wrap">
-              <div className="main-schedul-movie-time-type-wrap">
-                <div className="main-schedul-movie-time-type">1관(2D)</div>
-                <div className="main-schedul-movie-time-box-wrap">
-                  <div className="main-schedul-movie-time-box">
-                    <div className="main-schedul-movie-time-content">19:20</div>
-                    <div className="main-schedul-movie-time-seat">
-                      <span style={{ color: "var(--main10)" }}>36</span>
-                      <span>/</span>
-                      <span>100</span>
-                    </div>
-                  </div>
-                  <div className="main-schedul-movie-time-box">
-                    <div className="main-schedul-movie-time-content">19:20</div>
-                    <div className="main-schedul-movie-time-seat">
-                      <span style={{ color: "var(--main10)" }}>36</span>
-                      <span>/</span>
-                      <span>100</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+        {schedul &&
+          schedul.map((schedul, index) => {
+            //단위기간 날짜 확인 위해 타입 변경
+            const scheduleOpenString = schedul.scheduleOpen;
+            const scheduleOpenDate = new Date(scheduleOpenString);
+            const scheduleCloseString = schedul.scheduleClose;
+            const scheduleCloseDate = new Date(scheduleCloseString);
+            //상영시작시간 시,분 만 나오도록
+            const scheduleTimeStartDate = new Date(schedul.scheduleTimeStart);
+            const scheduleTimeStartHours = scheduleTimeStartDate.getHours();
+            const scheduleTimeStarMinutes = scheduleTimeStartDate.getMinutes();
+            const scheduleTimeStart =
+              ("0" + scheduleTimeStartHours).slice(-2) +
+              ":" +
+              ("0" + scheduleTimeStarMinutes).slice(-2);
+            //지난 시간 스케줄 화면 삭제 확인용(일,시,분 => 분으로 환산 예정(하루=1440분))
+            const todayScheduleTime =
+              scheduleTimeStartHours * 60 + scheduleTimeStarMinutes;
+            const nowTime = today.getHours() * 60 + today.getMinutes();
 
-              <div className="main-schedul-movie-time-type-wrap">
-                <div className="main-schedul-movie-time-type">1관(2D)</div>
-                <div className="main-schedul-movie-time-box">
-                  <div className="main-schedul-movie-time-content">19:20</div>
-                  <div className="main-schedul-movie-time-seat">
-                    <span style={{ color: "var(--main10)" }}>36</span>
-                    <span>/</span>
-                    <span>100</span>
+            return (
+              <div key={"main-schedul-movie" + index}>
+                {scheduleOpenDate <= dateSchedule <= scheduleCloseDate ? (
+                  <div className="main-schedul-movie-box">
+                    <div className="main-schedul-movie-title-wrap">
+                      <div>
+                        <div className="main-schedul-movie-age">
+                          <img
+                            src={
+                              schedul.movieGrade == 1
+                                ? "/image/ALL.png"
+                                : schedul.movieGrade == 2
+                                ? "/image/12.png"
+                                : schedul.movieGrade == 3
+                                ? "/image/15.png"
+                                : "/image/19.png"
+                            }
+                            className="grade-img"
+                          />
+                        </div>
+
+                        <div className="main-schedul-movie-title">
+                          <h3>{schedul.movieTitle}</h3>
+                        </div>
+                      </div>
+                      <div
+                        ref={movieTimeBtn}
+                        className="main-schedul-movie-show"
+                        style={{ float: "right" }}
+                        onClick={() => {
+                          if (movieTimeShow) {
+                            movieTimeBtn.current.innerText = "+";
+                            setMovieTimeShow(false);
+                          } else {
+                            movieTimeBtn.current.innerText = "ㅡ";
+                            setMovieTimeShow(true);
+                          }
+                        }}
+                      >
+                        ㅡ
+                      </div>
+                    </div>
+                    {!movieTimeShow ? (
+                      <></>
+                    ) : (
+                      <div className="main-schedul-movie-time-wrap">
+                        <div className="main-schedul-movie-time-type-wrap">
+                          <div className="main-schedul-movie-time-type">
+                            {schedul.screenName}(
+                            {schedul.movieType == 1
+                              ? "2D"
+                              : schedul.movieType == 2
+                              ? "3D"
+                              : schedul.movieType == 3 && "4DX"}
+                            )
+                          </div>
+                          {todayScheduleTime > nowTime ? (
+                            <div className="main-schedul-movie-time-box-wrap">
+                              <div className="main-schedul-movie-time-box">
+                                <div className="main-schedul-movie-time-content">
+                                  {scheduleTimeStart}
+                                </div>
+                                <div className="main-schedul-movie-time-seat">
+                                  <span style={{ color: "var(--main10)" }}>
+                                    {schedul.seatTotal - schedul.gallerySeat}
+                                  </span>
+                                  <span>/</span>
+                                  <span>{schedul.seatTotal}</span>
+                                </div>
+                              </div>
+                            </div>
+                          ) : (
+                            <></>
+                          )}
+                        </div>
+                      </div>
+                    )}
                   </div>
-                </div>
+                ) : (
+                  <></>
+                )}
               </div>
-            </div>
-          )}
-        </div>
+            );
+          })}
         {/*위 맵 돌리면 아래 동일 구간 삭제 예정 */}
 
         {/*위 맵 돌리면 삭제할 동일 구간 끝!*/}
