@@ -305,9 +305,7 @@ const MainMovieSchedul = () => {
   const [movieTimeShow, setMovieTimeShow] = useState(true);
   //기본 세팅값
   //movieTimeBtn.current.innerText.add = "-";
-
   const [dateSchedule, setDateSchedule] = useState(0);
-
   //스케줄 가져오기
   const [schedul, setSchedule] = useState([]);
   const backServer = import.meta.env.VITE_BACK_SERVER;
@@ -321,6 +319,7 @@ const MainMovieSchedul = () => {
         console.log(err.data);
       });
   }, [dateSchedule]);
+
   console.log(schedul);
   console.log(dateSchedule);
   return (
@@ -451,24 +450,20 @@ const MainMovieSchedul = () => {
                               : schedul.movieType == 3 && "4DX"}
                             )
                           </div>
-                          {todayScheduleTime > nowTime ? (
-                            <div className="main-schedul-movie-time-box-wrap">
-                              <div className="main-schedul-movie-time-box">
-                                <div className="main-schedul-movie-time-content">
-                                  {scheduleTimeStart}
-                                </div>
-                                <div className="main-schedul-movie-time-seat">
-                                  <span style={{ color: "var(--main10)" }}>
-                                    {schedul.seatTotal - schedul.gallerySeat}
-                                  </span>
-                                  <span>/</span>
-                                  <span>{schedul.seatTotal}</span>
-                                </div>
+                          <div className="main-schedul-movie-time-box-wrap">
+                            <div className="main-schedul-movie-time-box">
+                              <div className="main-schedul-movie-time-content">
+                                {scheduleTimeStart}
+                              </div>
+                              <div className="main-schedul-movie-time-seat">
+                                <span style={{ color: "var(--main10)" }}>
+                                  {schedul.seatTotal - schedul.gallerySeat}
+                                </span>
+                                <span>/</span>
+                                <span>{schedul.seatTotal}</span>
                               </div>
                             </div>
-                          ) : (
-                            <></>
-                          )}
+                          </div>
                         </div>
                       </div>
                     )}
