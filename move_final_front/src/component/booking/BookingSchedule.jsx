@@ -12,8 +12,10 @@ const BookingSchedule = (props) => {
   const [scheduleList, setScheduleList] = useState([]);
   const date = new Date();
   const [classList, setClassList] = useState("one-schedule");
-
+  const [refresh, setRefresh] = useState(false);
   const [bookingDate, setBookingDate] = useState(new Date(date));
+  const [clickState, setClickState] = useState(-1);
+  const setMovieSelect = props.setMovieSelect;
   const datebox = document.querySelectorAll("one-schedule");
   useEffect(() => {
     scheduleList.length = 0;
@@ -23,19 +25,28 @@ const BookingSchedule = (props) => {
       scheduleList.push(nextDay);
     }
     setScheduleList(scheduleList);
-  }, [bookingDate]);
+    setRefresh(false);
+  }, [bookingDate, refresh]);
+  const prevWeek = () => {
+    const prevWeek = new Date(bookingDate);
+    prevWeek.setDate(bookingDate.getDate() - 7);
+    setBookingDate(prevWeek);
+    setRefresh(true);
+    const selectDate = document.querySelector(".one-schedule.select");
 
+    selectDate.click();
+  };
+  const nextWeek = (e) => {
+    const nextWeek = new Date(bookingDate);
+    nextWeek.setDate(bookingDate.getDate() + 7);
+    setBookingDate(nextWeek);
+    setRefresh(true);
+  };
   return (
     <ul className="schedule-select-box">
       <li className="side-back-arrow-box">
         <div>
-          <span
-            onClick={() => {
-              const prevWeek = new Date(bookingDate);
-              prevWeek.setDate(bookingDate.getDate() - 7);
-              setBookingDate(prevWeek);
-            }}
-          >
+          <span onClick={prevWeek}>
             <ArrowBackIosNewIcon />
           </span>
         </div>
@@ -44,10 +55,12 @@ const BookingSchedule = (props) => {
         return (
           <li
             key={"one-schedule-" + index}
-            className={classList}
+            className={
+              clickState === index ? "one-schedule select" : "one-schedule"
+            }
             onClick={(e) => {
               setClassList("one-schedule");
-              e.currentTarget.className = "one-schedule select";
+              setClickState(index);
 
               const currentYear = schedule.getFullYear();
               const currentMonth = String(schedule.getMonth() + 1).padStart(
@@ -60,6 +73,7 @@ const BookingSchedule = (props) => {
                 currentYear + "-" + currentMonth + "-" + currentDay;
               console.log(currentDate);
               setMovieDate(currentDate);
+              setMovieSelect(-1);
               axios
                 .get(
                   `${
@@ -85,7 +99,7 @@ const BookingSchedule = (props) => {
                     : "schedule-month"
                 }
               >
-                {schedule.getMonth() + 1}
+                {String(schedule.getMonth() + 1).padStart(2, "0")}
               </div>
               <span
                 className={
@@ -107,7 +121,7 @@ const BookingSchedule = (props) => {
                     : "schedule-date"
                 }
               >
-                {schedule.getDate()}
+                {String(schedule.getDate()).padStart(2, "0")}
               </div>
             </div>
 
@@ -139,13 +153,7 @@ const BookingSchedule = (props) => {
       })}
       <li className="side-foward-arrow-box">
         <div>
-          <span
-            onClick={() => {
-              const nextWeek = new Date(bookingDate);
-              nextWeek.setDate(bookingDate.getDate() + 7);
-              setBookingDate(nextWeek);
-            }}
-          >
+          <span onClick={nextWeek}>
             <ArrowForwardIosIcon />
           </span>
         </div>

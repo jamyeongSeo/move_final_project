@@ -15,7 +15,6 @@ import kr.co.iei.admin.model.dto.ScheduleDTO;
 import kr.co.iei.movie.model.dao.MovieDao;
 import kr.co.iei.movie.model.dto.MovieDTO;
 import kr.co.iei.utils.PageInfoUtils;
-import kr.co.iei.utils.SearchPageInfoUtils;
 import kr.co.iei.utils.PageInfo;
 
 @Service
@@ -95,6 +94,11 @@ public class AdminService {
 		return movie;
 	}
 	
+	/*영화 목록에서 상태 바꾸기*/
+	public int updateMovieStatus(int movieNo, int movieStatus) {
+		return adminDao.updateMovieStatus(movieNo, movieStatus);
+	}
+	
 	//스케줄 등록
 	public ScheduleDTO insertSchedule(ScheduleDTO schedule) {
         int result = adminDao.insertSchedule(schedule);
@@ -105,11 +109,29 @@ public class AdminService {
         }
     }
 	
-	/*영화 목록에서 상태 바꾸기*/
-	public int updateMovieStatus(int movieNo, int movieStatus) {
-		return adminDao.updateMovieStatus(movieNo, movieStatus);
+
+	/*스케줄 등록 시 상영 중인 영화만 빼오기*/
+	public List<MovieDTO> getRunningMovies() {
+	    return adminDao.getRunningMovies(); 
 	}
 
+	/*스케줄 목록*/
+	public List<ScheduleDTO> scheduleList() {
+		return adminDao.scheduleList();
+	}
+	
+	/*스케줄 정보 업뎃*/
+	public int updateSchedule(ScheduleDTO schedule) {
+		return adminDao.updateSchedule(schedule);
+	
+	}
+
+	/*스케줄 정보 삭제*/
+	public int deleteSchedule(int scheduleNo) {
+		return adminDao.deleteSchedule(scheduleNo);
+	}
+	/*스케줄 목록*/
+	
 	
 
 	

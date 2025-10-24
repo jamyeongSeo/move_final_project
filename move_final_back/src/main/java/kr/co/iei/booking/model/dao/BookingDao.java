@@ -16,4 +16,6 @@ public interface BookingDao {
 
 	List selectOneSchedule(String currentDate);
 
+	List selectScreenSeat(int screenNo);
+
 }

@@ -6,9 +6,11 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.iei.cs.pq.model.dao.PQDao;
 import kr.co.iei.cs.pq.model.dto.PQDTO;
+import kr.co.iei.cs.pq.model.dto.PQFileDTO;
 import kr.co.iei.utils.PageInfo;
 import kr.co.iei.utils.PageInfoUtils;
 
@@ -21,7 +23,7 @@ public class PQService {
 	private PageInfoUtils piu;
 
 
-	public Map PQList(int reqPage, String pqTitle, String memberId, int memberLevel, int category) {
+	public Map PQList(int reqPage, String pqTitle, String memberId, int memberLevel, int pqCategory) {
 		int numPerPage = 10;
 		int pageNaviSize=5;	
 		HashMap<String, Object> pqListSet = new HashMap<>();
@@ -29,11 +31,11 @@ public class PQService {
 		pqListSet.put("pqTitle", pqTitle);
 		pqListSet.put("memberId", memberId);
 		pqListSet.put("memberLevel", memberLevel);
+		pqListSet.put("pqCategory", pqCategory);
+
+		
 		int totalCount = pqDao.totalCount(pqListSet);
 		
-		if (category != 0) { 
-		    pqListSet.put("category", category);
-		}
 		
 		PageInfo pi = piu.getPageInfo(reqPage, numPerPage, pageNaviSize, totalCount);
 		
@@ -44,10 +46,14 @@ public class PQService {
 		pqListSet.put("end", end);
 		List pqList = pqDao.selectPQList(pqListSet);
 
+		System.out.println("totalCount : "+totalCount);
+		System.out.println("pqList: "+pqList);
+		
 		Map<String, Object> map = new HashMap<>();
 		map.put("pqList", pqList);
 		map.put("totalCount", totalCount);
 		map.put("pi", pi);
+
 		return map;
 		/*
 		 	}else{
@@ -59,5 +65,30 @@ public class PQService {
 			return myMap;
 		}
 		*/
+	}
+
+	@Transactional
+	public int insertPQ(PQDTO pq, List<PQFileDTO> pqFileList) {
+		int pqNo = pqDao.getPqNo();
+		pq.setPqNo(pqNo);
+		int result = pqDao.insertPQ(pq);
+		for(PQFileDTO pqFile : pqFileList) {
+			pqFile.setPqNo(pqNo);
+			result += pqDao.insertPQFile(pqFile);
+		}
+		
+		return result;
+	}
+
+	public PQDTO selectOnePQ(int pqNo) {
+		PQDTO pq = pqDao.selectOnePQ(pqNo);
+		List<PQFileDTO> pqFileList = pqDao.selectPqFileList(pqNo);
+		pq.setPqFileList(pqFileList);
+		return pq;
+	}
+	@Transactional
+	public int updatePQAnswer(PQDTO pq) {
+		int result = pqDao.updatePQAnswer(pq);
+		return result;
 	}
 }

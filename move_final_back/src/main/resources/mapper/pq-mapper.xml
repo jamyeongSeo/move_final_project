@@ -2,55 +2,86 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="kr.co.iei.cs.pq.model.dao.PQDao">
 	<select id="totalCount" resultType="int">
-    select count(*) from pq_tbl
-    <where>
-        <if test="memberLevel != 1">
-            member_id = #{memberId}
-        </if>
-        <if test="pqTitle != null and pqTitle != ''">
-            <if test="memberLevel != 1">
-                and
-            </if>
-            pq_title like '%' || #{pqTitle} || '%'
-        </if>
-        <if test="category != null and category != '0'">
-            <if test="memberLevel != 1 or (pqTitle != null and pqTitle != '')">
-                and
-            </if>
-            pq_category = #{category}
-        </if>
-    </where>
-</select>
+    	select count(*) from pq_tbl
+	    <where>
+	        <if test="memberLevel != 1">
+	            member_id = #{memberId}
+	        </if>
+	        <if test="pqTitle != null and pqTitle != ''">
+	            <if test="memberLevel != 1">
+	                and
+	            </if>
+	            pq_title like '%' || #{pqTitle} || '%'
+	        </if>
+	        <if test="pqCategory != null and pqCategory != 0">
+	            <if test="memberLevel != 1 or (pqTitle != null and pqTitle != '')">
+	                and
+	            </if>
+	            pq_category = #{pqCategory}	
+	        </if>
+	    </where>
+	</select>
 
-<select id="selectPQList" resultType="pq">
-    select * from
-    (select rownum as rnum, p.*
-        from
-        (select pq_no, member_id, pq_title, pq_category,
-                to_char(pq_date,'yyyy-mm-dd') as pq_date
-         from pq_tbl
-         <where>
-             <if test="memberLevel != 1">
-                 member_id = #{memberId}
-             </if>
-             <if test="pqTitle != null and pqTitle != ''">
-                 <if test="memberLevel != 1">
-                     and
-                 </if>
-                 pq_title like '%' || #{pqTitle} || '%'
-             </if>
-             <if test="category != null and category != '0'">
-                 <if test="memberLevel != 1 or (pqTitle != null and pqTitle != '')">
-                     and
-                 </if>
-                 pq_category = #{category}
-             </if>
-         </where>
-         order by pq_no
-        ) p
-    )
-    where rnum between #{start} and #{end}
-</select>
+	<select id="selectPQList" resultType="pq">
+	    select * from
+	    (select rownum as rnum, p.*
+	        from
+	        (select pq_no, member_id, pq_title, pq_answer,
+	        	case pq_category
+			        when 1 then '영화 정보'
+			        when 2 then '회원'
+			        when 3 then '결제'
+			        when 4 then '예매'
+			        when 5 then '기타'
+			        when 6 then '제안/건의'
+					end as pq_category_name,	
+	            to_char(pq_date,'yyyy-mm-dd') as pq_date
+	         from pq_tbl
+	         <where>
+	             <if test="memberLevel != 1">
+	                 member_id = #{memberId}
+	             </if>
+	             <if test="pqTitle != null and pqTitle != ''">
+	                 <if test="memberLevel != 1">
+	                     and
+	                 </if>
+	                 pq_title like '%' || #{pqTitle} || '%'
+	             </if>
+	             <if test="pqCategory != null and pqCategory != 0">
+	                 <if test="memberLevel != 1 or (pqTitle != null and pqTitle != '')">
+	                     and
+	                 </if>
+	                 pq_category = #{pqCategory}
+	             </if>
+
+	         </where>
+	         order by pq_no desc
+	        ) p
+	    )
+	    where rnum between #{start} and #{end}
+	</select>
+	<select id="getPqNo" resultType="int">
+		select pq_seq.nextval from dual
+	</select>
+	<insert id="insertPQ">
+		insert into pq_tbl values(#{pqNo},#{memberId},#{pqTitle},#{pqContent}, null
+		<if test="pqCategory != 0">
+        	, #{pqCategory}
+    	</if>
+    		,to_char(sysdate,'yyyy-mm-dd'))
+	</insert>
+	<insert id="insertPQFile">
+		insert into pq_file_tbl values(pq_file_seq.nextval,#{memberId},#{filename},#{filepath})
+	</insert>
+	<select id="selectOnePQ" resultType="pq">
+		select * from pq_tbl where pq_no = #{pqNo}
+	</select>
+	<select id="selectPqFileList" resultType="pqFile">
+		select * from pq_file_tbl where pq_no = #{pqNo}
+	</select>
+	<update id="updatePQAnswer">
+		update pq_tbl set pq_answer = #{pqAnswer} where pq_no = #{pqNo}
+	</update>
 	<!-- <select id="searchPQList" resultType="pq">
 		select * from
 		(select rownum as rnum, p.*
@@ -91,4 +122,5 @@
 			order by pq_no)p)
 		where rnum between #{start} and #{end}
 	</select> -->
+	
 </mapper>

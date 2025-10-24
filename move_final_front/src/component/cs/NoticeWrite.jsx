@@ -11,6 +11,7 @@ const NoticeWrite = () => {
   const [noticeFile, setNoticeFile] = useState([]);
   const [noticeContent, setNoticeContent] = useState("");
   const [memberId, setMemberId] = useRecoilState(loginIdState);
+  const [category, setCategory] = useState(0);
   const navigate = useNavigate();
   const write = () => {
     if (noticeTitle !== "" && noticeContent !== "") {
