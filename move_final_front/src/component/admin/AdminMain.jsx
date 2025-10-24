@@ -20,6 +20,7 @@ const AdminMain = () => {
     "/admin/main": [
       { text: "영화 목록", url: "movie/list" },
       { text: "영화 등록", url: "movie/regist" },
+      { text : "스케줄 목록", url : "schedule/list"},
       { text: "스케줄 등록", url: "schedule/regist" },
       { text: "관객 수 조회", url: "movieGoer" },
     ],
