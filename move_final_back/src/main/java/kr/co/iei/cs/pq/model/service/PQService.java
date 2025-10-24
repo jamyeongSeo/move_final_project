@@ -79,4 +79,16 @@ public class PQService {
 		
 		return result;
 	}
+
+	public PQDTO selectOnePQ(int pqNo) {
+		PQDTO pq = pqDao.selectOnePQ(pqNo);
+		List<PQFileDTO> pqFileList = pqDao.selectPqFileList(pqNo);
+		pq.setPqFileList(pqFileList);
+		return pq;
+	}
+	@Transactional
+	public int updatePQAnswer(PQDTO pq) {
+		int result = pqDao.updatePQAnswer(pq);
+		return result;
+	}
 }
