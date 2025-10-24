@@ -1,5 +1,6 @@
 package kr.co.iei.booking.model.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.co.iei.booking.model.dao.BookingDao;
+import kr.co.iei.movie.model.dto.SeatDTO;
 
 @Service
 public class BookingService {
@@ -41,8 +43,16 @@ public class BookingService {
 	}
 
 	public Map selectScreenSeat(int screenNo) {
-		List seatList = bookingDao.selectScreenSeat(screenNo);
+		Map rowMap = new HashMap<String,Object>();
+		List seatList = new ArrayList();
 		List rowList = bookingDao.selectRowList(screenNo);
+		for(String row : (ArrayList<String>)rowList) {
+			rowMap.put("row", row);
+			rowMap.put("screenNo", screenNo);
+			List oneRowList = bookingDao.selectOneRow(rowMap);
+			seatList.add(oneRowList);
+		}
+		System.out.println(seatList);
 		Map map = new HashMap<String, Object>();
 		map.put("seatList", seatList);
 		map.put("rowList",rowList);

@@ -28,8 +28,12 @@
   	select * from seat_tbl where screen_no = #{screenNo}
   </select>
   
-  <select id="selectRowList" resultType="seat">
+  <select id="selectRowList" resultType="string">
   	select distinct seat_row from seat_tbl where screen_no =#{screenNo}
   	order by 1
+  </select>
+  
+  <select id="selectOneRow" resultType="seat">
+  	select * from seat_tbl where screen_no=#{screenNo} and seat_row = #{row} order by 2 asc
   </select>
 </mapper>

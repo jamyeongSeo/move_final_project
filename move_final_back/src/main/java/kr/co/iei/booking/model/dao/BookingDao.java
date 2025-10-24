@@ -20,4 +20,6 @@ public interface BookingDao {
 
 	List selectRowList(int screenNo);
 
+	List selectOneRow(Map getMap);
+
 }
