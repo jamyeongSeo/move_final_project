@@ -436,7 +436,7 @@
   padding: 3px 8px;
   margin-bottom: 20px;
 }
-.btn-zone:hover {
+.btn-box:hover {
   color: var(--main3);
   text-shadow: 3px 2px var(--main6);
   box-shadow: 3px 2px var(--main6);
