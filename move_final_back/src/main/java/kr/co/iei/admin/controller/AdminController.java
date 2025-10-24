@@ -1,6 +1,7 @@
 package kr.co.iei.admin.controller;
 
 import java.io.File;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,10 +9,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -94,4 +97,35 @@ public class AdminController {
             return ResponseEntity.status(404).build();
         }
     }
+    
+    
+	/*스케줄 등록 시, 상영 중인 영화만 반환*/
+	@GetMapping("/movie/running")
+	public ResponseEntity <List<MovieDTO>> getRunningMovies() {
+		List<MovieDTO> grm = adminService.getRunningMovies();
+	    return ResponseEntity.ok(grm);
+	}
+
+	/*스케줄 목록*/
+	@GetMapping("/schedule")
+	public ResponseEntity <List<ScheduleDTO>> scheduleList(){
+		List<ScheduleDTO> scheduleList = adminService.scheduleList();
+		return ResponseEntity.ok(scheduleList);
+	}
+	
+	/* 스케줄 수정 */
+	@PatchMapping
+	public ResponseEntity<Integer> updateSchedule(@RequestBody ScheduleDTO schedule) {
+	    int result = adminService.updateSchedule(schedule);
+	    return ResponseEntity.ok(result);
+	}
+
+	/* 스케줄 삭제 */
+	@DeleteMapping("/{scheduleNo}")
+	public ResponseEntity<Integer> deleteSchedule(@PathVariable int scheduleNo) {
+	    int result = adminService.deleteSchedule(scheduleNo);
+	    return ResponseEntity.ok(result);
+	}
+
+
 }
