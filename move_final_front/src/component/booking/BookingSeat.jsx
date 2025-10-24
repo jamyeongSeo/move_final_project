@@ -173,7 +173,7 @@ const BookingSeat = () => {
                 </div>
               </div>
 
-              <div className="btn-zone">
+              <div className="btn-box">
                 <button className="pay-btn">결제하기</button>
               </div>
             </section>
