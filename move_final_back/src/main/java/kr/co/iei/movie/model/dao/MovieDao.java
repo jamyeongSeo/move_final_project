@@ -25,7 +25,10 @@ public interface MovieDao {
 	
 	/*------Main------*/
 	List<MovieDTO> selectBoxOffice();
+
+	List selectSchedule(int dateSchedule);
 	/*------Main 끝------*/
+
 	
 
 	
