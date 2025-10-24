@@ -98,7 +98,7 @@ return (
         </section>
 
         <div className="admin-content-box">
-            <table className="tbl">
+            <table className="admin-content-tbl">
             <thead>
             <tr>
                 <th style={{ width: "10%" }}>영화번호</th>

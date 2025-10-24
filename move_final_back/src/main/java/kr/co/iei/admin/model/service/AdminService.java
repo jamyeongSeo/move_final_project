@@ -15,7 +15,6 @@ import kr.co.iei.admin.model.dto.ScheduleDTO;
 import kr.co.iei.movie.model.dao.MovieDao;
 import kr.co.iei.movie.model.dto.MovieDTO;
 import kr.co.iei.utils.PageInfoUtils;
-import kr.co.iei.utils.SearchPageInfoUtils;
 import kr.co.iei.utils.PageInfo;
 
 @Service

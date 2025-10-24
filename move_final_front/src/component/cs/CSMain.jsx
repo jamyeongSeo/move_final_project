@@ -9,6 +9,8 @@ import NoticeUpdate from "./NoticeUpdate";
 import PQList from "./PQList";
 import { useRecoilState } from "recoil";
 import { authReadyState } from "../utils/RecoilData";
+import PQDetail from "./PQDetail";
+import PQWrite from "./PQWrite";
 
 const CSMain = () => {
   const [menus, setMenus] = useState([
@@ -35,6 +37,8 @@ const CSMain = () => {
             <Route path="notice/detail/:noticeNo" element={<NoticeDetail />} />
             <Route path="notice/update/:noticeNo" element={<NoticeUpdate />} />
             <Route path="pq" element={<PQList />} />
+            <Route path="pq/frm" element={<PQWrite />} />
+            <Route path="pq/detail/:pqNo" element={<PQDetail />} />
           </Routes>
         </section>
       </div>

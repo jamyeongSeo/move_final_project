@@ -1,76 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.co.iei.admin.model.dao.AdminDao">
 
-	<!-- 관리자 메인(영화 리스트 출력) -->
+	<!-- 🎬 관리자 메인 (영화 리스트 출력) -->
 	<select id="adminMovieList" resultType="movie">
-		select * from movie_tbl
-	</select>
-	
-	<!-- 영화 제목 검색 -->
-	<select id="searchMovieTitle" resultType="movie">
-		select * from
-		(select rownum as rnum, m.*
-		from (movie_no, movie_title, movie_grade, movie_release, movie_status
-		from movie_tbl where movie_status like '%'||'${movieTitle}'||'%' order by
-		movie_no
-		)m
-		)
-		where rnum between #{start} and #{end}
-	</select>
-	
-
-	
-	<!-- 영화 수 -->
-	<select id="totalCount" resultType="int">
-		select count(*) from
-		movie_tbl
+		SELECT * FROM movie_tbl ORDER BY movie_no DESC
 	</select>
 
-	
-
-	<!-- 영화 정보 상세페이지 -->
+	<!-- 🎬 영화 상세페이지 -->
 	<select id="selectOneMovie" resultType="movie">
-		select * from movie_tbl where movie_no = #{movieNo}
+		SELECT * FROM movie_tbl WHERE movie_no = #{movieNo}
 	</select>
 
-	<!-- 영화 상태 변경(상영중/개봉예정,...) -->
+	<!-- 다음 시퀀스 번호 가져오기 -->
+	<select id="getMovieNo" resultType="int">
+		SELECT movie_seq.NEXTVAL FROM dual
+	</select>
+
+
+	<!-- 🎬 영화 상태 변경 -->
 	<update id="updateMovieStatus">
-		update movie_tbl set
-		movie_status = #{movieStatus}
-		where movie_no = #{movieNo}
+		UPDATE movie_tbl
+		SET movie_status = #{movieStatus}
+		WHERE movie_no = #{movieNo}
 	</update>
 
-	<!-- 영화 정보 등록 -->
+	<!-- 🎬 영화 등록 -->
 	<insert id="insertMovieInfo">
-		insert into movie_tbl values
-		(movie_seq.nextval,#{movieNo}, #{movieTitle}, #{movieType},
-		#{movieStatus}, #{movieContent},
-		#{movieThumb}, #{movieGenre}, #{movieGrade}, #{movieRuntime}, #{movieDirector},
-		#{movieActor}, #{movieRelease} )
+		INSERT INTO movie_tbl (
+		movie_no, movie_type, movie_title, movie_status,
+		movie_content, movie_thumb, movie_genre, movie_grade,
+		movie_runtime, movie_director, movie_actor, movie_release
+		)
+		VALUES (
+		movie_seq.nextval,
+		#{movieType}, #{movieTitle}, #{movieStatus}, #{movieContent},
+		#{movieThumb}, #{movieGenre}, #{movieGrade}, #{movieRuntime},
+		#{movieDirector}, #{movieActor}, #{movieRelease}
+		)
 	</insert>
-	
-	<!-- 스케줄 등록 -->
+
+	<!-- 🎬 총 영화 수 -->
+	<select id="totalCount" resultType="int">
+		SELECT COUNT(*) FROM movie_tbl
+	</select>
+
+	<!-- 🎬 스케줄 등록 -->
 	<insert id="insertSchedule" parameterType="schedule">
-	    insert into schedule_tbl (
-	        schedule_no,
-	        movie_no,
-	        screen_no,
-	        movie_title,
-	        schedule_time_start,
-	        schedule_time_end,
-	        schedule_open,
-	        schedule_close
-	    )
-	    values (
-	        schedule_seq.nextval, 
-	        #{movieNo}, 
-	        #{screenNo}, 
-	        #{movieTitle},
-	        #{scheduleTimeStart}, 
-	        #{scheduleTimeEnd}, 
-	        #{scheduleOpen}, 
-	        #{scheduleClose}
-	    )
+		INSERT INTO schedule_tbl (
+		schedule_no,
+		movie_no,
+		screen_no,
+		movie_title,
+		schedule_time_start,
+		schedule_time_end,
+		schedule_open,
+		schedule_close
+		) VALUES (
+		schedule_seq.nextval,
+		#{movieNo},
+		#{screenNo},
+		#{movieTitle},
+		#{scheduleTimeStart},
+		#{scheduleTimeEnd},
+		#{scheduleOpen},
+		#{scheduleClose}
+		)
 	</insert>
+
 </mapper>

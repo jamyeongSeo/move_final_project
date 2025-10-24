@@ -22,20 +22,23 @@ const PQList = () => {
   const [authReady, setAuthReady] = useRecoilState(authReadyState); //refresh 초기회 확인용 데이터를 저장하는 recoil
   const [memberLevel, setMemberLevel] = useRecoilState(memberLevelState); //해당 recoil 계정의 memberLevel값을 갖고있는 state
   const [loginId, setLoginId] = useRecoilState(loginIdState);
-  const [category, setCategory] = useState(0);
+  const [pqCategory, setPqCategory] = useState(0); //카테고리 데이터 값을 저장하는 state
+
   const navigate = useNavigate();
   const pqFunc = () => {
     axios
       .get(
         `${
           import.meta.env.VITE_BACK_SERVER
-        }/cs/pq?reqPage=${reqPage}&pqTitle=${search}&memberId=${loginId}&memberLevel=${memberLevel}&category=${category}`
+        }/cs/pq?reqPage=${reqPage}&pqTitle=${search}&memberId=${loginId}&memberLevel=${memberLevel}&pqCategory=${pqCategory}`
       )
       .then((res) => {
         console.log(res);
         setPqList(res.data.pqList);
         setPi(res.data.pi);
         setTotalCount(res.data.totalCount);
+        console.log("pqList:", res.data.pqList);
+        console.log("category:", pqCategory);
       })
       .catch((err) => {
         console.log(err);
@@ -43,29 +46,29 @@ const PQList = () => {
   };
 
   useEffect(() => {
-    if (!authReady) {
+    if (!loginId) {
+      navigate("/common/login");
       Swal.fire({
-        title: "권한 없음.",
+        title: "접근 제한",
         text: "로그인 후 이용바랍니다.",
         icon: "warning",
-      }).then((res) => {
-        navigate("/common/login");
-      });
+      }).then((res) => {});
       return;
-    } else if (authReady) {
+    } else {
       pqFunc();
     }
-  }, [reqPage, authReady, category]);
+  }, [reqPage, authReady, pqCategory]);
+
+  const categoryChange = (e) => {
+    setPqCategory(e.target.value);
+    pqFunc();
+    console.log(e.target.value);
+  };
 
   const searchInput = () => {
     setReqPage(1);
     pqFunc();
   };
-  const handleCategoryChange = (e) => {
-    setCategory(e.target.value);
-    switchList(1, value);
-  };
-  const switchList = () => {};
 
   return (
     <section className="section pq-list-wrap">
@@ -85,19 +88,16 @@ const PQList = () => {
       <div className="input-wrap">
         <div className="select-wrap">
           <div className="list-count">전체 : {totalCount}건</div>
-          <div
-            className="select-box"
-            style={{ display: "flex", alignItems: "center", gap: "4px" }}
-          >
+          <div className="select-box">
             <Box size="small" sx={{ minWidth: 100 }}>
               <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">문의 유형</InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
-                  value={category}
+                  value={pqCategory}
                   label="문의 유형"
-                  onChange={handleCategoryChange}
+                  onChange={categoryChange}
                   sx={{
                     height: 32,
                     fontSize: "16px",
@@ -140,7 +140,7 @@ const PQList = () => {
         <table className="tbl">
           <thead>
             <tr>
-              <th style={{ width: "15%" }}>번호</th>
+              <th style={{ width: "15%" }}>유형</th>
               <th style={{ width: "20%" }}>아이디</th>
               <th style={{ width: "40%" }}>제목</th>
               <th style={{ width: "25%" }}>등록일</th>
@@ -153,7 +153,7 @@ const PQList = () => {
                   key={"pq-" + index}
                   onClick={() => navigate(`/cs/pq/detail/${pq.pqNo}`)}
                 >
-                  <td>{pq.pqNo}</td>
+                  <td>{pq.pqCategoryName}</td>
                   <td>{pq.memberId}</td>
                   <td>{pq.pqTitle}</td>
                   <td>{pq.pqDate}</td>

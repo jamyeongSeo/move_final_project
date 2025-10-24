@@ -1,5 +1,7 @@
 package kr.co.iei.cs.pq.model.dto;
 
+import java.util.List;
+
 import org.apache.ibatis.type.Alias;
 
 import lombok.AllArgsConstructor;
@@ -16,6 +18,9 @@ public class PQDTO {
 	private String pqTitle;
 	private String pqContent;
 	private String pqAnswer;
-	private String pqCategory;
+	private int pqCategory;
 	private String pqDate;
+	private List<PQFileDTO>pqFileList;
+	private int[] delFileNo;
+	private String pqCategoryName;
 }
