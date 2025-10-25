@@ -8,6 +8,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { isLoginState, loginIdState } from "../utils/RecoilData";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import NoMemberInfo from "../member/NoMemberInfo";
 
 const BookingMain = () => {
   const [bookingMovieList, setBookingMovieList] = useState([]);
@@ -159,21 +160,12 @@ const BookingMain = () => {
                                     ...booking,
                                     scheduleNo: one.scheduleNo,
                                   });
-                                  if (!isLogin) {
-                                    Swal.fire({
-                                      title: "로그인 필요",
-                                      text: "예매를 이용하시려면 로그인이 필요합니다.",
-                                      icon: "warning",
-                                      confirmButtonText: "로그인 화면으로",
-                                    }).then((confirm) => {
-                                      if (confirm.isConfirmed) {
-                                        navigate(`/common/login`);
-                                      }
-                                    });
-                                  }
-                                  navigate(
-                                    `/booking/bookingSeat/${one.screenNo}`
-                                  );
+
+                                  !isLogin
+                                    ? navigate("/membewr/noMemberInfo")
+                                    : navigate(
+                                        `/booking/bookingSeat/${one.screenNo}`
+                                      );
                                 }}
                               >
                                 <div>{one.movieTitle}</div>

@@ -27,6 +27,7 @@
   	delete from movie_like_tbl where movie_no =#{movieNo} and member_id = #{memberId}
   </delete>
   
+  <!-- Mian  -->
   <select id="selectBoxOffice" resultType="movie">
   <![CDATA[
   	select 
@@ -46,4 +47,52 @@
 	 ]]>
   </select>
   
+  <!-- 추후 매진 관객 확인 시 결제 상태 컬럼 where로 확인 필요 -->
+  <select id="selectSchedule" resultType="movieSchedule">
+  	select 
+    	sh1.movie_no,---
+    	sh1.movie_title,--
+    	sh1.movie_grade,--
+    	sh1.movie_runtime,
+    	sh1.movie_type,--
+    	sh1.schedule_time_start,
+    	sh1.schedule_time_end,
+    	sh1.schedule_open,
+    	sh1.schedule_close,
+    	sh1.screen_name,
+    	sh1.seat_total,
+    	sh1.booking_date,
+    	COALESCE(sh2.gallery_seat, 0) AS gallery_seat
+	from
+    	(select 
+        	m.movie_no,
+        	m.movie_title,
+        	m.movie_grade,
+        	m.movie_runtime,
+        	m.movie_type,--관 타입(2D.3D,4D)
+        	s.schedule_time_start,
+        	s.schedule_time_end, 
+        	s.schedule_open,
+        	s.schedule_close, 
+        	scr.screen_name,--관 이름
+        	st.seat_total,--관별 전체 좌석수
+        	b.booking_date--스케줄링된 날짜(관람 예정일)
+    	from schedule_tbl s
+    	join (select count(*) seat_total, screen_no
+            	from seat_tbl
+            	group by screen_no) st on (st.screen_no = s.screen_no)
+    			join screen_tbl scr on (scr.screen_no = st.screen_no)
+    			join movie_tbl m on (m.movie_no = s.movie_no)
+    			left join book_tbl b on (b.schedule_no = s.schedule_no)
+    			where sysdate+#{dateSchedule} between s.schedule_open and s.schedule_close 
+    			) sh1
+			left join (select b.booking_date, sss.schedule_no, gallery_seat 
+            			from book_tbl b
+            			right join (select s.schedule_no, count(bs.book_seat_no) gallery_seat
+            			from book_seat_tbl bs
+            			left join book_tbl b on (b.book_no = bs.book_no)
+            right join schedule_tbl s on (s.schedule_no = b.schedule_no)
+            group by s.schedule_no) sss on (sss.schedule_no = b.schedule_no)) sh2 on (sh1.booking_date = sh2.booking_date)
+  </select>
+  <!-- Mian  끝-->
 </mapper>

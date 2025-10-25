@@ -60,5 +60,10 @@ public class MovieController {
 		Map map = movieService.selectBoxOffice(memberId);
 		return ResponseEntity.ok(map);
 	}
+	@GetMapping(value = "/schedule")
+	public ResponseEntity<Map> selectSchedule(@RequestParam int dateSchedule){
+		Map map = movieService.selectSchedule(dateSchedule);
+		return ResponseEntity.ok(map);
+	}
 	/*-----------------Main 끝-----------------*/
 }
