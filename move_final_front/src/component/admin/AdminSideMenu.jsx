@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useState } from "react";
 import "../utils/sideMenu.css";
 import "./admin.css";
@@ -17,9 +17,11 @@ const AdminSideMenu = ({ menus, subMenus }) => {
 
   return (
     <aside className="admin-side-menu">
-      <div className="side-title">
+   
+        <Link to="/admin/main" className="side-title">
         <div>관리자 페이지</div>
-    </div>
+        </Link>        
+
 
     
       {menus.map((menu, index) => (
