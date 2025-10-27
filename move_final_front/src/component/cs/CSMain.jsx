@@ -11,6 +11,7 @@ import { useRecoilState } from "recoil";
 import { authReadyState } from "../utils/RecoilData";
 import PQDetail from "./PQDetail";
 import PQWrite from "./PQWrite";
+import FAQList from "./FAQList";
 
 const CSMain = () => {
   const [menus, setMenus] = useState([
@@ -39,6 +40,7 @@ const CSMain = () => {
             <Route path="pq" element={<PQList />} />
             <Route path="pq/frm" element={<PQWrite />} />
             <Route path="pq/detail/:pqNo" element={<PQDetail />} />
+            <Route path="faq" element={<FAQList />} />
           </Routes>
         </section>
       </div>
