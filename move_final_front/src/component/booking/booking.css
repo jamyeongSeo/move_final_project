@@ -329,14 +329,14 @@
   margin-left: 30px;
 }
 
-[class^="one-seat-box"]:not([class$="unselected"]):not(
+[class^="one-seat-box"]:not([class~="unselected"]):not(
     [class^="one-seat-box-double"]
   ):hover {
   cursor: pointer;
   background-color: var(--main1);
 }
 
-[class^="one-seat-box-double"]:hover {
+[class^="one-seat-box-double"]:not([class~="unselected"]):hover {
   cursor: pointer;
   background-color: var(--main6);
 }
@@ -387,6 +387,9 @@
 .adult-amount {
   margin-top: 30px;
 }
+[class$="-count"] {
+  font-family: ns-b;
+}
 [class$="-button"] {
   width: 20px;
   height: 20px;
@@ -421,7 +424,7 @@
   border: 2px solid var(--main1);
 }
 
-.btn-box {
+.btn-wrap {
   margin: 0 auto;
   width: 80%;
   cursor: pointer;
@@ -436,7 +439,7 @@
   padding: 3px 8px;
   margin-bottom: 20px;
 }
-.btn-zone:hover {
+.btn-wrap:hover {
   color: var(--main3);
   text-shadow: 3px 2px var(--main6);
   box-shadow: 3px 2px var(--main6);

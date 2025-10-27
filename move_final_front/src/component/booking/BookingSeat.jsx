@@ -67,7 +67,7 @@ const BookingSeat = () => {
                               className={
                                 selectCount === 0 && oneSeat.seatColumn >= 15
                                   ? "one-seat-box-double " +
-                                    "unselected " +
+                                    " unselected " +
                                     (i + 1)
                                   : selectCount === 0
                                   ? "one-seat-box" + " unselected " + (i + 1)
@@ -173,10 +173,13 @@ const BookingSeat = () => {
                 </div>
               </div>
 
-              <div className="btn-box">
+              <div className="btn-wrap">
                 <button className="pay-btn">결제하기</button>
               </div>
             </section>
+          </div>
+          <div className="exit-box">
+            <ExitToAppIcon />
           </div>
         </div>
       </div>
