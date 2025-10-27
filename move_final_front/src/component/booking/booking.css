@@ -414,9 +414,12 @@
   padding-bottom: 40px;
 }
 .show-selected-group {
-  width: 100%;
+  margin: 0 auto;
+  width: 80%;
   display: flex;
   justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 25px;
 }
 .show-selected-seat {
   width: 60px;
@@ -446,4 +449,13 @@
 }
 .pay-btn {
   margin: 0 25px;
+}
+
+.filled {
+  background-color: var(--main1);
+  color: var(--main3);
+  line-height: 55px;
+  font-size: 20px;
+
+  box-sizing: border-box;
 }

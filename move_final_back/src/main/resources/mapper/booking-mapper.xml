@@ -33,6 +33,10 @@
   	order by 1
   </select>
   
+  <select id="selectMoviePrice" resultType="int">
+  	select price from price_tbl where movie_no = #{movieNo}
+  </select>
+  
   <select id="selectOneRow" resultType="seat">
   	select * from seat_tbl where screen_no=#{screenNo} and seat_row = #{row} order by 2 asc
   </select>

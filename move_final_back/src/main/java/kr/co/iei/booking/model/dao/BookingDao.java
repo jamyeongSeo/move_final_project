@@ -22,4 +22,6 @@ public interface BookingDao {
 
 	List selectOneRow(Map getMap);
 
+	List selectMoviePrice(int movieNo);
+
 }

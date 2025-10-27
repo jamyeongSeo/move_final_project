@@ -59,5 +59,12 @@ public class BookingService {
 		return map;
 	}
 
+	public Map calcPrice(int movieNo, int adultCount, int kidCount) {
+		Map priceMap = new HashMap<String, Object>();
+		List priceList = bookingDao.selectMoviePrice(movieNo);
+		System.out.println("priceList :"+ priceList);
+		return null;
+	}
+
 
 }

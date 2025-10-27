@@ -162,9 +162,9 @@ const BookingMain = () => {
                                   });
 
                                   !isLogin
-                                    ? navigate("/membewr/noMemberInfo")
+                                    ? navigate("/member/noMemberInfo")
                                     : navigate(
-                                        `/booking/bookingSeat/${one.screenNo}`
+                                        `/booking/bookingSeat/${one.screenNo}/${movieNo}`
                                       );
                                 }}
                               >

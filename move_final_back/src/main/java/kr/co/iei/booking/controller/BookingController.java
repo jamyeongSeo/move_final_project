@@ -55,5 +55,9 @@ public class BookingController {
 		Map map = bookingService.selectScreenSeat(screenNo);
 		return ResponseEntity.ok(map);
 	}
-
+	@GetMapping(value="/calcPrice/{movieNo}")
+	public ResponseEntity<Map> calcPrice(@PathVariable int movieNo, @RequestParam int adultCount, @RequestParam int kidCount){
+		Map map = bookingService.calcPrice(movieNo, adultCount, kidCount);
+		return ResponseEntity.ok(map);
+	}
 }

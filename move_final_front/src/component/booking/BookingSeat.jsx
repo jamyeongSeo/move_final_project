@@ -8,17 +8,33 @@ import { EventSeat } from "@mui/icons-material";
 import Swal from "sweetalert2";
 const BookingSeat = () => {
   const params = useParams();
+  const movieNo = params.movieNo;
   const screenNo = params.screenNo;
   const [seatList, setSeatList] = useState([]);
   const [rowList, setRowList] = useState([]);
-  const [columList, setColumnList] = useState([]);
   const oneRowList = [];
   const [adultCount, setAdultCount] = useState(0);
   const [kidCount, setKidCount] = useState(0);
   const totalCount = adultCount + kidCount;
   const selectCount = totalCount;
-  const [selectSeat, setSelectSeat] = useState([]);
-  selectSeat.length = selectCount;
+  const [selectSeat, setSelectSeat] = useState(Array(6).fill(null));
+  const [count, setCount] = useState(0);
+  const [price, setPrice] = useState(0);
+
+  useEffect(() => {
+    axios
+      .get(
+        `${
+          import.meta.env.VITE_BACK_SERVER
+        }/booking/calcPrice/${movieNo}?adultCount=${adultCount}&kidCount=${kidCount}`
+      )
+      .then((res) => {
+        console.log(res);
+      })
+      .then((err) => {
+        console.log(err);
+      });
+  }, []);
 
   useEffect(() => {
     axios
@@ -32,6 +48,7 @@ const BookingSeat = () => {
         console.log(err);
       });
   }, []);
+
   return (
     <div>
       <div className="content">
@@ -61,11 +78,15 @@ const BookingSeat = () => {
                     return (
                       <div key={"one-row-box" + index} className="one-row-box">
                         {seat.map((oneSeat, i) => {
+                          const seatName = oneSeat.seatRow + oneSeat.seatColumn;
                           return (
                             <div
                               key={"one-seat-box" + i}
                               className={
-                                selectCount === 0 && oneSeat.seatColumn >= 15
+                                selectSeat.includes(seatName)
+                                  ? "one-seat-box filled"
+                                  : selectCount === 0 &&
+                                    oneSeat.seatColumn >= 15
                                   ? "one-seat-box-double " +
                                     " unselected " +
                                     (i + 1)
@@ -78,6 +99,28 @@ const BookingSeat = () => {
                                     (i + 1)
                                   : "one-seat-box" + oneSeat.seatRow + (i + 1)
                               }
+                              onClick={() => {
+                                if (
+                                  count <= 6 &&
+                                  selectCount > count &&
+                                  !selectSeat.includes(seatName)
+                                ) {
+                                  const newSelectSeat = [...selectSeat];
+                                  newSelectSeat[count] = seatName;
+                                  setSelectSeat(newSelectSeat);
+                                  setCount(count + 1);
+                                  console.log(selectCount);
+                                } else if (selectSeat.includes(seatName)) {
+                                  const removeSelectSeat = selectSeat.map(
+                                    (removeSeat, index) =>
+                                      removeSeat !== seatName
+                                        ? removeSeat
+                                        : null
+                                  );
+                                  setSelectSeat(removeSelectSeat);
+                                  setCount(count - 1);
+                                }
+                              }}
                             ></div>
                           );
                         })}
@@ -99,6 +142,9 @@ const BookingSeat = () => {
                       onClick={() => {
                         if (adultCount !== 0) {
                           setAdultCount(adultCount - 1);
+                          const refreshSeat = [...selectSeat.fill(null)];
+                          setSelectSeat(refreshSeat);
+                          setCount(0);
                         }
                       }}
                     >
@@ -132,6 +178,9 @@ const BookingSeat = () => {
                       onClick={() => {
                         if (kidCount !== 0) {
                           setKidCount(kidCount - 1);
+                          const refreshSeat = [...selectSeat.fill(null)];
+                          setSelectSeat(refreshSeat);
+                          setCount(0);
                         }
                       }}
                     >
@@ -158,17 +207,24 @@ const BookingSeat = () => {
                   </div>
                 </div>
                 <div className="show-seat-box">
-                  {selectSeat.map((item, index) => {
-                    return (
-                      <div className="show-selected-group">
-                        <div className="show-selected-seat"></div>
-                        <div className="show-selected-seat"></div>
-                      </div>
-                    );
-                  })}
+                  <div className="show-selected-group">
+                    {selectSeat.map((item, index) => {
+                      return (
+                        <div
+                          key={"selectSeat-" + index}
+                          className={
+                            item === null
+                              ? "show-selected-seat"
+                              : "show-selected-seat filled"
+                          }
+                        >
+                          {item}
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
-
               <div className="btn-wrap">
                 <button className="pay-btn">결제하기</button>
               </div>
