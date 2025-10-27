@@ -100,6 +100,7 @@ function App() {
                 element={<BookingSeat />}
               />
               <Route path="/admin/main" element={<AdminMain />}>
+              <Route index element={<AdminList/>}/>
                 <Route path="movie/list" element={<AdminList />} />
                 <Route path="movie/regist" element={<AdminRegist />} />
                 <Route path="schedule/list" element={<AdminScheduleList />}/>

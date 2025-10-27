@@ -5,145 +5,99 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.iei.admin.model.dao.AdminDao;
 import kr.co.iei.admin.model.dto.ScheduleDTO;
-import kr.co.iei.movie.model.dao.MovieDao;
 import kr.co.iei.movie.model.dto.MovieDTO;
 import kr.co.iei.utils.PageInfoUtils;
 import kr.co.iei.utils.PageInfo;
 
 @Service
 public class AdminService {
-	@Autowired
-	private AdminDao adminDao;
-	@Autowired
-	private PageInfoUtils pageInfoUtil;
-	
-	
-	//영화 목록
-	public Map adminMovieList(int reqPage) {
-		int numPerPage = 15;
-		int pageNaviSize = 5;
-		int totalCount = adminDao.totalCount();
-		PageInfo pi = pageInfoUtil.getPageInfo(reqPage, numPerPage, pageNaviSize, totalCount);
-	
-		List<MovieDTO> adminMovieList= adminDao.adminMovieList(pi);
-		Map<String, Object> map = new HashMap<String, Object>();
-		
-		map.put("movieList", adminMovieList);
-		map.put("pi",pi);
-		
-		return map;
-	}
-	
-	/*영화 제목 검색*/
-	public Map searchTitleList(MovieDTO movieTitle, int reqPage) {
-		int numPerPage = 16;
-		int pageNaviSize = 5;
-		int totalCount = adminDao.totalCount();
-		PageInfo pi = pageInfoUtil.getPageInfo(reqPage, numPerPage, pageNaviSize, totalCount);
-		List<MovieDTO> searchTitleList = adminDao.getMovieTitle(pi);
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("movieTitle", movieTitle);
-		map.put("pi", pi);
-		
-		return map;
-		
-		
-	}
-	
-	/*영화 등록*/
-	@Transactional
-	public int insertMovieInfo(MovieDTO movie) {
-		int movieNo = adminDao.getMovieNo();		
-		movie.setMovieNo(movieNo);
-		int result = adminDao.insertMovieInfo(movie);
-		
-		return result;
-	}
+    @Autowired
+    private AdminDao adminDao;
+    @Autowired
+    private PageInfoUtils pageInfoUtil;
 
-	
-	//	//영화 제목 검색
-//	public Map searchMovieTitle(int reqPage) {
-//		int numPerPAge = 15;
-//		int pageNaviSize = 5;
-//		int totalSearchTitle = adminDao.totalSearchTitle();
-//		PageInfo pi = pageInfoUtil.getPageInfo(reqPage, numPerPAge, pageNaviSize, totalSearchTitle);
-//		List<MovieDTO> searchMovieTitle = adminDao.searchMovieTitle(reqPage);
-//		Map<String, Object> map = new HashMap<String, Object>();
-//		map.put("movieList", searchMovieTitle);
-//		map.put("pi", pi);
-//		return map;
-//	}
+    // 영화 목록 (검색어 + 상태 필터)
+    public Map<String, Object> adminMovieList(int reqPage, String movieTitle, Integer movieStatus) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("movieTitle", movieTitle);
+        param.put("movieStatus", movieStatus);
 
-	public int insertMovieInfo(MovieDTO movie, MultipartFile movieThumbImg) {
-			int movieNo = adminDao.getMovieNo();
-			movie.setMovieNo(movieNo);
-			int result = adminDao.insertMovieInfo(movie);
-			return result;
-	}
+        int totalCount = adminDao.totalCount(param);
+        List<MovieDTO> list = adminDao.adminMovieList(param);
 
-	/*영화 정보 상세페이지*/
-	public MovieDTO selectOneMovie(int movieNo) {
-		MovieDTO movie = adminDao.selectOneMovie(movieNo);
-		return movie;
-	}
-	
-	/*영화 목록에서 상태 바꾸기*/
-	public int updateMovieStatus(int movieNo, int movieStatus) {
-		return adminDao.updateMovieStatus(movieNo, movieStatus);
-	}
-	
-	//스케줄 등록
-	public ScheduleDTO insertSchedule(ScheduleDTO schedule) {
-        int result = adminDao.insertSchedule(schedule);
-        if (result > 0) {
-            return schedule;
-        } else {
-            return null;
-        }
+        Map<String, Object> map = new HashMap<>();
+        map.put("movieList", list);
+        map.put("totalCount", totalCount);
+        return map;
     }
-	
 
-	/*스케줄 등록 시 상영 중인 영화만 빼오기*/
-	public List<MovieDTO> getRunningMovies() {
-	    return adminDao.getRunningMovies(); 
-	}
+    // (선택) 영화 제목 검색용 유틸이 필요하면 아래처럼 Map 기반으로 변경해서 사용
+    public Map<String, Object> searchTitleList(String titleKeyword, int reqPage) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("movieTitle", titleKeyword);
+        param.put("movieStatus", null);
 
-	/*스케줄 목록*/
-	public List<ScheduleDTO> scheduleList() {
-		return adminDao.scheduleList();
-	}
-	
-	/*스케줄 정보 업뎃*/
-	public int updateSchedule(ScheduleDTO schedule) {
-		return adminDao.updateSchedule(schedule);
-	
-	}
+        int totalCount = adminDao.totalCount(param);
+        // 페이징 처리 필요하면 PageInfoUtils 사용하여 PageInfo 생성 후 dao에 전달
+        PageInfo pi = pageInfoUtil.getPageInfo(reqPage, 16, 5, totalCount);
+        // 만약 DAO 쪽에 페이징을 반영한 별도 메서드가 있다면 그걸 호출
+        List<MovieDTO> list = adminDao.getMovieTitle(pi);
 
-	/*스케줄 정보 삭제*/
-	public int deleteSchedule(int scheduleNo) {
-		return adminDao.deleteSchedule(scheduleNo);
-	}
-	/*스케줄 목록*/
-	
-	
+        Map<String, Object> map = new HashMap<>();
+        map.put("movieList", list);
+        map.put("pi", pi);
+        return map;
+    }
 
-	
-	
-	//영화 정보 수정
-//	@Transactional
-//	public MovieDTO updateMovie(MovieDTO movie, MultipartFile movieThumb) {
-//		MovieDTO m = adminDao.selectOneMovie(movie.getMovieNo());
-//		int result = adminDao.updateMovie(movie);
-//		
-//		return null;
-//	}
-	
+    @Transactional
+    public int insertMovieInfo(MovieDTO movie) {
+        int movieNo = adminDao.getMovieNo();
+        movie.setMovieNo(movieNo);
+        int result = adminDao.insertMovieInfo(movie);
+        return result;
+    }
+
+    public int insertMovieInfo(MovieDTO movie, MultipartFile movieThumbImg) {
+        int movieNo = adminDao.getMovieNo();
+        movie.setMovieNo(movieNo);
+        int result = adminDao.insertMovieInfo(movie);
+        return result;
+    }
+
+    public MovieDTO selectOneMovie(int movieNo) {
+        return adminDao.selectOneMovie(movieNo);
+    }
+
+    public int updateMovieStatus(int movieNo, int movieStatus) {
+        return adminDao.updateMovieStatus(movieNo, movieStatus);
+    }
+
+    public ScheduleDTO insertSchedule(ScheduleDTO schedule) {
+        int result = adminDao.insertSchedule(schedule);
+        if (result > 0) return schedule;
+        return null;
+    }
+
+    public List<MovieDTO> getRunningMovies() {
+        return adminDao.getRunningMovies();
+    }
+
+    public List<ScheduleDTO> scheduleList() {
+        return adminDao.scheduleList();
+    }
+
+    public int updateSchedule(ScheduleDTO schedule) {
+        return adminDao.updateSchedule(schedule);
+    }
+
+    public int deleteSchedule(int scheduleNo) {
+        return adminDao.deleteSchedule(scheduleNo);
+    }
 
 }

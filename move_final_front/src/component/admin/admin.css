@@ -77,7 +77,6 @@ body {
   border-radius: 8px;
   box-sizing: border-box;
   padding: 3px 5px;
-
 }
 
 .admin-search-btn {
@@ -110,148 +109,176 @@ body {
   font-weight: 700;
 }
 
-/*스케줄 등록 */
-.admin-schedule-info {
-  display: flex;
-  font-size: 18px;
-  padding: 30px 0;
-}
-
-.admin-schedule-registFrm-wrap {
-  display: flex;
-  flex-direction: column;
-  min-height: 50vh;
-  margin-top: 45px;
-  padding-left: 175px;
-  background-color: #fff;
-  border-radius: 8px;
-}
-
-.admin-schedule-regist-btn-zone {
-  display: flex;
-  margin-left: 600px;
-  padding-top: 55px;
-}
-
-/* AdminRegistFrm 폼 */
-.regist-info-wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 40px;
-  background: #fff;
-  padding: 40px 60px;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.regist-info-tbl {
-  width: 100%;
-  max-width: 780px;
-  border-collapse: separate;
-  border-spacing: 0 18px;
-}
-
-.regist-info-tbl tr {
-  vertical-align: middle;
-}
-
-.regist-info-tbl th {
-  width: 180px;
-  text-align: left;
-  font-size: 18px;
-  font-weight: 600;
-  color: #333;
-  padding-right: 10px;
-}
-
-
-
-/*입력 필드*/
-.admin-regist-input input,
-.admin-input-movieContent-box input {
-  width: 100%;
-  max-width: 500px;
-  height: 46px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 16px;
-  padding: 0 12px;
-  box-sizing: border-box;
-  transition: all 0.2s ease-in-out;
-}
-
-.admin-regist-input input:focus,
-.admin-input-movieContent-box input:focus {
-  outline: none;
-  border-color: #ff4b4b;
-  box-shadow: 0 0 6px rgba(255, 75, 75, 0.4);
-}
-
-/* ====== 소개글 input (textarea 느낌) ====== */
-.admin-input-movieContent-box input {
-  height: 120px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  font-size: 15px;
-  line-height: 1.5;
-}
-
-
-/* ====== 포스터 썸네일 ====== */
-.regist-thumb-wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 40px;
-  margin-top: 20px;
-}
-
-.regist-thumb-img-preview {
-  width: 240px;
-  height: 240px;
-  object-fit: cover;
-  border-radius: 10px;
-  background-color: #f0f0f0;
-  border: 1px solid #ccc;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-  transition: all 0.2s ease-in-out;
-}
-
-.regist-thumb-img-preview:hover {
-  transform: scale(1.03);
-}
-
-.regist-thumb-label {
-  margin-top: 10px;
-  font-weight: 600;
-  color: #333;
-  font-size: 16px;
-}
-
-/* ====== 등록 버튼 ====== */
-.admin-regist-btn-zone {
-  display: flex;
-  justify-content: flex-end;
-  margin-right: 120px;
-  padding-top: 40px;
-}
-
-
 /*AdminList*/
+/* 검색 & 필터 */
+.admin-search-filter-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
 
-.admin-content-tbl{
-  width: 100%;
-  background-color: var(--gray5);
-  height: 40px;
-  text-align: center;
+/* 탭 버튼 */
+.admin-status-tabs {
+  display: flex;
+  gap: 10px;
+}
+
+.status-tab {
+  background-color: #f7f7f7;
+  border: 1px solid #ddd;
   border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.25s ease;
 }
-.admin-content-tbl > th{
-  text-align: center;
-}
-/*AdminScheduleList - 영화 스케줄 목록*/
 
+.status-tab:hover {
+  background-color: #eee;
+  transform: translateY(-1px);
+}
+
+.status-tab.active {
+  background-color: #444;
+  color: #fff;
+  border-color: #444;
+  font-weight: 600;
+}
+
+/* 검색창 */
+.admin-search-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-search-item input {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 200px;
+  font-size: 14px;
+}
+
+.admin-search-item input:focus {
+  outline: none;
+  border-color: #444;
+  box-shadow: 0 0 0 2px rgba(68, 68, 68, 0.15);
+}
+
+.admin-search-btn {
+  background-color: #444;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-search-btn:hover {
+  background-color: #222;
+  transform: translateY(-1px);
+}
+
+/* ============================
+   테이블 스타일 (수정됨)
+============================ */
+.admin-content-box {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.admin-content-tbl {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  color: #333;
+  border-radius: 8px;
+  overflow: hidden;
+  table-layout: fixed; /* ✅ 셀 고정폭 */
+}
+
+.admin-content-tbl th,
+.admin-content-tbl td {
+  padding: 14px 12px;
+  text-align: center;
+  vertical-align: middle;
+  border-bottom: 1px solid #eee;
+  white-space: nowrap; /* ✅ 줄바꿈 방지 */
+  overflow: hidden; /* ✅ 넘치는 텍스트 숨김 */
+  text-overflow: ellipsis; /* ✅ ... 표시 */
+}
+
+/* ✅ 각 열 고정 폭 */
+.admin-content-tbl th:nth-child(1),
+.admin-content-tbl td:nth-child(1) {
+  width: 10%;
+}
+.admin-content-tbl th:nth-child(2),
+.admin-content-tbl td:nth-child(2) {
+  width: 35%;
+}
+.admin-content-tbl th:nth-child(3),
+.admin-content-tbl td:nth-child(3) {
+  width: 15%;
+}
+.admin-content-tbl th:nth-child(4),
+.admin-content-tbl td:nth-child(4) {
+  width: 20%;
+}
+.admin-content-tbl th:nth-child(5),
+.admin-content-tbl td:nth-child(5) {
+  width: 20%;
+}
+
+/* 제목 링크 */
+.admin-movie-info-update {
+  color: #444;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.admin-movie-info-update:hover {
+  color: #007bff;
+}
+
+/* 행 hover */
+.admin-content-tbl tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+/* ============================
+   상태 컬러 배지 스타일
+============================ */
+.status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: white;
+  min-width: 80px;
+}
+
+/* 상태별 색상 */
+.status-1 { background-color: #f59e0b; } /* 개봉예정 */
+.status-2 { background-color: #10b981; } /* 상영중 */
+.status-3 { background-color: #9ca3af; } /* 상영종료 */
+.status-4 { background-color: #3b82f6; } /* 재개봉 */
+
+/*AdminScheduleList*/
 .admin-schedule-list-tbl > thead {
   display: block;
   margin-bottom: 25px;
@@ -262,70 +289,21 @@ body {
   color: #fff;
 }
 
-.admin-schedule-list-tbl > tbody{
-  display: block
-}
-
-.admin-schedule-list-tbl>tr{
-  width: 100%;
-  vertical-align: middle;
-  
-}
-
-.admin-schedule-list-tbl>th{
-  padding-left: 20px;
-  width: 180px;
-  text-align: center;
-  font-size: 18px;
-  font-weight: 600;
-  vertical-align: middle;
-  padding-right: 10px;
-  border-bottom: 20px;
-}
-/* .admin-schedule-content-box{
-  display: flex;
-  align-items: center;
-  margin-top: 40px;
-  border-radius: 12px;
-} */
 .admin-schedule-list-tbl > tbody {
-  width: 870px;
+  display: block;
   background-color: #fff;
-  min-height: 100vh;
+  min-height: 170vh;
   text-align: center;
   align-items: center;
   margin-top: 20px;
   border-radius: 12px;
-  min-height: 170vh;
   box-shadow:  0 4px 10px rgba(0, 0, 0, 0.1);
 }
-.admin-schedule-list-tbl > tbody >td{
+.admin-schedule-list-tbl > tbody > td {
   text-align: center;
 }
 
-
-
-
-/* 
-.btn-red {
-  background-color: #ff4b4b;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 14px 28px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out; 
-}
-
-.btn-red:hover {
-  background-color: #e73535;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(255, 75, 75, 0.4);
-} */
-
-
+/* Tailwind 기본 테마 변수 */
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -347,44 +325,7 @@ body {
     --border: 220 13% 91%;
     --input: 220 13% 91%;
     --ring: 224 71.4% 4.1%;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
     --radius: 0.5rem;
-  }
-  .dark {
-    --background: 224 71.4% 4.1%;
-    --foreground: 210 20% 98%;
-    --card: 224 71.4% 4.1%;
-    --card-foreground: 210 20% 98%;
-    --popover: 224 71.4% 4.1%;
-    --popover-foreground: 210 20% 98%;
-    --primary: 210 20% 98%;
-    --primary-foreground: 220.9 39.3% 11%;
-    --secondary: 215 27.9% 16.9%;
-    --secondary-foreground: 210 20% 98%;
-    --muted: 215 27.9% 16.9%;
-    --muted-foreground: 217.9 10.6% 64.9%;
-    --accent: 215 27.9% 16.9%;
-    --accent-foreground: 210 20% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 20% 98%;
-    --border: 215 27.9% 16.9%;
-    --input: 215 27.9% 16.9%;
-    --ring: 216 12.2% 83.9%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border;
   }
   body {
     @apply bg-background text-foreground;

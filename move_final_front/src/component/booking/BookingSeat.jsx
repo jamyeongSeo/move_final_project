@@ -158,18 +158,14 @@ const BookingSeat = () => {
                   </div>
                 </div>
                 <div className="show-seat-box">
-                  <div className="show-selected-group">
-                    <div className="show-selected-seat"></div>
-                    <div className="show-selected-seat"></div>
-                  </div>
-                  <div className="show-selected-group">
-                    <div className="show-selected-seat"></div>
-                    <div className="show-selected-seat"></div>
-                  </div>
-                  <div className="show-selected-group">
-                    <div className="show-selected-seat"></div>
-                    <div className="show-selected-seat"></div>
-                  </div>
+                  {selectSeat.map((item, index) => {
+                    return (
+                      <div className="show-selected-group">
+                        <div className="show-selected-seat"></div>
+                        <div className="show-selected-seat"></div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
 
@@ -177,9 +173,6 @@ const BookingSeat = () => {
                 <button className="pay-btn">결제하기</button>
               </div>
             </section>
-          </div>
-          <div className="exit-box">
-            <ExitToAppIcon />
           </div>
         </div>
       </div>
