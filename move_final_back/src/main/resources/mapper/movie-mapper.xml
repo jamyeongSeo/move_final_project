@@ -86,7 +86,7 @@
     			join movie_tbl m on (m.movie_no = s.movie_no)
     			left join book_tbl b on (b.schedule_no = s.schedule_no)
     			where (sysdate+#{dateSchedule} between s.schedule_open and s.schedule_close) and
-    			((to_number(to_char(sysdate,'mm'))*43200)+(to_number(to_char(sysdate,'dd'))*1440)+(to_number(to_char(sysdate+1,'hh24'))*60)+(to_number(to_char(sysdate+1,'mi')))) <= 
+    			((to_number(to_char(sysdate,'mm'))*43200)+(to_number(to_char(sysdate,'dd'))*1440)+(to_number(to_char(sysdate+#{dateSchedule},'hh24'))*60)+(to_number(to_char(sysdate+#{dateSchedule},'mi')))) <= 
     				((to_number(to_char(sysdate+#{dateSchedule},'mm'))*43200)+(to_number(to_char(sysdate+#{dateSchedule},'dd'))*1440)+(to_number(to_char(s.schedule_time_start,'hh24'))*60)+(to_number(to_char(s.schedule_time_start,'mi'))))
     			) sh1
 			left join (select b.booking_date, sss.schedule_no, gallery_seat 
@@ -95,7 +95,9 @@
             			from book_seat_tbl bs
             			left join book_tbl b on (b.book_no = bs.book_no)
             right join schedule_tbl s on (s.schedule_no = b.schedule_no)
+            where b.booking_date = sysdate+#{dateSchedule}
             group by s.schedule_no) sss on (sss.schedule_no = b.schedule_no)) sh2 on (sh1.booking_date = sh2.booking_date)
+            order by sh1.schedule_time_start
 	  ]]>
   </select>
   <!-- Mian  끝-->

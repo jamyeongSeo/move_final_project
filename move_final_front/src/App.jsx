@@ -102,9 +102,15 @@ function App() {
               <Route path="/admin/main" element={<AdminMain />}>
                 <Route path="movie/list" element={<AdminList />} />
                 <Route path="movie/regist" element={<AdminRegist />} />
-                <Route path="schedule/list" element={<AdminScheduleList />}/>
-                <Route path="schedule/regist" element={<AdminScheduleRegist />} />
-                <Route path="schedule/edit/:scheduleNo" element={<AdminScheduleEdit />} />
+                <Route path="schedule/list" element={<AdminScheduleList />} />
+                <Route
+                  path="schedule/regist"
+                  element={<AdminScheduleRegist />}
+                />
+                <Route
+                  path="schedule/edit/:scheduleNo"
+                  element={<AdminScheduleEdit />}
+                />
               </Route>
 
               <Route path="/member/join" element={<Join></Join>} />
@@ -131,7 +137,7 @@ function App() {
                 element={<BookingMovieList></BookingMovieList>}
               />
               <Route
-                path="/membewr/noMemberInfo"
+                path="/member/noMemberInfo"
                 element={<NoMemberInfo></NoMemberInfo>}
               />
             </Routes>
