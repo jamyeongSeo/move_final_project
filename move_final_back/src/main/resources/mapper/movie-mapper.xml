@@ -49,6 +49,7 @@
   
   <!-- 추후 매진 관객 확인 시 결제 상태 컬럼 where로 확인 필요 -->
   <select id="selectSchedule" resultType="movieSchedule">
+  <![CDATA[
   	select 
     	sh1.movie_no,---
     	sh1.movie_title,--
@@ -84,7 +85,9 @@
     			join screen_tbl scr on (scr.screen_no = st.screen_no)
     			join movie_tbl m on (m.movie_no = s.movie_no)
     			left join book_tbl b on (b.schedule_no = s.schedule_no)
-    			where sysdate+#{dateSchedule} between s.schedule_open and s.schedule_close 
+    			where (sysdate+#{dateSchedule} between s.schedule_open and s.schedule_close) and
+    			((to_number(to_char(sysdate,'mm'))*43200)+(to_number(to_char(sysdate,'dd'))*1440)+(to_number(to_char(sysdate+#{dateSchedule},'hh24'))*60)+(to_number(to_char(sysdate+#{dateSchedule},'mi')))) <= 
+    				((to_number(to_char(sysdate+#{dateSchedule},'mm'))*43200)+(to_number(to_char(sysdate+#{dateSchedule},'dd'))*1440)+(to_number(to_char(s.schedule_time_start,'hh24'))*60)+(to_number(to_char(s.schedule_time_start,'mi'))))
     			) sh1
 			left join (select b.booking_date, sss.schedule_no, gallery_seat 
             			from book_tbl b
@@ -92,7 +95,10 @@
             			from book_seat_tbl bs
             			left join book_tbl b on (b.book_no = bs.book_no)
             right join schedule_tbl s on (s.schedule_no = b.schedule_no)
+            where b.booking_date = sysdate+#{dateSchedule}
             group by s.schedule_no) sss on (sss.schedule_no = b.schedule_no)) sh2 on (sh1.booking_date = sh2.booking_date)
+            order by sh1.schedule_time_start
+	  ]]>
   </select>
   <!-- Mian  끝-->
 </mapper>
