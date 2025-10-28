@@ -6,12 +6,14 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { isLoginState, loginIdState } from "../utils/RecoilData";
 import { red } from "@mui/material/colors";
+import { Link, useNavigate } from "react-router-dom";
 
 const MovieList = () => {
   const isLogin = useRecoilValue(isLoginState);
   const [memberId, setMemberId] = useRecoilState(loginIdState);
   const [movieAllList, setMovieAllList] = useState([]);
   const [likeCount, setLikeCount] = useState(0);
+
   useEffect(() => {
     axios
       .get(
@@ -58,6 +60,7 @@ const MovieList = () => {
 };
 
 const MovieItem = (props) => {
+  const navigate = useNavigate();
   const viewContent = () => {
     setHoverText(2);
   };
@@ -80,6 +83,9 @@ const MovieItem = (props) => {
         className="movie-poster"
         onMouseOver={viewContent}
         onMouseOut={hideContent}
+        onClick={() => {
+          navigate(`/movie/detail/${movie.movieNo}`);
+        }}
       >
         <img
           src={movie.movieThumb}

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.co.iei.cs.faq.model.dao.FAQDao">
+	<select id="selectAllFaqCount" resultType="int">
+		select count(*) from faq_tbl
+	</select>
+	<select id="selectSearchedFaqCount" resultType="int">
+		select count(*) from faq_tbl where faq_question like '%'||#{faqQuestion}||'%'
+	</select>
+	<select id="selectAllFaqList" resultType="faq">
+		select * from 
+			(select rownum as rnum, f.*
+				from 
+					(select * 
+						from faq_tbl order by 1 desc)f)
+		where rnum between #{start} and #{end}
+	</select>
+	<select id="selectSearchedFaqList" resultType="faq">
+		select * from
+			(select rownum as rnum, f.*
+				from 
+					(select * 
+						from faq_tbl 
+						where faq_question like '%'||#{faqQuestion}||'%'
+						order by 1 desc)f)
+		where rnum between #{start} and #{end}
+	</select>
+	<select id="getFaqNo" resultType="int">
+		select faq_seq.nextval from dual
+	</select>
+	<insert id="insertFAQ">
+		insert into faq_tbl values(faq_seq.nextval, #{faqQuestion}, #{faqAnswer})
+	</insert>
+	<delete id="deleteFAQ">
+		delete from faq_tbl where faq_no= #{faqNo}
+	</delete>
+</mapper>

@@ -32,6 +32,7 @@ import BookingSeat from "./component/booking/BookingSeat";
 import AdminScheduleList from "./component/admin/AdminScheduleList";
 import AdminScheduleEdit from "./component/admin/AdminScheduleEdit";
 import PayPage from "./component/booking/PayPage";
+import MovieDetail from "./component/movie/MovieDetail";
 
 function App() {
   const [memberId, setMemberId] = useRecoilState(loginIdState);
@@ -91,7 +92,13 @@ function App() {
       ) : (
         <div className="wrap">
           <Header />
-          <main className="content">
+          <main
+            className={
+              location.pathname.startsWith("/movie/detail")
+                ? "content movie-detail-content"
+                : "content"
+            }
+          >
             <Routes>
               <Route path="/" element={<Main />} />
               <Route path="/cs/*" element={<CSMain />} />
@@ -131,6 +138,7 @@ function App() {
                 element={<MemberDelete></MemberDelete>}
               ></Route>
               <Route path="/movie/list" element={<MovieList />} />
+              <Route path="/movie/detail/:movieNo" element={<MovieDetail />} />
               <Route
                 path="/member/watchedMovieList"
                 element={<WatchedMovieList></WatchedMovieList>}

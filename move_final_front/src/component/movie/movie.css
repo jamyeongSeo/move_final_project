@@ -141,3 +141,51 @@
   border-radius: 5px;
   font-family: ns-b;
 }
+.movie-detail-content {
+  max-width: 100%;
+  margin: 0;
+}
+.movie-detail-section {
+  display: flex;
+  background-color: var(--gray5);
+  justify-content: center;
+}
+.movie-detail-title-info-wrap {
+  width: 1080px;
+  display: flex;
+  justify-content: space-around;
+}
+/*영화 제목*/
+.movie-detail-title-name {
+  font-family: "ns-black";
+  font-size: 32px;
+  margin: 24px 0;
+}
+
+.movie-middle-info-wrap {
+  display: flex;
+  gap: 24px;
+  margin: 48px 0 24px 0;
+}
+.movie-middle-info-wrap div {
+  font-family: ns-b;
+}
+.movie-explain {
+  margin-bottom: 24px;
+  height: 100px;
+}
+.movie-detail-title-runtime {
+  font-family: ns-b;
+}
+.movie-detail-thumb {
+  width: 200px;
+  height: 240px;
+}
+.title-movie-thumb-wrap {
+  padding: 24px 0;
+}
+.thumb-btn-zone {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 24px;
+}
