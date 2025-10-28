@@ -9,9 +9,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@Alias("coupon")
+@Alias(value="coupon")
 public class CouponDTO {
 	private int couponNo;
+	private int memberNo;
 	private String couponName;
 	private int couponDisscount;
 	private int couponValidDate;

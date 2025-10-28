@@ -17,8 +17,7 @@ const AdminSideMenu = ({ menus, subMenus }) => {
 
   return (
     <aside className="admin-side-menu">
-   
-        <Link to="/admin/main" className="side-title">
+        <Link to="/admin/main" className="admin-side-title">
         <div>관리자 페이지</div>
         </Link>        
 
@@ -54,7 +53,6 @@ const AdminSideMenu = ({ menus, subMenus }) => {
           </ul>
         </div>
       ))}
-      
     </aside>
   );
 };

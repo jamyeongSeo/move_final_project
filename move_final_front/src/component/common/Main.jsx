@@ -299,15 +299,11 @@ const MainMovieSchedul = () => {
     },
   ]);
 
-  // console.log(dateCss);
-
   const movieTimeBtn = useRef();
   const [movieTimeShow, setMovieTimeShow] = useState(true);
   //기본 세팅값
   //movieTimeBtn.current.innerText.add = "-";
-
   const [dateSchedule, setDateSchedule] = useState(0);
-
   //스케줄 가져오기
   const [schedul, setSchedule] = useState([]);
   const backServer = import.meta.env.VITE_BACK_SERVER;
@@ -321,8 +317,7 @@ const MainMovieSchedul = () => {
         console.log(err.data);
       });
   }, [dateSchedule]);
-  console.log(schedul);
-  console.log(dateSchedule);
+
   return (
     <div>
       <div className="main-schedule-day-wrap">
@@ -377,111 +372,132 @@ const MainMovieSchedul = () => {
       <div className="main-schedul-movie-list">
         {schedul &&
           schedul.map((schedul, index) => {
-            //단위기간 날짜 확인 위해 타입 변경
-            const scheduleOpenString = schedul.scheduleOpen;
+            /*단위기간 날짜 확인 위해 타입 변경 ---백 쿼리에서 확인 해줌 
+            const scheduleOpenString = schedul.schedules.scheduleOpen;
             const scheduleOpenDate = new Date(scheduleOpenString);
-            const scheduleCloseString = schedul.scheduleClose;
+            const scheduleCloseString = schedul.schedules.scheduleClose;
             const scheduleCloseDate = new Date(scheduleCloseString);
-            //상영시작시간 시,분 만 나오도록
-            const scheduleTimeStartDate = new Date(schedul.scheduleTimeStart);
-            const scheduleTimeStartHours = scheduleTimeStartDate.getHours();
-            const scheduleTimeStarMinutes = scheduleTimeStartDate.getMinutes();
-            const scheduleTimeStart =
-              ("0" + scheduleTimeStartHours).slice(-2) +
-              ":" +
-              ("0" + scheduleTimeStarMinutes).slice(-2);
-            //지난 시간 스케줄 화면 삭제 확인용(일,시,분 => 분으로 환산 예정(하루=1440분))
-            const todayScheduleTime =
-              scheduleTimeStartHours * 60 + scheduleTimeStarMinutes;
-            const nowTime = today.getHours() * 60 + today.getMinutes();
-
+            */
             return (
               <div key={"main-schedul-movie" + index}>
-                {scheduleOpenDate <= dateSchedule <= scheduleCloseDate ? (
-                  <div className="main-schedul-movie-box">
-                    <div className="main-schedul-movie-title-wrap">
-                      <div>
-                        <div className="main-schedul-movie-age">
-                          <img
-                            src={
-                              schedul.movieGrade == 1
-                                ? "/image/ALL.png"
-                                : schedul.movieGrade == 2
-                                ? "/image/12.png"
-                                : schedul.movieGrade == 3
-                                ? "/image/15.png"
-                                : "/image/19.png"
-                            }
-                            className="grade-img"
-                          />
-                        </div>
-
-                        <div className="main-schedul-movie-title">
-                          <h3>{schedul.movieTitle}</h3>
-                        </div>
-                      </div>
-                      <div
-                        ref={movieTimeBtn}
-                        className="main-schedul-movie-show"
-                        style={{ float: "right" }}
-                        onClick={() => {
-                          if (movieTimeShow) {
-                            movieTimeBtn.current.innerText = "+";
-                            setMovieTimeShow(false);
-                          } else {
-                            movieTimeBtn.current.innerText = "ㅡ";
-                            setMovieTimeShow(true);
+                <div className="main-schedul-movie-box">
+                  <div className="main-schedul-movie-title-wrap">
+                    <div>
+                      <div className="main-schedul-movie-age">
+                        <img
+                          src={
+                            schedul.movieGrade == 1
+                              ? "/image/ALL.png"
+                              : schedul.movieGrade == 2
+                              ? "/image/12.png"
+                              : schedul.movieGrade == 3
+                              ? "/image/15.png"
+                              : "/image/19.png"
                           }
-                        }}
-                      >
-                        ㅡ
+                          className="grade-img"
+                        />
+                      </div>
+
+                      <div className="main-schedul-movie-title">
+                        <h3>{schedul.movieTitle}</h3>
                       </div>
                     </div>
-                    {!movieTimeShow ? (
-                      <></>
-                    ) : (
-                      <div className="main-schedul-movie-time-wrap">
-                        <div className="main-schedul-movie-time-type-wrap">
-                          <div className="main-schedul-movie-time-type">
-                            {schedul.screenName}(
-                            {schedul.movieType == 1
-                              ? "2D"
-                              : schedul.movieType == 2
-                              ? "3D"
-                              : schedul.movieType == 3 && "4DX"}
-                            )
-                          </div>
-                          {todayScheduleTime > nowTime ? (
-                            <div className="main-schedul-movie-time-box-wrap">
-                              <div className="main-schedul-movie-time-box">
-                                <div className="main-schedul-movie-time-content">
-                                  {scheduleTimeStart}
-                                </div>
-                                <div className="main-schedul-movie-time-seat">
-                                  <span style={{ color: "var(--main10)" }}>
-                                    {schedul.seatTotal - schedul.gallerySeat}
-                                  </span>
-                                  <span>/</span>
-                                  <span>{schedul.seatTotal}</span>
+                    <div
+                      ref={movieTimeBtn}
+                      className="main-schedul-movie-show"
+                      style={{ float: "right" }}
+                      onClick={() => {
+                        if (movieTimeShow) {
+                          movieTimeBtn.current.innerText = "+";
+                          setMovieTimeShow(false);
+                        } else {
+                          movieTimeBtn.current.innerText = "ㅡ";
+                          setMovieTimeShow(true);
+                        }
+                      }}
+                    >
+                      ㅡ
+                    </div>
+                  </div>
+                  {!movieTimeShow ? (
+                    <></>
+                  ) : (
+                    <>
+                      {Object.entries(schedul.schedules).map(
+                        //Object.entries : (리스트)객체를 object타입으로 바꿔서 map 돌림
+                        ([g, timeList]) => {
+                          return (
+                            <div key={index + g + timeList}>
+                              <div className="main-schedul-movie-time-wrap">
+                                <div className="main-schedul-movie-time-type-wrap">
+                                  <div className="main-schedul-movie-time-type">
+                                    {g}(
+                                    {g == "1관"
+                                      ? "2D"
+                                      : g == "2관"
+                                      ? "3D"
+                                      : g == "3관" && "4DX"}
+                                    )
+                                  </div>
+                                  <div className="main-schedul-movie-time-box-wrap">
+                                    {timeList.map((s, i) => {
+                                      //상영시작시간 시,분 만 나오도록
+                                      console.log(s);
+                                      const scheduleTimeStartDate = new Date(
+                                        s.scheduleTimeStart
+                                      );
+                                      const scheduleTimeStartHours =
+                                        scheduleTimeStartDate.getHours();
+                                      const scheduleTimeStarMinutes =
+                                        scheduleTimeStartDate.getMinutes();
+                                      const scheduleTimeStart =
+                                        ("0" + scheduleTimeStartHours).slice(
+                                          -2
+                                        ) +
+                                        ":" +
+                                        ("0" + scheduleTimeStarMinutes).slice(
+                                          -2
+                                        );
+                                      //지난 시간 스케줄 화면 삭제 확인용(일,시,분 => 분으로 환산 예정(하루=1440분))-------백 쿼리에서 확인 함
+                                      //const todayScheduleTime =
+                                      //scheduleTimeStartHours * 60 + scheduleTimeStarMinutes;
+                                      //const nowTime = today.getHours() * 60 + today.getMinutes();
+                                      //console.log(schedul.movieGrade);
+
+                                      return (
+                                        <div key={index - i}>
+                                          <div className="main-schedul-movie-time-box">
+                                            <div className="main-schedul-movie-time-content">
+                                              {scheduleTimeStart}
+                                            </div>
+                                            <div className="main-schedul-movie-time-seat">
+                                              <span
+                                                style={{
+                                                  color: "var(--main10)",
+                                                }}
+                                              >
+                                                {s.seatTotal - s.gallerySeat}
+                                              </span>
+                                              <span>/</span>
+                                              <span>{s.seatTotal}</span>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      );
+                                    })}
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          ) : (
-                            <></>
-                          )}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <></>
-                )}
+                          );
+                        }
+                      )}
+                    </>
+                  )}
+                </div>
               </div>
             );
           })}
-        {/*위 맵 돌리면 아래 동일 구간 삭제 예정 */}
-
-        {/*위 맵 돌리면 삭제할 동일 구간 끝!*/}
         <hr></hr>
       </div>
     </div>

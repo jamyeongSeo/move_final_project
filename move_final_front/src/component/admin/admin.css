@@ -18,46 +18,60 @@ body {
 
 /*사이드 메뉴 */
 .admin-side-menu {
+  float: left;
+  width: 210px;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 210px;
-  min-height: 100vh;
-  float: left;
-  padding-right: 60px;
+  padding: 20px 0 0 0;
 }
 
-.side-title {
+
+.admin-side-title {
   width: 210px;
   height: 52px;
   background-color: #444;
+  color: #fff;
+  font-size: 24px;
+  font-weight: 700;
   line-height: 52px;
   text-align: center;
   border-radius: 8px;
   margin-bottom: 20px;
 }
 
-.side-title > div {
+.admin-side-title > div {
   color: #fff;
   font-size: 24px;
   font-weight: 700;
 }
 
-/*메인 래퍼 */
-.admin-main-wrap {
-  display: flex;
-  flex-direction: column;
+
+
+.admin-list-wrap {
+  display: block;
+  width: 100%;
+  overflow: hidden; 
+}
+
+.admin-main-content {
+  margin-left: 270px; /* ← 사이드메뉴 + 여백 */
+  width: calc(100% - 270px);
+  background-color: #fff;
   min-height: 100vh;
+  padding: 40px;
+  box-sizing: border-box;
+  overflow-x: visible;
 }
 
 .admin-content-box {
-  width: 100%;
-  max-width: 1080px;
-  margin: 30px auto;
-  flex: 1;
-  text-align: center;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 25px 30px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  box-sizing: border-box;
 }
-
 /* 검색 영역 */
 .admin-input-search-wrap {
   display: flex;
@@ -94,10 +108,10 @@ body {
 }
 
 /*제목 영역 */
-.admin-content-title,
+
 .regist-movie,
-.admin-schedule-regist-title, 
-.admin-schedule-list-title{
+.admin-schedule-regist-title,
+.admin-schedule-list-title {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -109,8 +123,15 @@ body {
   font-weight: 700;
 }
 
-/*AdminList*/
-/* 검색 & 필터 */
+.admin-content-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #222;
+  border-bottom: 2px solid #666;
+  margin-bottom: 25px;
+  padding-bottom: 8px;
+}
+/* AdminList*/
 .admin-search-filter-wrap {
   display: flex;
   justify-content: space-between;
@@ -120,36 +141,35 @@ body {
   border-bottom: 1px solid #eee;
 }
 
-/* 탭 버튼 */
+/* 영화 상태 탭 버튼 크기 보정 */
 .admin-status-tabs {
   display: flex;
   gap: 10px;
+  flex-wrap: wrap; /* 화면 줄어들면 자동 줄바꿈 */
+  margin-bottom: 20px;
 }
-
 .status-tab {
   background-color: #f7f7f7;
   border: 1px solid #ddd;
   border-radius: 8px;
-  padding: 8px 16px;
-  font-size: 15px;
+  padding: 8px 14px;
+  font-size: 14px;
   font-weight: 500;
   color: #333;
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition: 0.2s;
+  white-space: nowrap;
 }
 
 .status-tab:hover {
   background-color: #eee;
-  transform: translateY(-1px);
 }
 
 .status-tab.active {
   background-color: #444;
   color: #fff;
   border-color: #444;
-  font-weight: 600;
 }
-
 /* 검색창 */
 .admin-search-item {
   display: flex;
@@ -165,12 +185,6 @@ body {
   font-size: 14px;
 }
 
-.admin-search-item input:focus {
-  outline: none;
-  border-color: #444;
-  box-shadow: 0 0 0 2px rgba(68, 68, 68, 0.15);
-}
-
 .admin-search-btn {
   background-color: #444;
   color: #fff;
@@ -180,47 +194,28 @@ body {
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: 0.2s;
 }
-
 .admin-search-btn:hover {
   background-color: #222;
-  transform: translateY(-1px);
 }
 
-/* ============================
-   테이블 스타일 (수정됨)
-============================ */
-.admin-content-box {
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  padding: 20px;
-  margin-bottom: 30px;
-}
-
+/*테이블 스타일*/
 .admin-content-tbl {
   width: 100%;
   border-collapse: collapse;
-  font-size: 15px;
-  color: #333;
-  border-radius: 8px;
+  border-radius: 10px;
   overflow: hidden;
-  table-layout: fixed; /* ✅ 셀 고정폭 */
+  font-size: 15px;
 }
 
 .admin-content-tbl th,
 .admin-content-tbl td {
   padding: 14px 12px;
-  text-align: center;
-  vertical-align: middle;
   border-bottom: 1px solid #eee;
-  white-space: nowrap; /* ✅ 줄바꿈 방지 */
-  overflow: hidden; /* ✅ 넘치는 텍스트 숨김 */
-  text-overflow: ellipsis; /* ✅ ... 표시 */
+  text-align: center;
 }
 
-/* ✅ 각 열 고정 폭 */
 .admin-content-tbl th:nth-child(1),
 .admin-content-tbl td:nth-child(1) {
   width: 10%;
@@ -242,7 +237,6 @@ body {
   width: 20%;
 }
 
-/* 제목 링크 */
 .admin-movie-info-update {
   color: #444;
   text-decoration: none;
@@ -254,14 +248,11 @@ body {
   color: #007bff;
 }
 
-/* 행 hover */
 .admin-content-tbl tbody tr:hover {
   background-color: #f9f9f9;
 }
 
-/* ============================
-   상태 컬러 배지 스타일
-============================ */
+/* 상태 배지 */
 .status-badge {
   display: inline-block;
   padding: 4px 10px;
@@ -270,17 +261,44 @@ body {
   font-weight: 600;
   color: white;
   min-width: 80px;
+  text-align: center;
+}
+.status-1 {
+  background-color: #f59e0b;
+}
+.status-2 {
+  background-color: #10b981;
+}
+.status-3 {
+  background-color: #9ca3af;
+}
+.status-4 {
+  background-color: #3b82f6;
 }
 
-/* 상태별 색상 */
-.status-1 { background-color: #f59e0b; } /* 개봉예정 */
-.status-2 { background-color: #10b981; } /* 상영중 */
-.status-3 { background-color: #9ca3af; } /* 상영종료 */
-.status-4 { background-color: #3b82f6; } /* 재개봉 */
+/*AdminRegistFrm*/
+.admin-regist-info-wrap{
+  border-collapse: collapse;
+  justify-content: space-between;
+  align-items: center;
+}
+.admin-regist-info-wrap> div {
+  display: flex;
+  justify-content: center; 
+}
+/* .admin-regist-info-tbl{
+  display: flex;
+  justify-content: center; 
+} */
+/* .admin-regist-info-tbl > th, td{
+  padding-top: 45px;
+} */
+
+
 
 /*AdminScheduleList*/
 .admin-schedule-list-tbl > thead {
-  display: block;
+  display: block; /*요소가 한 줄 전체 차지, 자동으로 위아래 줄바꿈*/
   margin-bottom: 25px;
   background-color: #666;
   margin-top: 20px;
@@ -297,11 +315,251 @@ body {
   align-items: center;
   margin-top: 20px;
   border-radius: 12px;
-  box-shadow:  0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
+
 .admin-schedule-list-tbl > tbody > td {
   text-align: center;
 }
+
+/* AdminScheduleRegist*/
+
+.admin-schedule-regist-wrap {
+  display: inline-block;
+  vertical-align: top;
+  width: calc(100% - 280px); 
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 30px;
+  background-color: #fafafa;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
+  position: relative;
+  z-index: 1;
+}
+
+.admin-schedule-regist-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #333;
+  text-align: left;
+}
+
+.admin-schedule-regist-frm {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.admin-schedule-input {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.admin-schedule-input label {
+  font-weight: 600;
+  font-size: 15px;
+  color: #444;
+}
+
+.admin-schedule-table-wrap {
+  width: 100%;
+  overflow-x: auto; /*테이블만 스크롤 가능*/
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.admin-schedule-btn-zone {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  padding-right: 10px;
+}
+
+.admin-schedule-btn {
+  background-color: #c0392b;
+  color: white;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+
+.admin-schedule-btn:hover {
+  background-color: #a93226;
+  transform: translateY(-1px);
+}
+
+.admin-schedule-input select,
+.admin-schedule-input input {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: #fff;
+}
+
+.admin-time-select-wrap {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.admin-time-select-wrap select {
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid #bbb;
+}
+
+.admin-schedule-btn-zone {
+  display: flex;
+  justify-content: center;  /* ← 가운데 정렬 */
+  align-items: center;
+  margin-top: 20px;
+  padding: 0;               /* 오른쪽 패딩 제거 */
+}
+
+
+.admin-btn-red {
+  background-color: #c0392b;
+  color: white;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.admin-btn-red:hover {
+  background-color: #a93226;
+}
+
+
+/*AdminScheduleTable*/
+.admin-schedule-table {
+  width: 100%;
+  max-width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  margin-bottom: 30px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  table-layout: fixed;
+  overflow-x: auto;
+}
+
+.admin-schedule-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  justify-content: flex-start;
+  align-items: stretch;
+  
+  width: 100%;
+  padding: 30px;
+  background-color: #fafafa;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+.admin-schedule-table {
+  width: 100%;
+  min-width: 950px;
+  border-collapse: collapse;
+  text-align: center;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  table-layout: fixed;
+}
+.admin-schedule-table th,
+.admin-schedule-table td {
+  padding: 8px 6px;
+  border: 1px solid #ddd;
+  font-size: 13px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.admin-schedule-table .occupied {
+  background-color: #f87171;
+  color: white;
+  cursor: not-allowed;
+}
+.admin-schedule-table .available {
+  background-color: #e5e7eb;
+  cursor: pointer;
+}
+.admin-schedule-table .available:hover {
+  background-color: #86efac;
+}
+
+/*AdminScheduleList*/
+.admin-schedule-timetable-container {
+  margin-top: 20px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow-x: auto; 
+  padding: 20px;
+}
+
+.admin-schedule-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 230px;
+  width: calc(100% - 260px);
+}
+
+.date-picker label {
+  font-weight: 600;
+  margin-right: 10px;
+}
+
+/* 상영관 컬러 테마 */
+.screen-1 {
+  background-color: #fde68a; /* 노랑: 2D */
+  color: #222;
+}
+
+.screen-2 {
+  background-color: #93c5fd; /* 파랑: 3D */
+  color: #fff;
+}
+
+.screen-3 {
+  background-color: #fca5a5; /* 빨강: 4DX */
+  color: #fff;
+}
+
+/* 타임테이블 색상 구분 */
+.admin-schedule-table .occupied.screen-1 {
+  background-color: #facc15;
+}
+.admin-schedule-table .occupied.screen-2 {
+  background-color: #3b82f6;
+}
+.admin-schedule-table .occupied.screen-3 {
+  background-color: #ef4444;
+}
+
 
 /* Tailwind 기본 테마 변수 */
 @layer base {
@@ -327,9 +585,11 @@ body {
     --ring: 224 71.4% 4.1%;
     --radius: 0.5rem;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+
   h1,
   h2,
   h3 {

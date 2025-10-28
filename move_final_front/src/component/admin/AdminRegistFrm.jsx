@@ -37,8 +37,8 @@ const AdminRegistFrm = (props) => {
   };
 
   return (
-    <div className="regist-info-wrap">
-      <div className="regist-thumb-wrap">
+    <div className="admin-regist-info-wrap">
+      <div className="admin-regist-thumb-wrap">
         <img
           src={
             showThumb
@@ -49,7 +49,7 @@ const AdminRegistFrm = (props) => {
           }
           onClick={() => thumbRef.current.click()}
           alt="영화 포스터"
-          className="regist-thumb-img-preview"
+          className="admin-regist-thumb-img-preview"
         />
 
         <input
@@ -60,13 +60,13 @@ const AdminRegistFrm = (props) => {
           onChange={changeThumb}
         />
 
-        <div className="regist-thumb-label">포스터 등록</div>
+        <div className="admin-regist-thumb-label">포스터 등록</div>
       </div>
 
-      <table className="regist-info-tbl">
+      <table className="admin-regist-info-tbl">
         <tbody>
           <tr>
-            <th><label htmlFor="regist-title">영화 제목</label></th>
+            <th><label htmlFor="admin-regist-title">영화 제목</label></th>
             <td>
               <div className="admin-regist-input">
                 <input
@@ -80,7 +80,7 @@ const AdminRegistFrm = (props) => {
           </tr>
 
           <tr>
-            <th><label htmlFor="regist-status">상영 상태</label></th>
+            <th><label htmlFor="admin-regist-status">상영 상태</label></th>
             <td>
               <Select
                 value={movieStatus}
@@ -94,7 +94,7 @@ const AdminRegistFrm = (props) => {
           </tr>
 
           <tr>
-            <th><label htmlFor="regist-type">관</label></th>
+            <th><label htmlFor="admin-regist-type">관</label></th>
             <td>
               <Select
                 value={movieType}
@@ -109,7 +109,7 @@ const AdminRegistFrm = (props) => {
           </tr>
 
           <tr>
-            <th><label htmlFor="regist-genre">영화 장르</label></th>
+            <th><label htmlFor="admin-regist-genre">영화 장르</label></th>
             <td>
               <Select
                 value={movieGenre}
@@ -129,7 +129,7 @@ const AdminRegistFrm = (props) => {
           </tr>
 
           <tr>
-            <th><label htmlFor="regist-grade">관람 등급</label></th>
+            <th><label htmlFor="admin-regist-grade">관람 등급</label></th>
             <td>
               <Select
                 value={movieGrade}
@@ -145,7 +145,7 @@ const AdminRegistFrm = (props) => {
           </tr>
 
           <tr>
-            <th><label htmlFor="regist-movie-runtime">러닝타임</label></th>
+            <th><label htmlFor="admin-regist-movie-runtime">러닝타임</label></th>
             <td>
               <div className="admin-regist-input">
                 <select
@@ -174,7 +174,7 @@ const AdminRegistFrm = (props) => {
           </tr>
 
           <tr>
-            <th><label htmlFor="regist-director">감독명</label></th>
+            <th><label htmlFor="admin-regist-director">감독명</label></th>
             <td>
               <div className="admin-regist-input">
                 <input
@@ -188,7 +188,7 @@ const AdminRegistFrm = (props) => {
           </tr>
 
           <tr>
-            <th><label htmlFor="regist-actor">출연진</label></th>
+            <th><label htmlFor="admin-regist-actor">출연진</label></th>
             <td>
               <div className="admin-regist-input">
                 <input
@@ -202,7 +202,7 @@ const AdminRegistFrm = (props) => {
           </tr>
 
           <tr>
-            <th><label htmlFor="regist-movie-release">개봉일</label></th>
+            <th><label htmlFor="admin-regist-movie-release">개봉일</label></th>
             <td>
               <div className="admin-regist-input">
                 <input
@@ -216,7 +216,7 @@ const AdminRegistFrm = (props) => {
           </tr>
 
           <tr>
-            <th><label htmlFor="regist-content">영화 소개글</label></th>
+            <th><label htmlFor="admin-regist-content">영화 소개글</label></th>
             <td>
               <div className="admin-input-movieContent-box">
                 <input

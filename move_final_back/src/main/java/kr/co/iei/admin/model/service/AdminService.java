@@ -1,5 +1,7 @@
 package kr.co.iei.admin.model.service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.iei.admin.model.dao.AdminDao;
 import kr.co.iei.admin.model.dto.ScheduleDTO;
+import kr.co.iei.member.model.dto.MemberDTO;
 import kr.co.iei.movie.model.dto.MovieDTO;
 import kr.co.iei.utils.PageInfoUtils;
 import kr.co.iei.utils.PageInfo;
@@ -22,7 +25,7 @@ public class AdminService {
     @Autowired
     private PageInfoUtils pageInfoUtil;
 
-    // 영화 목록 (검색어 + 상태 필터)
+    /* 영화 목록 */
     public Map<String, Object> adminMovieList(int reqPage, String movieTitle, Integer movieStatus) {
         Map<String, Object> param = new HashMap<>();
         param.put("movieTitle", movieTitle);
@@ -37,37 +40,11 @@ public class AdminService {
         return map;
     }
 
-    // (선택) 영화 제목 검색용 유틸이 필요하면 아래처럼 Map 기반으로 변경해서 사용
-    public Map<String, Object> searchTitleList(String titleKeyword, int reqPage) {
-        Map<String, Object> param = new HashMap<>();
-        param.put("movieTitle", titleKeyword);
-        param.put("movieStatus", null);
-
-        int totalCount = adminDao.totalCount(param);
-        // 페이징 처리 필요하면 PageInfoUtils 사용하여 PageInfo 생성 후 dao에 전달
-        PageInfo pi = pageInfoUtil.getPageInfo(reqPage, 16, 5, totalCount);
-        // 만약 DAO 쪽에 페이징을 반영한 별도 메서드가 있다면 그걸 호출
-        List<MovieDTO> list = adminDao.getMovieTitle(pi);
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("movieList", list);
-        map.put("pi", pi);
-        return map;
-    }
-
     @Transactional
     public int insertMovieInfo(MovieDTO movie) {
         int movieNo = adminDao.getMovieNo();
         movie.setMovieNo(movieNo);
-        int result = adminDao.insertMovieInfo(movie);
-        return result;
-    }
-
-    public int insertMovieInfo(MovieDTO movie, MultipartFile movieThumbImg) {
-        int movieNo = adminDao.getMovieNo();
-        movie.setMovieNo(movieNo);
-        int result = adminDao.insertMovieInfo(movie);
-        return result;
+        return adminDao.insertMovieInfo(movie);
     }
 
     public MovieDTO selectOneMovie(int movieNo) {
@@ -78,11 +55,23 @@ public class AdminService {
         return adminDao.updateMovieStatus(movieNo, movieStatus);
     }
 
-    public ScheduleDTO insertSchedule(ScheduleDTO schedule) {
-        int result = adminDao.insertSchedule(schedule);
-        if (result > 0) return schedule;
-        return null;
+    public boolean isTimeConflict(ScheduleDTO schedule) {
+        int count = adminDao.checkTimeConflict(schedule);
+        return count > 0;
     }
+
+    @Transactional
+    public ScheduleDTO insertSchedule(ScheduleDTO schedule) {
+        if (isTimeConflict(schedule)) {
+            System.out.println("상영 시간 중복 감지");
+            return null;
+        }
+
+        int result = adminDao.insertSchedule(schedule);
+        return result > 0 ? schedule : null;
+    }
+
+
 
     public List<MovieDTO> getRunningMovies() {
         return adminDao.getRunningMovies();
@@ -100,4 +89,21 @@ public class AdminService {
         return adminDao.deleteSchedule(scheduleNo);
     }
 
+    /*등록된 스케줄 시간 조회 */
+    public List<Map<String, String>> getOccupiedTimes(int screenNo, String scheduleOpen) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("screenNo", screenNo);
+        param.put("scheduleOpen", scheduleOpen);
+        return adminDao.getOccupiedTimes(param);
+    }
+    /*등록된 스케줄 날짜 조회*/
+	public List<ScheduleDTO> getWeeklySchedule(String startDate) {
+		  Map<String, Object> param = new HashMap<>();
+		    param.put("startDate", startDate);
+		    return adminDao.getWeeklySchedule(param);
+		}
+
+	public List<MemberDTO> memberList() {
+		return adminDao.memberList();
+	}
 }

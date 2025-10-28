@@ -6,15 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Alias(value="booking")
-public class BookingDTO {
-	private int bookNo;
-	private int priceNo;
+@Alias(value="price")
+public class PriceDTO {
+	private int price;
+	private int movieType;
 	private int pricePerAge;
-	private int memberNo;
-	private int screenNo;
+	private int seatType;
 }
