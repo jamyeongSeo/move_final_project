@@ -181,3 +181,11 @@
   width: 200px;
   height: 240px;
 }
+.title-movie-thumb-wrap {
+  padding: 24px 0;
+}
+.thumb-btn-zone {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 24px;
+}

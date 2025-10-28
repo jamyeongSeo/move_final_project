@@ -51,82 +51,84 @@ const MovieDetail = () => {
           <div className="title-movie-thumb">
             <img src={movie.movieThumb} className="movie-detail-thumb"></img>
           </div>
-          <div className="movie-btn-zone">
-            <div className="like-btn">
-              {movie.like ? (
-                <span
-                  className="like-img-pushed"
-                  onClick={() => {
-                    if (isLogin) {
-                      axios
-                        .delete(
-                          `${
-                            import.meta.env.VITE_BACK_SERVER
-                          }/movie/likeUnPush?movieNo=${
-                            movie.movieNo
-                          }&memberId=${memberId}`
-                        )
-                        .then((res) => {
-                          if (res.data === 1) {
-                            const likePushList = movie.map((item, i) => {
-                              return index === i
-                                ? {
-                                    ...item,
-                                    like: false,
-                                    likeCount: Number(likeCount),
-                                  }
-                                : item;
-                            });
-                            setLikeCount(Number(likeCount));
-                            setMovie(likePushList);
-                          }
-                        })
-                        .catch((err) => {});
-                    }
-                  }}
-                >
-                  <FavoriteIcon sx={{ fill: "#ff2b2b" }} />
-                </span>
-              ) : (
-                <span
-                  className="like-img"
-                  onClick={() => {
-                    if (isLogin) {
-                      axios
-                        .post(
-                          `${
-                            import.meta.env.VITE_BACK_SERVER
-                          }/movie/likePush?movieNo=${
-                            movie.movieNo
-                          }&memberId=${memberId}`
-                        )
-                        .then((res) => {
-                          if (res.data === 1) {
-                            const likeUnPushList = movie.map((item, i) => {
-                              return index === i
-                                ? {
-                                    ...item,
-                                    like: true,
-                                    likeCount: Number(likeCount),
-                                  }
-                                : item;
-                            });
-                            setLikeCount(Number(likeCount));
-                            setMovie(likeUnPushList);
-                          }
-                        })
-                        .catch((err) => {});
-                    }
-                  }}
-                >
-                  <FavoriteBorderIcon />
-                </span>
-              )}
+          <div className="thumb-btn-zone">
+            <div className="movie-btn-zone">
+              <div className="like-btn">
+                {movie.like ? (
+                  <span
+                    className="like-img-pushed"
+                    onClick={() => {
+                      if (isLogin) {
+                        axios
+                          .delete(
+                            `${
+                              import.meta.env.VITE_BACK_SERVER
+                            }/movie/likeUnPush?movieNo=${
+                              movie.movieNo
+                            }&memberId=${memberId}`
+                          )
+                          .then((res) => {
+                            if (res.data === 1) {
+                              const likePushList = movie.map((item, i) => {
+                                return index === i
+                                  ? {
+                                      ...item,
+                                      like: false,
+                                      likeCount: Number(likeCount),
+                                    }
+                                  : item;
+                              });
+                              setLikeCount(Number(likeCount));
+                              setMovie(likePushList);
+                            }
+                          })
+                          .catch((err) => {});
+                      }
+                    }}
+                  >
+                    <FavoriteIcon sx={{ fill: "#ff2b2b" }} />
+                  </span>
+                ) : (
+                  <span
+                    className="like-img"
+                    onClick={() => {
+                      if (isLogin) {
+                        axios
+                          .post(
+                            `${
+                              import.meta.env.VITE_BACK_SERVER
+                            }/movie/likePush?movieNo=${
+                              movie.movieNo
+                            }&memberId=${memberId}`
+                          )
+                          .then((res) => {
+                            if (res.data === 1) {
+                              const likeUnPushList = movie.map((item, i) => {
+                                return index === i
+                                  ? {
+                                      ...item,
+                                      like: true,
+                                      likeCount: Number(likeCount),
+                                    }
+                                  : item;
+                              });
+                              setLikeCount(Number(likeCount));
+                              setMovie(likeUnPushList);
+                            }
+                          })
+                          .catch((err) => {});
+                      }
+                    }}
+                  >
+                    <FavoriteBorderIcon />
+                  </span>
+                )}
+              </div>
+              <div className="like-count">{movie.likeCount}</div>
             </div>
-            <div className="like-count">{movie.likeCount}</div>
-          </div>
-          <div className="booking-zone">
-            <button className="booking-btn">예매하기</button>
+            <div className="booking-zone">
+              <button className="booking-btn">예매하기</button>
+            </div>
           </div>
         </div>
       </div>
