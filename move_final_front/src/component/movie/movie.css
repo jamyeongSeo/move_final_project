@@ -145,7 +145,7 @@
   max-width: 100%;
   margin: 0;
 }
-.movie-detail-section {
+.movie-detail-title-section {
   display: flex;
   background-color: var(--gray5);
   justify-content: center;
@@ -153,7 +153,7 @@
 .movie-detail-title-info-wrap {
   width: 1080px;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
 }
 /*영화 제목*/
 .movie-detail-title-name {
@@ -173,6 +173,7 @@
 .movie-explain {
   margin-bottom: 24px;
   height: 100px;
+  width: 540px;
 }
 .movie-detail-title-runtime {
   font-family: ns-b;
@@ -188,4 +189,40 @@
   display: flex;
   justify-content: space-between;
   margin-top: 24px;
+}
+.detail-btn-zone button {
+  width: 200px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+.detail-btn-zone {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 36px 0;
+}
+.detailBtn {
+  color: #666;
+  background-color: var(--main6);
+  border: 1px solid var(--main6);
+  transition: 0.2s;
+}
+.detailBtn:hover {
+  color: #fff;
+  background-color: var(--main5);
+  border: 1px solid var(--main5);
+}
+.toCommentBtn {
+  transition: 0.2s;
+}
+.toCommentBtn:hover {
+  background-color: #222;
+  border: 1px solid #222;
+  color: #fff;
+}
+.bookingBtn {
 }
