@@ -115,9 +115,10 @@
 .tbl > tbody > tr {
   height: 40px;
 }
-.tbl > tbody > tr:hover {
+.tbl > tbody > .faq-row:hover {
   background-color: var(--main6);
   cursor: pointer;
+  transition: 0.2s;
 }
 .tbl tr + tr td {
   border-top: 1px solid #ddd;
@@ -125,7 +126,7 @@
 .page-navi {
   display: flex;
   justify-content: center;
-  margin: 24px 0;
+  margin: 36px 0;
 }
 .input-title {
   margin: 16px 24px 0 0;
@@ -361,4 +362,10 @@
 .btn-zone > .backBtn:hover {
   background-color: var(--main5);
   color: #fff;
+}
+.faqTbl td {
+  padding: 16px;
+}
+.faq-answer-row {
+  background-color: var(--gray6);
 }

@@ -31,8 +31,11 @@ import AdminView from "./component/admin/AdminView";
 import BookingSeat from "./component/booking/BookingSeat";
 import AdminScheduleList from "./component/admin/AdminScheduleList";
 import AdminScheduleEdit from "./component/admin/AdminScheduleEdit";
+
 import AdminReportMember from "./component/admin/AdminReportMember";
 import AdminMember from "./component/admin/AdminMember";
+
+import MovieDetail from "./component/movie/MovieDetail";
 
 function App() {
   const [memberId, setMemberId] = useRecoilState(loginIdState);
@@ -92,7 +95,13 @@ function App() {
       ) : (
         <div className="wrap">
           <Header />
-          <main className="content">
+          <main
+            className={
+              location.pathname.startsWith("/movie/detail")
+                ? "content movie-detail-content"
+                : "content"
+            }
+          >
             <Routes>
               <Route path="/" element={<Main />} />
               <Route path="/cs/*" element={<CSMain />} />
@@ -102,13 +111,23 @@ function App() {
                 element={<BookingSeat />}
               />
               <Route path="/admin/main" element={<AdminMain />}>
+
               {/*index route : /admin/mian 일 때 기본 컴포 */}
               <Route index element={<AdminList/>}/>
+
+                <Route index element={<AdminList />} />
+
                 <Route path="movie/list" element={<AdminList />} />
                 <Route path="movie/regist" element={<AdminRegist />} />
-                <Route path="schedule/list" element={<AdminScheduleList />}/>
-                <Route path="schedule/regist" element={<AdminScheduleRegist />} />
-                <Route path="schedule/edit/:scheduleNo" element={<AdminScheduleEdit />} />
+                <Route path="schedule/list" element={<AdminScheduleList />} />
+                <Route
+                  path="schedule/regist"
+                  element={<AdminScheduleRegist />}
+                />
+                <Route
+                  path="schedule/edit/:scheduleNo"
+                  element={<AdminScheduleEdit />}
+                />
               </Route>
               <Route path="/admin/member" element={<AdminMember />} />
 
@@ -127,6 +146,7 @@ function App() {
                 element={<MemberDelete></MemberDelete>}
               ></Route>
               <Route path="/movie/list" element={<MovieList />} />
+              <Route path="/movie/detail/:movieNo" element={<MovieDetail />} />
               <Route
                 path="/member/watchedMovieList"
                 element={<WatchedMovieList></WatchedMovieList>}
