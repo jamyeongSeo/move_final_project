@@ -31,6 +31,7 @@ import AdminView from "./component/admin/AdminView";
 import BookingSeat from "./component/booking/BookingSeat";
 import AdminScheduleList from "./component/admin/AdminScheduleList";
 import AdminScheduleEdit from "./component/admin/AdminScheduleEdit";
+import PayPage from "./component/booking/PayPage";
 
 function App() {
   const [memberId, setMemberId] = useRecoilState(loginIdState);
@@ -99,6 +100,7 @@ function App() {
                 path="/booking/bookingSeat/:screenNo/:movieNo"
                 element={<BookingSeat />}
               />
+              <Route path="booking/pay" element={<PayPage />} />
               <Route path="/admin/main" element={<AdminMain />}>
                 <Route index element={<AdminList />} />
                 <Route path="movie/list" element={<AdminList />} />
@@ -138,7 +140,7 @@ function App() {
                 element={<BookingMovieList></BookingMovieList>}
               />
               <Route
-                path="/membewr/noMemberInfo"
+                path="/member/noMemberInfo"
                 element={<NoMemberInfo></NoMemberInfo>}
               />
             </Routes>

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import kr.co.iei.MoveFinalBackApplication;
 import kr.co.iei.booking.model.service.BookingService;
+import kr.co.iei.coupon.model.dto.CouponDTO;
 import kr.co.iei.movie.model.dto.MovieDTO;
 
 @RestController
@@ -59,5 +60,17 @@ public class BookingController {
 	public ResponseEntity<Map> calcPrice(@PathVariable int movieNo, @RequestParam int adultCount, @RequestParam int kidCount){
 		Map map = bookingService.calcPrice(movieNo, adultCount, kidCount);
 		return ResponseEntity.ok(map);
+	}
+	
+	@GetMapping(value="/getMovie")
+	public ResponseEntity<MovieDTO> getMovie(@RequestParam int movieNo){
+		MovieDTO m  = bookingService.selectOneMovie(movieNo);
+		return ResponseEntity.ok(m);
+	}
+	
+	@GetMapping(value="/getCoupon")
+	public ResponseEntity<Map> getCoupon(@RequestParam String memberId){
+		Map couponMap = bookingService.selectCoupon(memberId);
+		return ResponseEntity.ok(couponMap);
 	}
 }

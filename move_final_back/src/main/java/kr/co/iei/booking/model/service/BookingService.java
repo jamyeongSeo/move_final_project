@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.co.iei.booking.model.dao.BookingDao;
+import kr.co.iei.booking.model.dto.PriceDTO;
+import kr.co.iei.member.model.dto.MemberDTO;
+import kr.co.iei.movie.model.dto.MovieDTO;
 import kr.co.iei.movie.model.dto.SeatDTO;
 
 @Service
@@ -61,10 +64,36 @@ public class BookingService {
 
 	public Map calcPrice(int movieNo, int adultCount, int kidCount) {
 		Map priceMap = new HashMap<String, Object>();
-		List priceList = bookingDao.selectMoviePrice(movieNo);
-		System.out.println("priceList :"+ priceList);
-		return null;
+		List<PriceDTO> priceList = bookingDao.selectMoviePrice(movieNo);
+		int adultPrice = 0;
+		int kidPrice = 0;
+		System.out.println(priceList);
+		for(PriceDTO p : priceList) {
+			if(p.getPricePerAge()==1) {
+				adultPrice = adultCount * p.getPrice();
+			}else if(p.getPricePerAge() == 2) {
+				kidPrice = kidCount * p.getPrice();
+			}
+		}
+		int totalPrice = adultPrice + kidPrice;
+		priceMap.put("totalPrice", totalPrice);
+		return priceMap;
 	}
 
+	public MovieDTO selectOneMovie(int movieNo) {
+		MovieDTO m = bookingDao.selectOneMovie(movieNo);
+		return m;
+	}
+
+	public Map selectCoupon(String memberId) {
+		MemberDTO m = bookingDao.selectOneMemberNo(memberId); 
+		List couponList = bookingDao.selectCoupon(m.getMemberNo());
+		Map couponMap = new HashMap<String, Object>();
+		couponMap.put("couponList", couponList);
+		
+		return couponMap;
+	}
+
+	
 
 }

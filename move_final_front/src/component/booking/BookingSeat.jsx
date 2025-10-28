@@ -1,25 +1,38 @@
 import { useEffect, useRef, useState } from "react";
 import "./booking.css";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import EventSeatIcon from "@mui/icons-material/EventSeat";
 import { EventSeat } from "@mui/icons-material";
 import Swal from "sweetalert2";
 const BookingSeat = () => {
+  const location = useLocation();
   const params = useParams();
   const movieNo = params.movieNo;
   const screenNo = params.screenNo;
   const [seatList, setSeatList] = useState([]);
   const [rowList, setRowList] = useState([]);
-  const oneRowList = [];
   const [adultCount, setAdultCount] = useState(0);
   const [kidCount, setKidCount] = useState(0);
   const totalCount = adultCount + kidCount;
   const selectCount = totalCount;
   const [selectSeat, setSelectSeat] = useState(Array(6).fill(null));
   const [count, setCount] = useState(0);
-  const [price, setPrice] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [selectSeatList, setSelectSeatList] = useState([]);
+  const showPrice = totalPrice.toLocaleString();
+  const navigate = useNavigate();
+  const bookingInfo = {
+    movieNo: movieNo,
+    screenNo: screenNo,
+    totalPrice: totalPrice,
+    adultCount: adultCount,
+    kidCount: kidCount,
+    selectSeatList: selectSeatList,
+    scheduleTimeStart: location.state.scheduleTimeStart,
+    scheduleTimeEnd: location.state.scheduleTimeEnd,
+  };
 
   useEffect(() => {
     axios
@@ -30,11 +43,12 @@ const BookingSeat = () => {
       )
       .then((res) => {
         console.log(res);
+        setTotalPrice(res.data.totalPrice);
       })
-      .then((err) => {
+      .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [kidCount, adultCount]);
 
   useEffect(() => {
     axios
@@ -108,8 +122,12 @@ const BookingSeat = () => {
                                   const newSelectSeat = [...selectSeat];
                                   newSelectSeat[count] = seatName;
                                   setSelectSeat(newSelectSeat);
+                                  setSelectSeatList(
+                                    newSelectSeat.filter((s, i) => s !== null)
+                                  );
+
                                   setCount(count + 1);
-                                  console.log(selectCount);
+                                  console.log(selectSeatList);
                                 } else if (selectSeat.includes(seatName)) {
                                   const removeSelectSeat = selectSeat.map(
                                     (removeSeat, index) =>
@@ -133,7 +151,9 @@ const BookingSeat = () => {
             <section className="seat-amount-box">
               <div className="seat-info-box">
                 <div className="price-title">총 결제 금액</div>
-                <div className="price-count">원</div>
+                <div className="price-count">
+                  {totalPrice !== undefined ? showPrice + "원" : "0원"}
+                </div>
                 <div className="adult-amount">
                   <span className="amount-title">성인</span>
                   <div className="btn-box">
@@ -144,6 +164,7 @@ const BookingSeat = () => {
                           setAdultCount(adultCount - 1);
                           const refreshSeat = [...selectSeat.fill(null)];
                           setSelectSeat(refreshSeat);
+                          selectSeatList.length === 0;
                           setCount(0);
                         }
                       }}
@@ -180,6 +201,7 @@ const BookingSeat = () => {
                           setKidCount(kidCount - 1);
                           const refreshSeat = [...selectSeat.fill(null)];
                           setSelectSeat(refreshSeat);
+                          selectSeatList.length === 0;
                           setCount(0);
                         }
                       }}
@@ -226,7 +248,28 @@ const BookingSeat = () => {
                 </div>
               </div>
               <div className="btn-wrap">
-                <button className="pay-btn">결제하기</button>
+                <button
+                  className="pay-btn"
+                  onClick={() => {
+                    if (
+                      selectSeatList.length === 0 ||
+                      selectSeatList.length !== totalCount
+                    ) {
+                      Swal.fire({
+                        title: "좌석 미선택",
+                        html: "예매하실 좌석이 선택되지 않았습니다. <br/>좌석 선택 후 결제를 진행해주세요.",
+                        icon: "warning",
+                        confirmButtonText: "확인",
+                      });
+                    } else if (selectSeatList.length === totalCount) {
+                      navigate(`/booking/pay`, {
+                        state: { bookingInfo: bookingInfo },
+                      });
+                    }
+                  }}
+                >
+                  결제하기
+                </button>
               </div>
             </section>
           </div>

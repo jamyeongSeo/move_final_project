@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 public class BookingDTO {
 	private int bookNo;
 	private int priceNo;
+	private int pricePerAge;
 	private int memberNo;
 	private int screenNo;
 }

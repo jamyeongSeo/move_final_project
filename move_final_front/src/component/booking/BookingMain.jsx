@@ -21,12 +21,7 @@ const BookingMain = () => {
   const [memberId, setMemberId] = useRecoilState(loginIdState);
   const isLogin = useRecoilValue(isLoginState);
   const [refresh, setRefresh] = useState(false);
-  const [changeView, setChangeView] = useState("/booking/main");
-  const [booking, setBooking] = useState({
-    memberId: memberId,
-    scheduleNo: 0,
-    priceNo: 0,
-  });
+
   const navigate = useNavigate();
   useEffect(() => {
     axios
@@ -37,7 +32,7 @@ const BookingMain = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [booking, movieScheduleSelect, movieSelect]);
+  }, [movieScheduleSelect, movieSelect]);
 
   return (
     <div className="content-wrap">
@@ -156,15 +151,22 @@ const BookingMain = () => {
                                 onClick={() => {
                                   setmovieScheduleSelect(index);
                                   setMovieNo(one.movieNo);
-                                  setBooking({
-                                    ...booking,
-                                    scheduleNo: one.scheduleNo,
-                                  });
 
                                   !isLogin
                                     ? navigate("/member/noMemberInfo")
                                     : navigate(
-                                        `/booking/bookingSeat/${one.screenNo}/${movieNo}`
+                                        `/booking/bookingSeat/${one.screenNo}/${movieNo}`,
+                                        {
+                                          state: {
+                                            scheduleTimeStart:
+                                              one.scheduleTimeStart.slice(
+                                                0,
+                                                16
+                                              ),
+                                            scheduleTimeEnd:
+                                              one.scheduleTimeEnd.slice(0, 16),
+                                          },
+                                        }
                                       );
                                 }}
                               >
@@ -177,7 +179,7 @@ const BookingMain = () => {
                                     : "3관"}
                                 </div>
                                 <div>{one.scheduleTimeStart.slice(0, 16)}</div>
-                                <div>{one.scheduleTimeEnd.slice(0, 15)}</div>
+                                <div>{one.scheduleTimeEnd.slice(0, 16)}</div>
                               </div>
                             </div>
                           );

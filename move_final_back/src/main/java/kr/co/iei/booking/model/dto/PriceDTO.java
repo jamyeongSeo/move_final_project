@@ -13,5 +13,6 @@ import lombok.NoArgsConstructor;
 public class PriceDTO {
 	private int price;
 	private int movieType;
-	private int movieNo;
+	private int pricePerAge;
+	private int seatType;
 }
