@@ -56,9 +56,9 @@ const AdminMain = () => {
       <AdminSideMenu menus={menus} subMenus={subMenus} />
       <div className="admin-main-content">
         {/* <AdminList /> */}
+      <Outlet />
       </div>
       {/*하위 라우트 불러오는 outlet  */}
-      <Outlet />
     </div>
   );
 };
