@@ -158,4 +158,7 @@ public class AdminController {
     	List<MemberDTO> memberList = adminService.memberList();
     	return ResponseEntity.ok(memberList);
     }
+    
+    /*신고된 회원 목록*/
+    
 }
