@@ -57,21 +57,21 @@ const AdminScheduleRegistFrm = ({
   };
 
 
-  const selectScreen = () =>{
-    if(movieType === "1"){
-      allowType === "1"
-    }else if (movieType === "2"){
-      allowType === "2"
-    }else if (movieType === "3"){
-      allwType === "3"
-    }else if (
-      Swal.fire({
-        title:"올바른 관 선택",
-        text:"올바른 관을 선택해주세요.",
-        icon:"info",
-      })
-    )
-  }
+  // const selectScreen = () =>{
+  //   if(movieType === "1"){
+  //     allowType === "1"
+  //   }else if (movieType === "2"){
+  //     allowType === "2"
+  //   }else if (movieType === "3"){
+  //     allwType === "3"
+  //   }else if (
+  //     Swal.fire({
+  //       title:"올바른 관 선택",
+  //       text:"올바른 관을 선택해주세요.",
+  //       icon:"info",
+  //     })
+  //   )
+  // }
   return (
     <div className="admin-schedule-regist-frm">
       {/* 영화 선택 */}
