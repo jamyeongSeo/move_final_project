@@ -6,8 +6,10 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.iei.cs.faq.model.dao.FAQDao;
+import kr.co.iei.cs.faq.model.dto.FAQDTO;
 import kr.co.iei.utils.PageInfo;
 import kr.co.iei.utils.PageInfoUtils;
 
@@ -49,5 +51,16 @@ public class FAQService {
 		listMap.put("totalCount", totalCount);
 		
 		return listMap;
+	}
+	@Transactional
+	public int insertFAQ(FAQDTO faq) {
+		int faqNo = faqDao.getFaqNo();
+		faq.setFaqNo(faqNo);
+		int result =  faqDao.insertFAQ(faq);
+		return result;
+	}
+	public int deleteFAQ(int faqNo) {
+		int result = faqDao.deleteFAQ(faqNo);
+		return result;
 	}
 }

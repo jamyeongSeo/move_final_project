@@ -25,4 +25,13 @@
 						order by 1 desc)f)
 		where rnum between #{start} and #{end}
 	</select>
+	<select id="getFaqNo" resultType="int">
+		select faq_seq.nextval from dual
+	</select>
+	<insert id="insertFAQ">
+		insert into faq_tbl values(faq_seq.nextval, #{faqQuestion}, #{faqAnswer})
+	</insert>
+	<delete id="deleteFAQ">
+		delete from faq_tbl where faq_no= #{faqNo}
+	</delete>
 </mapper>
