@@ -27,4 +27,31 @@
   <select id="selectScreenSeat" resultType="seat">
   	select * from seat_tbl where screen_no = #{screenNo}
   </select>
+  
+  <select id="selectRowList" resultType="string">
+  	select distinct seat_row from seat_tbl where screen_no =#{screenNo}
+  	order by 1
+  </select>
+  
+  <select id="selectMoviePrice" resultType="price">
+  	select price, movie_type, price_per_age from price_tbl where movie_no = #{movieNo}
+  </select>
+  
+  <select id="selectOneRow" resultType="seat">
+  	select * from seat_tbl where screen_no=#{screenNo} and seat_row = #{row} order by 2 asc
+  </select>
+  
+  <select id="selectOneMovie" resultType="movie">
+  	select movie_thumb, movie_title from movie_tbl where movie_no = #{movieNo}
+  </select>
+  
+  <select id="selectOneMemberNo" resultType="member">
+  	select member_no from member_tbl where member_id = #{memberId}
+  </select>
+  
+  <select id="selectCoupon" resultType="coupon">
+  	select * from coupon_box_tbl join coupon_tbl using(coupon_no) where member_no=#{memberNo}
+  </select>
+  
+  
 </mapper>

@@ -18,46 +18,60 @@ body {
 
 /*사이드 메뉴 */
 .admin-side-menu {
+  float: left;
+  width: 210px;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 210px;
-  min-height: 100vh;
-  float: left;
-  padding-right: 60px;
+  padding: 20px 0 0 0;
 }
 
-.side-title {
+
+.admin-side-title {
   width: 210px;
   height: 52px;
   background-color: #444;
+  color: #fff;
+  font-size: 24px;
+  font-weight: 700;
   line-height: 52px;
   text-align: center;
   border-radius: 8px;
   margin-bottom: 20px;
 }
 
-.side-title > div {
+.admin-side-title > div {
   color: #fff;
   font-size: 24px;
   font-weight: 700;
 }
 
-/*메인 래퍼 */
-.admin-main-wrap {
-  display: flex;
-  flex-direction: column;
+
+
+.admin-list-wrap {
+  display: block;
+  width: 100%;
+  overflow: hidden; 
+}
+
+.admin-main-content {
+  margin-left: 270px; /* ← 사이드메뉴 + 여백 */
+  width: calc(100% - 270px);
+  background-color: #fff;
   min-height: 100vh;
+  padding: 40px;
+  box-sizing: border-box;
+  overflow-x: visible;
 }
 
 .admin-content-box {
-  width: 100%;
-  max-width: 1080px;
-  margin: 30px auto;
-  flex: 1;
-  text-align: center;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 25px 30px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  box-sizing: border-box;
 }
-
 /* 검색 영역 */
 .admin-input-search-wrap {
   display: flex;
@@ -77,7 +91,6 @@ body {
   border-radius: 8px;
   box-sizing: border-box;
   padding: 3px 5px;
-
 }
 
 .admin-search-btn {
@@ -95,10 +108,10 @@ body {
 }
 
 /*제목 영역 */
-.admin-content-title,
+
 .regist-movie,
-.admin-schedule-regist-title, 
-.admin-schedule-list-title{
+.admin-schedule-regist-title,
+.admin-schedule-list-title {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -110,150 +123,182 @@ body {
   font-weight: 700;
 }
 
-/*스케줄 등록 */
-.admin-schedule-info {
-  display: flex;
-  font-size: 18px;
-  padding: 30px 0;
+.admin-content-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #222;
+  border-bottom: 2px solid #666;
+  margin-bottom: 25px;
+  padding-bottom: 8px;
 }
-
-.admin-schedule-registFrm-wrap {
+/* AdminList*/
+.admin-search-filter-wrap {
   display: flex;
-  flex-direction: column;
-  min-height: 50vh;
-  margin-top: 45px;
-  padding-left: 175px;
-  background-color: #fff;
-  border-radius: 8px;
-}
-
-.admin-schedule-regist-btn-zone {
-  display: flex;
-  margin-left: 600px;
-  padding-top: 55px;
-}
-
-/* AdminRegistFrm 폼 */
-.regist-info-wrap {
-  display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  margin-top: 40px;
-  background: #fff;
-  padding: 40px 60px;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 25px;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
 }
 
-.regist-info-tbl {
-  width: 100%;
-  max-width: 780px;
-  border-collapse: separate;
-  border-spacing: 0 18px;
+/* 영화 상태 탭 버튼 크기 보정 */
+.admin-status-tabs {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap; /* 화면 줄어들면 자동 줄바꿈 */
+  margin-bottom: 20px;
 }
-
-.regist-info-tbl tr {
-  vertical-align: middle;
-}
-
-.regist-info-tbl th {
-  width: 180px;
-  text-align: left;
-  font-size: 18px;
-  font-weight: 600;
+.status-tab {
+  background-color: #f7f7f7;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 14px;
+  font-weight: 500;
   color: #333;
-  padding-right: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+  white-space: nowrap;
 }
 
-
-
-/*입력 필드*/
-.admin-regist-input input,
-.admin-input-movieContent-box input {
-  width: 100%;
-  max-width: 500px;
-  height: 46px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 16px;
-  padding: 0 12px;
-  box-sizing: border-box;
-  transition: all 0.2s ease-in-out;
+.status-tab:hover {
+  background-color: #eee;
 }
 
-.admin-regist-input input:focus,
-.admin-input-movieContent-box input:focus {
-  outline: none;
-  border-color: #ff4b4b;
-  box-shadow: 0 0 6px rgba(255, 75, 75, 0.4);
+.status-tab.active {
+  background-color: #444;
+  color: #fff;
+  border-color: #444;
 }
-
-/* ====== 소개글 input (textarea 느낌) ====== */
-.admin-input-movieContent-box input {
-  height: 120px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  font-size: 15px;
-  line-height: 1.5;
-}
-
-
-/* ====== 포스터 썸네일 ====== */
-.regist-thumb-wrap {
+/* 검색창 */
+.admin-search-item {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  margin-bottom: 40px;
-  margin-top: 20px;
+  gap: 8px;
 }
 
-.regist-thumb-img-preview {
-  width: 240px;
-  height: 240px;
-  object-fit: cover;
+.admin-search-item input {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 200px;
+  font-size: 14px;
+}
+
+.admin-search-btn {
+  background-color: #444;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.admin-search-btn:hover {
+  background-color: #222;
+}
+
+/*테이블 스타일*/
+.admin-content-tbl {
+  width: 100%;
+  border-collapse: collapse;
   border-radius: 10px;
-  background-color: #f0f0f0;
-  border: 1px solid #ccc;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-  transition: all 0.2s ease-in-out;
+  overflow: hidden;
+  font-size: 15px;
 }
 
-.regist-thumb-img-preview:hover {
-  transform: scale(1.03);
+.admin-content-tbl th,
+.admin-content-tbl td {
+  padding: 14px 12px;
+  border-bottom: 1px solid #eee;
+  text-align: center;
 }
 
-.regist-thumb-label {
-  margin-top: 10px;
+.admin-content-tbl th:nth-child(1),
+.admin-content-tbl td:nth-child(1) {
+  width: 10%;
+}
+.admin-content-tbl th:nth-child(2),
+.admin-content-tbl td:nth-child(2) {
+  width: 35%;
+}
+.admin-content-tbl th:nth-child(3),
+.admin-content-tbl td:nth-child(3) {
+  width: 15%;
+}
+.admin-content-tbl th:nth-child(4),
+.admin-content-tbl td:nth-child(4) {
+  width: 20%;
+}
+.admin-content-tbl th:nth-child(5),
+.admin-content-tbl td:nth-child(5) {
+  width: 20%;
+}
+
+.admin-movie-info-update {
+  color: #444;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.admin-movie-info-update:hover {
+  color: #007bff;
+}
+
+.admin-content-tbl tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+/* 상태 배지 */
+.status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 13px;
   font-weight: 600;
-  color: #333;
-  font-size: 16px;
+  color: white;
+  min-width: 80px;
+  text-align: center;
+}
+.status-1 {
+  background-color: #f59e0b;
+}
+.status-2 {
+  background-color: #10b981;
+}
+.status-3 {
+  background-color: #9ca3af;
+}
+.status-4 {
+  background-color: #3b82f6;
 }
 
-/* ====== 등록 버튼 ====== */
-.admin-regist-btn-zone {
+/*AdminRegistFrm*/
+.admin-regist-info-wrap{
+  border-collapse: collapse;
+  justify-content: space-between;
+  align-items: center;
+}
+.admin-regist-info-wrap> div {
   display: flex;
-  justify-content: flex-end;
-  margin-right: 120px;
-  padding-top: 40px;
+  justify-content: center; 
+}
+/* .admin-regist-info-tbl{
+  display: flex;
+  justify-content: center; 
+} */
+.admin-regist-info-tbl > th, td{
+  padding-top: 45px;
 }
 
 
-/*AdminList*/
 
-.admin-content-tbl{
-  width: 100%;
-  background-color: var(--gray5);
-  height: 40px;
-  text-align: center;
-  border-radius: 8px;
-}
-.admin-content-tbl > th{
-  text-align: center;
-}
-/*AdminScheduleList - 영화 스케줄 목록*/
-
+/*AdminScheduleList*/
 .admin-schedule-list-tbl > thead {
-  display: block;
+  display: block; /*요소가 한 줄 전체 차지, 자동으로 위아래 줄바꿈*/
   margin-bottom: 25px;
   background-color: #666;
   margin-top: 20px;
@@ -262,70 +307,261 @@ body {
   color: #fff;
 }
 
-.admin-schedule-list-tbl > tbody{
-  display: block
-}
-
-.admin-schedule-list-tbl>tr{
-  width: 100%;
-  vertical-align: middle;
-  
-}
-
-.admin-schedule-list-tbl>th{
-  padding-left: 20px;
-  width: 180px;
-  text-align: center;
-  font-size: 18px;
-  font-weight: 600;
-  vertical-align: middle;
-  padding-right: 10px;
-  border-bottom: 20px;
-}
-/* .admin-schedule-content-box{
-  display: flex;
-  align-items: center;
-  margin-top: 40px;
-  border-radius: 12px;
-} */
 .admin-schedule-list-tbl > tbody {
-  width: 870px;
+  display: block;
   background-color: #fff;
-  min-height: 100vh;
+  min-height: 170vh;
   text-align: center;
   align-items: center;
   margin-top: 20px;
   border-radius: 12px;
-  min-height: 170vh;
-  box-shadow:  0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
-.admin-schedule-list-tbl > tbody >td{
+
+.admin-schedule-list-tbl > tbody > td {
   text-align: center;
 }
 
+/* AdminScheduleRegist*/
 
-
-
-/* 
-.btn-red {
-  background-color: #ff4b4b;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 14px 28px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out; 
+.admin-schedule-regist-wrap {
+  display: inline-block;
+  vertical-align: top;
+  width: calc(100% - 280px); 
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 30px;
+  background-color: #fafafa;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
+  position: relative;
+  z-index: 1;
 }
 
-.btn-red:hover {
-  background-color: #e73535;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(255, 75, 75, 0.4);
-} */
+.admin-schedule-regist-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #333;
+  text-align: left;
+}
+
+.admin-schedule-regist-frm {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.admin-schedule-input {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.admin-schedule-input label {
+  font-weight: 600;
+  font-size: 15px;
+  color: #444;
+}
+
+.admin-schedule-table-wrap {
+  width: 100%;
+  overflow-x: auto; /*테이블만 스크롤 가능*/
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.admin-schedule-btn-zone {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  padding-right: 10px;
+}
+
+.admin-schedule-btn {
+  background-color: #c0392b;
+  color: white;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
 
 
+.admin-schedule-btn:hover {
+  background-color: #a93226;
+  transform: translateY(-1px);
+}
+
+.admin-schedule-input select,
+.admin-schedule-input input {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: #fff;
+}
+
+.admin-time-select-wrap {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.admin-time-select-wrap select {
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid #bbb;
+}
+
+.admin-schedule-btn-zone {
+  display: flex;
+  justify-content: center;  /* ← 가운데 정렬 */
+  align-items: center;
+  margin-top: 20px;
+  padding: 0;               /* 오른쪽 패딩 제거 */
+}
+
+
+.admin-btn-red {
+  background-color: #c0392b;
+  color: white;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.admin-btn-red:hover {
+  background-color: #a93226;
+}
+
+
+/*AdminScheduleTable*/
+.admin-schedule-table {
+  width: 100%;
+  max-width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  margin-bottom: 30px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  table-layout: fixed;
+  overflow-x: auto;
+}
+
+.admin-schedule-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  justify-content: flex-start;
+  align-items: stretch;
+  
+  width: 100%;
+  padding: 30px;
+  background-color: #fafafa;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+.admin-schedule-table {
+  width: 100%;
+  min-width: 950px;
+  border-collapse: collapse;
+  text-align: center;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  table-layout: fixed;
+}
+.admin-schedule-table th,
+.admin-schedule-table td {
+  padding: 8px 6px;
+  border: 1px solid #ddd;
+  font-size: 13px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.admin-schedule-table .occupied {
+  background-color: #f87171;
+  color: white;
+  cursor: not-allowed;
+}
+.admin-schedule-table .available {
+  background-color: #e5e7eb;
+  cursor: pointer;
+}
+.admin-schedule-table .available:hover {
+  background-color: #86efac;
+}
+
+/*AdminScheduleList*/
+.admin-schedule-timetable-container {
+  margin-top: 20px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow-x: auto; 
+  padding: 20px;
+}
+
+.admin-schedule-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 230px;
+  width: calc(100% - 260px);
+}
+
+.date-picker label {
+  font-weight: 600;
+  margin-right: 10px;
+}
+
+/* 상영관 컬러 테마 */
+.screen-1 {
+  background-color: #fde68a; /* 노랑: 2D */
+  color: #222;
+}
+
+.screen-2 {
+  background-color: #93c5fd; /* 파랑: 3D */
+  color: #fff;
+}
+
+.screen-3 {
+  background-color: #fca5a5; /* 빨강: 4DX */
+  color: #fff;
+}
+
+/* 타임테이블 색상 구분 */
+.admin-schedule-table .occupied.screen-1 {
+  background-color: #facc15;
+}
+.admin-schedule-table .occupied.screen-2 {
+  background-color: #3b82f6;
+}
+.admin-schedule-table .occupied.screen-3 {
+  background-color: #ef4444;
+}
+
+
+/* Tailwind 기본 테마 변수 */
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -347,48 +583,13 @@ body {
     --border: 220 13% 91%;
     --input: 220 13% 91%;
     --ring: 224 71.4% 4.1%;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
     --radius: 0.5rem;
   }
-  .dark {
-    --background: 224 71.4% 4.1%;
-    --foreground: 210 20% 98%;
-    --card: 224 71.4% 4.1%;
-    --card-foreground: 210 20% 98%;
-    --popover: 224 71.4% 4.1%;
-    --popover-foreground: 210 20% 98%;
-    --primary: 210 20% 98%;
-    --primary-foreground: 220.9 39.3% 11%;
-    --secondary: 215 27.9% 16.9%;
-    --secondary-foreground: 210 20% 98%;
-    --muted: 215 27.9% 16.9%;
-    --muted-foreground: 217.9 10.6% 64.9%;
-    --accent: 215 27.9% 16.9%;
-    --accent-foreground: 210 20% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 20% 98%;
-    --border: 215 27.9% 16.9%;
-    --input: 215 27.9% 16.9%;
-    --ring: 216 12.2% 83.9%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-  }
-}
 
-@layer base {
-  * {
-    @apply border-border;
-  }
   body {
     @apply bg-background text-foreground;
   }
+
   h1,
   h2,
   h3 {

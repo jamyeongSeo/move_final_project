@@ -1,183 +1,159 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
-
 import PageNavigation from "../utils/PageNavigation";
 import "./admin.css";
-import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectLabel,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
-import AdminRegistFrm from "./AdminRegistFrm";
 import Swal from "sweetalert2";
 
 const AdminList = () => {
-    const navigate = useNavigate();
-    const [search, setSearch] = useState(""); //영화 제목 검색
-    const [movieList, setMovieList] = useState([]); //영화 정보 목록
-    const [reqPage, setReqPage] = useState(1); //페이지
-    const [pi, setPi] = useState(null);
-    
-    
-    //영화 목록 페이징
-    const adminFunc =() =>{
-        useEffect(() => {
-            axios
-            .get(
-                `${import.meta.env.VITE_BACK_SERVER}/admin/movie?reqPage=${reqPage}&movieTitle=${search}`)
-                .then((res) => {
-                    setMovieList(res.data.movieList);
-                    setPi(res.data.pi);
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-            },);
-        }
-        
-    const adminSearchInput = () => {
-            setReqPage(1);
-            adminFunc(1, search);
-        }
+  const [movieList, setMovieList] = useState([]);
+  const [search, setSearch] = useState("");
+  const [reqPage, setReqPage] = useState(1);
+  const [pi, setPi] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState("ALL");
 
-    //수정화면 넘어가려고 영화버노 받아오기..맞나?
-    const params = useParams();
-    const movieNo = params.movieNo;
+  // 탭 클릭 시 상태 변경
+  const statusClick = (status) => {
+    setSelectedStatus(status);
+    setReqPage(1);
+  };
 
-const MovieItem = (props) =>{
-    const movie = props.movie;
-    return (
-        <li className="admin-movieList-item"
-        onClick={()=>{
-            navigate(`/admin/update/${movie.movieNo}`);
-        }}>
-        <div className="movie-info">
-            <div className="admin-movie-title" onClick={()=>{
-                    navigate(`/admin/update/${movie.movieNo}`);
-            }}>{movie.movieTitle}
-            </div>
-            <div>
-                <div className="admin-movie-grade">{movie.movieGrade}</div>
-                    <div className="admin-movie-release">{movie.movieRelease}</div>
-                    <div className="admin-movie-status">{movie.movieStatus}</div>
-                </div>
-            </div>
-        </li>
-        )
+  // 영화 목록 가져오기
+  useEffect(() => {
+    let url = `${import.meta.env.VITE_BACK_SERVER}/admin/movie?reqPage=${reqPage}`;
+
+    if (search.trim() !== "") {
+      url += `&movieTitle=${search}`;
     }
-    
 
-    
-return (
+    if (selectedStatus !== "ALL") {
+      url += `&movieStatus=${selectedStatus}`;
+    }
+
+    axios
+      .get(url)
+      .then((res) => {
+        setMovieList(res.data.movieList);
+        setPi(res.data.pi);
+      })
+      .catch((err) => console.log(err));
+  }, [reqPage, search, selectedStatus]);
+
+  // 등급 매핑 (1~4 → 텍스트로 변환)
+  const getGradeLabel = (grade) => {
+    switch (grade) {
+      case 1:
+        return "전체 관람가";
+      case 2:
+        return "12세 이용가";
+      case 3:
+        return "15세 이용가";
+      case 4:
+        return "19세 이용가";
+      default:
+        return "-";
+    }
+  };
+
+  return (
     <div className="admin-main-wrap">
-        <section className="admin-header">
-            <div className="admin-content-title">영화 리스트</div>
-            <div className="admin-input-search-wrap">
-            <div className="admin-search-item">
-                <input
-                type="text"
-                id="movieTitle"
-                name="movieTitle"
-                value={search}
-                onChange={(e) => {
-                setSearch(e.target.value);
-                }}
-                placeholder="영화 제목 검색"
-                />
-                <button type="submit" className="admin-search-btn"
-                onClick={adminSearchInput}>
-                    검색
-                </button>
-            </div>
-            </div>
-        </section>
+      <section className="admin-header">
+        <div className="admin-content-title">영화 리스트</div>
 
-        <div className="admin-content-box">
-            <table className="admin-content-tbl">
-            <thead>
+        <div className="admin-search-filter-wrap">
+          <div className="admin-status-tabs">
+            {[
+              { label: "전체", value: "ALL" },
+              { label: "개봉 예정", value: "1" },
+              { label: "상영 중", value: "2" },
+              { label: "상영 종료", value: "3" },
+              { label: "재개봉", value: "4" },
+            ].map((tab) => (
+              <button
+                key={tab.value}
+                className={`status-tab ${
+                  selectedStatus === tab.value ? "active" : ""
+                }`}
+                onClick={() => statusClick(tab.value)}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+          <div className="admin-search-item">
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="영화 제목 검색"
+            />
+            <button className="admin-search-btn" onClick={() => setReqPage(1)}>
+              검색
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <div className="admin-content-box">
+        <table className="admin-content-tbl">
+          <thead>
             <tr>
-                <th style={{ width: "10%" }}>영화번호</th>
-                <th style={{ width: "30%" }}>영화이름</th>
-                <th style={{ width: "15%" }}>관람등급</th>
-                <th style={{ width: "25%" }}>개봉일</th>
-                <th style={{ width: "20%" }}>상영상태</th>
+              <th>번호</th>
+              <th>영화 제목</th>
+              <th>관람등급</th>
+              <th>개봉일</th>
+              {selectedStatus === "ALL" && <th>상태</th>}
             </tr>
-            </thead>
-            
-            <tbody>
-                {movieList.map((movie, index) => {
-                const statusChange = (newStatus) => {
-                    const obj = {
-                    movieNo: movie.movieNo,
-                    movieStatus: newStatus,
-                }};
-                const prevStatus = movie.movieStatus;
-                movieList[index].movieStatus = newStatus;
-                setMovieList([...movieList]);
-                axios
-                    .patch(`${import.meta.env.VITE_BACK_SERVER}/admin/movie/${movie.movieNo}`,obj)
-                    .then((res) => {
-                    if(res.data === "updateMovieStatus"){
-                        console.log(res.data);
-                        Swal.fire({
-                            title:"영화 상태가 변경되었습니다.",
-                            icon:"success",
-                        })
-                    .catch((err) => {
-                        console.log(err);
-                        });
-                }else{
-                    Swal.fire({
-                        title:"상영 상태 변경 실패",
-                        icon:"error"
-                    })
-                }
-            });
-                return (
-                <tr key={`movie-${index}`}>
-                    <td>{movie.movieNo}</td>
+          </thead>
+
+          <tbody>
+            {movieList.length === 0 ? (
+              <tr>
+                <td
+                  colSpan={selectedStatus === "ALL" ? 5 : 4}
+                  style={{ textAlign: "center", padding: "20px" }}
+                >
+                  해당 조건의 영화가 없습니다.
+                </td>
+              </tr>
+            ) : (
+              movieList.map((movie) => (
+                <tr key={movie.movieNo}>
+                  <td>{movie.movieNo}</td>
+                  <td>
+                    <Link
+                      to={`/movie/view/${movie.movieNo}`}
+                      className="admin-movie-info-update"
+                    >
+                      {movie.movieTitle}
+                    </Link>
+                  </td>
+                  {/* ✅ 등급 숫자 → 텍스트 변환 */}
+                  <td>{getGradeLabel(movie.movieGrade)}</td>
+                  <td>{movie.movieRelease}</td>
+
+                  {selectedStatus === "ALL" && (
                     <td>
-                        <Link to={`/movie/view/${movieNo}`} 
-                        className="movie-info-update">{movie.movieTitle}</Link>
+                      <span className={`status-badge status-${movie.movieStatus}`}>
+                        {{
+                          1: "개봉 예정",
+                          2: "상영 중",
+                          3: "상영 종료",
+                          4: "재개봉",
+                        }[movie.movieStatus] || "-"}
+                      </span>
                     </td>
-                    <td>{movie.movieGrade}</td>
-                    <td>{movie.movieRelease}</td>
-                    <td>
-                    <Select value={prevStatus}
-                        onValueChange={(e)=>{
-                            setMovieStatus(e.target.value)
-                        }}>
-                        <SelectTrigger className="updateStatus">
-                        </SelectTrigger>
-                        <SelectContent>
-                        <SelectGroup>
-                            <SelectItem value="1">개봉예정</SelectItem>
-                            <SelectItem value="2">상영중</SelectItem>
-                            <SelectItem value="3">상영종료</SelectItem>
-                            <SelectItem value="4">재개봉</SelectItem>
-                        </SelectGroup>
-                        </SelectContent>
-                    </Select>
-                    </td>
+                  )}
                 </tr>
-                );
-            })}
-            </tbody>
+              ))
+            )}
+          </tbody>
         </table>
-        </div>
-        
-        <div className="page-navi">
-        {pi && (
-            <PageNavigation pi={pi} reqPage={reqPage} setReqPage={setReqPage} />
-        )}
-        </div>
-        </div>
-    );
+      </div>
+
+      {pi && <PageNavigation pi={pi} reqPage={reqPage} setReqPage={setReqPage} />}
+    </div>
+  );
 };
 
 export default AdminList;

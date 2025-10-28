@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -66,4 +67,10 @@ public class MovieController {
 		return ResponseEntity.ok(map);
 	}
 	/*-----------------Main 끝-----------------*/
+	@GetMapping(value="/detail/{movieNo}")
+	public ResponseEntity<MovieDTO> selectOneMovie(@PathVariable int movieNo){
+		MovieDTO movie = movieService.selectOneMovie(movieNo);
+		System.out.println(movie);
+		return ResponseEntity.ok(movie);
+	}
 }

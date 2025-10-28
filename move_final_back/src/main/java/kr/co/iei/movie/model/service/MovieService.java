@@ -154,4 +154,11 @@ public class MovieService {
 	 */
 	/*----------------Main 끝----------------*/
 
+	public MovieDTO selectOneMovie(int movieNo) {
+		MovieDTO movie = movieDao.selectOneMovie(movieNo);
+		System.out.println(movie);
+		return movie;
+	}
+
+	
 }

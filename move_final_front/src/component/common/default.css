@@ -120,8 +120,8 @@ body {
 }
 .btn-red:hover {
   color: var(--main3);
-  text-shadow: 0px 1px 1px var(--mian6);
-  box-shadow: 0px 1px 1px var(--mian6);
+  text-shadow: 0px 1px 1px var(--main6);
+  box-shadow: 0px 1px 1px var(--main6);
 }
 .btn-gray {
   cursor: pointer;

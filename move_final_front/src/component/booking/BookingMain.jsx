@@ -8,6 +8,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { isLoginState, loginIdState } from "../utils/RecoilData";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import NoMemberInfo from "../member/NoMemberInfo";
 
 const BookingMain = () => {
   const [bookingMovieList, setBookingMovieList] = useState([]);
@@ -20,12 +21,7 @@ const BookingMain = () => {
   const [memberId, setMemberId] = useRecoilState(loginIdState);
   const isLogin = useRecoilValue(isLoginState);
   const [refresh, setRefresh] = useState(false);
-  const [changeView, setChangeView] = useState("/booking/main");
-  const [booking, setBooking] = useState({
-    memberId: memberId,
-    scheduleNo: 0,
-    priceNo: 0,
-  });
+
   const navigate = useNavigate();
   useEffect(() => {
     axios
@@ -36,7 +32,7 @@ const BookingMain = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [booking, movieScheduleSelect, movieSelect]);
+  }, [movieScheduleSelect, movieSelect]);
 
   return (
     <div className="content-wrap">
@@ -155,25 +151,23 @@ const BookingMain = () => {
                                 onClick={() => {
                                   setmovieScheduleSelect(index);
                                   setMovieNo(one.movieNo);
-                                  setBooking({
-                                    ...booking,
-                                    scheduleNo: one.scheduleNo,
-                                  });
-                                  if (!isLogin) {
-                                    Swal.fire({
-                                      title: "로그인 필요",
-                                      text: "예매를 이용하시려면 로그인이 필요합니다.",
-                                      icon: "warning",
-                                      confirmButtonText: "로그인 화면으로",
-                                    }).then((confirm) => {
-                                      if (confirm.isConfirmed) {
-                                        navigate(`/common/login`);
-                                      }
-                                    });
-                                  }
-                                  navigate(
-                                    `/booking/bookingSeat/${one.screenNo}`
-                                  );
+
+                                  !isLogin
+                                    ? navigate("/member/noMemberInfo")
+                                    : navigate(
+                                        `/booking/bookingSeat/${one.screenNo}/${movieNo}`,
+                                        {
+                                          state: {
+                                            scheduleTimeStart:
+                                              one.scheduleTimeStart.slice(
+                                                0,
+                                                16
+                                              ),
+                                            scheduleTimeEnd:
+                                              one.scheduleTimeEnd.slice(0, 16),
+                                          },
+                                        }
+                                      );
                                 }}
                               >
                                 <div>{one.movieTitle}</div>
@@ -185,7 +179,7 @@ const BookingMain = () => {
                                     : "3관"}
                                 </div>
                                 <div>{one.scheduleTimeStart.slice(0, 16)}</div>
-                                <div>{one.scheduleTimeEnd.slice(0, 15)}</div>
+                                <div>{one.scheduleTimeEnd.slice(0, 16)}</div>
                               </div>
                             </div>
                           );
