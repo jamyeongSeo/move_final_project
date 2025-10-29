@@ -13,9 +13,14 @@
   	select distinct s.schedule_time_start, s.schedule_time_end , m.movie_title, s.screen_no
   		from schedule_tbl s
   		join movie_tbl m using(movie_no)
+  	<if test="movieNo == -1">
+  		where to_char(schedule_time_start, 'hh24:mi') <![CDATA[ >= ]]> to_char(sysdate, 'hh24:mi')
+  		order by 1
+  	</if>
   	<if test="movieNo != -1">
   		where to_char(schedule_time_start, 'hh24:mi') <![CDATA[ >= ]]> to_char(sysdate, 'hh24:mi') and movie_no = #{movieNo}
-  		</if>
+  		order by 1
+  	</if>
   </select>
   <select id="selectScreenSeat" resultType="seat">
   	select * from seat_tbl where screen_no = #{screenNo}
