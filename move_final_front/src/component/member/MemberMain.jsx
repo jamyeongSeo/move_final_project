@@ -33,14 +33,7 @@ const MemberMain = () => {
     useStatus: "",
   });
   const [menus, setMenus] = useState([
-    {
-      url: [
-        "/member/memberMain",
-        "/member/memberUpdate",
-        "/member/memberDelete",
-      ],
-      text: "내 정보",
-    },
+    { url: "/member/memberMain", text: "내 정보" },
     { url: "/member/watchedMovieList", text: "내가 본 영화" },
     { url: "/member/bookingMovieList", text: "예약 / 결제" },
   ]);
