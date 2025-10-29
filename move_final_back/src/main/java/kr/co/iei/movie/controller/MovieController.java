@@ -77,6 +77,7 @@ public class MovieController {
 	public ResponseEntity<Map> selectMovieCommentList(@PathVariable int movieNo, 
 														@RequestParam int reqPage,
 															@RequestParam int order){
+		
 		Map<String, Object> commentMap = movieService.selectMovieCommentList(movieNo, reqPage, order);
 		return ResponseEntity.ok(commentMap);
 	}

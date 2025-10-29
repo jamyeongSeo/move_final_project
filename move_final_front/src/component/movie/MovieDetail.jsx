@@ -18,6 +18,7 @@ import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 const MovieDetail = () => {
   const isLogin = useRecoilValue(isLoginState);
   const { movieNo } = useParams();
+  const [member, setMember] = useState({});
   const [memberId, setMemberId] = useRecoilState(loginIdState);
   const [movie, setMovie] = useState({});
   const [likeCount, setLikeCount] = useState(0);
@@ -257,34 +258,47 @@ const MovieDetail = () => {
               </Box>
             </div>
             <div className="movie-comment-list-wrap">
-              {movieCommentList.map((comment, index) => {
-                return (
-                  <div key={"comment-" + index} className="movie-comment-box">
-                    {comment.memberGender === 1 ? (
-                      <Face3OutlinedIcon
-                        sx={{ width: "64px", height: "64px" }}
-                      />
-                    ) : (
-                      <Face6OutlinedIcon
-                        sx={{ width: "64px", height: "64px" }}
-                      />
-                    )}
+              <div className="movie-comment-list">
+                {movieCommentList.map((comment, index) => {
+                  return (
+                    <div key={"comment-" + index} className="movie-comment-box">
+                      {comment.memberGender === 1 ? (
+                        <div className="movie-comment-box-start">
+                          <Face3OutlinedIcon
+                            sx={{ width: "80px", height: "80px" }}
+                          />
+                        </div>
+                      ) : (
+                        <div className="movie-comment-box-start">
+                          <Face6OutlinedIcon
+                            sx={{ width: "80px", height: "80px" }}
+                          />
+                        </div>
+                      )}
 
-                    <div className="movie-comment-box-middle">
                       <div className="movie-comment-title">
-                        {comment.memberId}
+                        {comment.memberNo}
                       </div>
                       <div className="movie-comment-content">
                         {comment.commentContent}
                       </div>
+
+                      <div className="movie-comment-box-end">
+                        <div className="movie-comment-report-btn">
+                          <ReportProblemOutlinedIcon />
+                        </div>
+                        <div className="movie-comment-rate">
+                          <Rating
+                            name="read-only"
+                            value={comment.movieScore}
+                            readOnly
+                          />
+                        </div>
+                      </div>
                     </div>
-                    <div className="movie-comment-box-end">
-                      <ReportProblemOutlinedIcon />
-                      <Rating name="read-only" value={movieScore} readOnly />
-                    </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
           </div>
         )}
