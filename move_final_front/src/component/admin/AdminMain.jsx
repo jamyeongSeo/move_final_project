@@ -14,7 +14,7 @@ const AdminMain = () => {
   const menus = [
     { url: "/admin/main", text: "영화 관리" },
     { url: "/admin/sales", text: "매출 관리" },
-    { url: "/admin/member", text: "회원 관리" },
+    { url: "/admin/main/member", text: "회원 관리" },
   ];
   const subMenus = {
     "/admin/main": [

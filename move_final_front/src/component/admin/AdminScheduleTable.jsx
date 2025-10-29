@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import "./admin.css";
-
+import "./adminSchedule.css";
 const AdminScheduleTable = ({ startDate }) => {
   const [schedules, setSchedules] = useState([]);
 
 useEffect(() => {
   console.log("startDate:", startDate);
   axios
-    .get("http://localhost:9999/admin/schedule/week", { params: { startDate } })
+    .get("http://localhost:9999/admin/schedule", { params: { startDate } })
     .then((res) => setSchedules(res.data))
     .catch((err) => console.error("주간 스케줄 조회 실패:", err));
 }, [startDate]);
