@@ -48,7 +48,7 @@
   </select>
   
   <select id="selectCoupon" resultType="coupon">
-  	select * from coupon_box_tbl join coupon_tbl using(coupon_no) where member_no=#{memberNo}
+  	select * from coupon_box_tbl join coupon_tbl using(coupon_no) where member_no=#{memberNo} and use_status = 'n'
   </select>
   
   
