@@ -19,4 +19,9 @@ public class BookingDTO {
 	private int screenNo;
 	private String bookingDate;
 	private String movieThumb;
+	private String bookSeatRow;
+	private String bookSeatColumn;
+	private int adultCount;
+	private int kidCount; //price_tbl 통해서 연령대 체크 예정
+	private String commentContent;//관람평
 }

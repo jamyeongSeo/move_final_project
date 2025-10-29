@@ -51,7 +51,7 @@
 			from book_tbl b
 			join book_seat_tbl s on(s.book_no = b.book_no)
 			join pay_tbl p on (s.book_seat_no = p.book_seat_no)
-		where b.member_no = #{memberNo}
+		where b.member_no = #{memberNo} p.refund_status = 'n'
 	</select>
 	<!-- 쿠폰 모달 -->
 	<select id="selectCoupon" resultType="coupon">

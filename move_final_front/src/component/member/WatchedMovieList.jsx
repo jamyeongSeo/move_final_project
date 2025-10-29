@@ -45,9 +45,16 @@ const WatchedMovieList = () => {
   const day = year + "." + month + "." + date;
 
   const backServer = import.meta.env.VITE_BACK_SERVER;
-  /* useEffect(() => {
-    axios.get(`${back}`);
-  }, [intervalChoice]);*/
+  useEffect(() => {
+    axios
+      .get(`${backServer}/member/watched/memberId=${memberId}`)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [intervalChoice]);
 
   return (
     <>
