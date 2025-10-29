@@ -13,15 +13,20 @@ import lombok.NoArgsConstructor;
 @Alias(value="booking")
 public class BookingDTO {
 	private int bookNo;
+	private int payNo; 
 	private int priceNo;
 	private int pricePerAge;
 	private int memberNo;
 	private int screenNo;
+	private String screenName;
 	private String bookingDate;
 	private String movieThumb;
 	private String bookSeatRow;
 	private String bookSeatColumn;
-	private int adultCount;
-	private int kidCount; //price_tbl 통해서 연령대 체크 예정
-	private String commentContent;//관람평
+	private String commentContent;
+	private int movieGrade;
+	private String movieTitle;
+	private String scheduleTimeStart;
+	private String scheduleTimeEnd;
+	
 }
