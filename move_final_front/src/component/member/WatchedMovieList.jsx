@@ -39,22 +39,39 @@ const WatchedMovieList = () => {
   const year = today.getFullYear();
   //월
   const month = ("0" + (today.getMonth() + 1)).slice(-2);
-  //-3달
-  const month3 = ("0" + (today.getMonth() + 1 - 3)).slice(-2);
-  //-6달
-  const month6 = ("0" + (today.getMonth() + 1 - 6)).slice(-2);
-  //-9달
-  const month9 = ("0" + (today.getMonth() + 1 - 9)).slice(-2);
-  //-12달
-  const month12 = ("0" + (today.getMonth() + 1 - 12)).slice(-2);
   //일
   const date = ("0" + today.getDate()).slice(-2);
 
+  //-3달
+  const ntoday3 = new Date();
+  ntoday3.setMonth(ntoday3.getMonth() - 3);
+  const year3 = ntoday3.getFullYear();
+  const month3 = ("0" + (ntoday3.getMonth() + 1)).slice(-2);
+  const date3 = ("0" + ntoday3.getDate()).slice(-2);
+  //-6달
+  const ntoday6 = new Date();
+  ntoday6.setMonth(ntoday6.getMonth() - 6);
+  const year6 = ntoday6.getFullYear();
+  const month6 = ("0" + (ntoday6.getMonth() + 1)).slice(-2);
+  const date6 = ("0" + ntoday6.getDate()).slice(-2);
+  //-9달
+  const ntoday9 = new Date();
+  ntoday9.setMonth(ntoday9.getMonth() - 9);
+  const year9 = ntoday9.getFullYear();
+  const month9 = ("0" + (ntoday9.getMonth() + 1)).slice(-2);
+  const date9 = ("0" + ntoday9.getDate()).slice(-2);
+  //-12달
+  const ntoday12 = new Date();
+  ntoday12.setMonth(ntoday12.getMonth() - 12);
+  const year12 = ntoday12.getFullYear();
+  const month12 = ("0" + (ntoday12.getMonth() + 1)).slice(-2);
+  const date12 = ("0" + ntoday12.getDate()).slice(-2);
+
   const day = year + "." + month + "." + date;
-  const day3 = year + "." + month3 + "." + date;
-  const day6 = year + "." + month6 + "." + date;
-  const day9 = year + "." + month9 + "." + date;
-  const day12 = year + "." + month12 + "." + date;
+  const day3 = year3 + "." + month3 + "." + date3;
+  const day6 = year6 + "." + month6 + "." + date6;
+  const day9 = year9 + "." + month9 + "." + date9;
+  const day12 = year12 + "." + month12 + "." + date12;
 
   //axios 값 담아주기
   const [watchedList, setWatchedList] = useState([]);
@@ -64,7 +81,7 @@ const WatchedMovieList = () => {
   useEffect(() => {
     axios
       .get(
-        `${BackServer}/member/watched?memberId=${memberId}&intervalChoice=${intervalChoice}`
+        `${BackServer}/member/watchedList?memberId=${memberId}&intervalChoice=${intervalChoice}`
       )
       .then((res) => {
         console.log(res.data);
@@ -211,69 +228,73 @@ const WatchedMovieList = () => {
                 </div>
               </div>
 
-              {/*map 구간 */}
-              <div className="memberMovie-list-wrap">
-                <div className="memberMovie-box">
-                  <div className="memberMovie-post">
-                    <img src="/image/어쩔수가없다.jpg"></img>
-                  </div>
-                  <div className="memberMovie-info">
-                    <div className="memberMovie-content">
-                      <ul>
-                        <li>
-                          <h3>어쩔수가없다+img등급(if걸어서)</h3>
-                        </li>
-                        <li>2025.10.01(수) 13:00~14:30</li>
-                        <li style={{ marginTop: "10px" }}>1관(2D)</li>
-                        <li style={{ marginTop: "10px" }}>성인:1 / 어린이:1</li>
-                      </ul>
-                    </div>
-                    <div className="memberMovie-review">
-                      <div className="memberMovie-review-text">
-                        <Link>
-                          <ul>
-                            <li>관람하신 영화, 어떠셨나요?</li>
-                            <li>실관람평을 남겨주세요.</li>
-                          </ul>
-                        </Link>
+              <>
+                {watchedList &&
+                  watchedList.map((w, index) => {
+                    return (
+                      <div key={"watchedMovieList-" + index}>
+                        <div className="memberMovie-list-wrap">
+                          <div className="memberMovie-box">
+                            <div className="memberMovie-post">
+                              <img src={w.movieThumb}></img>
+                            </div>
+                            <div className="memberMovie-info">
+                              <div className="memberMovie-content">
+                                <ul>
+                                  <li>
+                                    <h3>
+                                      {w.movieTitle}
+                                      <img
+                                        src={
+                                          w.movieGrade == 1
+                                            ? "/image/ALL.png"
+                                            : w.movieGrade == 2
+                                            ? "/image/12.png"
+                                            : w.movieGrade == 3
+                                            ? "/image/15.png"
+                                            : "/image/19.png"
+                                        }
+                                        className="grade-img"
+                                      />
+                                    </h3>
+                                  </li>
+                                  <li>
+                                    {w.movieDate} {w.movieTime}
+                                  </li>
+                                  <li style={{ marginTop: "10px" }}>
+                                    {w.movieScreen}
+                                  </li>
+                                  <li style={{ marginTop: "10px" }}>
+                                    {w.count}
+                                  </li>
+                                </ul>
+                              </div>
+                              <div className="memberMovie-review">
+                                <div className="memberMovie-review-text">
+                                  <Link>
+                                    <ul>
+                                      {w.comment ? (
+                                        <li>{w.comment}</li>
+                                      ) : (
+                                        <>
+                                          <li>관람하신 영화, 어떠셨나요?</li>
+                                          <li>실관람평을 남겨주세요.</li>
+                                        </>
+                                      )}
+                                    </ul>
+                                  </Link>
+                                </div>
+                                <div className="memberMovie-review-box"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                      <div className="memberMovie-review-box"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                    );
+                  })}
+              </>
 
-              <div className="memberMovie-list-wrap">
-                <div className="memberMovie-box">
-                  <div className="memberMovie-post">
-                    <img src="/image/어쩔수가없다.jpg"></img>
-                  </div>
-                  <div className="memberMovie-info">
-                    <div className="memberMovie-content">
-                      <ul>
-                        <li>
-                          <h4>어쩔수가없다+img등급(if걸어서)</h4>
-                        </li>
-                        <li>2025.10.01(수) 13:00~14:30</li>
-                        <li style={{ marginTop: "10px" }}>1관(2D)</li>
-                        <li style={{ marginTop: "10px" }}>성인:1 / 어린이:1</li>
-                      </ul>
-                    </div>
-                    <div className="memberMovie-review">
-                      <div className="memberMovie-review-text">
-                        <Link>
-                          <ul>
-                            <li>관람하신 영화, 어떠셨나요?</li>
-                            <li>실관람평을 남겨주세요.</li>
-                          </ul>
-                        </Link>
-                      </div>
-                      <div className="memberMovie-review-box"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
+              {/*출력 잘 되는거 확인 되면 삭제 예정 
               <div className="memberMovie-list-wrap">
                 <div className="memberMovie-box">
                   <div className="memberMovie-post">
@@ -304,6 +325,7 @@ const WatchedMovieList = () => {
                   </div>
                 </div>
               </div>
+            */}
             </div>
 
             <div>페이지 네비</div>

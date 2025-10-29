@@ -185,12 +185,17 @@ public class MemberController {
 	}
 	
 	/*--------------- 관람 완료 영화---------------*/
-	@GetMapping(value ="/watched")
+	@GetMapping(value ="/watchedList")
 	public ResponseEntity<Map> selectWatchedMovie(@RequestParam String memberId, @RequestParam int intervalChoice){
 		Map map = memberService.selectWatchedMovie(memberId, intervalChoice);
 		return ResponseEntity.ok(map);
 	}
-	
+	/*------------관람 예정 영화-------------------*/
+	@GetMapping(value="/bookingList")
+	public ResponseEntity<Map> selectBookingMovie(@RequestParam String memberId){
+		Map map = memberService.selectBookingMovie(memberId);
+		return ResponseEntity.ok(map);
+	}
 	
 	
 }

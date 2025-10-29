@@ -102,7 +102,7 @@
 			left join movie_tbl m on(m.movie_no = s.movie_no)
 			left join movie_comment_tbl mc on (mc.movie_no = m.movie_no)
 			left join screen_tbl sc on (sc.screen_no = s.screen_no)
-			where (p.refund_status = 'n') and
+			where (m.member_no=#{memberNo}) and (p.refund_status = 'n') and
         			(b.booking_date <= sysdate) and 
         			(((to_number(to_char(s.schedule_time_end,'hh24'))*60)+(to_number(to_char(s.schedule_time_end,'mi')))) <= ((to_number(to_char(sysdate,'hh24'))*60)+(to_number(to_char(sysdate,'mi')))))
 		 ]]>
@@ -131,7 +131,7 @@
 			left join movie_tbl m on(m.movie_no = s.movie_no)
 			left join movie_comment_tbl mc on (mc.movie_no = m.movie_no)
 			left join screen_tbl sc on (sc.screen_no = s.screen_no)
-			where (m.member_id=#{memberId}) and (p.refund_status = 'n') and
+			where (m.member_no=#{memberNo}) and (p.refund_status = 'n') and
         			(b.booking_date between add_months(sysdate, -#{intervalChoice}) and sysdate) and 
         			(((to_number(to_char(s.schedule_time_end,'hh24'))*60)+(to_number(to_char(s.schedule_time_end,'mi')))) <= ((to_number(to_char(sysdate,'hh24'))*60)+(to_number(to_char(sysdate,'mi')))))
 		 ]]>
@@ -163,7 +163,7 @@
 			left join movie_tbl m on(m.movie_no = s.movie_no)
 			left join movie_comment_tbl mc on (mc.movie_no = m.movie_no)
 			left join screen_tbl sc on (sc.screen_no = s.screen_no)
-			where (p.refund_status = 'n') and
+			where (m.member_no=#{memberNo}) and (p.refund_status = 'n') and
         			(b.booking_date <= sysdate) and 
         			(((to_number(to_char(s.schedule_time_end,'hh24'))*60)+(to_number(to_char(s.schedule_time_end,'mi')))) <= ((to_number(to_char(sysdate,'hh24'))*60)+(to_number(to_char(sysdate,'mi'))))))
 		 ]]>
@@ -193,11 +193,73 @@
 			left join movie_tbl m on(m.movie_no = s.movie_no)
 			left join movie_comment_tbl mc on (mc.movie_no = m.movie_no)
 			left join screen_tbl sc on (sc.screen_no = s.screen_no)
-			where (m.member_id=#{memberId}) and (p.refund_status = 'n') and
+			where (m.member_no=#{memberNo}) and (p.refund_status = 'n') and
         			(b.booking_date between add_months(sysdate, -#{intervalChoice}) and sysdate) and 
         			(((to_number(to_char(s.schedule_time_end,'hh24'))*60)+(to_number(to_char(s.schedule_time_end,'mi')))) <= ((to_number(to_char(sysdate,'hh24'))*60)+(to_number(to_char(sysdate,'mi'))))))
 		 ]]>
 		</if>
+	</select>
+	
+	<!-- 관람 예정 영화 -->
+	<select id="selectBookingMovie" resultType="booking">
+		<![CDATA[
+			select 
+    			mc.comment_content,
+    			m.movie_thumb,
+    			m.movie_title,
+    			m.movie_grade,
+    			to_char(s.schedule_time_start,'HH24:MI'),
+    			to_char(s.schedule_time_end,'HH24:MI'),
+    			sc.screen_name,
+    			pr.price_per_age,
+    			to_char(b.booking_date,'YYYY.DD.MM'),
+    			bs.book_seat_row,
+    			bs.book_seat_column,
+    			p.pay_no
+			from member_tbl m
+			left join book_tbl b on (b.member_no = m.member_no)
+			left join book_seat_tbl bs on (bs.book_no = b.book_no)
+			left join pay_tbl p on (p.book_seat_no = bs.book_seat_no)
+			left join price_tbl pr on (pr.price_no = b.price_no)
+			left join schedule_tbl s on (s.schedule_no = b.schedule_no)
+			left join movie_tbl m on(m.movie_no = s.movie_no)
+			left join movie_comment_tbl mc on (mc.movie_no = m.movie_no)
+			left join screen_tbl sc on (sc.screen_no = s.screen_no)
+			where (m.member_no=#{memberNo}) and (p.refund_status = 'n') and
+        			(b.booking_date >= sysdate) and 
+        			(((to_number(to_char(s.schedule_time_start,'hh24'))*60)+(to_number(to_char(s.schedule_time_start,'mi')))) >= ((to_number(to_char(sysdate,'hh24'))*60)+(to_number(to_char(sysdate,'mi')))))
+		 ]]>
+	</select>
+	<select id="bookingCount" resultType="int">
+		<![CDATA[
+		select count(*) from
+			(select 
+    			mc.comment_content,
+    			m.movie_thumb,
+    			m.movie_title,
+    			m.movie_grade,
+    			to_char(s.schedule_time_start,'HH24:MI'),
+    			to_char(s.schedule_time_end,'HH24:MI'),
+    			sc.screen_name,
+    			pr.price_per_age,
+    			to_char(b.booking_date,'YYYY.DD.MM'),
+    			bs.book_seat_row,
+    			bs.book_seat_column,
+    			p.pay_no
+			from member_tbl m
+			left join book_tbl b on (b.member_no = m.member_no)
+			left join book_seat_tbl bs on (bs.book_no = b.book_no)
+			left join pay_tbl p on (p.book_seat_no = bs.book_seat_no)
+			left join price_tbl pr on (pr.price_no = b.price_no)
+			left join schedule_tbl s on (s.schedule_no = b.schedule_no)
+			left join movie_tbl m on(m.movie_no = s.movie_no)
+			left join movie_comment_tbl mc on (mc.movie_no = m.movie_no)
+			left join screen_tbl sc on (sc.screen_no = s.screen_no)
+			where (m.member_no=#{memberNo}) and (p.refund_status = 'n') and
+        			(b.booking_date >= sysdate) and 
+        			(((to_number(to_char(s.schedule_time_start,'hh24'))*60)+(to_number(to_char(s.schedule_time_start,'mi')))) >= ((to_number(to_char(sysdate,'hh24'))*60)+(to_number(to_char(sysdate,'mi'))))))
+		 ]]>
+		
 	</select>
 	
 </mapper>

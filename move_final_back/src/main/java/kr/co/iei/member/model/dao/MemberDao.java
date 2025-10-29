@@ -47,9 +47,16 @@ public interface MemberDao {
 	//--------관람 완료 영화
 	String memberEnrollDate(String memberId);
 
-	List<BookingDTO> selectWatchedMovie(int intervalChoice, String memberId);
+	List<BookingDTO> selectWatchedMovie(int intervalChoice, int memberNo);
+	
+	int watchedCount(int intervalChoice, int memberNo);
+	
+	//--------관람 예정 영화
+	int bookingCount(int memberNo);
 
-	int watchedCount(int intervalChoice, String memberId);
+	List<BookingDTO> selectBookingMovie(int memberNo);
+
+	
 
 	
 
