@@ -96,7 +96,7 @@ const BookingMain = () => {
                                 )
                                 .then((res) => {
                                   console.log(res);
-
+                                  console.log("movieDate :" + movieDate);
                                   setBookingSchedule(res.data.oneSchedule);
                                 })
 
@@ -158,12 +158,10 @@ const BookingMain = () => {
                                         {
                                           state: {
                                             scheduleTimeStart:
-                                              one.scheduleTimeStart.slice(
-                                                0,
-                                                16
-                                              ),
+                                              one.scheduleTimeStart,
                                             scheduleTimeEnd:
-                                              one.scheduleTimeEnd.slice(0, 16),
+                                              one.scheduleTimeEnd,
+                                            movieDate: movieDate,
                                           },
                                         }
                                       );
@@ -177,9 +175,9 @@ const BookingMain = () => {
                                     ? "2관"
                                     : "3관"}
                                 </div>
-                                <div>{one.scheduleTimeStart.slice(11, 16)}</div>
+                                <div>{one.scheduleTimeStart}</div>
                                 <span>~</span>
-                                <div>{one.scheduleTimeEnd.slice(11, 16)}</div>
+                                <div>{one.scheduleTimeEnd}</div>
                               </div>
                             </div>
                           );

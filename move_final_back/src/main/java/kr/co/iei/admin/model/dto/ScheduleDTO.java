@@ -22,4 +22,5 @@ public class ScheduleDTO {
 	private String scheduleTimeEnd;
 	private String scheduleOpen;
 	private String scheduleClose;
+	private Date scheduleDate;
 }
