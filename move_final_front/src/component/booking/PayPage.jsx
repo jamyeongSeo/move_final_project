@@ -9,21 +9,25 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import { PortOneClient } from "@portone/server-sdk";
 
 const PayPage = () => {
   const location = useLocation();
   const bookingInfo = location.state.bookingInfo;
   const movieNo = bookingInfo.movieNo;
-  const scheduleDate = new Date(bookingInfo.scheduleTimeStart);
-  const scheduleEnd = new Date(bookingInfo.scheduleTimeEnd);
+  const scheduleDate = bookingInfo.scheduleTimeStart;
+  const scheduleEnd = bookingInfo.scheduleTimeEnd;
   const totalPrice = bookingInfo.totalPrice;
+  const movieDate = bookingInfo.movieDate;
   const [payPrice, setPayPrice] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [movie, setMovie] = useState(null);
   const [memberId, setMemberId] = useRecoilState(loginIdState);
   const [couponList, setCouponList] = useState([]);
-  const [coupon, setCoupon] = useState(0);
+  const [coupon, setCoupon] = useState(null);
   const [refresh, setRefresh] = useState(false);
+  const [member, setMember] = useState(null);
+
   useEffect(() => {
     axios
       .get(
@@ -54,7 +58,29 @@ const PayPage = () => {
         console.log(err);
       });
   }, []);
-
+  useEffect(() => {
+    setPayPrice(totalPrice - coupon);
+    if (totalPrice - coupon < 0) {
+      setPayPrice(0);
+    }
+  }, [coupon]);
+  useEffect(() => {
+    axios
+      .get(
+        `${
+          import.meta.env.VITE_BACK_SERVER
+        }/member/selectMember?memberId=${memberId}`
+      )
+      .then((res) => {
+        console.log(res);
+        setMember(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+  console.log(movie);
+  console.log(member);
   return movie !== null ? (
     <div className="content-wrap">
       <div className="pay-content">
@@ -68,34 +94,30 @@ const PayPage = () => {
               <div className="book-info-detail">
                 <div className="pay-movie-title">{movie.movieTitle}</div>
                 <div className="pay-movie-schedule">
-                  {String(scheduleDate.getMonth()).padStart(2, "0") +
-                    "-" +
-                    String(scheduleDate.getDate()).padStart(2, "0")}
+                  {movieDate.getMonth() + 1 + "-" + movieDate.getDate()}
                   &nbsp;
-                  {scheduleDate.getDay() === 1
+                  {movieDate.getDay() === 1
                     ? "(월)"
-                    : scheduleDate.getDay() === 2
+                    : movieDate.getDay() === 2
                     ? "(화)"
-                    : scheduleDate.getDay() === 3
+                    : movieDate.getDay() === 3
                     ? "(수)"
-                    : scheduleDate.getDay() === 4
+                    : movieDate.getDay() === 4
                     ? "(목)"
-                    : scheduleDate.getDay() === 5
+                    : movieDate.getDay() === 5
                     ? "(금)"
-                    : scheduleDate.getDay() === 6
+                    : movieDate.getDay() === 6
                     ? "(토)"
                     : "(일)"}
                   &nbsp;
-                  {scheduleDate.getHours() + " : " + scheduleDate.getMinutes()}
-                  {" ~ " +
-                    scheduleEnd.getHours() +
-                    " : " +
-                    scheduleEnd.getMinutes()}
+                  <br />
+                  {scheduleDate}
+                  {" ~ " + scheduleEnd}
                 </div>
                 <div className="screen-title">
-                  {bookingInfo.screenNo === 1
+                  {bookingInfo.screenNo === "1"
                     ? "1관"
-                    : bookingInfo.screenNo === 2
+                    : bookingInfo.screenNo === "2"
                     ? "2관"
                     : "3관"}
                 </div>
@@ -139,6 +161,19 @@ const PayPage = () => {
                 />
               }
             </div>
+            <div className="pay-price-box">
+              {"최종 결제 금액 : " + payPrice.toLocaleString() + "원"}
+            </div>
+            <div className="btn-wrap">
+              <button
+                className="pay-btn"
+                onClick={() => {
+                  const portOne = new PortOne();
+                }}
+              >
+                결제하기
+              </button>
+            </div>
           </section>
         </div>
       </div>
@@ -153,6 +188,7 @@ const CouponSelect = (props) => {
   const setCoupon = props.setCoupon;
   const totalPrice = props.totalPrice;
   const coupon = props.coupon;
+  const setPayPrice = props.setPayPrice;
 
   const couponSelect = (e) => {
     setCoupon(e.target.value);
@@ -167,15 +203,11 @@ const CouponSelect = (props) => {
           value={coupon}
           onChange={couponSelect}
         >
-          <MenuItem value={-1}>선택하지 않음</MenuItem>
+          <MenuItem value={0}>선택하지 않음</MenuItem>
           {couponList.map((coupon, index) => {
-            return couponList.length !== 0 ? (
-              <MenuItem key={"coupon-" + index} value={coupon.couponName}>
+            return (
+              <MenuItem key={"coupon-" + index} value={coupon.couponDisscount}>
                 {coupon.couponName}
-              </MenuItem>
-            ) : (
-              <MenuItem key={"no-coupon"} value={-1}>
-                사용할 수 있는 쿠폰이 없습니다.
               </MenuItem>
             );
           })}

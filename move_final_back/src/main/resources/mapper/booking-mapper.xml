@@ -10,17 +10,28 @@
 	from dual connect by level <![CDATA[ <= ]]>7 
   </select>
   <select id="selectSchedule" resultType="schedule">
-  	select distinct s.schedule_time_start, s.schedule_time_end , m.movie_title, s.screen_no
-  		from schedule_tbl s
-  		join movie_tbl m using(movie_no)
-  	<if test="movieNo == -1">
-  		where to_char(schedule_time_start, 'hh24:mi') <![CDATA[ >= ]]> to_char(sysdate, 'hh24:mi')
-  		order by 1
-  	</if>
-  	<if test="movieNo != -1">
-  		where to_char(schedule_time_start, 'hh24:mi') <![CDATA[ >= ]]> to_char(sysdate, 'hh24:mi') and movie_no = #{movieNo}
-  		order by 1
-  	</if>
+  	select * 
+    	from (select distinct to_char(schedule_time_start, 'hh24:mi') as schedule_time_start, 
+    		to_char(schedule_time_end, 'hh24:mi') as schedule_time_end ,
+    		 
+    		m.movie_title, 
+    		s.screen_no , 
+    		m.movie_type, 
+    		m.movie_grade,
+    		movie_no
+  				from schedule_tbl s
+  				left join movie_tbl m using(movie_no)
+  			where to_date(schedule_open, 'yyyy-mm-dd') <![CDATA[ <= ]]> to_date(sysdate, 'yyyy-mm-dd') 
+  			and to_date(schedule_close, 'yyyy-mm-dd') <![CDATA[ >= ]]> to_date(sysdate, 'yyyy-mm-dd'))
+    where schedule_time_start <![CDATA[ >= ]]> to_char(sysdate, 'hh24:mi')
+    <if test="movieNo == -1">
+    order by schedule_time_start asc
+    </if>
+    <if test="movieNo != -1">
+    and movie_no = #{movieNo}	
+	order by schedule_time_start asc
+    </if>
+  
   </select>
   <select id="selectScreenSeat" resultType="seat">
   	select * from seat_tbl where screen_no = #{screenNo}
@@ -40,7 +51,7 @@
   </select>
   
   <select id="selectOneMovie" resultType="movie">
-  	select movie_thumb, movie_title from movie_tbl where movie_no = #{movieNo}
+  	select * from movie_tbl where movie_no = #{movieNo}
   </select>
   
   <select id="selectOneMemberNo" resultType="member">

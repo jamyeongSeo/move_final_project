@@ -80,9 +80,9 @@ const BookingSchedule = (props) => {
                 currentHour +
                 ":" +
                 currentMinutes;
-              console.log(schedule.getTime());
+
               const newDate = schedule.getTime();
-              setMovieDate(newDate);
+              setMovieDate(schedule);
               setMovieSelect(-1);
               axios
                 .get(

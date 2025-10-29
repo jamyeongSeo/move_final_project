@@ -47,7 +47,6 @@ public class BookingController {
 	
 	@GetMapping(value="/schedule")
 	public ResponseEntity<Map> getSchedule(@RequestParam int movieNo){
-		
 		Map map = bookingService.selectSchedule(movieNo);
 		return ResponseEntity.ok(map);
 	}
