@@ -32,6 +32,7 @@ const BookingSeat = () => {
     selectSeatList: selectSeatList,
     scheduleTimeStart: location.state.scheduleTimeStart,
     scheduleTimeEnd: location.state.scheduleTimeEnd,
+    movieDate: location.state.movieDate,
   };
 
   useEffect(() => {

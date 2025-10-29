@@ -12,13 +12,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.iei.movie.model.dao.MovieDao;
+import kr.co.iei.movie.model.dto.MovieCommentDTO;
 import kr.co.iei.movie.model.dto.MovieDTO;
 import kr.co.iei.movie.model.dto.MovieScheduleDTO;
+import kr.co.iei.utils.PageInfo;
+import kr.co.iei.utils.PageInfoUtils;
 
 @Service
 public class MovieService {
 	@Autowired
 	MovieDao movieDao;
+	@Autowired
+	PageInfoUtils piu;
 
 	public Map selectMovieList(String memberId) {
 		List<MovieDTO> movieList = movieDao.selectMovieList();
@@ -158,6 +163,33 @@ public class MovieService {
 		MovieDTO movie = movieDao.selectOneMovie(movieNo);
 		System.out.println(movie);
 		return movie;
+	}
+
+
+	public Map<String, Object> selectMovieCommentList(int movieNo, int reqPage, int order) {
+		int numPerPage = 10; 
+		int pageNaviSize = 5; 
+		 
+		int totalCount = movieDao.selectCommentCount();
+		
+		PageInfo pi = piu.getPageInfo(reqPage, numPerPage, pageNaviSize, totalCount);
+		int start = pi.getStart();
+		int end = pi.getEnd();
+		
+		Map<String, Object> commentListMap = new HashMap<>();
+		commentListMap.put("start", start);
+		commentListMap.put("end", end);
+		commentListMap.put("order", order);
+		commentListMap.put("movieNo", movieNo);
+		
+		List commentList = movieDao.selectMovieCommentList(commentListMap);
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("commentList", commentList);
+		map.put("pi", pi);
+		map.put("totalCount", totalCount);
+		
+		return map;
 	}
 
 	

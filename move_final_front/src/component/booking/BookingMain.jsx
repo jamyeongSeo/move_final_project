@@ -13,7 +13,7 @@ import NoMemberInfo from "../member/NoMemberInfo";
 const BookingMain = () => {
   const [bookingMovieList, setBookingMovieList] = useState([]);
   const [bookingSchedule, setBookingSchedule] = useState([]);
-  const [movieDate, setMovieDate] = useState("");
+  const [movieDate, setMovieDate] = useState(null);
   const [movieNo, setMovieNo] = useState(-1);
   const [movieScheduleSelect, setmovieScheduleSelect] = useState(-1);
   const [movieSelect, setMovieSelect] = useState(-1);
@@ -92,11 +92,11 @@ const BookingMain = () => {
                                     import.meta.env.VITE_BACK_SERVER
                                   }/booking/schedule?movieNo=${
                                     bookingMovie.movieNo
-                                  }&movieDate=${movieDate}`
+                                  }`
                                 )
                                 .then((res) => {
                                   console.log(res);
-
+                                  console.log("movieDate :" + movieDate);
                                   setBookingSchedule(res.data.oneSchedule);
                                 })
 
@@ -104,7 +104,6 @@ const BookingMain = () => {
                                   console.log(err);
                                 });
                             }}
-                            ref={movieContent}
                           >
                             <div className="booking-movie-grade">
                               <img
@@ -159,12 +158,10 @@ const BookingMain = () => {
                                         {
                                           state: {
                                             scheduleTimeStart:
-                                              one.scheduleTimeStart.slice(
-                                                0,
-                                                16
-                                              ),
+                                              one.scheduleTimeStart,
                                             scheduleTimeEnd:
-                                              one.scheduleTimeEnd.slice(0, 16),
+                                              one.scheduleTimeEnd,
+                                            movieDate: movieDate,
                                           },
                                         }
                                       );
@@ -178,8 +175,9 @@ const BookingMain = () => {
                                     ? "2관"
                                     : "3관"}
                                 </div>
-                                <div>{one.scheduleTimeStart.slice(0, 16)}</div>
-                                <div>{one.scheduleTimeEnd.slice(0, 16)}</div>
+                                <div>{one.scheduleTimeStart}</div>
+                                <span>~</span>
+                                <div>{one.scheduleTimeEnd}</div>
                               </div>
                             </div>
                           );

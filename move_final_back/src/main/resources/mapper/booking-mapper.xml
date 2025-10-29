@@ -10,19 +10,28 @@
 	from dual connect by level <![CDATA[ <= ]]>7 
   </select>
   <select id="selectSchedule" resultType="schedule">
-  	select *
-  		from schedule_tbl s
-  		join movie_tbl m using(movie_no)
-  	<if test="movieNo != -1 and movieDate == ''">
-  		where schedule_time_start >= sysdate and movie_no = #{movieNo}
-  	</if>
-  	<if test="movieNo == -1 and movieDate != ''">
-  		where schedule_time_start >= sysdate and to_char(schedule_time_start, 'yyyy-mm-dd') like '%'||#{movieDate}||'%'
-  	</if>
-  	<if test="movieNo != -1 and movieDate != ''">
-  		where schedule_time_start >= sysdate and movie_no = #{movieNo} and to_char(schedule_time_start, 'yyyy-mm-dd') like '%'||#{movieDate}||'%'
-  	</if>
-  	
+  	select * 
+    	from (select distinct to_char(schedule_time_start, 'hh24:mi') as schedule_time_start, 
+    		to_char(schedule_time_end, 'hh24:mi') as schedule_time_end ,
+    		 
+    		m.movie_title, 
+    		s.screen_no , 
+    		m.movie_type, 
+    		m.movie_grade,
+    		movie_no
+  				from schedule_tbl s
+  				left join movie_tbl m using(movie_no)
+  			where to_date(schedule_open, 'yyyy-mm-dd') <![CDATA[ <= ]]> to_date(sysdate, 'yyyy-mm-dd') 
+  			and to_date(schedule_close, 'yyyy-mm-dd') <![CDATA[ >= ]]> to_date(sysdate, 'yyyy-mm-dd'))
+    where schedule_time_start <![CDATA[ >= ]]> to_char(sysdate, 'hh24:mi')
+    <if test="movieNo == -1">
+    order by schedule_time_start asc
+    </if>
+    <if test="movieNo != -1">
+    and movie_no = #{movieNo}	
+	order by schedule_time_start asc
+    </if>
+  
   </select>
   <select id="selectScreenSeat" resultType="seat">
   	select * from seat_tbl where screen_no = #{screenNo}
@@ -42,7 +51,7 @@
   </select>
   
   <select id="selectOneMovie" resultType="movie">
-  	select movie_thumb, movie_title from movie_tbl where movie_no = #{movieNo}
+  	select * from movie_tbl where movie_no = #{movieNo}
   </select>
   
   <select id="selectOneMemberNo" resultType="member">
@@ -50,7 +59,7 @@
   </select>
   
   <select id="selectCoupon" resultType="coupon">
-  	select * from coupon_box_tbl join coupon_tbl using(coupon_no) where member_no=#{memberNo}
+  	select * from coupon_box_tbl join coupon_tbl using(coupon_no) where member_no=#{memberNo} and use_status = 'n'
   </select>
   
   

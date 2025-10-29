@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import kr.co.iei.booking.model.dto.BookingDTO;
 import kr.co.iei.coupon.model.dto.CouponDTO;
 import kr.co.iei.member.model.dto.MemberDTO;
 
@@ -42,6 +43,20 @@ public interface MemberDao {
 
 	//----------회원정보수정
 	int updateMember(MemberDTO member);
+
+	//--------관람 완료 영화
+	String memberEnrollDate(String memberId);
+
+	List<BookingDTO> selectWatchedMovie(int intervalChoice, int memberNo);
+	
+	int watchedCount(int intervalChoice, int memberNo);
+	
+	//--------관람 예정 영화
+	int bookingCount(int memberNo);
+
+	List<BookingDTO> selectBookingMovie(int memberNo);
+
+	
 
 	
 

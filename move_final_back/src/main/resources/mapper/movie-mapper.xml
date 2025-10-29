@@ -40,7 +40,7 @@
 	from movie_tbl m 
 	left join price_tbl p on (p.movie_no = m.movie_no)
 	left join book_tbl b on (b.price_no = p.price_no)
-	left join (select bs.book_no from pay_tbl p join book_seat_tbl bs on (bs.book_seat_no = p.book_seat_no)) c on (c.book_no = b.book_no) 
+	left join (select bs.book_no from pay_tbl p join book_seat_tbl bs on (bs.book_seat_no = p.book_seat_no) where p.refund_status = 'n') c on (c.book_no = b.book_no) 
 	where (m.movie_status != 3 and to_number(sysdate-b.booking_date) <= 7) or (m.movie_status != 3 and b.booking_date is null)
 	group by m.movie_no,m.movie_title, m.movie_thumb, m.movie_grade, m.movie_content
 	order by gallery_count desc
@@ -94,11 +94,36 @@
             			right join (select s.schedule_no, count(bs.book_seat_no) gallery_seat
             			from book_seat_tbl bs
             			left join book_tbl b on (b.book_no = bs.book_no)
+            			left join pay_tbl ppp on (ppp.book_seat_no = bs.book_seat_no)
             right join schedule_tbl s on (s.schedule_no = b.schedule_no)
-            where b.booking_date = sysdate+#{dateSchedule}
+            where (b.booking_date = sysdate+#{dateSchedule}) and (ppp.refund_status = 'n')
             group by s.schedule_no) sss on (sss.schedule_no = b.schedule_no)) sh2 on (sh1.booking_date = sh2.booking_date)
             order by sh1.schedule_time_start
 	  ]]>
   </select>
   <!-- Mian  끝-->
+  <select id="selectCommentCount" resultType="int">
+  	select count(*) from movie_comment_tbl
+  </select>
+  <select id="selectMovieCommentList" resultType="movieComment">
+  	select * from
+  		(select rownum as rnum, c.* from
+  			(select * 
+  				from movie_comment_tbl 
+  				where movie_no = #{movieNo}
+  				order by 
+  				<choose>
+  					<when test="order==1">
+  						movie_comment_no desc
+  					</when>
+  					<when test="order==2">
+  						movie_score desc
+  					</when>	
+  				</choose>
+  			)c
+  		)
+  	where rnum between #{start} and #{end}	
+
+  	
+  </select>
 </mapper>

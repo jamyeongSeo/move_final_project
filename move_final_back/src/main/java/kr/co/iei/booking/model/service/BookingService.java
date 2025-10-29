@@ -1,5 +1,6 @@
 package kr.co.iei.booking.model.service;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,10 +36,10 @@ public class BookingService {
 		return map;
 	}
 
-	public Map selectSchedule(int movieNo, String movieDate) {
+	public Map selectSchedule(int movieNo) {
 		Map selectMap = new HashMap<String, Object>();
 		selectMap.put("movieNo", movieNo);
-		selectMap.put("movieDate", movieDate);
+		
 		List oneSchedule = bookingDao.selectSchedule(selectMap);
 		Map map = new HashMap<String, Object>();
 		map.put("oneSchedule", oneSchedule);

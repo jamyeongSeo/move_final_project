@@ -33,14 +33,7 @@ const MemberMain = () => {
     useStatus: "",
   });
   const [menus, setMenus] = useState([
-    {
-      url: [
-        "/member/memberMain",
-        "/member/memberUpdate",
-        "/member/memberDelete",
-      ],
-      text: "내 정보",
-    },
+    { url: "/member/memberMain", text: "내 정보" },
     { url: "/member/watchedMovieList", text: "내가 본 영화" },
     { url: "/member/bookingMovieList", text: "예약 / 결제" },
   ]);
@@ -193,7 +186,7 @@ const CouponModal = (props) => {
         보유 쿠폰
       </div>
       <Modal open={open} onClose={handleClose}>
-        <Box sx={style}>
+        <Box sx={{ style }}>
           <div className="memberMain-coupon-wrap">
             {couponBox.map((coupon, index) => {
               return (

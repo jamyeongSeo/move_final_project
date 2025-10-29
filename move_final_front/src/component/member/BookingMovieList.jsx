@@ -1,20 +1,32 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import LeftSideMenu from "../utils/LeftSideMenu";
+import axios from "axios";
+import { useRecoilState } from "recoil";
+import { loginIdState } from "../utils/RecoilData";
 
 const BookingMovieList = () => {
+  const [memberId, setMemberId] = useRecoilState(loginIdState);
   const [menus, setMenus] = useState([
-    {
-      url: [
-        "/member/memberMain",
-        "/member/memberUpdate",
-        "/member/memberDelete",
-      ],
-      text: "내 정보",
-    },
+    { url: "/member/memberMain", text: "내 정보" },
     { url: "/member/watchedMovieList", text: "내가 본 영화" },
     { url: "/member/bookingMovieList", text: "예약 / 결제" },
   ]);
+
+  const [bookingList, setBookingList] = useState([]);
+  const [totalCount, setTotalCount] = useState();
+  const BackServer = import.meta.env.VITE_BACK_SERVER;
+  useEffect(() => {
+    axios
+      .get(`${BackServer}/member/bookingList?memberId=${memberId}`)
+      .then((res) => {
+        console.log(res.data);
+        setBookingList(res.data.bookingList);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
   return (
     <div className="content-wrap">
       <section className="left-side-menu-side">
@@ -32,37 +44,117 @@ const BookingMovieList = () => {
           style={{ borderBottom: "none" }}
           className="member-mypage-content-wrap"
         >
-          {/*map 구간 */}
-          <div className="memberMovie-list-wrap">
-            <div className="memberMovie-box">
-              <div className="memberMovie-post">
-                <img src="/image/어쩔수가없다.jpg"></img>
-              </div>
-              <div className="memberMovie-info">
-                <div className="memberMovie-content">
-                  <ul>
-                    <li>
-                      <h3>어쩔수가없다+img등급(if걸어서)</h3>
-                    </li>
-                    <li>2025.10.01(수) 13:00~14:30</li>
-                    <li style={{ marginTop: "10px" }}>1관(2D)</li>
-                    <li style={{ marginTop: "10px" }}>성인:1 / 어린이:1</li>
-                  </ul>
+          <>
+            {bookingList &&
+              bookingList.map((b, index) => {
+                <div key={"bookingMovie-" + index}>
+                  <div className="memberMovie-list-wrap">
+                    <div className="memberMovie-box">
+                      <div className="memberMovie-post">
+                        <img src={b.movieThumb}></img>
+                      </div>
+                      <div className="memberMovie-info">
+                        <div className="memberMovie-content">
+                          <ul>
+                            <li>
+                              <h3>
+                                {b.movieTitle}
+                                <img
+                                  src={
+                                    w.movieGrade == 1
+                                      ? "/image/ALL.png"
+                                      : w.movieGrade == 2
+                                      ? "/image/12.png"
+                                      : w.movieGrade == 3
+                                      ? "/image/15.png"
+                                      : "/image/19.png"
+                                  }
+                                  className="grade-img"
+                                />
+                              </h3>
+                            </li>
+                            <li>
+                              {b.movieDate} {b.movieTime}
+                            </li>
+                            <li style={{ marginTop: "10px" }}>
+                              {b.movieScreen}
+                            </li>
+                            <li style={{ marginTop: "10px" }}>
+                              {b.count}
+                              <span
+                                style={{
+                                  marginTop: "0px",
+                                  fontWeight: "500",
+                                  fontSize: "16px",
+                                  marginLeft: "23px",
+                                }}
+                              >
+                                [ {b.seat} ]
+                              </span>
+                            </li>
+                          </ul>
+                        </div>
+                        <div className="memberMovie-booking-btn">
+                          <button
+                            style={{ marginRight: "5px", width: "110px" }}
+                            className="btn-red"
+                          >
+                            예매내역 발송
+                          </button>
+                          <button style={{ width: "80px" }} className="btn-red">
+                            예매 취소
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>;
+              })}
+          </>
+          {/*출력 확인 후 삭제 예정 
+            <div className="memberMovie-list-wrap">
+              <div className="memberMovie-box">
+                <div className="memberMovie-post">
+                  <img src="/image/어쩔수가없다.jpg"></img>
                 </div>
-                <div className="memberMovie-booking-btn">
-                  <button
-                    style={{ marginRight: "5px", width: "110px" }}
-                    className="btn-red"
-                  >
-                    예매내역 발송
-                  </button>
-                  <button style={{ width: "80px" }} className="btn-red">
-                    예매 취소
-                  </button>
+                <div className="memberMovie-info">
+                  <div className="memberMovie-content">
+                    <ul>
+                      <li>
+                        <h3>어쩔수가없다+img등급(if걸어서)</h3>
+                      </li>
+                      <li>2025.10.01(수) 13:00~14:30</li>
+                      <li style={{ marginTop: "10px" }}>1관(2D)</li>
+                      <li style={{ marginTop: "10px" }}>
+                        성인:1 / 어린이:1
+                        <span
+                          style={{
+                            marginTop: "0px",
+                            fontWeight: "500",
+                            fontSize: "16px",
+                            marginLeft: "23px",
+                          }}
+                        >
+                          [ F1, F2 ]
+                        </span>
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="memberMovie-booking-btn">
+                    <button
+                      style={{ marginRight: "5px", width: "110px" }}
+                      className="btn-red"
+                    >
+                      예매내역 발송
+                    </button>
+                    <button style={{ width: "80px" }} className="btn-red">
+                      예매 취소
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          */}
         </div>
 
         <div>페이지 네비</div>
