@@ -101,4 +101,28 @@
 	  ]]>
   </select>
   <!-- Mian  끝-->
+  <select id="selectCommentCount" resultType="int">
+  	select count(*) from movie_comment_tbl
+  </select>
+  <select id="selectMovieCommentList" resultType="movieComment">
+  	select * from
+  		(select rownum as rnum, c.* from
+  			(select * 
+  				from movie_comment_tbl 
+  				where movie_no = #{movieNo}
+  				order by 
+  				<choose>
+  					<when test="order==1">
+  						movie_comment_no desc
+  					</when>
+  					<when test="order==2">
+  						movie_score desc
+  					</when>	
+  				</choose>
+  			)c
+  		)
+  	where rnum between #{start} and #{end}	
+
+  	
+  </select>
 </mapper>

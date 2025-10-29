@@ -29,6 +29,10 @@ public interface MovieDao {
 	List selectSchedule(int dateSchedule);
 	/*------Main 끝------*/
 
+	int selectCommentCount();
+
+	List selectMovieCommentList(Map<String, Object> commentListMap);
+
 	
 
 	
