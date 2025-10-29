@@ -186,7 +186,7 @@ const CouponModal = (props) => {
         보유 쿠폰
       </div>
       <Modal open={open} onClose={handleClose}>
-        <Box sx={style}>
+        <Box sx={{ style }}>
           <div className="memberMain-coupon-wrap">
             {couponBox.map((coupon, index) => {
               return (

@@ -45,9 +45,10 @@ const WatchedMovieList = () => {
   const day = year + "." + month + "." + date;
 
   const backServer = import.meta.env.VITE_BACK_SERVER;
-  useEffect(() => {
-    axios.get;
-  }, [intervalChoice]);
+  /* useEffect(() => {
+    axios.get(`${back}`);
+  }, [intervalChoice]);*/
+
   return (
     <>
       {memberLevel == "" ? (

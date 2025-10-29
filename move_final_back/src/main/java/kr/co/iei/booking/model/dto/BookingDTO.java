@@ -17,4 +17,6 @@ public class BookingDTO {
 	private int pricePerAge;
 	private int memberNo;
 	private int screenNo;
+	private String bookingDate;
+	private String movieThumb;
 }

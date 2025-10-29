@@ -10,19 +10,17 @@
 	from dual connect by level <![CDATA[ <= ]]>7 
   </select>
   <select id="selectSchedule" resultType="schedule">
-  	select *
+  	select distinct s.schedule_time_start, s.schedule_time_end , m.movie_title, s.screen_no
   		from schedule_tbl s
   		join movie_tbl m using(movie_no)
-  	<if test="movieNo != -1 and movieDate == ''">
-  		where schedule_time_start >= sysdate and movie_no = #{movieNo}
+  	<if test="movieNo == -1">
+  		where to_char(schedule_time_start, 'hh24:mi') <![CDATA[ >= ]]> to_char(sysdate, 'hh24:mi')
+  		order by 1
   	</if>
-  	<if test="movieNo == -1 and movieDate != ''">
-  		where schedule_time_start >= sysdate and to_char(schedule_time_start, 'yyyy-mm-dd') like '%'||#{movieDate}||'%'
+  	<if test="movieNo != -1">
+  		where to_char(schedule_time_start, 'hh24:mi') <![CDATA[ >= ]]> to_char(sysdate, 'hh24:mi') and movie_no = #{movieNo}
+  		order by 1
   	</if>
-  	<if test="movieNo != -1 and movieDate != ''">
-  		where schedule_time_start >= sysdate and movie_no = #{movieNo} and to_char(schedule_time_start, 'yyyy-mm-dd') like '%'||#{movieDate}||'%'
-  	</if>
-  	
   </select>
   <select id="selectScreenSeat" resultType="seat">
   	select * from seat_tbl where screen_no = #{screenNo}
@@ -50,7 +48,7 @@
   </select>
   
   <select id="selectCoupon" resultType="coupon">
-  	select * from coupon_box_tbl join coupon_tbl using(coupon_no) where member_no=#{memberNo}
+  	select * from coupon_box_tbl join coupon_tbl using(coupon_no) where member_no=#{memberNo} and use_status = 'n'
   </select>
   
   
