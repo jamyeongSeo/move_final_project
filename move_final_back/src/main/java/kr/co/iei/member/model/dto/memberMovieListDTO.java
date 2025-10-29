@@ -17,4 +17,5 @@ public class memberMovieListDTO {
 	private String count;
 	private String comment;
 	private String movieThumb;
+	private String seat;
 }

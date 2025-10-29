@@ -81,7 +81,7 @@ const WatchedMovieList = () => {
   useEffect(() => {
     axios
       .get(
-        `${BackServer}/member/watched?memberId=${memberId}&intervalChoice=${intervalChoice}`
+        `${BackServer}/member/watchedList?memberId=${memberId}&intervalChoice=${intervalChoice}`
       )
       .then((res) => {
         console.log(res.data);
