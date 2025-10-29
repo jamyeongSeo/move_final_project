@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import PageNavigation from "../utils/PageNavigation";
+import AdminMovieModal from "./AdminMovieModal";
 import "./admin.css";
-import Swal from "sweetalert2";
 
 const AdminList = () => {
   const [movieList, setMovieList] = useState([]);
@@ -11,21 +10,21 @@ const AdminList = () => {
   const [reqPage, setReqPage] = useState(1);
   const [pi, setPi] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState("ALL");
+  const [showGradeFilter, setShowGradeFilter] = useState(false);
+  const [gradeFilter, setGradeFilter] = useState("ALL");
+  const [sortOrder, setSortOrder] = useState("desc");
+  const [selectedMovie, setSelectedMovie] = useState(null); // ✅ 모달용
 
-  // 탭 클릭 시 상태 변경
   const statusClick = (status) => {
     setSelectedStatus(status);
     setReqPage(1);
   };
 
-  // 영화 목록 가져오기
   useEffect(() => {
     let url = `${import.meta.env.VITE_BACK_SERVER}/admin/movie?reqPage=${reqPage}`;
-
     if (search.trim() !== "") {
       url += `&movieTitle=${search}`;
     }
-
     if (selectedStatus !== "ALL") {
       url += `&movieStatus=${selectedStatus}`;
     }
@@ -33,13 +32,23 @@ const AdminList = () => {
     axios
       .get(url)
       .then((res) => {
-        setMovieList(res.data.movieList);
+        let list = res.data.movieList;
+        if (gradeFilter !== "ALL") {
+          list = list.filter((movie) => String(movie.movieGrade) === gradeFilter);
+        }
+        list.sort((a, b) => {
+          if (sortOrder === "asc") {
+            return new Date(a.movieRelease) - new Date(b.movieRelease);
+          } else {
+            return new Date(b.movieRelease) - new Date(a.movieRelease);
+          }
+        });
+        setMovieList(list);
         setPi(res.data.pi);
       })
       .catch((err) => console.log(err));
-  }, [reqPage, search, selectedStatus]);
+  }, [reqPage, search, selectedStatus, gradeFilter, sortOrder]);
 
-  // 등급 매핑 (1~4 → 텍스트로 변환)
   const getGradeLabel = (grade) => {
     switch (grade) {
       case 1:
@@ -53,6 +62,18 @@ const AdminList = () => {
       default:
         return "-";
     }
+  };
+
+  const handleStatusChange = (movieNo, newStatus) => {
+    axios
+      .patch(`${import.meta.env.VITE_BACK_SERVER}/admin/updateStatus/${movieNo}`, {
+        movieStatus: newStatus,
+      })
+      .then(() => {
+        setSelectedMovie(null);
+        window.location.reload();
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -72,14 +93,15 @@ const AdminList = () => {
               <button
                 key={tab.value}
                 className={`status-tab ${
-                  selectedStatus === tab.value ? "active" : ""
-                }`}
+                  selectedStatus === tab.value ? `active-${tab.value}` : ""
+                } ${selectedStatus === tab.value && tab.value === "ALL" ? "active" : ""}`}
                 onClick={() => statusClick(tab.value)}
               >
                 {tab.label}
               </button>
             ))}
           </div>
+
           <div className="admin-search-item">
             <input
               type="text"
@@ -87,9 +109,6 @@ const AdminList = () => {
               onChange={(e) => setSearch(e.target.value)}
               placeholder="영화 제목 검색"
             />
-            <button className="admin-search-btn" onClick={() => setReqPage(1)}>
-              검색
-            </button>
           </div>
         </div>
       </section>
@@ -98,10 +117,59 @@ const AdminList = () => {
         <table className="admin-content-tbl">
           <thead>
             <tr>
-              <th>번호</th>
+              <th>
+                <div className="filter-header">
+                  <span>관람등급</span>
+                  <div className="filter-dropdown">
+                    <button
+                      className="filter-toggle-btn"
+                      onClick={() => setShowGradeFilter(!showGradeFilter)}
+                    >
+                      ⚙️
+                    </button>
+                    {showGradeFilter && (
+                      <div className="filter-menu">
+                        {[
+                          { label: "전체", value: "ALL" },
+                          { label: "전체관람가", value: "1" },
+                          { label: "12세", value: "2" },
+                          { label: "15세", value: "3" },
+                          { label: "19세", value: "4" },
+                        ].map((btn) => (
+                          <button
+                            key={btn.value}
+                            className={`filter-option ${
+                              gradeFilter === btn.value ? "active" : ""
+                            }`}
+                            onClick={() => {
+                              setGradeFilter(btn.value);
+                              setShowGradeFilter(false);
+                            }}
+                          >
+                            {btn.label}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </th>
+
+              <th>
+                <div className="filter-header">
+                  <span>개봉일</span>
+                  <button
+                    className="sort-btn"
+                    onClick={() =>
+                      setSortOrder(sortOrder === "desc" ? "asc" : "desc")
+                    }
+                  >
+                    {sortOrder === "desc" ? "▼" : "▲"}
+                  </button>
+                </div>
+              </th>
+
               <th>영화 제목</th>
-              <th>관람등급</th>
-              <th>개봉일</th>
               {selectedStatus === "ALL" && <th>상태</th>}
             </tr>
           </thead>
@@ -110,7 +178,7 @@ const AdminList = () => {
             {movieList.length === 0 ? (
               <tr>
                 <td
-                  colSpan={selectedStatus === "ALL" ? 5 : 4}
+                  colSpan={selectedStatus === "ALL" ? 4 : 3}
                   style={{ textAlign: "center", padding: "20px" }}
                 >
                   해당 조건의 영화가 없습니다.
@@ -118,23 +186,15 @@ const AdminList = () => {
               </tr>
             ) : (
               movieList.map((movie) => (
-                <tr key={movie.movieNo}>
-                  <td>{movie.movieNo}</td>
-                  <td>
-                    <Link
-                      to={`/movie/view/${movie.movieNo}`}
-                      className="admin-movie-info-update"
-                    >
-                      {movie.movieTitle}
-                    </Link>
-                  </td>
-                  {/* ✅ 등급 숫자 → 텍스트 변환 */}
+                <tr key={movie.movieNo} onClick={() => setSelectedMovie(movie)}>
                   <td>{getGradeLabel(movie.movieGrade)}</td>
                   <td>{movie.movieRelease}</td>
-
+                  <td>{movie.movieTitle}</td>
                   {selectedStatus === "ALL" && (
                     <td>
-                      <span className={`status-badge status-${movie.movieStatus}`}>
+                      <span
+                        className={`status-badge status-${movie.movieStatus}`}
+                      >
                         {{
                           1: "개봉 예정",
                           2: "상영 중",
@@ -151,7 +211,18 @@ const AdminList = () => {
         </table>
       </div>
 
-      {pi && <PageNavigation pi={pi} reqPage={reqPage} setReqPage={setReqPage} />}
+      {pi && (
+        <PageNavigation pi={pi} reqPage={reqPage} setReqPage={setReqPage} />
+      )}
+
+      
+      {selectedMovie && (
+        <AdminMovieModal
+          movie={selectedMovie}
+          onClose={() => setSelectedMovie(null)}
+          onStatusChange={handleStatusChange}
+        />
+      )}
     </div>
   );
 };
