@@ -39,17 +39,40 @@ const WatchedMovieList = () => {
   const year = today.getFullYear();
   //월
   const month = ("0" + (today.getMonth() + 1)).slice(-2);
+  //-3달
+  const month3 = ("0" + (today.getMonth() + 1 - 3)).slice(-2);
+  //-6달
+  const month6 = ("0" + (today.getMonth() + 1 - 6)).slice(-2);
+  //-9달
+  const month9 = ("0" + (today.getMonth() + 1 - 9)).slice(-2);
+  //-12달
+  const month12 = ("0" + (today.getMonth() + 1 - 12)).slice(-2);
   //일
   const date = ("0" + today.getDate()).slice(-2);
 
   const day = year + "." + month + "." + date;
+  const day3 = year + "." + month3 + "." + date;
+  const day6 = year + "." + month6 + "." + date;
+  const day9 = year + "." + month9 + "." + date;
+  const day12 = year + "." + month12 + "." + date;
 
-  const backServer = import.meta.env.VITE_BACK_SERVER;
+  //axios 값 담아주기
+  const [watchedList, setWatchedList] = useState([]);
+  const [enrollDate, setEnrollDate] = useState();
+  const [totalCount, setTotalCount] = useState();
+  const BackServer = import.meta.env.VITE_BACK_SERVER;
   useEffect(() => {
     axios
-      .get(`${backServer}/member/watched/memberId=${memberId}`)
+      .get(
+        `${BackServer}/member/watched?memberId=${memberId}&intervalChoice=${intervalChoice}`
+      )
       .then((res) => {
         console.log(res.data);
+        if (res.data.watchedList) {
+          setWatchedList(res.data.watchedList);
+        }
+        setEnrollDate(res.data.enrollDate);
+        setTotalCount(res.data.totalCount);
       })
       .catch((err) => {
         console.log(err);
@@ -80,11 +103,21 @@ const WatchedMovieList = () => {
               <div className="memberMovie-set-wrap">
                 <div className="memberMovie-set">
                   <div className="memberMovie-count">
-                    관람 건 수 : watchedMovie.count
+                    관람 건 수 : {totalCount}
                   </div>
                   <div className="memberMovie-interval-wrap">
                     <span className="memberMovie-interval">
-                      sysdate-? ~ {day}
+                      {intervalChoice === 0
+                        ? `${enrollDate} ~ ${day}`
+                        : intervalChoice === 3
+                        ? `${day3} ~ ${day}`
+                        : intervalChoice === 6
+                        ? `${day6} ~ ${day}`
+                        : intervalChoice === 9
+                        ? `${day9} ~ ${day}`
+                        : intervalChoice === 12
+                        ? `${day12} ~ ${day}`
+                        : ""}
                     </span>
                     {intervalIconClick ? (
                       <button
