@@ -3,8 +3,6 @@
 <mapper namespace="kr.co.iei.admin.model.dao.AdminDao">
 
     <!-- 영화 목록 -->
-    <!-- if test : 조건이 맞으면 자동으로 where절 생성 = 영화 제목이 검색창에 입력됐을 때만 실행하는 쿼리
-    -->
     <select id="adminMovieList" resultType="movie" parameterType="map">
         SELECT *
         FROM movie_tbl
@@ -13,30 +11,48 @@
                 AND movie_title LIKE '%' || #{movieTitle} || '%'
             </if>
             <if test="movieStatus != null">
-                AND movie_status = #{movieStatus}
+                <choose>
+                    <!-- 개봉 예정 -->
+                    <when test="movieStatus eq 1">
+                        AND movie_release &gt; SYSDATE
+                    </when>
+                    <!-- 상영 중 -->
+                    <when test="movieStatus eq 2">
+                        AND movie_release BETWEEN ADD_MONTHS(SYSDATE, -1) AND SYSDATE
+                    </when>
+                    <!-- 상영 종료 -->
+                    <when test="movieStatus eq 3">
+                        AND movie_release &lt;= ADD_MONTHS(SYSDATE, -1)
+                        AND movie_status != 4
+                    </when>
+                    <!-- 재개봉 -->
+                    <when test="movieStatus eq 4">
+                        AND movie_status = 4
+                    </when>
+                </choose>
             </if>
         </where>
         ORDER BY movie_no DESC
     </select>
-	
-	<!--  영화 상세 -->
+
+    <!-- 영화 상세 -->
     <select id="selectOneMovie" resultType="movie">
         SELECT * FROM movie_tbl WHERE movie_no = #{movieNo}
     </select>
-    
-	<!-- 영화 목록, 제목 검색 시 필요한 영화 번호 -->
+
+    <!-- 영화 번호 발급 -->
     <select id="getMovieNo" resultType="int">
         SELECT movie_seq.NEXTVAL FROM dual
     </select>
 
-	<!-- 영화 상태 변경 -->
+    <!-- 영화 상태 변경 -->
     <update id="updateMovieStatus">
         UPDATE movie_tbl
         SET movie_status = #{movieStatus}
         WHERE movie_no = #{movieNo}
     </update>
 
-	<!-- 영화 정보 등록 -->
+    <!-- 영화 정보 등록 -->
     <insert id="insertMovieInfo">
         INSERT INTO movie_tbl (
             movie_no, movie_type, movie_title, movie_status,
@@ -51,6 +67,7 @@
         )
     </insert>
 
+    <!-- 전체 개수 조회 -->
     <select id="totalCount" resultType="int" parameterType="map">
         SELECT COUNT(*)
         FROM movie_tbl
@@ -66,50 +83,50 @@
 
     <!-- 스케줄 등록 -->
     <insert id="insertSchedule" parameterType="schedule">
-    INSERT INTO schedule_tbl (
-        schedule_no,
-        movie_no,
-        screen_no,
-        schedule_time_start,
-        schedule_time_end,
-        schedule_open,
-        schedule_close
-    )
-    VALUES (
-        schedule_seq.nextval,
-        #{movieNo},
-        #{screenNo},
-        TO_DATE(#{scheduleTimeStart}, 'HH24:MI'),
-        TO_DATE(#{scheduleTimeEnd}, 'HH24:MI'),
-        TO_DATE(#{scheduleOpen}, 'YYYY-MM-DD'),
-        TO_DATE(#{scheduleClose}, 'YYYY-MM-DD')
-    )
-	</insert>
-	
-	
-	 <select id="getRunningMovies" resultType="movie">
-	    SELECT movie_no, movie_title, movie_thumb, movie_status, movie_runtime
-	    FROM movie_tbl
-	    WHERE movie_status = 2
-	</select>
+        INSERT INTO schedule_tbl (
+            schedule_no,
+            movie_no,
+            screen_no,
+            schedule_time_start,
+            schedule_time_end,
+            schedule_open,
+            schedule_close
+        )
+        VALUES (
+            schedule_seq.nextval,
+            #{movieNo},
+            #{screenNo},
+            TO_DATE(#{scheduleTimeStart}, 'HH24:MI'),
+            TO_DATE(#{scheduleTimeEnd}, 'HH24:MI'),
+            TO_DATE(#{scheduleOpen}, 'YYYY-MM-DD'),
+            TO_DATE(#{scheduleClose}, 'YYYY-MM-DD')
+        )
+    </insert>
 
+    <!-- 상영 중 영화 조회 -->
+    <select id="getRunningMovies" resultType="movie">
+        SELECT movie_no, movie_title, movie_thumb, movie_status, movie_runtime
+        FROM movie_tbl
+        WHERE movie_status = 2
+    </select>
 
+    <!-- 스케줄 리스트 -->
     <select id="scheduleList" resultType="schedule">
-    SELECT
-        s.schedule_no AS scheduleNo,
-        s.movie_no AS movieNo,
-        m.movie_title AS movieTitle,
-        s.screen_no AS screenNo,
-        TO_CHAR(s.schedule_open, 'YYYY-MM-DD') AS scheduleOpen,
-        TO_CHAR(s.schedule_close, 'YYYY-MM-DD') AS scheduleClose,
-        TO_CHAR(s.schedule_time_start, 'HH24:MI') AS scheduleTimeStart,
-        TO_CHAR(s.schedule_time_end, 'HH24:MI') AS scheduleTimeEnd
-    FROM schedule_tbl s
-    JOIN movie_tbl m ON s.movie_no = m.movie_no
-    ORDER BY s.schedule_no DESC
-	</select>
+        SELECT
+            s.schedule_no AS scheduleNo,
+            s.movie_no AS movieNo,
+            m.movie_title AS movieTitle,
+            s.screen_no AS screenNo,
+            TO_CHAR(s.schedule_open, 'YYYY-MM-DD') AS scheduleOpen,
+            TO_CHAR(s.schedule_close, 'YYYY-MM-DD') AS scheduleClose,
+            TO_CHAR(s.schedule_time_start, 'HH24:MI') AS scheduleTimeStart,
+            TO_CHAR(s.schedule_time_end, 'HH24:MI') AS scheduleTimeEnd
+        FROM schedule_tbl s
+        JOIN movie_tbl m ON s.movie_no = m.movie_no
+        ORDER BY s.schedule_no DESC
+    </select>
 
-
+    <!-- 스케줄 수정 -->
     <update id="updateSchedule">
         UPDATE schedule_tbl
         SET
@@ -121,6 +138,7 @@
         WHERE schedule_no = #{scheduleNo}
     </update>
 
+    <!-- 스케줄 삭제 -->
     <delete id="deleteSchedule" parameterType="int">
         DELETE FROM schedule_tbl WHERE schedule_no = #{scheduleNo}
     </delete>
@@ -134,24 +152,25 @@
         WHERE screen_no = #{screenNo}
           AND TO_CHAR(schedule_open, 'YYYY-MM-DD') = #{scheduleOpen}
     </select>
-    
-	<!--  상영 시간 중복 체크 -->
-	<select id="checkTimeConflict" parameterType="schedule" resultType="int">
-		  SELECT COUNT(*)
-		  FROM schedule_tbl
-		  WHERE screen_no = #{screenNo}
-		    AND TRUNC(schedule_open) = TO_DATE(#{scheduleOpen}, 'YYYY-MM-DD')
-		    AND (
-	      (MOD((schedule_time_start - TRUNC(schedule_time_start)) * 24 * 60, 1440)
-	        &lt; TO_NUMBER(SUBSTR(#{scheduleTimeEnd}, 1, 2)) * 60 
-	          + TO_NUMBER(SUBSTR(#{scheduleTimeEnd}, 4, 2))
-	       AND
-	       MOD((schedule_time_end - TRUNC(schedule_time_end)) * 24 * 60, 1440)
-	        &gt; TO_NUMBER(SUBSTR(#{scheduleTimeStart}, 1, 2)) * 60 
-	          + TO_NUMBER(SUBSTR(#{scheduleTimeStart}, 4, 2)))
-	    )
-	</select>
 
+    <!-- 상영 시간 중복 체크 -->
+    <select id="checkTimeConflict" parameterType="schedule" resultType="int">
+        SELECT COUNT(*)
+        FROM schedule_tbl
+        WHERE screen_no = #{screenNo}
+          AND TRUNC(schedule_open) = TO_DATE(#{scheduleOpen}, 'YYYY-MM-DD')
+          AND (
+            (MOD((schedule_time_start - TRUNC(schedule_time_start)) * 24 * 60, 1440)
+              &lt; TO_NUMBER(SUBSTR(#{scheduleTimeEnd}, 1, 2)) * 60 
+                + TO_NUMBER(SUBSTR(#{scheduleTimeEnd}, 4, 2))
+             AND
+             MOD((schedule_time_end - TRUNC(schedule_time_end)) * 24 * 60, 1440)
+              &gt; TO_NUMBER(SUBSTR(#{scheduleTimeStart}, 1, 2)) * 60 
+                + TO_NUMBER(SUBSTR(#{scheduleTimeStart}, 4, 2)))
+          )
+    </select>
+
+    <!-- 주간 스케줄 -->
     <select id="getWeeklySchedule" resultType="schedule" parameterType="map">
         SELECT
             s.schedule_no AS scheduleNo,
@@ -168,11 +187,9 @@
         ORDER BY s.schedule_open, s.screen_no, s.schedule_time_start
     </select>
 
-
-	<!-- 회원 관리-->
-	
-	<!-- 회원 목록 -->
+    <!-- 회원 관리 -->
     <select id="memberList" resultType="member">
-    	SELECT * from member_tbl
+        SELECT * FROM member_tbl
     </select>
+
 </mapper>

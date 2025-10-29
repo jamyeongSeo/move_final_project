@@ -16,11 +16,14 @@ const PayPage = () => {
   const movieNo = bookingInfo.movieNo;
   const scheduleDate = new Date(bookingInfo.scheduleTimeStart);
   const scheduleEnd = new Date(bookingInfo.scheduleTimeEnd);
-
+  const totalPrice = bookingInfo.totalPrice;
+  const [payPrice, setPayPrice] = useState(0);
+  const [discount, setDiscount] = useState(0);
   const [movie, setMovie] = useState(null);
   const [memberId, setMemberId] = useRecoilState(loginIdState);
   const [couponList, setCouponList] = useState([]);
   const [coupon, setCoupon] = useState(0);
+  const [refresh, setRefresh] = useState(false);
   useEffect(() => {
     axios
       .get(
@@ -35,7 +38,7 @@ const PayPage = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [refresh]);
   useEffect(() => {
     axios
       .get(
@@ -121,19 +124,20 @@ const PayPage = () => {
               )}
             </div>
             <div className="book-price-info">
-              <div>
-                {"결제 금액 : " +
-                  bookingInfo.totalPrice.toLocaleString() +
-                  "원"}
-              </div>
+              <div>{"결제 금액 : " + totalPrice.toLocaleString() + "원"}</div>
             </div>
 
             <div className="coupon-select-box">
-              <CouponSelect
-                couponList={couponList}
-                setCoupon={setCoupon}
-                coupon={coupon}
-              />
+              {
+                <CouponSelect
+                  couponList={couponList}
+                  setCoupon={setCoupon}
+                  coupon={coupon}
+                  totalPrice={totalPrice}
+                  setPayPrice={setPayPrice}
+                  setDiscount={setDiscount}
+                />
+              }
             </div>
           </section>
         </div>
@@ -147,7 +151,9 @@ const PayPage = () => {
 const CouponSelect = (props) => {
   const couponList = props.couponList;
   const setCoupon = props.setCoupon;
+  const totalPrice = props.totalPrice;
   const coupon = props.coupon;
+
   const couponSelect = (e) => {
     setCoupon(e.target.value);
   };
@@ -157,15 +163,19 @@ const CouponSelect = (props) => {
         <InputLabel id="coupon-label">쿠폰 선택</InputLabel>
         <Select
           labelId="coupon-label"
-          id="demo-simple-select"
+          id="coupon-select"
           value={coupon}
           onChange={couponSelect}
         >
           <MenuItem value={-1}>선택하지 않음</MenuItem>
           {couponList.map((coupon, index) => {
-            return (
+            return couponList.length !== 0 ? (
               <MenuItem key={"coupon-" + index} value={coupon.couponName}>
                 {coupon.couponName}
+              </MenuItem>
+            ) : (
+              <MenuItem key={"no-coupon"} value={-1}>
+                사용할 수 있는 쿠폰이 없습니다.
               </MenuItem>
             );
           })}

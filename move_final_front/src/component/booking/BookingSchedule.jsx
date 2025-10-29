@@ -32,9 +32,6 @@ const BookingSchedule = (props) => {
     prevWeek.setDate(bookingDate.getDate() - 7);
     setBookingDate(prevWeek);
     setRefresh(true);
-    const selectDate = document.querySelector(".one-schedule.select");
-
-    selectDate.click();
   };
   const nextWeek = (e) => {
     const nextWeek = new Date(bookingDate);
@@ -68,17 +65,30 @@ const BookingSchedule = (props) => {
                 "0"
               );
               const currentDay = String(schedule.getDate()).padStart(2, "0");
-
+              const currentHour = String(schedule.getHours()).padStart(2, "0");
+              const currentMinutes = String(schedule.getMinutes()).padStart(
+                2,
+                "0"
+              );
               const currentDate =
-                currentYear + "-" + currentMonth + "-" + currentDay;
-              console.log(currentDate);
-              setMovieDate(currentDate);
+                currentYear +
+                "-" +
+                currentMonth +
+                "-" +
+                currentDay +
+                " " +
+                currentHour +
+                ":" +
+                currentMinutes;
+              console.log(schedule.getTime());
+              const newDate = schedule.getTime();
+              setMovieDate(newDate);
               setMovieSelect(-1);
               axios
                 .get(
                   `${
                     import.meta.env.VITE_BACK_SERVER
-                  }/booking/schedule?movieNo=${movieNo}&movieDate=${currentDate}`
+                  }/booking/schedule?movieNo=${movieNo} `
                 )
                 .then((res) => {
                   console.log(res);
