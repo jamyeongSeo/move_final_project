@@ -184,6 +184,13 @@ public class MemberController {
 		return ResponseEntity.ok(result);
 	}
 	
+	/*--------------- 관람 완료 영화---------------*/
+	@GetMapping(value ="/watched")
+	public ResponseEntity<Map> selectWatchedMovie(@RequestParam String memberId, @RequestParam int intervalChoice){
+		Map map = memberService.selectWatchedMovie(memberId, intervalChoice);
+		return ResponseEntity.ok(map);
+	}
+	
 	
 	
 }
