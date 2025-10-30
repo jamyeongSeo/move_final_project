@@ -179,7 +179,6 @@ const BookingMovieList = () => {
                   <button
                     style={{ marginRight: "5px", width: "110px" }}
                     className="btn-red"
-                    onClick={sendBookingMail}
                   >
                     예매내역 발송
                   </button>
