@@ -205,7 +205,9 @@ const CouponModal = (props) => {
                     <div>
                       <ul>
                         <li style={{ marginBottom: "7px" }}>
-                          <h3>{coupon.couponName}</h3>
+                          <p style={{ fontWeight: "600", fontSize: "18.72px" }}>
+                            {coupon.couponName}
+                          </p>
                         </li>
                         <li style={{ marginBottom: "5px" }}>
                           할인금액 : {coupon.couponDisscount}
