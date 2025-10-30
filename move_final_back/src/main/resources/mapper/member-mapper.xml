@@ -262,4 +262,15 @@
 		
 	</select>
 	
+	<!-- 쿠폰 자동 소멸 및 발급 -->
+	<delete id="deleteCoupon">
+		delete from coupon_box_tbl where coupon_box_expire_dt = to_char(sysdate,'yyyy-mm-dd')
+	</delete>
+	
+	<select id="selectBirthMember" resultType="String">
+		select member_no from member_tbl where substr(member_birth,-5) = to_char(sysdate,'mm-dd')
+	</select>
+	<insert id="BirthCoupon">
+		insert into coupon_box_tbl values(coupon_box_seq.nextval, 2, #{memberNo}, 'n', to_char(sysdate,'YYYY-MM-DD'), to_char(sysdate+30,'YYYY-MM-DD'))
+	</insert>
 </mapper>

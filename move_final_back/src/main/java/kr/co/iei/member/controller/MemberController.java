@@ -207,7 +207,6 @@ public class MemberController {
 		
 			String emailTitle = "I_MOVE_U 예매내역 입니다.";
 			
-			System.out.println();
 			
 			//본문
 			//로고 
