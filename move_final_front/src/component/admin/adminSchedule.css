@@ -36,6 +36,18 @@
   box-sizing: border-box;
 }
 
+.admin-schedule-wrap > h2{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+  padding: 6px;
+  width: 670px;
+  border-bottom: 2px solid #666;
+  font-size: 24px;
+  font-weight: 700;
+}
+
 .admin-schedule-table {
   width: 100%;
   min-width: 950px;
@@ -89,6 +101,7 @@
 }
 
 .admin-schedule-btn-zone {
+  width: 740px;
   display: flex;
   justify-content: center;
   align-items: center;
