@@ -167,7 +167,7 @@ public class MovieService {
 
 
 	public Map<String, Object> selectMovieCommentList(int movieNo, int reqPage, int order) {
-		int numPerPage = 10; 
+		int numPerPage = 5; 
 		int pageNaviSize = 5; 
 		 
 		int totalCount = movieDao.selectCommentCount();
@@ -190,6 +190,12 @@ public class MovieService {
 		map.put("totalCount", totalCount);
 		
 		return map;
+	}
+	
+	@Transactional
+	public int reportComment(Map<String, Object> reportMap) {
+		int result = movieDao.insertReport(reportMap);
+		return result;
 	}
 
 	

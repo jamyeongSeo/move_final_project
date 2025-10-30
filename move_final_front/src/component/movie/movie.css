@@ -239,8 +239,9 @@
   margin-bottom: 36px;
 }
 .movie-comment-select-div {
-  width: 100%;
-  margin: 36px 0;
+  display: flex;
+  margin: 12px 0;
+  align-items: center;
 }
 .movie-comment-list-wrap {
   display: flex;
@@ -253,6 +254,8 @@
   align-items: center;
   justify-content: space-between;
   background-color: #dddddd;
+  border-radius: 8px;
+  margin-bottom: 24px;
 }
 .movie-comment-box-start {
   width: 10%;
@@ -266,10 +269,29 @@
   text-align: center;
 } */
 .movie-comment-title {
-  width: 10%;
+  width: 20%;
   font-family: ns-b;
   font-size: 18px;
 }
 .movie-comment-content {
-  width: 40%;
+  width: 50%;
+}
+.movie-comment-box-end {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 20%;
+  gap: 48px;
+}
+.movie-comment-report-btn {
+  display: flex;
+  align-self: flex-end;
+  margin-right: 24px;
+  cursor: pointer;
+  gap: 16px;
+}
+.movie-comment-totalCount {
+  width: 140px;
+  text-align: end;
+  font-family: ns-b;
 }
