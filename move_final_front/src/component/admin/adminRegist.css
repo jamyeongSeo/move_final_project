@@ -1,0 +1,133 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.admin-regist-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 40px 0;
+  background-color: #fff;
+}
+
+.regist-movie-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #222;
+  border-bottom: 2px solid #666;
+  margin-bottom: 25px;
+  padding-bottom: 8px;
+  width: 720px 
+}
+
+
+.admin-regist-thumb-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 30px;
+}
+
+.admin-regist-thumb-img-preview {
+  width: 240px;
+  height: 240px;
+  object-fit: cover;
+  border: 2px dashed #ccc;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.admin-regist-thumb-img-preview:hover {
+  border-color: #999;
+  background-color: #fafafa;
+}
+
+.admin-regist-thumb-label {
+  color: #777;
+  font-size: 14px;
+}
+
+.admin-regist-info-tbl {
+  width: 800px;
+  border-collapse: collapse;
+  margin-bottom: 30px;
+}
+
+.admin-regist-info-tbl th {
+  width: 160px;
+  text-align: left;
+  font-weight: 600;
+  color: #333;
+  padding: 12px 10px;
+  vertical-align: top;
+}
+
+.admin-regist-info-tbl td {
+  padding: 8px 10px;
+}
+
+.admin-regist-input input,
+.admin-regist-input select,
+.admin-runtime-select,
+.admin-textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  box-sizing: border-box;
+  transition: 0.2s;
+}
+
+.admin-regist-input input:focus,
+.admin-textarea:focus {
+  outline: none;
+  border-color: #666;
+}
+
+.admin-runtime-select {
+  height: 40px;
+}
+
+.admin-textarea {
+  width: 100%;
+  height: 120px;
+  resize: vertical;
+}
+
+.admin-regist-btn-zone {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.btn-red {
+  color: var(--gray7);
+  background-color: var(--main5);
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  padding: 12px 40px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+
+
+.admin-regist-info-wrap {
+  border-collapse: collapse;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.admin-regist-info-wrap > div {
+  display: flex;
+  justify-content: center;
+}

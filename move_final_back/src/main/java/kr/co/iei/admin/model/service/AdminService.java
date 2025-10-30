@@ -24,6 +24,35 @@ public class AdminService {
     private AdminDao adminDao;
     @Autowired
     private PageInfoUtils pageInfoUtil;
+    
+	/********************* 회원 관리 **********************/
+	/*관리자 - 회원 리스트 및 검색한 회원 아이디 리스트*/
+    public Map<String, Object> adminMemberList(int reqPage, String memberId) {
+        int numPerPage = 10;
+        int totalCount = adminDao.totalMemberCount(memberId);
+        int start = (reqPage - 1) * numPerPage + 1;
+        int end = reqPage * numPerPage;
+
+        Map<String, Object> param = new HashMap<>();
+        param.put("start", start);
+        param.put("end", end);
+        param.put("memberId", memberId);
+
+        List<MemberDTO> memberList = adminDao.adminMemberList(param);
+
+        int totalPage = (int) Math.ceil((double) totalCount / numPerPage);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("memberList", memberList);
+        map.put("totalCount", totalCount);
+        map.put("totalPage", totalPage);
+        map.put("reqPage", reqPage);
+        return map;
+    }
+
+
+    
+    
 
     /* 영화 목록 */
     public Map<String, Object> adminMovieList(int reqPage, String movieTitle, Integer movieStatus) {
@@ -77,6 +106,7 @@ public class AdminService {
         return adminDao.getRunningMovies();
     }
 
+    /*스케줄 조회*/
     public List<ScheduleDTO> scheduleList() {
         return adminDao.scheduleList();
     }
@@ -103,7 +133,7 @@ public class AdminService {
 		    return adminDao.getWeeklySchedule(param);
 		}
 
-	public List<MemberDTO> memberList() {
-		return adminDao.memberList();
-	}
+
+	
+
 }

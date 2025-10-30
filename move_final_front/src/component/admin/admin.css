@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/*기본 설정*/
 a {
   text-decoration: none;
 }
@@ -16,7 +15,6 @@ body {
   background-color: var(--main3);
 }
 
-/*사이드 메뉴 */
 .admin-side-menu {
   float: left;
   width: 210px;
@@ -26,7 +24,6 @@ body {
   align-items: center;
   padding: 20px 0 0 0;
 }
-
 
 .admin-side-title {
   width: 210px;
@@ -47,8 +44,6 @@ body {
   font-weight: 700;
 }
 
-
-
 .admin-list-wrap {
   display: block;
   width: 100%;
@@ -56,7 +51,7 @@ body {
 }
 
 .admin-main-content {
-  margin-left: 270px; /* ← 사이드메뉴 + 여백 */
+  margin-left: 270px;
   width: calc(100% - 270px);
   background-color: #fff;
   min-height: 100vh;
@@ -68,12 +63,50 @@ body {
 .admin-content-box {
   background-color: #fff;
   border-radius: 10px;
-  padding: 25px 30px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   box-sizing: border-box;
-  overflow: visible;
+  height: 700px; 
+  overflow: hidden; 
+  margin-bottom: 20px;
 }
-/* 검색 영역 */
+
+
+.scrollable {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  border-radius: 10px;
+}
+
+.scrollable::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollable::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+.scrollable::-webkit-scrollbar-thumb:hover {
+  background-color: #999;
+}
+
+
+.admin-content-tbl {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.admin-content-tbl thead {
+  position: sticky;
+  top: 0;
+  background-color: #fafafa;
+  z-index: 5;
+}
+
+
 .admin-input-search-wrap {
   display: flex;
   justify-content: flex-end;
@@ -108,8 +141,6 @@ body {
   background-color: #b30000;
 }
 
-/*제목 영역 */
-
 .regist-movie,
 .admin-schedule-regist-title,
 .admin-schedule-list-title {
@@ -132,7 +163,7 @@ body {
   margin-bottom: 25px;
   padding-bottom: 8px;
 }
-/* AdminList*/
+
 .admin-search-filter-wrap {
   display: flex;
   justify-content: space-between;
@@ -172,7 +203,6 @@ body {
   border-color: #444;
 }
 
-/* 검색창 단독 버전 */
 .admin-search-item {
   display: flex;
   align-items: center;
@@ -185,21 +215,26 @@ body {
   padding: 8px 12px;
   border: 1px solid #ccc;
   border-radius: 6px;
-  width: 300px; /* 버튼 폭만큼 넓게 조정 */
+  width: 300px;
   font-size: 14px;
   height: 36px;
   box-sizing: border-box;
 }
 
-
-
-/*테이블 스타일*/
 .admin-content-tbl {
   width: 100%;
   border-collapse: collapse;
   border-radius: 10px;
   overflow: hidden;
   font-size: 15px;
+  table-layout: fixed;
+}
+
+.admin-content-tbl thead {
+  position: sticky;
+  top: 0;
+  background-color: #fafafa;
+  z-index: 10;
 }
 
 .admin-content-tbl th,
@@ -208,7 +243,6 @@ body {
   border-bottom: 1px solid #eee;
   text-align: center;
 }
-
 
 .admin-content-tbl th:nth-child(2) {
   width: 35%;
@@ -238,18 +272,16 @@ body {
 }
 
 .admin-content-tbl tbody tr {
-  transition: all 0.2s ease; 
+  transition: all 0.2s ease;
 }
 
 .admin-content-tbl tbody tr:hover {
-  background-color: #f5f7fa; 
+  background-color: #f5f7fa;
   cursor: pointer;
-  transform: scale(1.01); /* 살짝 커지게 하는 효과 속성 */
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08); 
+  transform: scale(1.01);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
-
-/* 상태 배지 */
 .status-badge {
   display: inline-block;
   padding: 4px 10px;
@@ -260,68 +292,51 @@ body {
   min-width: 80px;
   text-align: center;
 }
+
 .status-1 {
   background-color: #f59e0b;
 }
+
 .status-2 {
   background-color: #10b981;
 }
+
 .status-3 {
   background-color: #9ca3af;
 }
+
 .status-4 {
   background-color: #3b82f6;
 }
 
-/* 클릭된 탭마다 색상 지정 */
 .status-tab.active-1 {
-  background-color: #f59e0b; /* 개봉 예정 */
+  background-color: #f59e0b;
   color: #fff;
   border-color: #f59e0b;
 }
 
 .status-tab.active-2 {
-  background-color: #10b981; /* 상영 중 */
+  background-color: #10b981;
   color: #fff;
   border-color: #10b981;
 }
 
 .status-tab.active-3 {
-  background-color: #9ca3af; /* 상영 종료 */
+  background-color: #9ca3af;
   color: #fff;
   border-color: #9ca3af;
 }
 
 .status-tab.active-4 {
-  background-color: #3b82f6; /* 재개봉 */
+  background-color: #3b82f6;
   color: #fff;
   border-color: #3b82f6;
 }
 
 
-/*AdminRegistFrm*/
-.admin-regist-info-wrap{
-  border-collapse: collapse;
-  justify-content: space-between;
-  align-items: center;
-}
-.admin-regist-info-wrap> div {
-  display: flex;
-  justify-content: center; 
-}
-/* .admin-regist-info-tbl{
-  display: flex;
-  justify-content: center; 
-} */
-/* .admin-regist-info-tbl > th, td{
-  padding-top: 45px;
-} */
 
-
-
-/*AdminScheduleList*/
 .admin-schedule-list-tbl > thead {
-  display: block; /*요소가 한 줄 전체 차지, 자동으로 위아래 줄바꿈*/
+  display: block;
   margin-bottom: 25px;
   background-color: #666;
   margin-top: 20px;
@@ -345,12 +360,10 @@ body {
   text-align: center;
 }
 
-/* AdminScheduleRegist*/
-
 .admin-schedule-regist-wrap {
   display: inline-block;
   vertical-align: top;
-  width: calc(100% - 280px); 
+  width: calc(100% - 280px);
   min-height: 100vh;
   box-sizing: border-box;
   padding: 30px;
@@ -394,7 +407,7 @@ body {
 
 .admin-schedule-table-wrap {
   width: 100%;
-  overflow-x: auto; /*테이블만 스크롤 가능*/
+  overflow-x: auto;
   background: #fff;
   border: 1px solid #ddd;
   border-radius: 10px;
@@ -410,8 +423,8 @@ body {
 }
 
 .admin-schedule-btn {
-  background-color: #c0392b;
-  color: white;
+  color: var(--gray7);
+  background-color: var(--main5);
   border: none;
   padding: 10px 22px;
   border-radius: 8px;
@@ -422,9 +435,7 @@ body {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-
 .admin-schedule-btn:hover {
-  background-color: #a93226;
   transform: translateY(-1px);
 }
 
@@ -451,16 +462,15 @@ body {
 
 .admin-schedule-btn-zone {
   display: flex;
-  justify-content: center;  /* ← 가운데 정렬 */
+  justify-content: center;
   align-items: center;
   margin-top: 20px;
-  padding: 0;               /* 오른쪽 패딩 제거 */
+  padding: 0;
 }
 
-
 .admin-btn-red {
-  background-color: #c0392b;
-  color: white;
+  color: var(--gray7);
+  background-color: var(--main5);
   border: none;
   padding: 10px 22px;
   border-radius: 8px;
@@ -469,121 +479,28 @@ body {
   transition: 0.2s;
 }
 
-.admin-btn-red:hover {
-  background-color: #a93226;
-}
-
-
-/*AdminScheduleTable*/
-.admin-schedule-table {
-  width: 100%;
-  max-width: 100%;
-  border-collapse: collapse;
-  text-align: center;
-  margin-bottom: 30px;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  table-layout: fixed;
-  overflow-x: auto;
-}
-
-.admin-schedule-wrap {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  justify-content: flex-start;
-  align-items: stretch;
-  
-  width: 100%;
-  padding: 30px;
-  background-color: #fafafa;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
-}
-.admin-schedule-table {
-  width: 100%;
-  min-width: 950px;
-  border-collapse: collapse;
-  text-align: center;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  table-layout: fixed;
-}
-.admin-schedule-table th,
-.admin-schedule-table td {
-  padding: 8px 6px;
-  border: 1px solid #ddd;
-  font-size: 13px;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-
-.admin-schedule-table .occupied {
-  background-color: #f87171;
-  color: white;
-  cursor: not-allowed;
-}
-.admin-schedule-table .available {
-  background-color: #e5e7eb;
-  cursor: pointer;
-}
-.admin-schedule-table .available:hover {
-  background-color: #86efac;
-}
-
-/*AdminScheduleList*/
-.admin-schedule-timetable-container {
-  margin-top: 20px;
-  background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  overflow-x: auto; 
-  padding: 20px;
-}
-
-.admin-schedule-list-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-left: 230px;
-  width: calc(100% - 260px);
-}
-
 .date-picker label {
   font-weight: 600;
   margin-right: 10px;
 }
 
-/* 상영관 컬러 테마 */
 .screen-1 {
-  background-color: #fde68a; /* 노랑: 2D */
+  background-color: #fde68a;
   color: #222;
 }
 
 .screen-2 {
-  background-color: #93c5fd; /* 파랑: 3D */
+  background-color: #93c5fd;
   color: #fff;
 }
 
 .screen-3 {
-  background-color: #fca5a5; /* 빨강: 4DX */
+  background-color: #fca5a5;
   color: #fff;
 }
 
-/* 타임테이블 색상 구분 */
-.admin-schedule-table .occupied.screen-1 {
-  background-color: #facc15;
-}
-.admin-schedule-table .occupied.screen-2 {
-  background-color: #3b82f6;
-}
-.admin-schedule-table .occupied.screen-3 {
-  background-color: #ef4444;
-}
 
-/* 필터 버튼 영역 한 줄 정렬 */
+
 .filter-btn-group {
   display: flex;
   align-items: center;
@@ -592,7 +509,6 @@ body {
   flex-wrap: nowrap;
 }
 
-/* 관람등급 버튼 */
 .mini-btn {
   border: 1px solid #ccc;
   border-radius: 6px;
@@ -618,7 +534,6 @@ body {
   border-color: #444;
 }
 
-/* 개봉일 정렬 버튼 */
 .sort-btn {
   margin-left: 8px;
   border: 1px solid #ccc;
@@ -638,14 +553,12 @@ body {
   background-color: #ddd;
 }
 
-/* 필터 전체 영역 */
 .filter-dropdown {
   position: relative;
   display: inline-block;
   margin-left: 6px;
 }
 
-/* 톱니바퀴 버튼 */
 .filter-toggle-btn {
   border: 1px solid #ccc;
   background-color: #f7f7f7;
@@ -660,7 +573,6 @@ body {
   background-color: #ddd;
 }
 
-/* 드롭다운 메뉴 */
 .filter-menu {
   position: absolute;
   top: 28px;
@@ -673,10 +585,8 @@ body {
   flex-direction: column;
   z-index: 9999;
   min-width: 100px;
-  
 }
 
-/* 옵션 버튼 */
 .filter-option {
   padding: 6px 10px;
   font-size: 13px;

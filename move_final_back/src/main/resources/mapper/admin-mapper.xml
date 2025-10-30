@@ -103,12 +103,12 @@
         )
     </insert>
 
-    <!-- 상영 중 영화 조회 -->
     <select id="getRunningMovies" resultType="movie">
-        SELECT movie_no, movie_title, movie_thumb, movie_status, movie_runtime
-        FROM movie_tbl
-        WHERE movie_status = 2
-    </select>
+    SELECT movie_no, movie_title, movie_thumb, movie_status, movie_runtime
+    FROM movie_tbl
+    WHERE movie_status IN (2, 4)
+</select>
+
 
     <!-- 스케줄 리스트 -->
     <select id="scheduleList" resultType="schedule">
@@ -188,8 +188,36 @@
     </select>
 
     <!-- 회원 관리 -->
-    <select id="memberList" resultType="member">
-        SELECT * FROM member_tbl
-    </select>
+ 	<!-- 회원 목록 및 검색한 회원 아이디 목로 -->
+    <select id="totalMemberCount" parameterType="string" resultType="int">
+    SELECT COUNT(*)
+    FROM member_tbl
+    <where>
+        <if test="memberId != null and memberId != ''">
+            AND member_id LIKE '%' || #{memberId} || '%'
+        </if>
+    </where>
+	</select>
+	
+	<!--  -->
+	<select id="adminMemberList" parameterType="map" resultType="member">
+	    SELECT *
+	    FROM (
+	        SELECT ROWNUM rnum, a.*
+	        FROM (
+	            SELECT member_no, member_id, member_name, member_phone, member_email
+	            FROM member_tbl
+	            <where>
+	                <if test="memberId != null and memberId != ''">
+	                    AND member_id LIKE '%' || #{memberId} || '%'
+	                </if>
+	            </where>
+	            ORDER BY member_no DESC
+	        ) a
+	    )
+	    WHERE rnum BETWEEN #{start} AND #{end}
+	</select>
+
 
 </mapper>
+

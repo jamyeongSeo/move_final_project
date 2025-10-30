@@ -73,7 +73,7 @@ const MemberDelete = () => {
       {memberId === "" ? (
         <NoMemberInfo></NoMemberInfo>
       ) : (
-        <div className="content-wrap">
+        <div className="content-wrap  member-wrap">
           <section className="left-side-menu-side">
             <Link to="/member/memberMain">
               <div className="left-side-menu-title">마이페이지</div>
@@ -83,7 +83,7 @@ const MemberDelete = () => {
 
           <div className="left-side-menu-other member-mypage-wrap">
             <div className="memberMain-title">
-              <h1>회원 탈퇴</h1>
+              <p style={{ fontWeight: "600", fontSize: "32px" }}>회원 탈퇴</p>
               <span className="memberUpdate-title-contnet">
                 회원님의 정보보호를 위한 확인 절차입니다
               </span>

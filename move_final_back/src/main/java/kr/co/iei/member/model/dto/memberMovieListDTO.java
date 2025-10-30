@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class memberMovieListDTO {
+public class MemberMovieListDTO {
 	private int payNo;
 	private String movieTitle;
 	private int movieGrade;
@@ -18,4 +18,5 @@ public class memberMovieListDTO {
 	private String comment;
 	private String movieThumb;
 	private String seat;
+	private String memberId;
 }

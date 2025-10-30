@@ -1,0 +1,237 @@
+.admin-schedule-table .occupied.screen-1 {
+  background-color: #facc15;
+}
+
+.admin-schedule-table .occupied.screen-2 {
+  background-color: #3b82f6;
+}
+
+.admin-schedule-table .occupied.screen-3 {
+  background-color: #ef4444;
+}
+
+.admin-schedule-table {
+  width: 100%;
+  max-width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  margin-bottom: 30px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  table-layout: fixed;
+  overflow-x: auto;
+}
+
+.admin-schedule-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  justify-content: flex-start;
+  align-items: stretch;
+  width: 100%;
+  padding: 30px;
+  background-color: #fafafa;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
+.admin-schedule-wrap > h2{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+  padding: 6px;
+  width: 670px;
+  border-bottom: 2px solid #666;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.admin-schedule-table {
+  width: 100%;
+  min-width: 950px;
+  border-collapse: collapse;
+  text-align: center;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  table-layout: fixed;
+}
+
+.admin-schedule-table th,
+.admin-schedule-table td {
+  padding: 8px 6px;
+  border: 1px solid #ddd;
+  font-size: 13px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.admin-schedule-table .occupied {
+  background-color: #f87171;
+  color: white;
+  cursor: not-allowed;
+}
+
+.admin-schedule-table .available {
+  background-color: #e5e7eb;
+  cursor: pointer;
+}
+
+.admin-schedule-table .available:hover {
+  background-color: #86efac;
+}
+
+.admin-schedule-timetable-container {
+  margin-top: 20px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
+  padding: 20px;
+}
+
+.admin-schedule-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 230px;
+  width: calc(100% - 260px);
+}
+
+.admin-schedule-btn-zone {
+  width: 740px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  padding: 0;
+}
+
+.admin-schedule-input select,
+.admin-schedule-input input {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: #fff;
+}
+
+.admin-schedule-list-tbl > thead {
+  display: block;
+  margin-bottom: 25px;
+  background-color: #666;
+  margin-top: 20px;
+  border-radius: 8px;
+  padding: 10px;
+  color: #fff;
+}
+
+.admin-schedule-list-tbl > tbody {
+  display: block;
+  background-color: #fff;
+  min-height: 170vh;
+  text-align: center;
+  align-items: center;
+  margin-top: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.admin-schedule-list-tbl > tbody > td {
+  text-align: center;
+}
+
+.admin-schedule-regist-wrap {
+  display: inline-block;
+  vertical-align: top;
+  width: calc(100% - 280px);
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 30px;
+  background-color: #fafafa;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
+  position: relative;
+  z-index: 1;
+}
+
+.admin-schedule-regist-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #333;
+  text-align: left;
+}
+
+.admin-schedule-regist-frm {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.admin-schedule-input {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.admin-schedule-input label {
+  font-weight: 600;
+  font-size: 15px;
+  color: #444;
+}
+
+.admin-schedule-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.admin-schedule-btn-zone {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  padding-right: 10px;
+}
+
+.admin-schedule-btn {
+  background-color: #c0392b;
+  color: white;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.admin-schedule-btn:hover {
+  background-color: #a93226;
+  transform: translateY(-1px);
+}
+
+.admin-schedule-regist-title,
+.admin-schedule-list-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+  padding: 6px;
+  width: 870px;
+  border-bottom: 2px solid #666;
+  font-size: 24px;
+  font-weight: 700;
+}

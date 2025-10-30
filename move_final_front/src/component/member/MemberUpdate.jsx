@@ -87,7 +87,7 @@ const MemberUpdate = () => {
       {memberId === "" ? (
         <NoMemberInfo></NoMemberInfo>
       ) : (
-        <div className="content-wrap">
+        <div className="content-wrap  member-wrap">
           <section className="left-side-menu-side">
             <Link to="/member/memberMain">
               <div className="left-side-menu-title">마이페이지</div>
@@ -98,7 +98,9 @@ const MemberUpdate = () => {
           <div className="left-side-menu-other member-mypage-wrap">
             <section ref={updateCheckPw}>
               <div className="memberMain-title">
-                <h1>회원 정보 수정</h1>
+                <p style={{ fontWeight: "600", fontSize: "32px" }}>
+                  회원 정보 수정
+                </p>
                 <span className="memberUpdate-title-contnet">
                   회원님의 정보보호를 위한 확인 절차입니다
                 </span>
@@ -425,7 +427,7 @@ const MemberUpdateMain = (props) => {
   return (
     <section>
       <div className="memberMain-title">
-        <h1>회원 정보 수정</h1>
+        <p style={{ fontWeight: "600", fontSize: "32px" }}>회원 정보 수정</p>
         <span className="memberUpdate-title-contnet">
           변경 할 정보만 수정해주세요
         </span>
