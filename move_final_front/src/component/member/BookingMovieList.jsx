@@ -141,6 +141,7 @@ const BookingMovieList = () => {
                 );
               })}
           </>
+          {/*삭제 예정 
           <div className="memberMovie-list-wrap">
             <div className="memberMovie-box">
               <div className="memberMovie-post">
@@ -189,6 +190,7 @@ const BookingMovieList = () => {
               </div>
             </div>
           </div>
+          */}
         </div>
 
         {/*<div>페이지 네비</div> */}
