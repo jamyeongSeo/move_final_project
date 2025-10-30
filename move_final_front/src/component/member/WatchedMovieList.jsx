@@ -101,8 +101,8 @@ const WatchedMovieList = () => {
       {memberLevel == "" ? (
         <NoMemberInfo />
       ) : (
-        <div className="content-wrap">
-          <section className="left-side-menu-side">
+        <div className="content-wrap member-wrap">
+          <section className="left-side-menu-side ">
             <Link to="/member/memberMain">
               <div className="left-side-menu-title">마이페이지</div>
             </Link>
@@ -111,7 +111,9 @@ const WatchedMovieList = () => {
 
           <section className="left-side-menu-other ">
             <div className="memberMain-title">
-              <h1>내가 본 영화</h1>
+              <p style={{ fontWeight: "600", fontSize: "32px" }}>
+                내가 본 영화
+              </p>
             </div>
             <div
               style={{ borderBottom: "none" }}

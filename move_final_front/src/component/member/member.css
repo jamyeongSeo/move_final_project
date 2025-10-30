@@ -307,8 +307,9 @@
   padding: 30px 0px;
   border: 1px solid var(--main1);
   margin-bottom: 10px;
-  margin-right: 5px;
-  box-shadow: 2px 3px 8px var(--main1);
+  margin-right: 8px;
+  box-shadow: 3px 3px 8px var(--main1);
+  min-height: 680px;
 }
 .memberMain-title {
   overflow: hidden;
@@ -543,6 +544,7 @@
   overflow: hidden;
   border-radius: 5px;
   margin-bottom: 20px;
+  box-shadow: 2px 1px 4px var(--main1);
 }
 .memberMovie-post {
   float: left;
@@ -648,4 +650,8 @@
 .info-box-content {
   font-family: ns-b;
   font-size: 24px;
+}
+
+.member-wrap {
+  margin-bottom: 0px;
 }

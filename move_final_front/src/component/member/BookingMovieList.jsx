@@ -28,7 +28,7 @@ const BookingMovieList = () => {
       });
   }, []);
   return (
-    <div className="content-wrap">
+    <div className="content-wrap member-wrap">
       <section className="left-side-menu-side">
         <Link to="/member/memberMain">
           <div className="left-side-menu-title">마이페이지</div>
@@ -36,9 +36,9 @@ const BookingMovieList = () => {
         <LeftSideMenu menus={menus}></LeftSideMenu>
       </section>
 
-      <section className="left-side-menu-other ">
+      <section className="left-side-menu-other">
         <div className="memberMain-title">
-          <h1>예약 / 결제</h1>
+          <p style={{ fontWeight: "600", fontSize: "32px" }}>예약 / 결제</p>
         </div>
         <div
           style={{ borderBottom: "none" }}

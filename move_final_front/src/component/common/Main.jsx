@@ -357,11 +357,13 @@ const MainMovieSchedul = () => {
                   </li>
                   <li className="main-shedule-month-date">
                     {date.oneScheduleDate.date !== 1 ? (
-                      <h3>{date.oneScheduleDate.date}</h3>
+                      <p style={{ fontSize: "19px", fontWeight: "600" }}>
+                        {date.oneScheduleDate.date}
+                      </p>
                     ) : (
-                      <h3>
+                      <p style={{ fontSize: "19px", fontWeight: "600" }}>
                         {date.oneScheduleDate.month}.{date.oneScheduleDate.date}
-                      </h3>
+                      </p>
                     )}
                   </li>
                 </ul>
@@ -399,7 +401,9 @@ const MainMovieSchedul = () => {
                       </div>
 
                       <div className="main-schedul-movie-title">
-                        <h3>{schedul.movieTitle}</h3>
+                        <p style={{ fontSize: "18.72px", fontWeight: "600" }}>
+                          {schedul.movieTitle}
+                        </p>
                       </div>
                     </div>
                     <div

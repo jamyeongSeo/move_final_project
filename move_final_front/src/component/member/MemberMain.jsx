@@ -54,7 +54,7 @@ const MemberMain = () => {
       {memberId === "" ? (
         <NoMemberInfo></NoMemberInfo>
       ) : (
-        <div className="content-wrap">
+        <div className="content-wrap  member-wrap">
           <section className="left-side-menu-side">
             <Link to="/member/memberMain">
               <div className="left-side-menu-title">마이페이지</div>
@@ -64,7 +64,9 @@ const MemberMain = () => {
 
           <section className="left-side-menu-other member-mypage-wrap">
             <div className="memberMain-title">
-              <h1>{member.memberName}</h1>
+              <p style={{ fontWeight: "600", fontSize: "32px" }}>
+                {member.memberName}
+              </p>
             </div>
             <div className="member-mypage-content-wrap">
               <div className="member-mypage-content">

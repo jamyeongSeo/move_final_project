@@ -24,6 +24,7 @@
   border-top-right-radius: 88px;
   padding: 30px 50px;
   overflow: hidden;
+  margin-right: 8px;
 }
 .main-schedule-title {
   color: var(--main1);
@@ -64,7 +65,7 @@
 .main-shedule-week-b {
   color: var(--main10);
 }
-.main-shedule-month-date {
+.main-shedule-month-date > p {
   color: var(--main3);
 }
 /*영화별 상영 스케줄*/
