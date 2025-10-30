@@ -14,9 +14,13 @@ import kr.co.iei.utils.PageInfo;
 public interface AdminDao {
 	
 	/*------------- 스케줄 관리 ---------------*/
-    /* 스케줄 */
+    /* 스케줄 목록*/
     List<ScheduleDTO> scheduleList();
+    
+    /*스케줄 등록*/
     int insertSchedule(ScheduleDTO schedule);
+    
+    
     int updateSchedule(ScheduleDTO schedule);
     int deleteSchedule(int scheduleNo);
 
@@ -38,6 +42,7 @@ public interface AdminDao {
 	
 	
 	/*---------- 회원 관리 ----------*/
-	List<MemberDTO> memberList();
+	 int totalMemberCount(String memberId);
+	 List<MemberDTO> adminMemberList(Map<String, Object> param);
 
 }

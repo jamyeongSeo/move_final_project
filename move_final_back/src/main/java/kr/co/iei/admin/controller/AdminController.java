@@ -33,10 +33,30 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
+    
     @Value("${file.root}")
     private String root;
+    
+    
+    /************** 회원 관리 **************/
+    /*회원 목록 및 검색한 아이디 목록*/
+    /*required = false : 값이 꼭 필수적으로 요청 받지 않아도 됨. null 값을 받아와도 됨.  */
+    @GetMapping("/member")
+    public ResponseEntity<Map> adminMemberList(
+        @RequestParam(defaultValue = "1") int reqPage,
+        @RequestParam(required = false) String memberId
+    ) {
+        Map<String, Object> adminMemMap = adminService.adminMemberList(reqPage, memberId);
+        return ResponseEntity.ok(adminMemMap);
+    }
 
-    /*영화 목록 조회 */
+    
+    /*신고된 회원 목록*/
+    
+
+    /************ 영화 *************/
+    
+    /*영화 목록 */
     @GetMapping("/movie")
     public ResponseEntity<Map> adminMovieList(
             @RequestParam(required = false) Integer reqPage,
@@ -83,12 +103,27 @@ public class AdminController {
         }
     }
 
-    /* 영화 상세 조회 */
+    /* 영화 상세페이지 */
     @GetMapping("/{movieNo}")
     public ResponseEntity<MovieDTO> selectOneMovie(@PathVariable int movieNo) {
         MovieDTO movie = adminService.selectOneMovie(movieNo);
         return ResponseEntity.ok(movie);
     }
+    
+    /* 상영 중 영화 목록 */
+    @GetMapping("/movie/running")
+    public ResponseEntity<List<MovieDTO>> getRunningMovies() {
+        List<MovieDTO> grm = adminService.getRunningMovies();
+        System.out.println("[Controller] 상영중 영화 수 : " + (grm != null ? grm.size() : -1));
+        if (grm != null && !grm.isEmpty()) {
+            System.out.println("[Controller] 첫 번째 영화: " + grm.get(0).getMovieTitle());
+        }
+        return ResponseEntity.ok(grm);
+    }
+    
+    
+    
+    /******************스케줄*******************/
 
     /*상영 스케줄 등록 */
     @PostMapping("/schedule")
@@ -100,18 +135,7 @@ public class AdminController {
         return ResponseEntity.ok(s);
     }
 
-
-    /* 상영 중 영화 목록 */
-    @GetMapping("/movie/running")
-    public ResponseEntity<List<MovieDTO>> getRunningMovies() {
-        List<MovieDTO> grm = adminService.getRunningMovies();
-        System.out.println("[Controller] 상영중 영화 수 : " + (grm != null ? grm.size() : -1));
-        if (grm != null && !grm.isEmpty()) {
-            System.out.println("[Controller] 첫 번째 영화: " + grm.get(0).getMovieTitle());
-        }
-        return ResponseEntity.ok(grm);
-    }
-
+  
 
     /* 스케줄 목록 조회 */
     @GetMapping("/schedule")
@@ -134,7 +158,7 @@ public class AdminController {
         return ResponseEntity.ok(result);
     }
 
-    /** 스케줄 등록 시, 이미 선택된 시간 제외 */
+    /* 이미 선택된 시간 및 관 */
     @GetMapping("/schedule/occupied")
     public List<Map<String, String>> getOccupiedTimes(
             @RequestParam int screenNo,
@@ -149,16 +173,11 @@ public class AdminController {
         return ResponseEntity.ok(list);
     }
 
+//    @GetMapping("/schedule/{screenNo")
+//    public ResponseEntity<List<ScheduleDTO>> getOccupiedScreen(@int scr
+//    		)
     
     
-    /*-------- 회원 관리 --------*/
-    /*회원 목록*/
-    @GetMapping("/member")
-    public ResponseEntity<List<MemberDTO>> memberList() {
-    	List<MemberDTO> memberList = adminService.memberList();
-    	return ResponseEntity.ok(memberList);
-    }
     
-    /*신고된 회원 목록*/
-    
+
 }

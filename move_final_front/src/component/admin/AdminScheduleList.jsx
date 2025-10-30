@@ -3,29 +3,27 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import "./admin.css";
+import "./adminSchedule.css";
 
-//new Date.toISOString() = 날짜와 시간을 맞춰줌
-//split('T')[0] : toISOString은 날짜와 시간을 T로 구분하므로
-//(2024-12-27T14:30:00.000Z), split('T')[0]을 사용하여 날짜 부분만 추출하는 방식
 const AdminScheduleList = () => {
   const navigate = useNavigate();
+  const [showScreenNo, setShowScreenNo] = useState(false);
+  const [screenFilter, setScreenFilter] = useState("1");
   const [scheduleList, setScheduleList] = useState([]);
-  const [startDate, setStartDate] = useState(
-    new Date().toISOString().split("T")[0]
-  );
+  const [startDate, setStartDate] = useState(new Date().toISOString().split("T")[0]);
 
-  //  주간 스케줄 불러오기
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_BACK_SERVER}/admin/schedule/week`, {
-        params: { startDate },
-      })
+      .get(`${import.meta.env.VITE_BACK_SERVER}/admin/schedule`)
       .then((res) => {
-        console.log("주간 스케줄:", res.data);
-        setScheduleList(res.data);
+        let list = res.data;
+        if (screenFilter !== "1") {
+          list = list.filter((schedule) => String(schedule.screenNo) === screenFilter);
+        }
+        setScheduleList(list);
       })
       .catch((err) => console.error("스케줄 불러오기 실패:", err));
-  }, [startDate]);
+  }, [screenFilter]);
 
   const days = Array.from({ length: 7 }, (_, i) => {
     const d = new Date(startDate);
@@ -33,9 +31,8 @@ const AdminScheduleList = () => {
     return d.toISOString().split("T")[0];
   });
 
-  const hours = Array.from({ length: 18 }, (_, i) => 7 + i);
+  const hours = Array.from({ length: 20 }, (_, i) => 7 + i);
 
-  // 해당 날짜/시간에 스케줄이 있는지 찾기
   const findSchedule = (date, hour) => {
     return scheduleList.find((s) => {
       const startHour = parseInt(s.scheduleTimeStart.split(":")[0]);
@@ -43,7 +40,6 @@ const AdminScheduleList = () => {
     });
   };
 
-  // 삭제 함수
   const deleteSchedule = async (scheduleNo) => {
     try {
       const result = await Swal.fire({
@@ -58,13 +54,9 @@ const AdminScheduleList = () => {
 
       if (!result.isConfirmed) return;
 
-      await axios.delete(
-        `${import.meta.env.VITE_BACK_SERVER}/admin/schedule/${scheduleNo}`
-      );
+      await axios.delete(`${import.meta.env.VITE_BACK_SERVER}/admin/schedule/${scheduleNo}`);
 
-      setScheduleList((prev) =>
-        prev.filter((s) => s.scheduleNo !== scheduleNo)
-      );
+      setScheduleList((prev) => prev.filter((s) => s.scheduleNo !== scheduleNo));
 
       Swal.fire({
         icon: "success",
@@ -83,16 +75,13 @@ const AdminScheduleList = () => {
     }
   };
 
-  //  수정 / 삭제 팝업
   const handleCellClick = (schedule) => {
     if (!schedule) return;
-
     Swal.fire({
       title: `${schedule.movieTitle}`,
-      html: `
-        <b>${schedule.scheduleOpen}</b><br/>
-        ${schedule.scheduleTimeStart} ~ ${schedule.scheduleTimeEnd}<br/>
-        ${schedule.screenNo}관`,
+      html: `<b>${schedule.scheduleOpen}</b><br/>
+             ${schedule.scheduleTimeStart} ~ ${schedule.scheduleTimeEnd}<br/>
+             ${schedule.screenNo}관`,
       showCancelButton: true,
       confirmButtonText: "수정",
       cancelButtonText: "삭제",
@@ -110,6 +99,37 @@ const AdminScheduleList = () => {
   return (
     <div className="admin-schedule-list-wrap">
       <div className="admin-schedule-list-header">
+        <div className="admin-schedule-filter-screen">
+          <span>관 선택: </span>
+          <button
+            className="filter-toggle-btn"
+            onClick={() => setShowScreenNo(!showScreenNo)}
+          >
+            ▼
+          </button>
+          {showScreenNo && (
+            <div className="filter-menu">
+              {[
+                { label: "1관", value: "1" },
+                { label: "2관", value: "2" },
+                { label: "3관", value: "3" },
+              ].map((btn) => (
+                <button
+                  key={btn.value}
+                  className={`filter-option ${
+                    screenFilter === btn.value ? "active" : ""
+                  }`}
+                  onClick={() => {
+                    setShowScreenNo(false);
+                    setScreenFilter(btn.value);
+                  }}
+                >
+                  {btn.label}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
         <h2>스케줄 타임테이블</h2>
         <div className="date-picker">
           <label>시작일 선택: </label>
@@ -120,7 +140,6 @@ const AdminScheduleList = () => {
           />
         </div>
       </div>
-
       <div className="admin-schedule-timetable-container">
         <table className="admin-schedule-table">
           <thead>

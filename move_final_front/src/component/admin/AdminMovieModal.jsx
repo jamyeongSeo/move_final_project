@@ -5,7 +5,8 @@ const AdminMovieModal = ({ movie, onClose, onStatusChange }) => {
   if (!movie) return null;
 
   const getButtonInfo = (status) => {
-    switch (status) {
+    const s = Number(status);
+    switch (s) {
       case 1:
         return { text: "즉시 개봉", next: 2 };
       case 2:
@@ -15,7 +16,7 @@ const AdminMovieModal = ({ movie, onClose, onStatusChange }) => {
       case 4:
         return { text: "상영 종료", next: 3 };
       default:
-        return { text: "상태 변경", next: status };
+        return { text: "상태 변경", next: s };
     }
   };
 
@@ -43,7 +44,7 @@ const AdminMovieModal = ({ movie, onClose, onStatusChange }) => {
             <p>출연 : {movie.movieActor}</p>
             <p>러닝타임 : {movie.movieRuntime}분</p>
             <p>
-               개봉일 :{" "}
+              개봉일 :{" "}
               {new Date(movie.movieRelease).toISOString().split("T")[0]}
             </p>
           </div>
