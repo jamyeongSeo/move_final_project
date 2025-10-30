@@ -186,41 +186,52 @@ const CouponModal = (props) => {
         보유 쿠폰
       </div>
       <Modal open={open} onClose={handleClose}>
-        <Box sx={{ style }}>
+        <div className="memberMain-coupon-modal">
           <div className="memberMain-coupon-wrap">
-            {couponBox.map((coupon, index) => {
-              return (
-                <div
-                  key={"coupon-" + index}
-                  style={{ marginTop: "65px" }}
-                  className="memberMain-coupon-box"
-                >
-                  <img
-                    src="/image/free-icon-ticket-7937886.png"
-                    className="memberMain-coupon-img"
-                  ></img>
-                  <div>
-                    <ul>
-                      <li style={{ marginBottom: "7px" }}>
-                        <h3>{coupon.couponName}</h3>
-                      </li>
-                      <li style={{ marginBottom: "5px" }}>
-                        할인금액 : {coupon.couponDisscount}
-                      </li>
-                      <li>
-                        유효기간 : {coupon.couponBoxIssueDt} ~{" "}
-                        {coupon.couponBoxExpireDt}
-                      </li>
-                    </ul>
+            {couponBox ? (
+              couponBox.map((coupon, index) => {
+                return (
+                  <div
+                    key={"coupon-" + index}
+                    style={{ marginTop: "65px" }}
+                    className="memberMain-coupon-box"
+                  >
+                    <img
+                      src="/image/free-icon-ticket-7937886.png"
+                      className="memberMain-coupon-img"
+                    ></img>
+                    <div>
+                      <ul>
+                        <li style={{ marginBottom: "7px" }}>
+                          <h3>{coupon.couponName}</h3>
+                        </li>
+                        <li style={{ marginBottom: "5px" }}>
+                          할인금액 : {coupon.couponDisscount}
+                        </li>
+                        <li>
+                          유효기간 : {coupon.couponBoxIssueDt} ~{" "}
+                          {coupon.couponBoxExpireDt}
+                        </li>
+                      </ul>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })
+            ) : (
+              <div className="memberMain-coupon-box memberMain-noCoupon-info">
+                보유 쿠폰이 없습니다
+              </div>
+            )}
           </div>
-          <div style={{ justifySelf: "center", color: "var(--main5)" }}>
+          <div
+            style={{
+              justifySelf: "center",
+              color: "var(--main5)",
+            }}
+          >
             창을 닫으려면 배경 클릭
           </div>
-        </Box>
+        </div>
       </Modal>
     </>
   );
