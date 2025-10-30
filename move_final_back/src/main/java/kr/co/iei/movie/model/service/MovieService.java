@@ -195,6 +195,7 @@ public class MovieService {
 	@Transactional
 	public int reportComment(Map<String, Object> reportMap) {
 		int result = movieDao.insertReport(reportMap);
+		System.out.println(result);
 		return result;
 	}
 

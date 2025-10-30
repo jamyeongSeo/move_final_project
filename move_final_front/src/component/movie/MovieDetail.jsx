@@ -33,7 +33,7 @@ dayjs.locale("ko");
 const MovieDetail = () => {
   const isLogin = useRecoilValue(isLoginState);
   const { movieNo } = useParams();
-  const [member, setMember] = useState({});
+  const [member, setMember] = useState(null);
   const [memberId, setMemberId] = useRecoilState(loginIdState);
   const [movie, setMovie] = useState({});
   const [likeCount, setLikeCount] = useState(0);
@@ -44,6 +44,10 @@ const MovieDetail = () => {
   const [pi, setPi] = useState(null);
   const [totalCount, setTotalCount] = useState(0);
   const [movieScore, setMovieScore] = useState(0);
+  const [commentContent, setCommentContent] = useState(""); // 댓글 내용 State
+  const [isEditing, setIsEditing] = useState(null); // 수정 상태 관리 (null: 등록, number: 수정 중인 commentNo)
+  const [editContent, setEditContent] = useState(""); // 수정 중인 댓글 내용 State
+  const [editScore, setEditScore] = useState(0); // 수정 중인 평점 State
   const navigate = useNavigate();
   const getMovieInfo = () => {
     axios
@@ -59,12 +63,13 @@ const MovieDetail = () => {
   };
   const getMemberInfo = () => {
     axios
-      .get(`${import.meta.env.VITE_BACK_SERVER}/member/selectMember`, {
-        params: { memberId },
-      })
+      .get(
+        `${
+          import.meta.env.VITE_BACK_SERVER
+        }/member/selectMember?memberId=${memberId}`
+      )
       .then((res) => {
-        setMember(res.data.data);
-        console.log("member : " + res.data);
+        setMember(res.data);
       })
       .catch((err) => console.log(err));
   };
@@ -113,6 +118,66 @@ const MovieDetail = () => {
     }
     return target.fromNow(); //한국어로 ?? 시간전 표시하기
   };
+
+  const submitComment = () => {
+    if (!isLogin) {
+      Swal.fire({
+        title: "로그인 필요",
+        text: "로그인 후 가능한 기능입니다.",
+        icon: "warning",
+      });
+      navigate("/common/login");
+      return;
+    }
+
+    if (commentContent.trim() === "") {
+      Swal.fire({
+        title: "필수 입력",
+        text: "댓글은 필수로 작성해야 합니다.",
+        icon: "warning",
+      });
+      return;
+    }
+
+    if (movieScore === 0) {
+      Swal.fire({
+        title: "필수 입력",
+        text: "평점을 입력해주세요.",
+        icon: "warning",
+      });
+      return;
+    }
+
+    axios
+      .post(`${import.meta.env.VITE_BACK_SERVER}/movie/comment/insert`, {
+        movieNo: movieNo,
+        memberNo: member.memberNo,
+        commentContent: commentContent,
+        movieScore: movieScore,
+      })
+      .then((res) => {
+        if (res.data === 1) {
+          Swal.fire({
+            title: "등록 성공",
+            text: "성공적으로 등록되었습니다.",
+            icon: "success",
+          });
+          setCommentContent("");
+          setMovieScore(0);
+          getMovieCommentList();
+        } else {
+          Swal.fire({
+            title: "등록 실패",
+            text: "등록에 실패했습니다.",
+            icon: "warning",
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const hideMemberId = (memberId) => {
     if (!memberId) return "";
     const memberLength = memberId.length;
@@ -132,7 +197,7 @@ const MovieDetail = () => {
     } else {
       axios
         .post(`${import.meta.env.VITE_BACK_SERVER}/movie/comment/report`, {
-          commentNo: comment.movieCommentNo,
+          movieCommentNo: comment.movieCommentNo,
           memberNo: member.memberNo,
         })
         .then((res) => {
@@ -146,10 +211,24 @@ const MovieDetail = () => {
           }
         })
         .catch((err) => {
-          console.log(err);
+          Swal.fire({
+            title: "제한됨",
+            text: "한 댓글에 한번만 가능합니다.",
+            icon: "warning",
+          });
+          return;
         });
     }
   };
+
+  const handleCommentContentChange = (e) => {
+    setCommentContent(e.target.value);
+  };
+
+  const handleMovieScoreChange = (event, newValue) => {
+    setMovieScore(newValue);
+  };
+
   return (
     <>
       <section className="section movie-detail-title-section">
@@ -408,8 +487,41 @@ const MovieDetail = () => {
                 />
               )}
             </div>
+
             <div className="movie-comment-input-wrap">
-              <div className="movie-comment-input-box"></div>
+              <div className="movie-comment-input-box">
+                <textarea
+                  className="comment-input"
+                  placeholder="실 관람평을 입력해주세요."
+                  value={commentContent}
+                  onChange={handleCommentContentChange}
+                ></textarea>
+                <div className="comment-write-bottom">
+                  <div className="comment-rating">
+                    <span className="rating-label">평점 입력</span>
+                    <Rating
+                      name="simple-controlled"
+                      value={movieScore}
+                      onChange={handleMovieScoreChange}
+                      sx={{
+                        "& .MuiRating-iconFilled": {
+                          color: "#ff2b2b !important",
+                        },
+                        "& .MuiRating-iconEmpty": {
+                          color: "#ddd !important",
+                        },
+                        fontSize: "30px",
+                      }}
+                    />
+                  </div>
+                  <button
+                    className="comment-submit-btn"
+                    onClick={submitComment}
+                  >
+                    입력
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         )}
