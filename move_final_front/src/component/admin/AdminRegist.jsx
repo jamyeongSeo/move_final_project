@@ -132,11 +132,11 @@ const AdminRegist = () => {
           movieType={movieType}
           setMovieType={setMovieType}
         />
-      </div>
-      <div className="admin-regist-btn-zone">
+        <div className="admin-regist-btn-zone">
         <button type="button" className="btn-red" onClick={adminRegist}>
           등록하기
         </button>
+      </div>
       </div>
     </section>
   );

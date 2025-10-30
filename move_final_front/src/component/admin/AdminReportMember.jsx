@@ -2,21 +2,26 @@ import axios from "axios";
 import { useState } from "react";
 
 const AdminReportMember = () =>{   
-    //신고된 회원 목록을 따로 빼야되나? 회원 목록 말고?
-    const [member, setMemberReport] = useState([]);
+    const [memberList, setMemberList] = useState([]);
     const [reqPage, setReqPage] = useState(1);
-    const [pi, setPi] = useState(null);
+    //const [stopDays, setStopDays] = useState("1");
 
     useState(()=>{
         axios
-        .get(
-            
-        )
+        .get(`${import.meta.env.VITE_BACK_SERVER}/admin/member`)
+        .then((res)=>{
+            setMemberList(res.data.memberList);
+        })
     })
-    return(
-        <div className="admin-title">신고된 관리</div>
-    )
 
+    // const reportDays = (memberId) => {
+    //     return memberList.find((m)=>{
+    //         const 
+    //     })
+    // }
+    // return(
+    //     <div className="admin-title">신고된 관리</div>
+    // )
 };
 
 export default AdminReportMember;
