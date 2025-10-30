@@ -3,6 +3,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { useParams, useNavigate } from "react-router-dom";
 import AdminScheduleRegistFrm from "./AdminScheduleRegistFrm";
+import "./adminSchedule.css";
 import "./admin.css";
 
 const AdminScheduleEdit = () => {

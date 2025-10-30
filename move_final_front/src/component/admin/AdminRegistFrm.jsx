@@ -1,6 +1,6 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { MenuItem, Select } from "@mui/material";
-import TextEditor from "../utils/TextEditor";
+import "./adminRegist.css";
 
 const AdminRegistFrm = (props) => {
   const {
@@ -19,6 +19,14 @@ const AdminRegistFrm = (props) => {
 
   const [showThumb, setShowThumb] = useState(null);
   const thumbRef = useRef(null);
+  const [maxDate, setMaxDate] = useState("");
+
+  useEffect(() => {
+    const today = new Date();
+    const max = new Date();
+    max.setMonth(today.getMonth() + 2);
+    setMaxDate(max.toISOString().split("T")[0]);
+  }, []);
 
   const changeThumb = (e) => {
     const files = e.target.files;
@@ -36,6 +44,10 @@ const AdminRegistFrm = (props) => {
     }
   };
 
+  const handleRuntimeChange = (e) => {
+    setMovieRuntime(e.target.value);
+  };
+
   return (
     <div className="admin-regist-info-wrap">
       <div className="admin-regist-thumb-wrap">
@@ -51,7 +63,6 @@ const AdminRegistFrm = (props) => {
           alt="영화 포스터"
           className="admin-regist-thumb-img-preview"
         />
-
         <input
           ref={thumbRef}
           type="file"
@@ -59,47 +70,46 @@ const AdminRegistFrm = (props) => {
           style={{ display: "none" }}
           onChange={changeThumb}
         />
-
         <div className="admin-regist-thumb-label">포스터 등록</div>
       </div>
 
       <table className="admin-regist-info-tbl">
         <tbody>
           <tr>
-            <th><label htmlFor="admin-regist-title">영화 제목</label></th>
+            <th>영화 제목</th>
             <td>
               <div className="admin-regist-input">
                 <input
                   type="text"
-                  id="regist-title"
                   value={movieTitle}
                   onChange={(e) => setMovieTitle(e.target.value)}
+                  placeholder="영화 제목을 입력하세요"
                 />
               </div>
             </td>
           </tr>
 
           <tr>
-            <th><label htmlFor="admin-regist-status">상영 상태</label></th>
+            <th>상영 상태</th>
             <td>
               <Select
                 value={movieStatus}
                 onChange={(e) => setMovieStatus(e.target.value)}
-                sx={{ width: "120px", height: "50px" }}
+                sx={{ width: "140px", height: "45px" }}
               >
-                <MenuItem value="1">개봉예정</MenuItem>
+                <MenuItem value="1">개봉 예정</MenuItem>
                 <MenuItem value="4">재개봉</MenuItem>
               </Select>
             </td>
           </tr>
 
           <tr>
-            <th><label htmlFor="admin-regist-type">관</label></th>
+            <th>관</th>
             <td>
               <Select
                 value={movieType}
                 onChange={(e) => setMovieType(e.target.value)}
-                sx={{ width: "120px", height: "50px" }}
+                sx={{ width: "140px", height: "45px" }}
               >
                 <MenuItem value="1">2D</MenuItem>
                 <MenuItem value="2">3D</MenuItem>
@@ -109,12 +119,12 @@ const AdminRegistFrm = (props) => {
           </tr>
 
           <tr>
-            <th><label htmlFor="admin-regist-genre">영화 장르</label></th>
+            <th>영화 장르</th>
             <td>
               <Select
                 value={movieGenre}
                 onChange={(e) => setMovieGenre(e.target.value)}
-                sx={{ width: "160px", height: "50px" }}
+                sx={{ width: "180px", height: "45px" }}
               >
                 <MenuItem value="1">액션</MenuItem>
                 <MenuItem value="2">애니메이션</MenuItem>
@@ -129,12 +139,12 @@ const AdminRegistFrm = (props) => {
           </tr>
 
           <tr>
-            <th><label htmlFor="admin-regist-grade">관람 등급</label></th>
+            <th>관람 등급</th>
             <td>
               <Select
                 value={movieGrade}
                 onChange={(e) => setMovieGrade(e.target.value)}
-                sx={{ width: "190px", height: "50px" }}
+                sx={{ width: "200px", height: "45px" }}
               >
                 <MenuItem value="1">전체 관람가</MenuItem>
                 <MenuItem value="2">12세 이상 관람가</MenuItem>
@@ -145,87 +155,72 @@ const AdminRegistFrm = (props) => {
           </tr>
 
           <tr>
-            <th><label htmlFor="admin-regist-movie-runtime">러닝타임</label></th>
+            <th>러닝타임</th>
             <td>
               <div className="admin-regist-input">
-                <select
-                  id="regist-movie-runtime"
+                <input
+                  type="number"
                   value={movieRuntime}
-                  onChange={(e) => setMovieRuntime(e.target.value)}
-                  className="admin-runtime-select"
-                >
-                  <option value="">시간 선택</option>
-                  {Array.from({ length: 6 * 6 }, (_, i) => {
-                    const totalMinutes = (i + 1) * 10;
-                    const hours = Math.floor(totalMinutes / 60);
-                    const minutes = totalMinutes % 60;
-                    const label = `${hours > 0 ? hours + "시간 " : ""}${
-                      minutes > 0 ? minutes + "분" : ""
-                    }`;
-                    return (
-                      <option key={i} value={totalMinutes}>
-                        {label}
-                      </option>
-                    );
-                  })}
-                </select>
+                  onChange={handleRuntimeChange}
+                  placeholder="분 단위로 입력 (예: 120)"
+                  min="0"
+                />
               </div>
             </td>
           </tr>
 
           <tr>
-            <th><label htmlFor="admin-regist-director">감독명</label></th>
+            <th>감독명</th>
             <td>
               <div className="admin-regist-input">
                 <input
                   type="text"
-                  id="regist-director"
                   value={movieDirector}
                   onChange={(e) => setMovieDirector(e.target.value)}
+                  placeholder="감독명을 입력하세요"
                 />
               </div>
             </td>
           </tr>
 
           <tr>
-            <th><label htmlFor="admin-regist-actor">출연진</label></th>
+            <th>출연진</th>
             <td>
               <div className="admin-regist-input">
                 <input
                   type="text"
-                  id="regist-actor"
                   value={movieActor}
                   onChange={(e) => setMovieActor(e.target.value)}
+                  placeholder="출연진을 입력하세요"
                 />
               </div>
             </td>
           </tr>
 
           <tr>
-            <th><label htmlFor="admin-regist-movie-release">개봉일</label></th>
+            <th>개봉일</th>
             <td>
               <div className="admin-regist-input">
                 <input
                   type="date"
-                  id="regist-movie-release"
                   value={movieRelease}
                   onChange={(e) => setMovieRelease(e.target.value)}
+                  max={maxDate}
                 />
               </div>
             </td>
           </tr>
 
           <tr>
-            <th><label htmlFor="admin-regist-content">영화 소개글</label></th>
+            <th>영화 소개글</th>
             <td>
-              <div className="admin-input-movieContent-box">
-                <input
-                  type="text"
-                  id="regist-content"
-                  value={movieContent}
-                  onChange={(e) => setMovieContent(e.target.value)}
-                />
-              </div>
+              <textarea
+                className="admin-textarea"
+                value={movieContent}
+                onChange={(e) => setMovieContent(e.target.value)}
+                placeholder="영화 소개를 입력하세요 (최대 300자)"
+                maxLength={300}
+              />
             </td>
           </tr>
         </tbody>

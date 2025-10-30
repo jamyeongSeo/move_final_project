@@ -13,14 +13,14 @@ const AdminList = () => {
   const [showGradeFilter, setShowGradeFilter] = useState(false);
   const [gradeFilter, setGradeFilter] = useState("ALL");
   const [sortOrder, setSortOrder] = useState("desc");
-  const [selectedMovie, setSelectedMovie] = useState(null); // ✅ 모달용
+  const [selectedMovie, setSelectedMovie] = useState(null);
 
   const statusClick = (status) => {
     setSelectedStatus(status);
     setReqPage(1);
   };
 
-  useEffect(() => {
+  const fetchMovies = () => {
     let url = `${import.meta.env.VITE_BACK_SERVER}/admin/movie?reqPage=${reqPage}`;
     if (search.trim() !== "") {
       url += `&movieTitle=${search}`;
@@ -47,6 +47,10 @@ const AdminList = () => {
         setPi(res.data.pi);
       })
       .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    fetchMovies();
   }, [reqPage, search, selectedStatus, gradeFilter, sortOrder]);
 
   const getGradeLabel = (grade) => {
@@ -65,13 +69,26 @@ const AdminList = () => {
   };
 
   const handleStatusChange = (movieNo, newStatus) => {
+    const formData = new FormData();
+    formData.append(
+      "movie",
+      new Blob([JSON.stringify({ movieStatus: newStatus })], {
+        type: "application/json",
+      })
+    );
+
     axios
-      .patch(`${import.meta.env.VITE_BACK_SERVER}/admin/updateStatus/${movieNo}`, {
-        movieStatus: newStatus,
+      .patch(`${import.meta.env.VITE_BACK_SERVER}/admin/movie/${movieNo}`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
       })
       .then(() => {
+        setMovieList((prevList) =>
+          prevList.filter((movie) => movie.movieNo !== movieNo)
+        );
         setSelectedMovie(null);
-        window.location.reload();
+        setTimeout(() => {
+          fetchMovies();
+        }, 200);
       })
       .catch((err) => console.log(err));
   };
@@ -94,7 +111,9 @@ const AdminList = () => {
                 key={tab.value}
                 className={`status-tab ${
                   selectedStatus === tab.value ? `active-${tab.value}` : ""
-                } ${selectedStatus === tab.value && tab.value === "ALL" ? "active" : ""}`}
+                } ${
+                  selectedStatus === tab.value && tab.value === "ALL" ? "active" : ""
+                }`}
                 onClick={() => statusClick(tab.value)}
               >
                 {tab.label}
@@ -113,7 +132,7 @@ const AdminList = () => {
         </div>
       </section>
 
-      <div className="admin-content-box">
+      <div className="admin-content-box scrollable">
         <table className="admin-content-tbl">
           <thead>
             <tr>
@@ -215,7 +234,6 @@ const AdminList = () => {
         <PageNavigation pi={pi} reqPage={reqPage} setReqPage={setReqPage} />
       )}
 
-      
       {selectedMovie && (
         <AdminMovieModal
           movie={selectedMovie}

@@ -115,13 +115,10 @@ function App() {
                 element={<BookingSeat />}
               />
               <Route path="booking/pay" element={<PayPage />} />
+
               <Route path="/admin/main" element={<AdminMain />}>
-
-              {/*index route : /admin/mian 일 때 기본 컴포 */}
-              <Route index element={<AdminList/>}/>
-
-                <Route index element={<AdminList />} />
-
+                {/*index route : /admin/mian 일 때 기본 컴포 */}
+                <Route index element={<AdminList/>}/>
                 <Route path="movie/list" element={<AdminList />} />
                 <Route path="movie/regist" element={<AdminRegist />} />
                 <Route path="schedule/list" element={<AdminScheduleList />} />
@@ -129,12 +126,11 @@ function App() {
                   path="schedule/regist"
                   element={<AdminScheduleRegist />}
                 />
-                <Route
-                  path="schedule/edit/:scheduleNo"
-                  element={<AdminScheduleEdit />}
-                />
+                <Route path="schedule/edit/:scheduleNo"element={<AdminScheduleEdit />}/>
+                <Route path="member" element={<AdminMember />} />
               </Route>
-              <Route path="/admin/member" element={<AdminMember />} />
+                
+              
 
               <Route path="/member/join" element={<Join></Join>} />
               <Route path="/common/login" element={<Login></Login>} />
