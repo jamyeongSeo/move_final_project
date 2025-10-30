@@ -168,7 +168,27 @@ const PayPage = () => {
               <button
                 className="pay-btn"
                 onClick={() => {
-                  const portOne = new PortOne();
+                  const dateString = new Date();
+                  IMP.init("imp01372877");
+                  IMP.request_pay(
+                    {
+                      customer_uid:
+                        "store-b7434f12-6184-47c2-ab78-5779cb27861e",
+                      channelKey:
+                        "channel-key-cd790bcc-53eb-4fa9-9f90-e92ea7984b23",
+                      pay_method: "easy_pay",
+                      merchant_uid: "orderNo0001" + dateString,
+                      name: movie.movieTitle,
+                      amount: payPrice,
+                      buyer_email: member.memberEmail,
+                      buyer_name: member.memberName,
+                      buyer_tel: member.memberPhone,
+                      custom_data: {},
+                    },
+                    function (rsp) {
+                      console.log(rsp);
+                    }
+                  );
                 }}
               >
                 결제하기
@@ -180,6 +200,28 @@ const PayPage = () => {
     </div>
   ) : (
     <div></div>
+  );
+};
+
+const payLogic = () => {
+  const dateString = new Date();
+  IMP.init("imp01372877");
+  IMP.request_pay(
+    {
+      customer_uid: "store-b7434f12-6184-47c2-ab78-5779cb27861e",
+      channelKey: "channel-key-cd790bcc-53eb-4fa9-9f90-e92ea7984b23",
+      pay_method: "easy_pay",
+      merchant_uid: "orderNo0001" + dateString,
+      name: movie.movieTitle,
+      amount: payPrice,
+      buyer_email: member.memberEmail,
+      buyer_name: member.memberName,
+      buyer_tel: member.memberPhone,
+      custom_data: {},
+    },
+    function (rsp) {
+      console.log(rsp);
+    }
   );
 };
 
