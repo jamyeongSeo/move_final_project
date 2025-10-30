@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import kr.co.iei.movie.model.dto.MovieCommentDTO;
 import kr.co.iei.movie.model.dto.MovieDTO;
 import kr.co.iei.movie.model.service.MovieService;
 
@@ -80,5 +81,10 @@ public class MovieController {
 		
 		Map<String, Object> commentMap = movieService.selectMovieCommentList(movieNo, reqPage, order);
 		return ResponseEntity.ok(commentMap);
+	}
+	@PostMapping(value="/comment/report")
+	public ResponseEntity<Integer> reportComment(@RequestBody Map<String, Object> reportMap){
+		int result = movieService.reportComment(reportMap);
+		return ResponseEntity.ok(result);
 	}
 }

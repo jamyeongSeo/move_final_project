@@ -64,7 +64,9 @@ const SearchIdModal = (props) => {
           <div className="memberModal-content-box-wrap">
             <div className="memberModal-content-box">
               <div className="memberModal-title">
-                <h2>아이디 찾기</h2>
+                <p style={{ fontWeight: "600", fontSize: "21px" }}>
+                  아이디 찾기
+                </p>
               </div>
               <section ref={modal}>
                 <form
