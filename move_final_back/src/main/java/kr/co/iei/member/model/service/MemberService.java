@@ -17,7 +17,7 @@ import kr.co.iei.coupon.model.dto.CouponDTO;
 import kr.co.iei.member.model.dao.MemberDao;
 import kr.co.iei.member.model.dto.LoginMemberDTO;
 import kr.co.iei.member.model.dto.MemberDTO;
-import kr.co.iei.member.model.dto.memberMovieListDTO;
+import kr.co.iei.member.model.dto.MemberMovieListDTO;
 import kr.co.iei.utils.JwtUtils;
 
 @Service
@@ -157,7 +157,7 @@ public class MemberService {
 				continue;
 			}
 			processedPayNo.add(b.getPayNo());
-			memberMovieListDTO content = new memberMovieListDTO();
+			MemberMovieListDTO content = new MemberMovieListDTO();
 			/*
 			int payNo = b.getPayNo();
 			String movieTitle = "";
@@ -240,7 +240,7 @@ public class MemberService {
 				continue;
 			}
 			processedPayNo.add(b.getPayNo());
-			memberMovieListDTO content = new memberMovieListDTO();
+			MemberMovieListDTO content = new MemberMovieListDTO();
 			/*
 			int payNo = b.getPayNo();
 			String movieTitle = "";

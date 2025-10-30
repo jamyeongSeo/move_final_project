@@ -244,9 +244,10 @@ const WatchedMovieList = () => {
                               <div className="memberMovie-content">
                                 <ul>
                                   <li>
-                                    <h3>
+                                    <p className="member-movie-title">
                                       {w.movieTitle}
                                       <img
+                                        className="member-movie-grade-img"
                                         src={
                                           w.movieGrade == 1
                                             ? "/image/ALL.png"
@@ -256,9 +257,8 @@ const WatchedMovieList = () => {
                                             ? "/image/15.png"
                                             : "/image/19.png"
                                         }
-                                        className="grade-img"
                                       />
-                                    </h3>
+                                    </p>
                                   </li>
                                   <li>
                                     {w.movieDate} {w.movieTime}
@@ -330,7 +330,7 @@ const WatchedMovieList = () => {
             */}
             </div>
 
-            <div>페이지 네비</div>
+            {/*<div>페이지 네비</div> */}
           </section>
         </div>
       )}

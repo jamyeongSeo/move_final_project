@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import kr.co.iei.coupon.model.dto.CouponDTO;
 import kr.co.iei.member.model.dto.LoginMemberDTO;
 import kr.co.iei.member.model.dto.MemberDTO;
+import kr.co.iei.member.model.dto.MemberMovieListDTO;
 import kr.co.iei.member.model.service.MemberService;
 import kr.co.iei.utils.EmailSender;
 import kr.co.iei.utils.JwtUtils;
@@ -117,11 +118,11 @@ public class MemberController {
 			
 			//본문
 			//로고 
-			String emailContent = "<div><h2 style='color:#ff2b2b; font-style: italic;, margin-bottom: 10px;, font-weight: 700;'>I_MOVE_U </h2></div>";
+			String emailContent = "<div><h1 style='color:#ff2b2b; font-style: italic;, margin-bottom: 10px;, font-weight: 700;'>I_MOVE_U </h1></div>";
 			
-			emailContent += "<div><h2>안녕하세요. I_MOVE_U 입니다.</h2></div>";
+			emailContent += "<div><h3>안녕하세요. I_MOVE_U 입니다.</h3></div>";
 			
-			emailContent += "<div style='border:1px solid #444444; background-color:#444444; padding:25px; margin-top:25px; border-radius:5px;'>";
+			emailContent += "<div style='border:1px solid #444444; background-color:#444444; padding:25px; margin-top:25px; border-radius:5px; max-width: 800px;'>";
 			emailContent += "<div style='border:1px solid #f9f9f9; background-color:#f9f9f9; padding:20px; border-radius:5px;'>";
 			emailContent += "<h2>임시비밀번호는 [";
 			emailContent += "<span style='color:#25a4f3;'>";
@@ -196,6 +197,60 @@ public class MemberController {
 		Map map = memberService.selectBookingMovie(memberId);
 		return ResponseEntity.ok(map);
 	}
+	
+	@PostMapping(value="/sendBookingMail")
+	public ResponseEntity<Integer> sendBookingMail(@RequestBody MemberMovieListDTO bookingMail){
+		String memberId = bookingMail.getMemberId();
+		MemberDTO m = memberService.selectMember(memberId);
+		String memberEmail = m.getMemberEmail();
+		
+		
+			String emailTitle = "I_MOVE_U 예매내역 입니다.";
+			
+			System.out.println();
+			
+			//본문
+			//로고 
+			String emailContent = "<div><h1 style='color:#ff2b2b; font-style: italic;, margin-bottom: 10px;, font-weight: 700;'>I_MOVE_U </h1></div>";
+			
+			emailContent += "<div><h3>즐거운 관람 되세요.</h3></div>";
+			
+			emailContent += "<div style='border:1px solid #444444; background-color:#444444; padding:25px; margin-top:25px; border-radius:1px; max-width: 900px;'>";
+			emailContent += "<div style='border:1px solid #f9f9f9; background-color:#f9f9f9; padding:20px; border-radius:3px; overflow: hidden'>";
+			//썸네일
+			emailContent += "<div style='float: left;'><img style='width: 270px;' src=' ";
+			emailContent += bookingMail.getMovieThumb();
+			emailContent += " '></img></div>";
+			
+			//본문
+			emailContent += "<div style='float: left;'><ul style='list-style: none;'>";
+				//제목
+			emailContent += "<li><h2 style='margin-bottom: 0px;'>";
+			emailContent += bookingMail.getMovieTitle();
+			emailContent += "</li></h2>";
+				//일시
+			emailContent += "<li style='overflow:hidden; margin-bottom: 10px;'>";
+			emailContent += "<p style='float: left;'>"+bookingMail.getMovieDate() + "</p><p style='margin-left:10px; float: left;'>" + bookingMail.getMovieTime()+"</p>";
+			emailContent += "</li>";
+				//관
+			emailContent += "<li style='margin-bottom: 10px;'>";
+			emailContent += bookingMail.getMovieScreen();
+			emailContent += "</li>";
+				//관람자 구분 및 관람 인원 + 좌석
+			emailContent += "<li style='overflow:hidden;'>";
+			emailContent += "<p style='float: left;'>"+bookingMail.getCount() + "</p><p style='margin-left:10px; float: left;'>["+bookingMail.getSeat()+"]</p>";
+			emailContent += "</li>";
+			
+			emailContent += "</ul></div>";
+			
+			
+			emailContent += "</div>";
+			emailContent += "</div>";
+			emailSender.sendMail(emailTitle, memberEmail, emailContent);
+			
+			
+			return ResponseEntity.ok(1);
+			}
 	
 	
 }

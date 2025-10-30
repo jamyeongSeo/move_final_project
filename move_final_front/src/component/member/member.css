@@ -598,6 +598,15 @@
   border-bottom: 1px solid var(--main5);
   border-right: 1px solid var(--main5);
 }
+.member-movie-title {
+  font-weight: 600;
+}
+.member-movie-grade-img {
+  width: 20px;
+  float: left;
+  margin-top: 4px;
+  margin-right: 4px;
+}
 /*사이드 바 고정
 .left-side-menu-side{
     position: fixed;
