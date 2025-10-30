@@ -126,6 +126,7 @@
         ORDER BY s.schedule_no DESC
     </select>
 
+
     <!-- 스케줄 수정 -->
     <update id="updateSchedule">
         UPDATE schedule_tbl

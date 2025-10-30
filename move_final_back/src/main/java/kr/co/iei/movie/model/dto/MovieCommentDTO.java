@@ -16,4 +16,7 @@ public class MovieCommentDTO {
 	private int movieScore;
 	private String commentContent;
 	private int memberNo;
+	private String commentDate;
+	private int memberGender;
+	private String memberId;
 }

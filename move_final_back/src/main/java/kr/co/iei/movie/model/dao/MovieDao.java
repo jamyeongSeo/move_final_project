@@ -33,6 +33,8 @@ public interface MovieDao {
 
 	List selectMovieCommentList(Map<String, Object> commentListMap);
 
+	int insertReport(Map<String, Object> reportMap);
+
 	
 
 	

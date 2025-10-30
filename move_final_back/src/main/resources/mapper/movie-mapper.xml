@@ -108,8 +108,11 @@
   <select id="selectMovieCommentList" resultType="movieComment">
   	select * from
   		(select rownum as rnum, c.* from
-  			(select * 
-  				from movie_comment_tbl 
+  			(select mc.*,
+  					m.member_gender,
+  					m.member_id 
+  				from movie_comment_tbl mc
+  				join member_tbl m on mc.member_no = m.member_no
   				where movie_no = #{movieNo}
   				order by 
   				<choose>
@@ -123,7 +126,8 @@
   			)c
   		)
   	where rnum between #{start} and #{end}	
-
-  	
   </select>
+  <insert id="insertReport">
+  	insert into comment_report_tbl values(#{memberNo},#{movieCommentNo},sysdate)
+  </insert>
 </mapper>

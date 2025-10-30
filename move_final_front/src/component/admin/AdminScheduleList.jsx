@@ -2,24 +2,23 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
-import "./admin.css";
+// import "./admin.css";
 import "./adminSchedule.css";
 
 const AdminScheduleList = () => {
   const navigate = useNavigate();
-  const [showScreenNo, setShowScreenNo] = useState(false);
-  const [screenFilter, setScreenFilter] = useState("1");
-  const [scheduleList, setScheduleList] = useState([]);
-  const [startDate, setStartDate] = useState(new Date().toISOString().split("T")[0]);
+  const [showScreenNo, setShowScreenNo] = useState(false); // 스크린 넘버
+  const [screenFilter, setScreenFilter] = useState("1");  //스크린 필터
+  const [scheduleList, setScheduleList] = useState([]); // 스케줄 목록
+  const [startDate, setStartDate] = useState(new Date().toISOString().split("T")[0]); // 날짜 받아오기
+  
 
   useEffect(() => {
     axios
       .get(`${import.meta.env.VITE_BACK_SERVER}/admin/schedule`)
       .then((res) => {
         let list = res.data;
-        if (screenFilter !== "1") {
           list = list.filter((schedule) => String(schedule.screenNo) === screenFilter);
-        }
         setScheduleList(list);
       })
       .catch((err) => console.error("스케줄 불러오기 실패:", err));
@@ -39,6 +38,7 @@ const AdminScheduleList = () => {
       return s.scheduleOpen === date && startHour === hour;
     });
   };
+
 
   const deleteSchedule = async (scheduleNo) => {
     try {
@@ -98,12 +98,13 @@ const AdminScheduleList = () => {
 
   return (
     <div className="admin-schedule-list-wrap">
+      <h2>스케줄 타임테이블</h2>
       <div className="admin-schedule-list-header">
         <div className="admin-schedule-filter-screen">
-          <span>관 선택: </span>
+          관 선택 
           <button
             className="filter-toggle-btn"
-            onClick={() => setShowScreenNo(!showScreenNo)}
+            onClick={() => setShowScreenNo(!showScreenNo)} // 스크린 번호 화면에 띄우는 용
           >
             ▼
           </button>
@@ -130,7 +131,6 @@ const AdminScheduleList = () => {
             </div>
           )}
         </div>
-        <h2>스케줄 타임테이블</h2>
         <div className="date-picker">
           <label>시작일 선택: </label>
           <input
@@ -155,14 +155,14 @@ const AdminScheduleList = () => {
               <tr key={hour}>
                 <td>{hour}:00</td>
                 {days.map((d) => {
-                  const schedule = findSchedule(d, hour);
+                  const scheduleList = findSchedule(d, hour);
                   return (
                     <td
                       key={d}
-                      className={schedule ? "occupied" : "available"}
+                      className={scheduleList ? "occupied" : "available"}
                       onClick={() => handleCellClick(schedule)}
                     >
-                      {schedule ? `${schedule.movieTitle}` : ""}
+                      {scheduleList ? `${scheduleList.movieTitle}` : ""}
                     </td>
                   );
                 })}
