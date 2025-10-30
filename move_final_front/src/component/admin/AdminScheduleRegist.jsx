@@ -4,7 +4,7 @@ import AdminScheduleRegistFrm from "./AdminScheduleRegistFrm";
 import AdminScheduleTable from "./AdminScheduleTable";
 import Swal from "sweetalert2";
 import "./adminSchedule.css";
-import "./admin.css";
+// import "./admin.css";
 const AdminScheduleRegist = () => {
   // 영화 목록
   const [movieList, setMovieList] = useState([]);

@@ -53,7 +53,7 @@ body {
 .admin-main-content {
   margin-left: 270px;
   width: calc(100% - 270px);
-  background-color: #fff;
+  /* background-color: #fff; */
   min-height: 100vh;
   padding: 40px;
   box-sizing: border-box;

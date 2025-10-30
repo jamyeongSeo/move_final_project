@@ -1,3 +1,8 @@
+.admin-schedule-list-wrap{
+  width: 960px;
+  float: left;
+}
+
 .admin-schedule-table .occupied.screen-1 {
   background-color: #facc15;
 }
@@ -8,6 +13,21 @@
 
 .admin-schedule-table .occupied.screen-3 {
   background-color: #ef4444;
+}
+
+.admin-schedule-list-wrap > h2 {
+  text-align: center;
+  font-size: 21px;
+  font-weight: 700;
+}
+.admin-schedule-list-header{
+  margin: 0 auto;
+}
+
+.admin-schedule-filter-screen > span{
+  display: block;
+  margin: 0 auto;
+  align-items: left;
 }
 
 .admin-schedule-table {
@@ -86,16 +106,16 @@
 .admin-schedule-timetable-container {
   margin-top: 20px;
   background-color: #fff;
-  border-radius: 12px;
+  border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   overflow-x: auto;
-  padding: 20px;
+  min-height: auto;
 }
 
 .admin-schedule-list-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+
   margin-left: 230px;
   width: calc(100% - 260px);
 }
@@ -141,6 +161,10 @@
 
 .admin-schedule-list-tbl > tbody > td {
   text-align: center;
+}
+
+.admin-schedule-table > thead > th {
+  
 }
 
 .admin-schedule-regist-wrap {
