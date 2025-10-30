@@ -51,8 +51,13 @@ public class AdminController {
     }
 
     
-    /*신고된 회원 목록*/
-    
+//    /*신고된 회원 목록*/
+//    @GetMapping("/member")
+//    public ResponseEntity<Map> reportMemberList(
+//    		
+//    		)
+//    
+//    
 
     /************ 영화 *************/
     
@@ -135,8 +140,6 @@ public class AdminController {
         return ResponseEntity.ok(s);
     }
 
-  
-
     /* 스케줄 목록 조회 */
     @GetMapping("/schedule")
     public ResponseEntity<List<ScheduleDTO>> scheduleList() {
@@ -173,9 +176,7 @@ public class AdminController {
         return ResponseEntity.ok(list);
     }
 
-//    @GetMapping("/schedule/{screenNo")
-//    public ResponseEntity<List<ScheduleDTO>> getOccupiedScreen(@int scr
-//    		)
+
     
     
     

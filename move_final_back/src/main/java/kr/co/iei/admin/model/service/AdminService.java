@@ -106,6 +106,7 @@ public class AdminService {
         return adminDao.getRunningMovies();
     }
 
+    /**************** 스케줄 ****************/
     /*스케줄 조회*/
     public List<ScheduleDTO> scheduleList() {
         return adminDao.scheduleList();

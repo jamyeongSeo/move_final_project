@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import "./adminMember.css";
+import { Link, useNavigate } from "react-router-dom";
+import AdminReportMember from "./AdminReportMember";
 
 const AdminMember = () => {
   const [memberList, setMemberList] = useState([]);
@@ -24,6 +26,11 @@ const AdminMember = () => {
       });
   }, [search]);
 
+  const navigate = useNavigate();
+  const reportClick = () =>{
+    navigate("/admin/main/report-member");
+  };
+  
   return (
     <div className="admin-member-wrap">
       {/* 타이틀 */}
@@ -31,12 +38,9 @@ const AdminMember = () => {
 
       {/* 신고관리 + total + 검색창 */}
       <div className="admin-member-topbar">
-        <button
-          className="admin-report-btn"
-          onClick={() => alert("신고 관리 페이지로 이동 예정")}
-        >
-          신고 관리
-        </button>
+
+          <button className="admin-report-btn"
+          onClick={reportClick}>신고 관리</button>
 
         <div className="admin-total">
           total: <span>{totalCount}</span>명
