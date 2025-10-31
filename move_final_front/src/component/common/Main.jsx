@@ -19,10 +19,16 @@ const Main = () => {
         height: "100%",
       }}
     >
-      <div className="content" style={{ margin: "0px auto", width: "1300px" }}>
-        <div className="content-wrap" style={{ margin: "0px" }}>
+      <div
+        className="content"
+        style={{ margin: "0px auto", width: "1300px", justifyItems: "center" }}
+      >
+        <div
+          className="content-wrap"
+          style={{ margin: "0px", width: "1300px" }}
+        >
           <div className="main-box-office-wrap">
-            <div className="main-box-office-title">박스오피스</div>
+            <div className="main-box-office-title">박스오피스 TOP3</div>
             <MainBoxOffice></MainBoxOffice>
           </div>
 
