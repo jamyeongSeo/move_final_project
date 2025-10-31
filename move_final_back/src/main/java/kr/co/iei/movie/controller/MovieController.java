@@ -90,6 +90,7 @@ public class MovieController {
 		System.out.println(result);
 		return ResponseEntity.ok(result);
 	}
+
 	@PostMapping(value="/comment/insert")
 	public ResponseEntity<Integer> insertComment(@RequestBody MovieCommentDTO comment){
 		int result = movieService.insertComment(comment);
@@ -100,4 +101,5 @@ public class MovieController {
 		int result = movieService.updateComment(comment);
 		return ResponseEntity.ok(1);
 	}
+
 }
