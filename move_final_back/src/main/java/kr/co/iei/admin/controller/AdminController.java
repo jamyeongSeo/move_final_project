@@ -75,7 +75,7 @@ public class AdminController {
 	/* 영화 등록 (썸네일 포함) */
 	@PostMapping(value = "/movie", consumes = "multipart/form-data")
 	public ResponseEntity<Integer> insertMovieInfo(@RequestPart("movie") MovieDTO movie,
-			@RequestPart(value = "movieThumb", required = false) MultipartFile movieThumb) {
+			@RequestPart(value = "movieThumb") MultipartFile movieThumb) {
 
 		try {
 			if (movieThumb != null && !movieThumb.isEmpty()) {
@@ -88,7 +88,7 @@ public class AdminController {
 				File dest = new File(savePath, fileName);
 				movieThumb.transferTo(dest);
 
-				movie.setMovieThumb("/board/thumb/" + fileName);
+				movie.setMovieThumb("/resource/movie/" + fileName);
 			}
 
 			int result = adminService.insertMovieInfo(movie);
