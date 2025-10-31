@@ -14,7 +14,7 @@ import org.springframework.web.socket.config.annotation.EnableWebSocket;
 public class WebConfig implements WebMvcConfigurer {
 
 		
-	}	
+	
     @Value("${file.root}")
     private String root;
 
@@ -40,6 +40,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/pq/**")
                 .addResourceLocations("file:///" + root + "/pq/");
     }
+}
 /*
     @Override
     public void addCorsMappings(CorsRegistry registry) {
@@ -54,3 +55,4 @@ public class WebConfig implements WebMvcConfigurer {
     }
 }
 */
+    

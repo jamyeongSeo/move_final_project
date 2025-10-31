@@ -6,7 +6,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { isLoginState, loginIdState } from "../utils/RecoilData";
 import { red } from "@mui/material/colors";
 import "./main.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Schedule } from "@mui/icons-material";
 
 const Main = () => {
@@ -83,6 +83,7 @@ const MainBoxOffice = () => {
   );
 };
 const MovieItem = (props) => {
+  const navigate = useNavigate();
   const viewContent = () => {
     setHoverText(2);
   };
@@ -105,7 +106,7 @@ const MovieItem = (props) => {
         onMouseOver={viewContent}
         onMouseOut={hideContent}
       >
-        <Link to="/movie/list">
+        <Link to={`/movie/detail/${movie.movieNo}`}>
           <img
             style={{ width: "100%", height: "96%" }}
             src={movie.movieThumb}
@@ -380,6 +381,7 @@ const MainMovieSchedul = () => {
             const scheduleCloseString = schedul.schedules.scheduleClose;
             const scheduleCloseDate = new Date(scheduleCloseString);
             */
+            console.log(schedul);
             return (
               <div key={"main-schedul-movie" + index}>
                 <div className="main-schedul-movie-box">
@@ -401,9 +403,11 @@ const MainMovieSchedul = () => {
                       </div>
 
                       <div className="main-schedul-movie-title">
-                        <p style={{ fontSize: "18.72px", fontWeight: "600" }}>
-                          {schedul.movieTitle}
-                        </p>
+                        <Link to={`/movie/detail`}>
+                          <p style={{ fontSize: "18.72px", fontWeight: "600" }}>
+                            {schedul.movieTitle}
+                          </p>
+                        </Link>
                       </div>
                     </div>
                     <div

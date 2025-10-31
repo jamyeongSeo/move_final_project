@@ -337,7 +337,10 @@ const MovieDetail = () => {
           </div>
           <div className="title-movie-thumb-wrap">
             <div className="title-movie-thumb">
-              <img src={movie.movieThumb} className="movie-detail-thumb"></img>
+              <img
+                src={`${import.meta.env.VITE_BACK_SERVER}${movie.movieThumb}`}
+                className="movie-detail-thumb"
+              ></img>
             </div>
             <div className="thumb-btn-zone">
               <div className="movie-btn-zone">
