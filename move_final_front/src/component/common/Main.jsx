@@ -112,7 +112,7 @@ const MovieItem = (props) => {
               height: "100%",
               boxShadow: "6px 6px 5px var(--main1)",
             }}
-            src="/image/어쩔수가없다.jpg"
+            src={movie.movieThumb}
             className={hoverText !== 2 ? "movie-thumb" : "movie-thumb-hide"}
           />
         </Link>
