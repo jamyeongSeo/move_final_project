@@ -1,10 +1,10 @@
 .main-box-office-wrap {
-  width: 915px;
-  margin: 80px auto;
+  width: 980px;
+  margin: 75px auto;
   overflow: hidden;
 }
 .main-box-office-title {
-  color: var(--main5);
+  color: var(--main1);
   font-size: 20px;
   font-family: ns-b;
   margin-bottom: 40px;
@@ -17,8 +17,8 @@
 }
 .main-schedule-wrap {
   margin-top: 135px;
-  background-color: var(--main3);
-  border: 1px solid var(--main3);
+  background-color: var(--main1);
+  border: 1px solid var(--main1);
   min-height: 785px;
   border-top-left-radius: 88px;
   border-top-right-radius: 88px;
@@ -27,15 +27,15 @@
   margin-right: 8px;
 }
 .main-schedule-title {
-  color: var(--main1);
+  color: var(--main3);
   font-size: 20px;
   font-family: ns-b;
   margin-bottom: 35px;
 }
 .main-schedule-day-wrap {
-  border: 1px solid var(--main1);
+  border: 1px solid var(--gray2);
   height: 70px;
-  background-color: var(--main1);
+  background-color: var(--gray2);
   border-radius: 8px;
   display: flex;
   justify-content: center;
@@ -89,10 +89,10 @@
   font-weight: 600;
   font-size: 23px;
   margin-right: 10px;
-  color: var(--gray3);
+  color: var(--main1);
 }
 .main-schedul-movie-show:hover {
-  color: var(--main7);
+  color: var(--main5);
 }
 .main-schedul-movie-age > img {
   width: 23px;
@@ -111,7 +111,7 @@
 .main-schedul-movie-time-type {
   text-align: left;
   margin-bottom: 8px;
-  color: var(--gray2);
+  color: var(--main3);
   font-weight: 600;
 }
 .main-schedul-movie-time-box-wrap {
@@ -126,10 +126,10 @@
 }
 .main-schedul-movie-time-content {
   font-weight: 600;
-  color: var(--gray2);
+  color: var(--main3);
 }
 .main-schedul-movie-time-seat > span {
   font-size: 13px;
   font-weight: 600;
-  color: var(--gray2);
+  color: var(--main3);
 }

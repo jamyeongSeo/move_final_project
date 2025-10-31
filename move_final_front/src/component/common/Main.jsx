@@ -13,7 +13,7 @@ const Main = () => {
   return (
     <body
       style={{
-        backgroundColor: "var(--main1)",
+        backgroundColor: "var(--main3)",
         margin: "0px",
         width: "100%",
         height: "100%",
@@ -99,7 +99,7 @@ const MovieItem = (props) => {
   const [likeCount, setLikeCount] = useState(movie.likeCount);
 
   return (
-    <li className="movie-item">
+    <li className="movie-item" style={{ width: "290px" }}>
       <div
         className="movie-poster"
         onMouseOver={viewContent}
@@ -107,8 +107,12 @@ const MovieItem = (props) => {
       >
         <Link to="/movie/list">
           <img
-            style={{ width: "100%", height: "96%" }}
-            src={movie.movieThumb}
+            style={{
+              width: "100%",
+              height: "100%",
+              boxShadow: "6px 6px 5px var(--main1)",
+            }}
+            src="/image/어쩔수가없다.jpg"
             className={hoverText !== 2 ? "movie-thumb" : "movie-thumb-hide"}
           />
         </Link>
@@ -119,7 +123,7 @@ const MovieItem = (props) => {
           {movie.movieContent}
         </div> */}
       </div>
-      <div className="movie-info">
+      <div style={{ marginTop: "28px" }} className="movie-info">
         <div className="movie-grade">
           <img
             src={
@@ -129,12 +133,12 @@ const MovieItem = (props) => {
                 ? "/image/12.png"
                 : movie.movieGrade == 3
                 ? "/image/15.png"
-                : "/image/19.png"
+                : "/image/18.png"
             }
             className="grade-img"
           />
         </div>
-        <div className="movie-title" style={{ color: "var(--main3)" }}>
+        <div className="movie-title" style={{ color: "var(--main1)" }}>
           {movie.movieTitle}
         </div>
         <div className="movie-btn-zone">
@@ -207,16 +211,21 @@ const MovieItem = (props) => {
                   }
                 }}
               >
-                <FavoriteBorderIcon sx={{ fill: "#ffffff" }} />
+                <FavoriteBorderIcon sx={{ fill: "var(--main1)" }} />
               </span>
             )}
           </div>
-          <div className="like-count" style={{ color: "var(--main3)" }}>
+          <div className="like-count" style={{ color: "var(--main1)" }}>
             {movie.likeCount}
           </div>
         </div>
         <div className="booking-zone">
-          <button className="booking-btn">예매하기</button>
+          <button
+            style={{ width: "165px", marginLeft: "5px" }}
+            className="booking-btn"
+          >
+            예매하기
+          </button>
         </div>
       </div>
     </li>
