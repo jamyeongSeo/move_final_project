@@ -170,7 +170,7 @@ public class MovieService {
 		int numPerPage = 5; 
 		int pageNaviSize = 5; 
 		 
-		int totalCount = movieDao.selectCommentCount();
+		int totalCount = movieDao.selectCommentCount(movieNo);
 		
 		PageInfo pi = piu.getPageInfo(reqPage, numPerPage, pageNaviSize, totalCount);
 		int start = pi.getStart();
@@ -195,6 +195,17 @@ public class MovieService {
 	@Transactional
 	public int reportComment(Map<String, Object> reportMap) {
 		int result = movieDao.insertReport(reportMap);
+		System.out.println(result);
+		return result;
+	}
+	@Transactional
+	public int insertComment(MovieCommentDTO comment) {
+		int result = movieDao.insertComment(comment);
+		return result;
+	}
+	@Transactional
+	public int updateComment(MovieCommentDTO comment) {
+		int result = movieDao.updateComment(comment);
 		return result;
 	}
 

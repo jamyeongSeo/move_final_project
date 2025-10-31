@@ -88,7 +88,7 @@ const MovieItem = (props) => {
         }}
       >
         <img
-          src={movie.movieThumb}
+          src={`${import.meta.env.VITE_BACK_SERVER}${movie.movieThumb}`}
           className={hoverText !== 2 ? "movie-thumb" : "movie-thumb-hide"}
         />
         <div

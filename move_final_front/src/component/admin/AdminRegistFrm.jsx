@@ -4,17 +4,28 @@ import "./adminRegist.css";
 
 const AdminRegistFrm = (props) => {
   const {
-    movieTitle, setMovieTitle,
-    movieStatus, setMovieStatus,
-    movieContent, setMovieContent,
-    movieThumb, setMovieThumb,
-    movieGenre, setMovieGenre,
-    movieGrade, setMovieGrade,
-    movieRuntime, setMovieRuntime,
-    movieDirector, setMovieDirector,
-    movieActor, setMovieActor,
-    movieRelease, setMovieRelease,
-    movieType, setMovieType
+    movieTitle,
+    setMovieTitle,
+    movieStatus,
+    setMovieStatus,
+    movieContent,
+    setMovieContent,
+    movieThumb,
+    setMovieThumb,
+    movieGenre,
+    setMovieGenre,
+    movieGrade,
+    setMovieGrade,
+    movieRuntime,
+    setMovieRuntime,
+    movieDirector,
+    setMovieDirector,
+    movieActor,
+    setMovieActor,
+    movieRelease,
+    setMovieRelease,
+    movieType,
+    setMovieType,
   } = props;
 
   const [showThumb, setShowThumb] = useState(null);
@@ -55,8 +66,8 @@ const AdminRegistFrm = (props) => {
           src={
             showThumb
               ? showThumb
-              : movieThumb
-              ? `${import.meta.env.VITE_BACK_SERVER}/admin/movie/${movieThumb}`
+              : movieThumb && typeof movieThumb === "string"
+              ? `${import.meta.env.VITE_BACK_SERVER}${movieThumb}`
               : "/image/default_img.png"
           }
           onClick={() => thumbRef.current.click()}

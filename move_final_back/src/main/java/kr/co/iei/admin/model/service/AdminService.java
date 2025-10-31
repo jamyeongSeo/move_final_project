@@ -132,7 +132,7 @@ public class AdminService {
 		  Map<String, Object> param = new HashMap<>();
 		    param.put("startDate", startDate);
 		    return adminDao.getWeeklySchedule(param);
-		}
+	}
 
 
 	
