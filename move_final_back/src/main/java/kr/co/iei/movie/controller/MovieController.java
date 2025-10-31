@@ -84,7 +84,10 @@ public class MovieController {
 	}
 	@PostMapping(value="/comment/report")
 	public ResponseEntity<Integer> reportComment(@RequestBody Map<String, Object> reportMap){
+		System.out.println(reportMap);
 		int result = movieService.reportComment(reportMap);
+		System.out.println(result);
 		return ResponseEntity.ok(result);
 	}
+	@PostMapping(value="/comment/insert")
 }
