@@ -306,39 +306,31 @@
   flex-direction: column;
   gap: 10px;
 }
-
-/* 댓글 입력 영역 전체를 감싸는 부분 */
 .movie-comment-input-wrap {
   width: 100%;
-  max-width: 800px; /* 적절한 최대 너비 설정 */
+  max-width: 800px;
   margin: 20px auto;
   padding: 15px;
   border: 1px solid #ddd;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
-
-/* 댓글 입력 텍스트 영역 */
 .comment-input {
   width: 100%;
-  height: 100px; /* 높이 조정 */
+  height: 100px;
   padding: 10px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  resize: none; /* 크기 조절 방지 */
+  resize: none;
   box-sizing: border-box;
   font-size: 14px;
 }
-
-/* 평점 입력과 버튼 영역 */
 .comment-write-bottom {
   display: flex;
-  justify-content: space-between; /* 양쪽 끝 정렬 */
-  align-items: center; /* 수직 중앙 정렬 */
+  justify-content: space-between;
+  align-items: center;
 }
-
-/* 평점 입력 부분 */
 .comment-rating {
   display: flex;
   align-items: center;
@@ -349,11 +341,9 @@
   margin-right: 15px;
   font-size: 16px;
 }
-
-/* 등록하기 버튼 */
 .comment-submit-btn {
   padding: 8px 20px;
-  background-color: #ff2b2b; /* 빨간색 배경 */
+  background-color: #ff2b2b;
   color: white;
   border: none;
   border-radius: 4px;
@@ -361,18 +351,14 @@
   cursor: pointer;
   transition: background-color 0.2s;
 }
-
 .comment-submit-btn:hover {
   background-color: #e62424;
 }
-
-/* 개별 댓글 박스에 수정/삭제 버튼 추가 시 스타일 (아래 로직 참고) */
 .comment-actions {
   display: flex;
   gap: 10px;
-  margin-left: auto; /* 오른쪽에 붙도록 */
+  margin-left: auto;
 }
-
 .action-btn {
   background: none;
   border: none;
@@ -384,4 +370,37 @@
 
 .action-btn:hover {
   color: #ff2b2b;
+}
+.comment-edit-btn {
+  font-family: ns-b;
+}
+.comment-edit-btn:hover {
+  font-family: ns-black;
+  text-decoration: underline;
+}
+.comment-delete-btn {
+  font-family: ns-b;
+}
+.comment-delete-btn:hover {
+  font-family: ns-black;
+  text-decoration: underline;
+}
+.movie-comment-update-input-wrap {
+  width: 100%;
+  padding: 0 10px;
+}
+.movie-comment-update-input-wrap > textarea {
+  width: 100%;
+  height: 80px;
+  resize: none;
+  padding: 10px;
+}
+.comment-update-action-wrap {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 5px;
+}
+.comment-submit-btn {
+  margin-right: 5px;
 }
