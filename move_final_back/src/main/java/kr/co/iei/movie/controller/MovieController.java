@@ -89,5 +89,5 @@ public class MovieController {
 		System.out.println(result);
 		return ResponseEntity.ok(result);
 	}
-	@PostMapping(value="/comment/insert")
+//	@PostMapping(value="/comment/insert")
 }
