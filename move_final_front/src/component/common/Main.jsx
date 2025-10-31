@@ -119,7 +119,9 @@ const MovieItem = (props) => {
               height: "100%",
               boxShadow: "6px 6px 5px var(--main1)",
             }}
-            src={movie.movieThumb}
+            src={`${import.meta.env.VITE_BACK_SERVER}/thumb/${
+              movie.movieThumb
+            }`}
             className={hoverText !== 2 ? "movie-thumb" : "movie-thumb-hide"}
           />
         </Link>
@@ -418,7 +420,7 @@ const MainMovieSchedul = () => {
                       </div>
 
                       <div className="main-schedul-movie-title">
-                        <Link to={`/movie/detail`}>
+                        <Link to={`/movie/detail/${schedul.movieNo}`}>
                           <p style={{ fontSize: "18.72px", fontWeight: "600" }}>
                             {schedul.movieTitle}
                           </p>
