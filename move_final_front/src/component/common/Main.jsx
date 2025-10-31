@@ -13,16 +13,22 @@ const Main = () => {
   return (
     <body
       style={{
-        backgroundColor: "var(--main1)",
+        backgroundColor: "var(--main3)",
         margin: "0px",
         width: "100%",
         height: "100%",
       }}
     >
-      <div className="content" style={{ margin: "0px auto", width: "1300px" }}>
-        <div className="content-wrap" style={{ margin: "0px" }}>
+      <div
+        className="content"
+        style={{ margin: "0px auto", width: "1300px", justifyItems: "center" }}
+      >
+        <div
+          className="content-wrap"
+          style={{ margin: "0px", width: "1300px" }}
+        >
           <div className="main-box-office-wrap">
-            <div className="main-box-office-title">박스오피스</div>
+            <div className="main-box-office-title">박스오피스 TOP3</div>
             <MainBoxOffice></MainBoxOffice>
           </div>
 
@@ -100,7 +106,7 @@ const MovieItem = (props) => {
   const [likeCount, setLikeCount] = useState(movie.likeCount);
 
   return (
-    <li className="movie-item">
+    <li className="movie-item" style={{ width: "290px" }}>
       <div
         className="movie-poster"
         onMouseOver={viewContent}
@@ -108,7 +114,11 @@ const MovieItem = (props) => {
       >
         <Link to={`/movie/detail/${movie.movieNo}`}>
           <img
-            style={{ width: "100%", height: "96%" }}
+            style={{
+              width: "100%",
+              height: "100%",
+              boxShadow: "6px 6px 5px var(--main1)",
+            }}
             src={movie.movieThumb}
             className={hoverText !== 2 ? "movie-thumb" : "movie-thumb-hide"}
           />
@@ -120,7 +130,7 @@ const MovieItem = (props) => {
           {movie.movieContent}
         </div> */}
       </div>
-      <div className="movie-info">
+      <div style={{ marginTop: "28px" }} className="movie-info">
         <div className="movie-grade">
           <img
             src={
@@ -130,12 +140,12 @@ const MovieItem = (props) => {
                 ? "/image/12.png"
                 : movie.movieGrade == 3
                 ? "/image/15.png"
-                : "/image/19.png"
+                : "/image/18.png"
             }
             className="grade-img"
           />
         </div>
-        <div className="movie-title" style={{ color: "var(--main3)" }}>
+        <div className="movie-title" style={{ color: "var(--main1)" }}>
           {movie.movieTitle}
         </div>
         <div className="movie-btn-zone">
@@ -208,16 +218,21 @@ const MovieItem = (props) => {
                   }
                 }}
               >
-                <FavoriteBorderIcon sx={{ fill: "#ffffff" }} />
+                <FavoriteBorderIcon sx={{ fill: "var(--main1)" }} />
               </span>
             )}
           </div>
-          <div className="like-count" style={{ color: "var(--main3)" }}>
+          <div className="like-count" style={{ color: "var(--main1)" }}>
             {movie.likeCount}
           </div>
         </div>
         <div className="booking-zone">
-          <button className="booking-btn">예매하기</button>
+          <button
+            style={{ width: "165px", marginLeft: "5px" }}
+            className="booking-btn"
+          >
+            예매하기
+          </button>
         </div>
       </div>
     </li>

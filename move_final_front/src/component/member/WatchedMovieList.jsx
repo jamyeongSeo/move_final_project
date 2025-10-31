@@ -255,7 +255,7 @@ const WatchedMovieList = () => {
                                             ? "/image/12.png"
                                             : w.movieGrade == 3
                                             ? "/image/15.png"
-                                            : "/image/19.png"
+                                            : "/image/18.png"
                                         }
                                       />
                                     </p>
