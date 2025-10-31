@@ -1,5 +1,7 @@
 package kr.co.iei.booking.model.dto;
 
+import java.sql.Date;
+
 import org.apache.ibatis.type.Alias;
 
 import lombok.AllArgsConstructor;
@@ -9,11 +11,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Alias(value="price")
-public class PriceDTO {
-	private int priceNo;
-	private int price;
-	private int movieType;
-	private int pricePerAge;
-	private int seatType;
+@Alias(value="pay")
+public class PayDTO {
+	private int payNo;
+	private String payTitle;
+	private int payPrice;
+	private Date payDate;
+	private int bookSeatNo;
 }

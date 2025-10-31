@@ -9,12 +9,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import kr.co.iei.MoveFinalBackApplication;
+import kr.co.iei.booking.model.dto.BookingInfoDTO;
 import kr.co.iei.booking.model.service.BookingService;
 import kr.co.iei.coupon.model.dto.CouponDTO;
+import kr.co.iei.member.model.dto.MemberDTO;
 import kr.co.iei.movie.model.dto.MovieDTO;
 
 @RestController
@@ -72,5 +76,20 @@ public class BookingController {
 	public ResponseEntity<Map> getCoupon(@RequestParam String memberId){
 		Map couponMap = bookingService.selectCoupon(memberId);
 		return ResponseEntity.ok(couponMap);
+	}
+	
+	@GetMapping(value="/getMember")
+	public ResponseEntity<MemberDTO> getMember(@RequestParam String memberId){
+		MemberDTO m = bookingService.selectOneMember(memberId);
+		return ResponseEntity.ok(m);
+	}
+	
+	@PostMapping(value="/payment")
+	public ResponseEntity<Integer> payment(@RequestBody BookingInfoDTO bookingInfo){
+		System.out.println("bookingDate :"+bookingInfo.getBookingDate());
+		
+		int result = bookingService.payment(bookingInfo);
+		
+		return ResponseEntity.ok(result);
 	}
 }

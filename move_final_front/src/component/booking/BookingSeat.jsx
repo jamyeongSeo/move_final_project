@@ -22,18 +22,24 @@ const BookingSeat = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [selectSeatList, setSelectSeatList] = useState([]);
   const showPrice = totalPrice.toLocaleString();
+  const newMovieDate = new Date(location.state.movieDate);
+  console.log("movieDate :" + newMovieDate);
   const navigate = useNavigate();
-  const bookingInfo = {
+  const [refresh, setRefresh] = useState(false);
+  const [bookSeatRow, setBookSeatRow] = useState([]);
+  const [bookSeatColumn, setBookSeatColumn] = useState([]);
+  const [payInfo, setPayInfo] = useState({
     movieNo: movieNo,
     screenNo: screenNo,
     totalPrice: totalPrice,
-    adultCount: adultCount,
-    kidCount: kidCount,
-    selectSeatList: selectSeatList,
+    selectSeatList: [],
     scheduleTimeStart: location.state.scheduleTimeStart,
     scheduleTimeEnd: location.state.scheduleTimeEnd,
-    movieDate: location.state.movieDate,
-  };
+    movieDate: newMovieDate,
+    bookSeatRow: [],
+    bookSeatColumn: [],
+    scheduleNo: location.state.scheduleNo,
+  });
 
   useEffect(() => {
     axios
@@ -45,6 +51,7 @@ const BookingSeat = () => {
       .then((res) => {
         console.log(res);
         setTotalPrice(res.data.totalPrice);
+        setPayInfo({ ...payInfo, totalPrice: res.data.totalPrice });
       })
       .catch((err) => {
         console.log(err);
@@ -55,7 +62,6 @@ const BookingSeat = () => {
     axios
       .get(`${import.meta.env.VITE_BACK_SERVER}/booking/getSeat/${screenNo}`)
       .then((res) => {
-        console.log(res.data.seatList);
         setRowList(res.data.rowList);
         setSeatList(res.data.seatList);
       })
@@ -63,7 +69,8 @@ const BookingSeat = () => {
         console.log(err);
       });
   }, []);
-
+  console.log(movieNo);
+  console.log(totalPrice);
   return (
     <div>
       <div className="content">
@@ -123,12 +130,30 @@ const BookingSeat = () => {
                                   const newSelectSeat = [...selectSeat];
                                   newSelectSeat[count] = seatName;
                                   setSelectSeat(newSelectSeat);
+
+                                  const bookingSelectSeat =
+                                    newSelectSeat.filter((s, i) => s !== null);
                                   setSelectSeatList(
                                     newSelectSeat.filter((s, i) => s !== null)
                                   );
-
+                                  const newRow = [
+                                    ...bookSeatRow,
+                                    oneSeat.seatRow,
+                                  ];
+                                  const newColumn = [
+                                    ...bookSeatColumn,
+                                    oneSeat.seatColumn,
+                                  ];
+                                  setBookSeatRow(newRow);
+                                  setBookSeatColumn(newColumn);
+                                  const newPayInfo = {
+                                    ...payInfo,
+                                    bookSeatColumn: bookSeatColumn,
+                                    bookSeatRow: bookSeatRow,
+                                    selectSeatList: bookingSelectSeat,
+                                  };
+                                  setPayInfo(newPayInfo);
                                   setCount(count + 1);
-                                  console.log(selectSeatList);
                                 } else if (selectSeat.includes(seatName)) {
                                   const removeSelectSeat = selectSeat.map(
                                     (removeSeat, index) =>
@@ -136,6 +161,7 @@ const BookingSeat = () => {
                                         ? removeSeat
                                         : null
                                   );
+
                                   setSelectSeat(removeSelectSeat);
                                   setCount(count - 1);
                                 }
@@ -153,7 +179,7 @@ const BookingSeat = () => {
               <div className="seat-info-box">
                 <div className="price-title">총 결제 금액</div>
                 <div className="price-count">
-                  {totalPrice !== undefined ? showPrice + "원" : "0원"}
+                  {totalPrice !== 0 ? showPrice + "원" : "0원"}
                 </div>
                 <div className="adult-amount">
                   <span className="amount-title">성인</span>
@@ -264,7 +290,11 @@ const BookingSeat = () => {
                       });
                     } else if (selectSeatList.length === totalCount) {
                       navigate(`/booking/pay`, {
-                        state: { bookingInfo: bookingInfo },
+                        state: {
+                          payInfo: payInfo,
+                          adultCount: adultCount,
+                          kidCount: kidCount,
+                        },
                       });
                     }
                   }}

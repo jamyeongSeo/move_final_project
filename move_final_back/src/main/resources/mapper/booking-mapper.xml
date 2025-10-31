@@ -13,7 +13,7 @@
   	select * 
     	from (select distinct to_char(schedule_time_start, 'hh24:mi') as schedule_time_start, 
     		to_char(schedule_time_end, 'hh24:mi') as schedule_time_end ,
-    		 
+    		s.schedule_no,
     		m.movie_title, 
     		s.screen_no , 
     		m.movie_type, 
@@ -62,5 +62,33 @@
   	select * from coupon_box_tbl join coupon_tbl using(coupon_no) where member_no=#{memberNo} and use_status = 'n'
   </select>
   
+  <select id="selectOneMember" resultType="member">
+  	select * from member_tbl where member_id =#{memberId}
+  </select>
+  <update id="useCoupon">
+  	update coupon_box_tbl set use_status = 'y' where coupon_no =#{couponNo} and member_no =#{memberNo}
+  </update>
+  
+  <select id="getPriceNo">
+  	select price_no from price_tbl where movie_no is null and price_per_age =#{i} 
+  </select>
+  <select id="getBookNo" resultType="int">
+  	select book_no from book_tbl where member_no = #{memberNo} and schedule_no =#{scheduleNo} and to_char(booking_date, 'yyyy-mm-dd hh24:mi') = to_char(#{bookingDate}, 'yyyy-mm-dd hh24:mi')
+  </select>
+  <select id="getSeatNo" resultType="int">
+  	select seat_no from seat_tbl where seat_row = #{bookSeatRow} and seat_column = #{bookSeatColumn}
+  </select>
+  
+  <insert id="insertBooking">
+  	insert into book_tbl values(book_seq.nextval, #{priceNo} , #{scheduleNo}, #{bookingDate} , #{memberNo})
+  </insert>
+  
+  <insert id="insertBookSeat">
+  	insert into book_seat_tbl values(book_seat_seq.nextval, #{bookNo}, #{bookSeatRow}, #{bookSeatColumn} , #{seatNo})
+  </insert>
+  
+  <insert id="insertPayment">
+  	insert into pay_tbl values(pay_seq.nextval,#{movieTitle},#{payPrice},sysdate,)
+  </insert>
   
 </mapper>
