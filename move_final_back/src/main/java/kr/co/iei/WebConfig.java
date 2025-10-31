@@ -15,7 +15,7 @@ public class WebConfig implements WebMvcConfigurer {
 
 		
 
-	}	
+	
     @Value("${file.root}")
     private String root;
 
@@ -55,3 +55,4 @@ public class WebConfig implements WebMvcConfigurer {
     }
 }
 */
+}
