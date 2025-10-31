@@ -4,7 +4,7 @@ import AdminScheduleRegistFrm from "./AdminScheduleRegistFrm";
 import AdminScheduleTable from "./AdminScheduleTable";
 import Swal from "sweetalert2";
 import "./adminSchedule.css";
-import "./admin.css";
+// import "./admin.css";
 const AdminScheduleRegist = () => {
   // 영화 목록
   const [movieList, setMovieList] = useState([]);
@@ -183,7 +183,7 @@ console.log(" AdminScheduleRegist 컴포넌트 렌더링됨");
 
 return (
   <div className="admin-schedule-wrap">
-    <h2>🎬 상영 스케줄 등록</h2>
+    <h2>상영 스케줄 등록</h2>
 
     <AdminScheduleRegistFrm
       movieList={movieList}

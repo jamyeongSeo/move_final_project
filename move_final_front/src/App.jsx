@@ -32,9 +32,8 @@ import BookingSeat from "./component/booking/BookingSeat";
 import AdminScheduleList from "./component/admin/AdminScheduleList";
 import AdminScheduleEdit from "./component/admin/AdminScheduleEdit";
 
-
-import AdminReportMember from "./component/admin/AdminReportMember";
 import AdminMember from "./component/admin/AdminMember";
+import AdminReportMember from "./component/admin/AdminReportMember";
 
 
 import PayPage from "./component/booking/PayPage";
@@ -128,6 +127,7 @@ function App() {
                 />
                 <Route path="schedule/edit/:scheduleNo"element={<AdminScheduleEdit />}/>
                 <Route path="member" element={<AdminMember />} />
+                <Route path="report-member" element={<AdminReportMember />}/>
               </Route>
                 
               

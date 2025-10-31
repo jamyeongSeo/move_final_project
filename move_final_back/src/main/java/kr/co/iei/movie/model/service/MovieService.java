@@ -117,11 +117,13 @@ public class MovieService {
 			String movieTitle = null;
 			String screen = null;
 			int movieGrade = 0;
+			int movieNo = -1;
 			for (MovieScheduleDTO m : list) {
 				if (m.getMovieTitle().equals(mm.getMovieTitle())) {
 					if (movieTitle == null) {
 						movieTitle = m.getMovieTitle();
 						movieGrade = m.getMovieGrade();
+						movieNo = m.getMovieNo();
 					}
 					time.add(m);
 					screen = m.getScreenName();
@@ -135,6 +137,8 @@ public class MovieService {
 			movieTitle = null;
 			result.put("movieGrade", movieGrade);
 			movieGrade = 0;
+			result.put("movieNo", movieNo);
+			movieNo = -1;
 			result.put("schedules", content);
 			content = null;
 			// schedules.put("schedules", content);
@@ -167,10 +171,10 @@ public class MovieService {
 
 
 	public Map<String, Object> selectMovieCommentList(int movieNo, int reqPage, int order) {
-		int numPerPage = 10; 
+		int numPerPage = 5; 
 		int pageNaviSize = 5; 
 		 
-		int totalCount = movieDao.selectCommentCount();
+		int totalCount = movieDao.selectCommentCount(movieNo);
 		
 		PageInfo pi = piu.getPageInfo(reqPage, numPerPage, pageNaviSize, totalCount);
 		int start = pi.getStart();
@@ -190,6 +194,23 @@ public class MovieService {
 		map.put("totalCount", totalCount);
 		
 		return map;
+	}
+	
+	@Transactional
+	public int reportComment(Map<String, Object> reportMap) {
+		int result = movieDao.insertReport(reportMap);
+		System.out.println(result);
+		return result;
+	}
+	@Transactional
+	public int insertComment(MovieCommentDTO comment) {
+		int result = movieDao.insertComment(comment);
+		return result;
+	}
+	@Transactional
+	public int updateComment(MovieCommentDTO comment) {
+		int result = movieDao.updateComment(comment);
+		return result;
 	}
 
 	

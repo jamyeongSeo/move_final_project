@@ -28,7 +28,7 @@ const AdminScheduleRegistFrm = ({
 
   const list = Array.isArray(movieList) ? movieList : [];
 
-  /*문자열 → 분 단위 변환 */
+  /*문자열 > 분 단위 변환 */
   const toMinutes = (time) => {
     if (!time || typeof time !== "string" || !time.includes(":")) return null;
     const [h, m] = time.split(":").map(Number);
@@ -48,7 +48,7 @@ const AdminScheduleRegistFrm = ({
     });
   };
 
-  /** 커스텀 분 선택용 state */
+  /*분 선택용 state */
   const [minuteOpen, setMinuteOpen] = useState(false);
 
   const handleMinuteSelect = (val) => {

@@ -107,8 +107,8 @@
 }
 
 .btn-red {
-  background-color: #e11d48;
-  color: white;
+  color: var(--gray7);
+  background-color: var(--main5);
   font-size: 16px;
   font-weight: 600;
   border: none;
@@ -118,9 +118,6 @@
   transition: 0.2s;
 }
 
-.btn-red:hover {
-  background-color: #be123c;
-}
 
 
 .admin-regist-info-wrap {

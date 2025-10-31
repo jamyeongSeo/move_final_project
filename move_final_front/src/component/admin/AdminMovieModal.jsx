@@ -22,6 +22,14 @@ const AdminMovieModal = ({ movie, onClose, onStatusChange }) => {
 
   const { text, next } = getButtonInfo(movie.movieStatus);
 
+
+  const BACK_SERVER = import.meta.env.VITE_BACK_SERVER;
+
+
+  const imageUrl = movie.movieThumb?.startsWith("http")
+    ? movie.movieThumb
+    : `${BACK_SERVER}${movie.movieThumb}`;
+
   return (
     <div className="admin-modal-overlay" onClick={onClose}>
       <div
@@ -34,9 +42,13 @@ const AdminMovieModal = ({ movie, onClose, onStatusChange }) => {
 
         <div className="admin-modal-header">
           <img
-            src={movie.movieThumb}
+            src={imageUrl}
             alt={movie.movieTitle}
             className="admin-modal-thumb"
+            onError={(e) => {
+              // 🔥 이미지 로딩 실패 시 대체 이미지 표시
+              e.target.src = "/default-movie-thumb.png";
+            }}
           />
           <div className="admin-modal-info">
             <h2>{movie.movieTitle}</h2>

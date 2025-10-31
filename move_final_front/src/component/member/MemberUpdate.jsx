@@ -87,7 +87,7 @@ const MemberUpdate = () => {
       {memberId === "" ? (
         <NoMemberInfo></NoMemberInfo>
       ) : (
-        <div className="content-wrap">
+        <div className="content-wrap  member-wrap">
           <section className="left-side-menu-side">
             <Link to="/member/memberMain">
               <div className="left-side-menu-title">마이페이지</div>
@@ -98,7 +98,9 @@ const MemberUpdate = () => {
           <div className="left-side-menu-other member-mypage-wrap">
             <section ref={updateCheckPw}>
               <div className="memberMain-title">
-                <h1>회원 정보 수정</h1>
+                <p style={{ fontWeight: "600", fontSize: "32px" }}>
+                  회원 정보 수정
+                </p>
                 <span className="memberUpdate-title-contnet">
                   회원님의 정보보호를 위한 확인 절차입니다
                 </span>
@@ -255,28 +257,37 @@ const MemberUpdateMain = (props) => {
     console.log(member);
     if (member.memberEmail !== "") {
       if (member.memberEmail !== memberEmail) {
-        setUpdateEmail(true);
-        axios
-          .get(
-            `${backServer}/member/checkEmail?memberEmail=${member.memberEmail}`
-          )
-          .then((res) => {
-            if (res.data != 0) {
-              if (member.memberEmail != memberEmail) {
-                setJoinEmailRe(false);
-                setJoinEmailReCss(false);
-                setCheckEmailMsg("이미 사용 중인 이메일입니다");
+        //이메일 형식 유효성 검사
+        const emailRef = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]/;
+        if (emailRef.test(member.memberEmail)) {
+          setUpdateEmail(true);
+          axios
+            .get(
+              `${backServer}/member/checkEmail?memberEmail=${member.memberEmail}`
+            )
+            .then((res) => {
+              if (res.data != 0) {
+                if (member.memberEmail != memberEmail) {
+                  setJoinEmailRe(false);
+                  setJoinEmailReCss(false);
+                  setCheckEmailMsg("이미 사용 중인 이메일입니다");
+                }
+              } else {
+                //사용 가능 이메일이면.
+                setJoinEmailRe(true);
+                setJoinEmailReCss(true);
+                setCheckEmailMsg("사용 가능한 이메일입니다");
               }
-            } else {
-              //사용 가능 이메일이면.
-              setJoinEmailRe(true);
-              setJoinEmailReCss(true);
-              setCheckEmailMsg("사용 가능한 이메일입니다");
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        } else if (!emailRef.test(member.memberEmail)) {
+          //이메일 형식 틀림
+          setJoinEmailRe(false);
+          setJoinEmailReCss(false);
+          setCheckEmailMsg("이메일 형식을 확인해주세요");
+        }
       } else if (member.memberEmail === memberEmail) {
         setUpdateEmail(false);
         //인증번호 발송 창 나올 필요 없음
@@ -425,7 +436,7 @@ const MemberUpdateMain = (props) => {
   return (
     <section>
       <div className="memberMain-title">
-        <h1>회원 정보 수정</h1>
+        <p style={{ fontWeight: "600", fontSize: "32px" }}>회원 정보 수정</p>
         <span className="memberUpdate-title-contnet">
           변경 할 정보만 수정해주세요
         </span>
@@ -448,6 +459,7 @@ const MemberUpdateMain = (props) => {
                       type="text"
                       name="memberPhone"
                       id="memberPhone"
+                      placeholder="ex. 000-0000-0000"
                       value={member.memberPhone}
                       onChange={inputData}
                     />
@@ -490,7 +502,6 @@ const MemberUpdateMain = (props) => {
                       type="password"
                       name="memberPwRe"
                       id="memberPwRe"
-                      placeholder="비밀번호 확인"
                       value={memberPwRe}
                       onChange={checkPwRe}
                       onBlur={checkPw}
@@ -513,7 +524,7 @@ const MemberUpdateMain = (props) => {
                       type="text"
                       name="memberEmail"
                       id="memberEmail"
-                      placeholder="이메일주소 입력"
+                      placeholder="ex. ID@example.com"
                       value={member.memberEmail}
                       onChange={inputData}
                       onBlur={checkEmail}

@@ -52,7 +52,9 @@ const Join = () => {
         <div className="title-logo">I_MOVE_U</div>
         <section ref={joinAgreeEnd}>
           <div className="joinAgree-title">
-            <h3>약관동의 및 정보활용동의</h3>
+            <p style={{ fontWeight: "600", fontSize: "18.72px" }}>
+              약관동의 및 정보활용동의
+            </p>
             <span>I_MOVE_U 서비스 이용을 위한 약관에 동의해주세요</span>
             <hr></hr>
           </div>
@@ -295,25 +297,33 @@ const JoinMain = () => {
 
   const backServer = import.meta.env.VITE_BACK_SERVER;
   const checkEmail = () => {
+    //이메일 형식 유효성 검사
+    const emailRef = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]/;
     if (member.memberEmail != "") {
-      axios
-        .get(
-          `${backServer}/member/checkEmail?memberEmail=${member.memberEmail}`
-        )
-        .then((res) => {
-          if (res.data != 0) {
-            setJoinEmailRe(false);
-            setCheckEmailMsg("이미 사용 중인 이메일입니다");
-          } else {
-            //사용 가능 이메일이면.
-            setJoinEmailRe(true);
-            setMemberEmail(member.memberEmail);
-            setCheckEmailMsg("사용 가능한 이메일입니다");
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      if (emailRef.test(member.memberEmail)) {
+        axios
+          .get(
+            `${backServer}/member/checkEmail?memberEmail=${member.memberEmail}`
+          )
+          .then((res) => {
+            if (res.data != 0) {
+              setJoinEmailRe(false);
+              setCheckEmailMsg("이미 사용 중인 이메일입니다");
+            } else {
+              //사용 가능 이메일이면.
+              setJoinEmailRe(true);
+              setMemberEmail(member.memberEmail);
+              setCheckEmailMsg("사용 가능한 이메일입니다");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else if (!emailRef.test(member.memberEmail)) {
+        //이메일 형식 다름
+        setJoinEmailRe(false);
+        setCheckEmailMsg("이메일 형식을 확인해주세요");
+      }
     }
   };
 
@@ -383,7 +393,9 @@ const JoinMain = () => {
   return (
     <section>
       <div className="joinAgree-title">
-        <h3>회원가입 정보입력</h3>
+        <p style={{ fontWeight: "600", fontSize: "18.72px" }}>
+          회원가입 정보입력
+        </p>
         <span> 가입을 위한 마지막 단계예요</span>
         <hr></hr>
       </div>
@@ -470,7 +482,7 @@ const JoinMain = () => {
                     type="text"
                     name="memberEmail"
                     id="memberEmail"
-                    placeholder="이메일주소 입력"
+                    placeholder="이메일 전체 주소 (ID@example.com)"
                     value={member.memberEmail}
                     onChange={inputData}
                     onBlur={checkEmail}
@@ -518,7 +530,7 @@ const JoinMain = () => {
                     type="text"
                     name="memberBirth"
                     id="memberBirth"
-                    placeholder="생년월일 8자리(199990101)"
+                    placeholder="생년월일 8자리 (199990101)"
                     value={member.memberBirth}
                     onChange={inputData}
                   />
@@ -568,7 +580,7 @@ const JoinMain = () => {
                     type="text"
                     name="memberPhone"
                     id="memberPhone"
-                    placeholder="휴대폰번호 '-'포함 입력"
+                    placeholder="휴대폰번호 '-' 포함 (000-0000-0000)"
                     value={member.memberPhone}
                     onChange={inputData}
                   />

@@ -6,7 +6,7 @@ const JoinEmailCode = (props) => {
   const memberEmail = props.memberEmail;
   const joinEmailRe = props.joinEmailRe;
   const [emailCode, setEmailCode] = useState(""); //발송된 인증번호
-  const [emailCodeReMsg, setEmailCodeReMsg] = useState(0); //인증코드 확인용(1:성공/2:실패/3:이메일 형식을 확인하세요)
+  const [emailCodeReMsg, setEmailCodeReMsg] = useState(0); //인증코드 확인용(1:성공/2:실패)
   const codeCheck = useRef();
 
   const [sendEmailMsg, setSendEmailMsg] = useState(0);
@@ -58,7 +58,6 @@ const JoinEmailCode = (props) => {
         }
         setTimerIntervalId(null);
         setShowtimer();
-        setEmailCodeReMsg(3);
       });
   };
   //타이머 분,초(0:00) 형식으로 저장할 변수
@@ -163,9 +162,7 @@ const JoinEmailCode = (props) => {
                     ? ""
                     : emailCodeReMsg == 1
                     ? "인증 성공"
-                    : emailCodeReMsg == 2
-                    ? "인증 실패"
-                    : emailCodeReMsg == 3 && "이메일 형식을 확인하세요"}
+                    : emailCodeReMsg == 2 && "인증 실패"}
                 </span>
                 <button
                   ref={codeCheck}

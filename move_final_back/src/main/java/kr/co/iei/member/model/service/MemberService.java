@@ -17,7 +17,7 @@ import kr.co.iei.coupon.model.dto.CouponDTO;
 import kr.co.iei.member.model.dao.MemberDao;
 import kr.co.iei.member.model.dto.LoginMemberDTO;
 import kr.co.iei.member.model.dto.MemberDTO;
-import kr.co.iei.member.model.dto.memberMovieListDTO;
+import kr.co.iei.member.model.dto.MemberMovieListDTO;
 import kr.co.iei.utils.JwtUtils;
 
 @Service
@@ -103,9 +103,11 @@ public class MemberService {
 	public MemberDTO selectMember(String memberId) {
 		MemberDTO m = memberDao.selectMember(memberId);
 		int couponCount = memberDao.memberCouponCount(m.getMemberNo());
+		System.out.println(couponCount);
 		m.setCouponCount(couponCount);
 		int watchingMovieCount = memberDao.memberWatchingMovieCount(m.getMemberNo()); 
 		m.setWatchingMovieCount(watchingMovieCount);
+		System.out.println(m);
 		return m;
 	}
 	//쿠폰 모달
@@ -157,7 +159,7 @@ public class MemberService {
 				continue;
 			}
 			processedPayNo.add(b.getPayNo());
-			memberMovieListDTO content = new memberMovieListDTO();
+			MemberMovieListDTO content = new MemberMovieListDTO();
 			/*
 			int payNo = b.getPayNo();
 			String movieTitle = "";
@@ -240,7 +242,7 @@ public class MemberService {
 				continue;
 			}
 			processedPayNo.add(b.getPayNo());
-			memberMovieListDTO content = new memberMovieListDTO();
+			MemberMovieListDTO content = new MemberMovieListDTO();
 			/*
 			int payNo = b.getPayNo();
 			String movieTitle = "";

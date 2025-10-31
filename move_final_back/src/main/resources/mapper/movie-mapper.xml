@@ -103,13 +103,16 @@
   </select>
   <!-- Mian  끝-->
   <select id="selectCommentCount" resultType="int">
-  	select count(*) from movie_comment_tbl
+  	select count(*) from movie_comment_tbl where movie_no = #{movieNo}
   </select>
   <select id="selectMovieCommentList" resultType="movieComment">
   	select * from
   		(select rownum as rnum, c.* from
-  			(select * 
-  				from movie_comment_tbl 
+  			(select mc.*,
+  					m.member_gender,
+  					m.member_id 
+  				from movie_comment_tbl mc
+  				join member_tbl m on mc.member_no = m.member_no
   				where movie_no = #{movieNo}
   				order by 
   				<choose>
@@ -123,7 +126,14 @@
   			)c
   		)
   	where rnum between #{start} and #{end}	
-
-  	
   </select>
+  <insert id="insertReport">
+  	insert into comment_report_tbl values(#{memberNo},#{movieCommentNo},sysdate)
+  </insert>
+  <insert id="insertComment">
+  	insert into movie_comment_tbl values(movie_comment_seq.nextval, #{movieNo}, #{movieScore}, #{commentContent}, #{memberNo}, sysdate)
+  </insert>
+  <update id="updateComment">
+  	update movie_comment_tbl set movie_score = #{movieScore}, comment_content = #{commentContent} where movie_comment_no = #{movieCommentNo} 
+  </update>
 </mapper>

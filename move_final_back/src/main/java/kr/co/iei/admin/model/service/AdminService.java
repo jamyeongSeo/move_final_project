@@ -106,6 +106,7 @@ public class AdminService {
         return adminDao.getRunningMovies();
     }
 
+    /**************** 스케줄 ****************/
     /*스케줄 조회*/
     public List<ScheduleDTO> scheduleList() {
         return adminDao.scheduleList();
@@ -131,7 +132,7 @@ public class AdminService {
 		  Map<String, Object> param = new HashMap<>();
 		    param.put("startDate", startDate);
 		    return adminDao.getWeeklySchedule(param);
-		}
+	}
 
 
 	

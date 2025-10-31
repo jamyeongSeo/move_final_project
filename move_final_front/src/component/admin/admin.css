@@ -53,7 +53,7 @@ body {
 .admin-main-content {
   margin-left: 270px;
   width: calc(100% - 270px);
-  background-color: #fff;
+  /* background-color: #fff; */
   min-height: 100vh;
   padding: 40px;
   box-sizing: border-box;
@@ -333,16 +333,7 @@ body {
   border-color: #3b82f6;
 }
 
-.admin-regist-info-wrap {
-  border-collapse: collapse;
-  justify-content: space-between;
-  align-items: center;
-}
 
-.admin-regist-info-wrap > div {
-  display: flex;
-  justify-content: center;
-}
 
 .admin-schedule-list-tbl > thead {
   display: block;
@@ -432,8 +423,8 @@ body {
 }
 
 .admin-schedule-btn {
-  background-color: #c0392b;
-  color: white;
+  color: var(--gray7);
+  background-color: var(--main5);
   border: none;
   padding: 10px 22px;
   border-radius: 8px;
@@ -445,7 +436,6 @@ body {
 }
 
 .admin-schedule-btn:hover {
-  background-color: #a93226;
   transform: translateY(-1px);
 }
 
@@ -479,18 +469,14 @@ body {
 }
 
 .admin-btn-red {
-  background-color: #c0392b;
-  color: white;
+  color: var(--gray7);
+  background-color: var(--main5);
   border: none;
   padding: 10px 22px;
   border-radius: 8px;
   font-size: 15px;
   cursor: pointer;
   transition: 0.2s;
-}
-
-.admin-btn-red:hover {
-  background-color: #a93226;
 }
 
 .date-picker label {

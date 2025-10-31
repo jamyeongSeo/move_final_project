@@ -56,6 +56,13 @@ public interface MemberDao {
 
 	List<BookingDTO> selectBookingMovie(int memberNo);
 
+	//--------쿠폰 자동 삭제 및 발급
+	int deleteCoupon();
+
+	List selectBirthMember();
+	int BirthCoupon(String memberNo);
+
+
 	
 
 	

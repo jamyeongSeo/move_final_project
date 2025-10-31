@@ -2,12 +2,10 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
-import "./admin.css";
 import "./adminSchedule.css";
 
 const AdminScheduleList = () => {
   const navigate = useNavigate();
-  const [showScreenNo, setShowScreenNo] = useState(false);
   const [screenFilter, setScreenFilter] = useState("1");
   const [scheduleList, setScheduleList] = useState([]);
   const [startDate, setStartDate] = useState(new Date().toISOString().split("T")[0]);
@@ -16,10 +14,8 @@ const AdminScheduleList = () => {
     axios
       .get(`${import.meta.env.VITE_BACK_SERVER}/admin/schedule`)
       .then((res) => {
-        let list = res.data;
-        if (screenFilter !== "1") {
-          list = list.filter((schedule) => String(schedule.screenNo) === screenFilter);
-        }
+        let list = res.data || [];
+        list = list.filter((schedule) => String(schedule.screenNo) === String(screenFilter));
         setScheduleList(list);
       })
       .catch((err) => console.error("스케줄 불러오기 실패:", err));
@@ -35,7 +31,7 @@ const AdminScheduleList = () => {
 
   const findSchedule = (date, hour) => {
     return scheduleList.find((s) => {
-      const startHour = parseInt(s.scheduleTimeStart.split(":")[0]);
+      const startHour = parseInt(String(s.scheduleTimeStart).split(":")[0], 10);
       return s.scheduleOpen === date && startHour === hour;
     });
   };
@@ -51,13 +47,9 @@ const AdminScheduleList = () => {
         cancelButtonText: "취소",
         confirmButtonColor: "#c0392b",
       });
-
       if (!result.isConfirmed) return;
-
       await axios.delete(`${import.meta.env.VITE_BACK_SERVER}/admin/schedule/${scheduleNo}`);
-
       setScheduleList((prev) => prev.filter((s) => s.scheduleNo !== scheduleNo));
-
       Swal.fire({
         icon: "success",
         title: "삭제 완료",
@@ -79,9 +71,7 @@ const AdminScheduleList = () => {
     if (!schedule) return;
     Swal.fire({
       title: `${schedule.movieTitle}`,
-      html: `<b>${schedule.scheduleOpen}</b><br/>
-             ${schedule.scheduleTimeStart} ~ ${schedule.scheduleTimeEnd}<br/>
-             ${schedule.screenNo}관`,
+      html: `<b>${schedule.scheduleOpen}</b><br/>${schedule.scheduleTimeStart} ~ ${schedule.scheduleTimeEnd}<br/>${schedule.screenNo}관`,
       showCancelButton: true,
       confirmButtonText: "수정",
       cancelButtonText: "삭제",
@@ -96,41 +86,31 @@ const AdminScheduleList = () => {
     });
   };
 
+  const colorMap = {
+    "1": "#f59e0b",
+    "2": "#10b981",
+    "3": "#3b82f6",
+  };
+
   return (
     <div className="admin-schedule-list-wrap">
+      <h2>스케줄 타임테이블</h2>
       <div className="admin-schedule-list-header">
-        <div className="admin-schedule-filter-screen">
-          <span>관 선택: </span>
-          <button
-            className="filter-toggle-btn"
-            onClick={() => setShowScreenNo(!showScreenNo)}
-          >
-            ▼
-          </button>
-          {showScreenNo && (
-            <div className="filter-menu">
-              {[
-                { label: "1관", value: "1" },
-                { label: "2관", value: "2" },
-                { label: "3관", value: "3" },
-              ].map((btn) => (
-                <button
-                  key={btn.value}
-                  className={`filter-option ${
-                    screenFilter === btn.value ? "active" : ""
-                  }`}
-                  onClick={() => {
-                    setShowScreenNo(false);
-                    setScreenFilter(btn.value);
-                  }}
-                >
-                  {btn.label}
-                </button>
-              ))}
-            </div>
-          )}
+        <div className="screen-tab-group">
+          {[
+            { label: "1관", value: "1" },
+            { label: "2관", value: "2" },
+            { label: "3관", value: "3" },
+          ].map((btn) => (
+            <button
+              key={btn.value}
+              className={`screen-tab ${screenFilter === btn.value ? `active-${btn.value}` : ""}`}
+              onClick={() => setScreenFilter(btn.value)}
+            >
+              {btn.label}
+            </button>
+          ))}
         </div>
-        <h2>스케줄 타임테이블</h2>
         <div className="date-picker">
           <label>시작일 선택: </label>
           <input
@@ -140,6 +120,7 @@ const AdminScheduleList = () => {
           />
         </div>
       </div>
+
       <div className="admin-schedule-timetable-container">
         <table className="admin-schedule-table">
           <thead>
@@ -155,14 +136,20 @@ const AdminScheduleList = () => {
               <tr key={hour}>
                 <td>{hour}:00</td>
                 {days.map((d) => {
-                  const schedule = findSchedule(d, hour);
+                  const scheduleItem = findSchedule(d, hour);
                   return (
                     <td
                       key={d}
-                      className={schedule ? "occupied" : "available"}
-                      onClick={() => handleCellClick(schedule)}
+                      className={scheduleItem ? "occupied" : "available"}
+                      onClick={() => handleCellClick(scheduleItem)}
+                      style={{
+                        backgroundColor: scheduleItem
+                          ? colorMap[scheduleItem.screenNo]
+                          : undefined,
+                        color: scheduleItem ? "#fff" : "#000",
+                      }}
                     >
-                      {schedule ? `${schedule.movieTitle}` : ""}
+                      {scheduleItem ? `${scheduleItem.movieTitle}` : ""}
                     </td>
                   );
                 })}

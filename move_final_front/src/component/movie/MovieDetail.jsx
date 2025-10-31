@@ -12,13 +12,28 @@ import Face6OutlinedIcon from "@mui/icons-material/Face6Outlined";
 import Face3OutlinedIcon from "@mui/icons-material/Face3Outlined";
 import ReportProblemOutlinedIcon from "@mui/icons-material/ReportProblemOutlined";
 import Rating from "@mui/material/Rating";
-import Typography from "@mui/material/Typography";
-import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+
+import {
+  Box,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  styled,
+} from "@mui/material";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import "dayjs/locale/ko";
+import PageNavigation from "../utils/PageNavigation";
+import Swal from "sweetalert2";
+
+dayjs.extend(relativeTime);
+dayjs.locale("ko");
 
 const MovieDetail = () => {
   const isLogin = useRecoilValue(isLoginState);
   const { movieNo } = useParams();
-  const [member, setMember] = useState({});
+  const [member, setMember] = useState(null);
   const [memberId, setMemberId] = useRecoilState(loginIdState);
   const [movie, setMovie] = useState({});
   const [likeCount, setLikeCount] = useState(0);
@@ -29,6 +44,10 @@ const MovieDetail = () => {
   const [pi, setPi] = useState(null);
   const [totalCount, setTotalCount] = useState(0);
   const [movieScore, setMovieScore] = useState(0);
+  const [commentContent, setCommentContent] = useState("");
+  const [isUpdate, setIsUpdate] = useState(null);
+  const [updateContent, setUpdateContent] = useState("");
+  const [updateScore, setUpdateScore] = useState(0);
   const navigate = useNavigate();
   const getMovieInfo = () => {
     axios
@@ -42,9 +61,27 @@ const MovieDetail = () => {
         console.log(err);
       });
   };
+  const getMemberInfo = () => {
+    axios
+      .get(
+        `${
+          import.meta.env.VITE_BACK_SERVER
+        }/member/selectMember?memberId=${memberId}`
+      )
+      .then((res) => {
+        setMember(res.data);
+      })
+      .catch((err) => console.log(err));
+  };
   useEffect(() => {
     getMovieInfo();
   }, [movieNo]);
+
+  useEffect(() => {
+    if (memberId) {
+      getMemberInfo();
+    }
+  }, [memberId]);
 
   const handleOrderChange = (e) => {
     setOrder(e.target.value);
@@ -58,9 +95,11 @@ const MovieDetail = () => {
         }/movie/comment/${movieNo}?reqPage=${reqPage}&order=${order}`
       )
       .then((res) => {
-        console.log(res);
+        console.log(res.data);
+        console.log(isUpdate);
         setMovieCommentList(res.data.commentList);
         setTotalCount(res.data.totalCount);
+        setPi(res.data.pi);
       })
       .catch((err) => {
         console.log(err);
@@ -69,6 +108,213 @@ const MovieDetail = () => {
   useEffect(() => {
     getMovieCommentList();
   }, [movieNo, reqPage, order]);
+
+  const nowDate = (comment) => {
+    const now = dayjs(); //현재 날짜/시간 가져오는 함수
+    const target = dayjs(comment.commentDate); // 날짜를 dayjs 형식으로 변환하기
+    const diffDays = now.diff(target, "day"); // 현재날짜와 지난날짜와 비교
+    // 보낸날짜가 17일이면 오늘이 19일 그럼 2일전 표시이렇게 자동으로 계산
+    if (diffDays >= 7) {
+      return target.format("YYYY-MM-DD"); // 7일 이상이면 날짜로 변형
+    }
+    return target.fromNow(); //한국어로 ?? 시간전 표시하기
+  };
+
+  const submitComment = () => {
+    if (!isLogin) {
+      Swal.fire({
+        title: "로그인 필요",
+        text: "로그인 후 가능한 기능입니다.",
+        icon: "warning",
+      });
+      navigate("/common/login");
+      return;
+    }
+
+    if (commentContent.trim() === "") {
+      Swal.fire({
+        title: "필수 입력",
+        text: "댓글은 필수로 작성해야 합니다.",
+        icon: "warning",
+      });
+      return;
+    }
+
+    if (movieScore === 0) {
+      Swal.fire({
+        title: "필수 입력",
+        text: "평점을 입력해주세요.",
+        icon: "warning",
+      });
+      return;
+    }
+
+    axios
+      .post(`${import.meta.env.VITE_BACK_SERVER}/movie/comment/insert`, {
+        movieNo: movieNo,
+        memberNo: member.memberNo,
+        commentContent: commentContent,
+        movieScore: movieScore,
+      })
+      .then((res) => {
+        if (res.data === 1) {
+          Swal.fire({
+            title: "등록 성공",
+            text: "성공적으로 등록되었습니다.",
+            icon: "success",
+          });
+          setCommentContent("");
+          setMovieScore(0);
+          getMovieCommentList();
+        } else {
+          Swal.fire({
+            title: "등록 실패",
+            text: "등록에 실패했습니다.",
+            icon: "warning",
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const hideMemberId = (memberId) => {
+    if (!memberId) return "";
+    const memberLength = memberId.length;
+    if (memberLength <= 3) return "*".repeat(memberLength);
+    return memberId.slice(0, memberLength - 3) + "***";
+  };
+
+  const reportComment = (comment) => {
+    if (!isLogin) {
+      Swal.fire({
+        title: "로그인 필요",
+        text: "로그인 후 가능한 기능입니다.",
+        icon: "warning",
+      });
+      navigate("/common/login");
+      return;
+    } else {
+      axios
+        .post(`${import.meta.env.VITE_BACK_SERVER}/movie/comment/report`, {
+          movieCommentNo: comment.movieCommentNo,
+          memberNo: member.memberNo,
+        })
+        .then((res) => {
+          if (res.data === 1) {
+            Swal.fire({
+              title: "신고 완료",
+              text: "신고가 접수되었습니다.",
+              icon: "success",
+            });
+          }
+        })
+        .catch((err) => {
+          Swal.fire({
+            title: "제한됨",
+            text: "한 댓글에 한번만 가능합니다.",
+            icon: "warning",
+          });
+          return;
+        });
+    }
+  };
+  const StyledRating = styled(Rating)({
+    "& .MuiRating-iconFilled": {
+      color: "#ff2b2b",
+    },
+    "& .MuiRating-iconHover": {
+      color: "#ff3d47",
+    },
+  });
+
+  const handleCommentContentChange = (e) => {
+    setCommentContent(e.target.value);
+  };
+
+  const handleMovieScoreChange = (event, updateValue) => {
+    setMovieScore(updateValue);
+  };
+
+  const handleUpdateContentChange = (e) => {
+    setUpdateContent(e.target.value);
+  };
+
+  const handleUpdateScoreChange = (event, updateValue) => {
+    setUpdateScore(updateValue);
+  };
+
+  const updateComment = (comment, isSubmit = false) => {
+    if (!isLogin) {
+      Swal.fire({
+        title: "로그인 필요",
+        text: "로그인 후 가능한 기능입니다.",
+        icon: "warning",
+      });
+      navigate("/common/login");
+      return;
+    }
+
+    if (isSubmit) {
+      if (updateContent.trim() === "") {
+        Swal.fire({
+          title: "필수 입력",
+          text: "수정할 내용을 입력해주세요.",
+          icon: "warning",
+        });
+        return;
+      }
+      if (updateScore === 0) {
+        Swal.fire({
+          title: "필수 입력",
+          text: "평점을 입력해주세요.",
+          icon: "warning",
+        });
+        return;
+      }
+
+      axios
+        .patch(`${import.meta.env.VITE_BACK_SERVER}/movie/comment`, {
+          movieCommentNo: comment.movieCommentNo,
+          commentContent: updateContent,
+          movieScore: updateScore,
+        })
+        .then((res) => {
+          console.log("res : " + res.data);
+          if (res.data === 1) {
+            Swal.fire({
+              title: "수정 완료",
+              text: "성공적으로 수정되었습니다.",
+              icon: "success",
+            });
+            setIsUpdate(null);
+            setUpdateContent("");
+            setUpdateScore(0);
+            getMovieCommentList();
+          } else if (res.data !== 1) {
+            Swal.fire({
+              title: "권한 없음",
+              text: "수정 권한이 없습니다.",
+              icon: "warning",
+            });
+          } else {
+            Swal.fire({
+              title: "수정 실패",
+              text: "수정에 실패했습니다.",
+              icon: "warning",
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      setIsUpdate(comment.movieCommentNo);
+      setUpdateContent(comment.commentContent);
+      setUpdateScore(comment.movieScore);
+    }
+  };
   return (
     <>
       <section className="section movie-detail-title-section">
@@ -91,7 +337,10 @@ const MovieDetail = () => {
           </div>
           <div className="title-movie-thumb-wrap">
             <div className="title-movie-thumb">
-              <img src={movie.movieThumb} className="movie-detail-thumb"></img>
+              <img
+                src={`${import.meta.env.VITE_BACK_SERVER}${movie.movieThumb}`}
+                className="movie-detail-thumb"
+              ></img>
             </div>
             <div className="thumb-btn-zone">
               <div className="movie-btn-zone">
@@ -256,6 +505,9 @@ const MovieDetail = () => {
                   </Select>
                 </FormControl>
               </Box>
+              <div className="movie-comment-totalCount">
+                게시물 총 {totalCount}건
+              </div>
             </div>
             <div className="movie-comment-list-wrap">
               <div className="movie-comment-list">
@@ -264,40 +516,155 @@ const MovieDetail = () => {
                     <div key={"comment-" + index} className="movie-comment-box">
                       {comment.memberGender === 1 ? (
                         <div className="movie-comment-box-start">
-                          <Face3OutlinedIcon
+                          <Face6OutlinedIcon
                             sx={{ width: "80px", height: "80px" }}
                           />
                         </div>
                       ) : (
                         <div className="movie-comment-box-start">
-                          <Face6OutlinedIcon
+                          <Face3OutlinedIcon
                             sx={{ width: "80px", height: "80px" }}
                           />
                         </div>
                       )}
-
                       <div className="movie-comment-title">
-                        {comment.memberNo}
+                        {hideMemberId(comment.memberId)}
                       </div>
-                      <div className="movie-comment-content">
-                        {comment.commentContent}
-                      </div>
-
+                      {isUpdate === comment.movieCommentNo ? (
+                        <div className="movie-comment-update-input-wrap">
+                          <textarea
+                            placeholder="수정할 내용을 입력해주세요."
+                            value={updateContent}
+                            onChange={handleUpdateContentChange}
+                          />
+                          <div className="comment-update-action-wrap">
+                            <StyledRating
+                              value={updateScore}
+                              onChange={handleUpdateScoreChange}
+                              sx={{ marginRight: "10px" }}
+                            />
+                            <button
+                              className="comment-submit-btn"
+                              onClick={() => updateComment(comment, true)}
+                            >
+                              수정 완료
+                            </button>
+                            <button
+                              className="comment-delete-btn"
+                              onClick={() => {
+                                setIsUpdate(null);
+                                setUpdateContent("");
+                                setUpdateScore(0);
+                              }}
+                            >
+                              취소
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="movie-comment-content">
+                          {comment.commentContent}
+                        </div>
+                      )}
                       <div className="movie-comment-box-end">
                         <div className="movie-comment-report-btn">
-                          <ReportProblemOutlinedIcon />
+                          <div className="movie-comment-date">
+                            {nowDate(comment)}
+                          </div>
+                          {isUpdate !== comment.movieCommentNo && (
+                            <div className="comment-btn-wrap">
+                              {(member &&
+                                member.memberNo === comment.memberNo) ||
+                              (member && member.memberLevel === 1) ? (
+                                <>
+                                  {member &&
+                                    member.memberNo === comment.memberNo && (
+                                      <div
+                                        className="comment-edit-btn"
+                                        onClick={() => updateComment(comment)}
+                                      >
+                                        수정
+                                      </div>
+                                    )}
+                                  {((member &&
+                                    member.memberNo === comment.memberNo) ||
+                                    (member && member.memberLevel === 1)) && (
+                                    <div
+                                      className="comment-delete-btn"
+                                      onClick={() =>
+                                        deleteComment(comment.movieCommentNo)
+                                      }
+                                    >
+                                      삭제
+                                    </div>
+                                  )}
+                                </>
+                              ) : (
+                                member &&
+                                !(
+                                  (member &&
+                                    member.memberNo === comment.memberNo) ||
+                                  (member && member.memberLevel === 1)
+                                ) && (
+                                  <ReportProblemOutlinedIcon
+                                    onClick={() => {
+                                      reportComment(comment);
+                                    }}
+                                  />
+                                )
+                              )}
+                            </div>
+                          )}
                         </div>
-                        <div className="movie-comment-rate">
-                          <Rating
-                            name="read-only"
-                            value={comment.movieScore}
-                            readOnly
-                          />
-                        </div>
+                        {isUpdate !== comment.movieCommentNo && (
+                          <div className="movie-comment-rate">
+                            <StyledRating
+                              name="read-only"
+                              value={comment.movieScore}
+                              readOnly
+                            />
+                          </div>
+                        )}
                       </div>
                     </div>
                   );
                 })}
+              </div>
+            </div>
+            <div className="page-navi">
+              {pi && (
+                <PageNavigation
+                  pi={pi}
+                  reqPage={reqPage}
+                  setReqPage={setReqPage}
+                />
+              )}
+            </div>
+            {}
+            <div className="movie-comment-input-wrap">
+              <div className="movie-comment-input-box">
+                <textarea
+                  className="comment-input"
+                  placeholder="실 관람평을 입력해주세요."
+                  value={commentContent}
+                  onChange={handleCommentContentChange}
+                ></textarea>
+                <div className="comment-write-bottom">
+                  <div className="comment-rating">
+                    <span className="rating-label">평점 입력</span>
+                    <StyledRating
+                      name="simple-controlled"
+                      value={movieScore}
+                      onChange={handleMovieScoreChange}
+                    />
+                  </div>
+                  <button
+                    className="comment-submit-btn"
+                    onClick={submitComment}
+                  >
+                    입력
+                  </button>
+                </div>
               </div>
             </div>
           </div>

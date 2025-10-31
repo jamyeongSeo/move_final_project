@@ -6,23 +6,29 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { isLoginState, loginIdState } from "../utils/RecoilData";
 import { red } from "@mui/material/colors";
 import "./main.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Schedule } from "@mui/icons-material";
 
 const Main = () => {
   return (
     <body
       style={{
-        backgroundColor: "var(--main1)",
+        backgroundColor: "var(--main3)",
         margin: "0px",
         width: "100%",
         height: "100%",
       }}
     >
-      <div className="content" style={{ margin: "0px auto", width: "1300px" }}>
-        <div className="content-wrap" style={{ margin: "0px" }}>
+      <div
+        className="content"
+        style={{ margin: "0px auto", width: "1300px", justifyItems: "center" }}
+      >
+        <div
+          className="content-wrap"
+          style={{ margin: "0px", width: "1300px" }}
+        >
           <div className="main-box-office-wrap">
-            <div className="main-box-office-title">박스오피스</div>
+            <div className="main-box-office-title">박스오피스 TOP3</div>
             <MainBoxOffice></MainBoxOffice>
           </div>
 
@@ -83,6 +89,7 @@ const MainBoxOffice = () => {
   );
 };
 const MovieItem = (props) => {
+  const navigate = useNavigate();
   const viewContent = () => {
     setHoverText(2);
   };
@@ -99,16 +106,22 @@ const MovieItem = (props) => {
   const [likeCount, setLikeCount] = useState(movie.likeCount);
 
   return (
-    <li className="movie-item">
+    <li className="movie-item" style={{ width: "290px" }}>
       <div
         className="movie-poster"
         onMouseOver={viewContent}
         onMouseOut={hideContent}
       >
-        <Link to="/movie/list">
+        <Link to={`/movie/detail/${movie.movieNo}`}>
           <img
-            style={{ width: "100%", height: "96%" }}
-            src={movie.movieThumb}
+            style={{
+              width: "100%",
+              height: "100%",
+              boxShadow: "6px 6px 5px var(--main1)",
+            }}
+            src={`${import.meta.env.VITE_BACK_SERVER}/thumb/${
+              movie.movieThumb
+            }`}
             className={hoverText !== 2 ? "movie-thumb" : "movie-thumb-hide"}
           />
         </Link>
@@ -119,7 +132,7 @@ const MovieItem = (props) => {
           {movie.movieContent}
         </div> */}
       </div>
-      <div className="movie-info">
+      <div style={{ marginTop: "28px" }} className="movie-info">
         <div className="movie-grade">
           <img
             src={
@@ -129,12 +142,12 @@ const MovieItem = (props) => {
                 ? "/image/12.png"
                 : movie.movieGrade == 3
                 ? "/image/15.png"
-                : "/image/19.png"
+                : "/image/18.png"
             }
             className="grade-img"
           />
         </div>
-        <div className="movie-title" style={{ color: "var(--main3)" }}>
+        <div className="movie-title" style={{ color: "var(--main1)" }}>
           {movie.movieTitle}
         </div>
         <div className="movie-btn-zone">
@@ -207,16 +220,21 @@ const MovieItem = (props) => {
                   }
                 }}
               >
-                <FavoriteBorderIcon sx={{ fill: "#ffffff" }} />
+                <FavoriteBorderIcon sx={{ fill: "var(--main1)" }} />
               </span>
             )}
           </div>
-          <div className="like-count" style={{ color: "var(--main3)" }}>
+          <div className="like-count" style={{ color: "var(--main1)" }}>
             {movie.likeCount}
           </div>
         </div>
         <div className="booking-zone">
-          <button className="booking-btn">예매하기</button>
+          <button
+            style={{ width: "165px", marginLeft: "5px" }}
+            className="booking-btn"
+          >
+            예매하기
+          </button>
         </div>
       </div>
     </li>
@@ -357,11 +375,13 @@ const MainMovieSchedul = () => {
                   </li>
                   <li className="main-shedule-month-date">
                     {date.oneScheduleDate.date !== 1 ? (
-                      <h3>{date.oneScheduleDate.date}</h3>
+                      <p style={{ fontSize: "19px", fontWeight: "600" }}>
+                        {date.oneScheduleDate.date}
+                      </p>
                     ) : (
-                      <h3>
+                      <p style={{ fontSize: "19px", fontWeight: "600" }}>
                         {date.oneScheduleDate.month}.{date.oneScheduleDate.date}
-                      </h3>
+                      </p>
                     )}
                   </li>
                 </ul>
@@ -378,6 +398,7 @@ const MainMovieSchedul = () => {
             const scheduleCloseString = schedul.schedules.scheduleClose;
             const scheduleCloseDate = new Date(scheduleCloseString);
             */
+            console.log(schedul);
             return (
               <div key={"main-schedul-movie" + index}>
                 <div className="main-schedul-movie-box">
@@ -399,7 +420,11 @@ const MainMovieSchedul = () => {
                       </div>
 
                       <div className="main-schedul-movie-title">
-                        <h3>{schedul.movieTitle}</h3>
+                        <Link to={`/movie/detail/${schedul.movieNo}`}>
+                          <p style={{ fontSize: "18.72px", fontWeight: "600" }}>
+                            {schedul.movieTitle}
+                          </p>
+                        </Link>
                       </div>
                     </div>
                     <div

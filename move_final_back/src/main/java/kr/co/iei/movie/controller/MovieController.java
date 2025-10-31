@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import kr.co.iei.movie.model.dto.MovieCommentDTO;
 import kr.co.iei.movie.model.dto.MovieDTO;
 import kr.co.iei.movie.model.service.MovieService;
 
@@ -81,4 +83,23 @@ public class MovieController {
 		Map<String, Object> commentMap = movieService.selectMovieCommentList(movieNo, reqPage, order);
 		return ResponseEntity.ok(commentMap);
 	}
+	@PostMapping(value="/comment/report")
+	public ResponseEntity<Integer> reportComment(@RequestBody Map<String, Object> reportMap){
+		System.out.println(reportMap);
+		int result = movieService.reportComment(reportMap);
+		System.out.println(result);
+		return ResponseEntity.ok(result);
+	}
+
+	@PostMapping(value="/comment/insert")
+	public ResponseEntity<Integer> insertComment(@RequestBody MovieCommentDTO comment){
+		int result = movieService.insertComment(comment);
+        return ResponseEntity.ok(result);
+	}
+	@PatchMapping(value="/comment")
+	public ResponseEntity<Integer> updateComment(@RequestBody MovieCommentDTO comment){
+		int result = movieService.updateComment(comment);
+		return ResponseEntity.ok(1);
+	}
+
 }
