@@ -79,6 +79,15 @@
   	select seat_no from seat_tbl where seat_row = #{bookSeatRow} and seat_column = #{bookSeatColumn}
   </select>
   
+  <select id="selectBookedSeat" resultType="booking">
+  	select 
+  		book_seat_row, 
+  		book_seat_column 
+  	from book_tbl b 
+  	join book_seat_tbl bs using(book_no)
+  	where b.schedule_no = #{scheduleNo} 
+  </select>
+  
   <insert id="insertBooking">
   	insert into book_tbl values(book_seq.nextval, #{priceNo} , #{scheduleNo}, #{bookingDate} , #{memberNo})
   </insert>

@@ -8,6 +8,7 @@ import { EventSeat } from "@mui/icons-material";
 import Swal from "sweetalert2";
 const BookingSeat = () => {
   const location = useLocation();
+  const scheduleNo = location.state.scheduleNo;
   const params = useParams();
   const movieNo = params.movieNo;
   const screenNo = params.screenNo;
@@ -19,11 +20,9 @@ const BookingSeat = () => {
   const selectCount = totalCount;
   const [selectSeat, setSelectSeat] = useState(Array(6).fill(null));
   const [count, setCount] = useState(0);
-  const [totalPrice, setTotalPrice] = useState(0);
   const [selectSeatList, setSelectSeatList] = useState([]);
-  const showPrice = totalPrice.toLocaleString();
   const newMovieDate = new Date(location.state.movieDate);
-  console.log("movieDate :" + newMovieDate);
+  console.log(movieNo);
   const navigate = useNavigate();
   const [refresh, setRefresh] = useState(false);
   const [bookSeatRow, setBookSeatRow] = useState([]);
@@ -31,7 +30,7 @@ const BookingSeat = () => {
   const [payInfo, setPayInfo] = useState({
     movieNo: movieNo,
     screenNo: screenNo,
-    totalPrice: totalPrice,
+    totalPrice: 0,
     selectSeatList: [],
     scheduleTimeStart: location.state.scheduleTimeStart,
     scheduleTimeEnd: location.state.scheduleTimeEnd,
@@ -50,14 +49,26 @@ const BookingSeat = () => {
       )
       .then((res) => {
         console.log(res);
-        setTotalPrice(res.data.totalPrice);
         setPayInfo({ ...payInfo, totalPrice: res.data.totalPrice });
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [kidCount, adultCount]);
-
+  }, [kidCount, adultCount, movieNo]);
+  useEffect(() => {
+    axios
+      .get(
+        `${
+          import.meta.env.VITE_BACK_SERVER
+        }/booking/getBookedSeat?scheduleNo=${scheduleNo}`
+      )
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
   useEffect(() => {
     axios
       .get(`${import.meta.env.VITE_BACK_SERVER}/booking/getSeat/${screenNo}`)
@@ -70,7 +81,7 @@ const BookingSeat = () => {
       });
   }, []);
   console.log(movieNo);
-  console.log(totalPrice);
+  console.log(payInfo.totalPrice);
   return (
     <div>
       <div className="content">
@@ -179,7 +190,9 @@ const BookingSeat = () => {
               <div className="seat-info-box">
                 <div className="price-title">총 결제 금액</div>
                 <div className="price-count">
-                  {totalPrice !== 0 ? showPrice + "원" : "0원"}
+                  {payInfo.totalPrice !== 0
+                    ? payInfo.totalPrice.toLocaleString() + "원"
+                    : "0원"}
                 </div>
                 <div className="adult-amount">
                   <span className="amount-title">성인</span>

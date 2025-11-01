@@ -54,4 +54,6 @@ public interface BookingDao {
 
 	int insertBookSeat(BookingDTO b);
 
+	List selectBookedSeat(int scheduleNo);
+
 }

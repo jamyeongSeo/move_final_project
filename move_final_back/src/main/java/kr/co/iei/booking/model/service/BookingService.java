@@ -61,10 +61,10 @@ public class BookingService {
 			seatList.add(oneRowList);
 		}
 		
-		Map map = new HashMap<String, Object>();
-		map.put("seatList", seatList);
-		map.put("rowList",rowList);
-		return map;
+		Map seatMap = new HashMap<String, Object>();
+		seatMap.put("seatList", seatList);
+		seatMap.put("rowList",rowList);
+		return seatMap;
 	}
 
 	public Map calcPrice(int movieNo, int adultCount, int kidCount) {
@@ -162,6 +162,12 @@ public class BookingService {
 		}
 		*/
 		return 0;
+	}
+
+	public Map selectBookedSeat(int scheduleNo) {
+		List bookedSeatList = bookingDao.selectBookedSeat(scheduleNo);
+		System.out.println("bookedSeatList :"+bookedSeatList);
+		return null;
 	}
 
 	

@@ -83,10 +83,14 @@ public class BookingController {
 		MemberDTO m = bookingService.selectOneMember(memberId);
 		return ResponseEntity.ok(m);
 	}
-	
+	@GetMapping(value="/getBookedSeat")
+	public ResponseEntity<Map> getBookedSeat(@RequestParam int scheduleNo){
+		Map map = bookingService.selectBookedSeat(scheduleNo);
+		return ResponseEntity.ok(null);
+	}
 	@PostMapping(value="/payment")
 	public ResponseEntity<Integer> payment(@RequestBody BookingInfoDTO bookingInfo){
-		System.out.println("bookingDate :"+bookingInfo.getBookingDate());
+		
 		
 		int result = bookingService.payment(bookingInfo);
 		
