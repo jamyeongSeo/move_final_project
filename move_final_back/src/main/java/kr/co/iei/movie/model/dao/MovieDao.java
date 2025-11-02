@@ -40,6 +40,8 @@ public interface MovieDao {
 
 	int updateComment(MovieCommentDTO comment);
 
+	int deleteComment(int movieCommentNo);
+
 	
 
 	

@@ -315,6 +315,48 @@ const MovieDetail = () => {
       setUpdateScore(comment.movieScore);
     }
   };
+
+  const deleteComment = (commentNo) => {
+    Swal.fire({
+      title: "정말 삭제하시겠습니까?",
+      text: "삭제된 댓글은 복구할 수 없습니다.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#ff2b2b",
+      cancelButtonColor: "#888",
+      confirmButtonText: "삭제",
+      cancelButtonText: "취소",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(
+            `${
+              import.meta.env.VITE_BACK_SERVER
+            }/movie/comment/delete/${commentNo}`
+          )
+          .then((res) => {
+            if (res.data === 1) {
+              Swal.fire({
+                title: "삭제 완료",
+                text: "성공적으로 삭제되었습니다.",
+                icon: "success",
+              });
+              getMovieCommentList();
+            } else {
+              Swal.fire({
+                title: "삭제 실패",
+                text: "삭제에 실패하었습니다.",
+                icon: "warning",
+              });
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    });
+  };
+
   return (
     <>
       <section className="section movie-detail-title-section">
@@ -446,37 +488,49 @@ const MovieDetail = () => {
           </button>
         </div>
         {nowTab === "detailInfo" ? (
-          <div className="movie-detail-info-box-wrap">
-            <div className="half-info-box-wrap">
-              <div className="half-info-box">
-                <span className="info-box-title">감독</span>
-                <span className="half-info-box-content">
-                  {movie.movieDirector}
+          <>
+            <div className="movie-detail-info-box-wrap">
+              <div className="half-info-box-wrap">
+                <div className="half-info-box">
+                  <span className="info-box-title">감독</span>
+                  <span className="half-info-box-content">
+                    {movie.movieDirector}
+                  </span>
+                </div>
+                <div className="half-info-box">
+                  <span className="info-box-title">출연진</span>
+                  <span className="half-info-box-content">
+                    {movie.movieActor} 등
+                  </span>
+                </div>
+              </div>
+              <div className="info-box">
+                <span className="info-box-title">런타임</span>
+                <AccessTimeIcon sx={{ width: "100px", height: "100px" }} />
+                <span className="info-box-content">
+                  {movie.movieRuntime} 분
                 </span>
               </div>
-              <div className="half-info-box">
-                <span className="info-box-title">출연진</span>
-                <span className="half-info-box-content">
-                  {movie.movieActor} 등
-                </span>
+              <div className="info-box">
+                <span className="info-box-title">장르</span>
+                <MovieOutlinedIcon sx={{ width: "100px", height: "100px" }} />
+                <span className="info-box-content">{movie.movieGenre}</span>
+              </div>
+              <div className="info-box">
+                <span className="info-box-title">평점</span>
+                <GradeOutlinedIcon sx={{ width: "100px", height: "100px" }} />
+                <span className="info-box-content">? 점</span>
               </div>
             </div>
-            <div className="info-box">
-              <span className="info-box-title">런타임</span>
-              <AccessTimeIcon sx={{ width: "100px", height: "100px" }} />
-              <span className="info-box-content">{movie.movieRuntime} 분</span>
+            <div className="movie-detail-info-box-wrap">
+              <div className="info-box secondBox">
+                <span className="info-box-title">예매율</span>
+              </div>
+              <div className="info-box secondBox">
+                <span className="info-box-title">누적관객수</span>
+              </div>
             </div>
-            <div className="info-box">
-              <span className="info-box-title">장르</span>
-              <MovieOutlinedIcon sx={{ width: "100px", height: "100px" }} />
-              <span className="info-box-content">{movie.movieGenre}</span>
-            </div>
-            <div className="info-box">
-              <span className="info-box-title">평점</span>
-              <GradeOutlinedIcon sx={{ width: "100px", height: "100px" }} />
-              <span className="info-box-content">? 점</span>
-            </div>
-          </div>
+          </>
         ) : (
           <div className="movie-detail-comment-wrap">
             <div className="movie-comment-select-div">

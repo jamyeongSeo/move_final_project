@@ -213,5 +213,9 @@ public class MovieService {
 		return result;
 	}
 
+	@Transactional
+    public int deleteComment(int movieCommentNo) {
+        return movieDao.deleteComment(movieCommentNo);
+    }
 	
 }
