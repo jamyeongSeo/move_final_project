@@ -101,5 +101,10 @@ public class MovieController {
 		int result = movieService.updateComment(comment);
 		return ResponseEntity.ok(1);
 	}
+	@DeleteMapping(value="/comment/delete/{movieCommentNo}")
+    public ResponseEntity<Integer> deleteComment(@PathVariable int movieCommentNo){
+        int result = movieService.deleteComment(movieCommentNo);
+        return ResponseEntity.ok(result);
+    }
 
 }

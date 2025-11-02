@@ -136,4 +136,7 @@
   <update id="updateComment">
   	update movie_comment_tbl set movie_score = #{movieScore}, comment_content = #{commentContent} where movie_comment_no = #{movieCommentNo} 
   </update>
+  <delete id="deleteComment">
+  	delete from movie_comment_tbl where movie_comment_no = #{movieCommentNo}
+  </delete>
 </mapper>
