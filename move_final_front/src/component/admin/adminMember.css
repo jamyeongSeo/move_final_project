@@ -114,3 +114,16 @@
   background-color: #f5f5f5;
   font-weight: 600;
 }
+
+.comment-cell {
+  cursor: pointer;
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.comment-preview {
+  display: inline-block;
+  vertical-align: middle;
+}

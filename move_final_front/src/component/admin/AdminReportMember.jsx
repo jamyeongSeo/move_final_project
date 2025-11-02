@@ -1,80 +1,168 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
+import "./adminMember";
 
-const AdminReportMember = () => {   
-    const [reportMember, setReportMember] = useState([]); //신고 당한 회원 뽑아오는 목록 담기(회원 아이디, 신고 당한 댓글 내용)
-    // const [commentList, setCommentList] = useState([]); 
-    // const [suspend, setSuspend] = useState([]); //정지관련
-    const [reqPage, setReqPage] = useState(1); 
-    const [pi, setPi] = useState(null);
+const AdminReportMember = () => {
+  const [reportMember, setReportMember] = useState([]);
+  const [suspendDays, setSuspendDays] = useState({});
+  const [suspendReason, setSuspendReason] = useState({});
 
-    //백에서 신고 회원 목록 가져오기
-    useState(()=>{
-        axios
-        .get(`${import.meta.env.VITE_BACK_SERVER}/admin/reportMember`)
-        .then((res)=>{
-            setReportMember(reportMember)
-        })
-        .catch((err)=>{
-            console.log("신고 회원 목록 불러오기 실패:", err);
-        })
-    })
+  useEffect(() => {
+    axios
+      .get(`${import.meta.env.VITE_BACK_SERVER}/admin/reportMember`)
+      .then((res) => {
+        setReportMember(res.data || []);
+      })
+      .catch((err) => {
+        console.log("신고 회원 목록 불러오기 실패:", err);
+        setReportMember([]);
+      });
+  }, []);
 
+  const insertSuspend = (memberNo) => {
+    const days = suspendDays[memberNo];
+    const reason = suspendReason[memberNo];
 
-    {/* 1.정지일수 (셀렉트 버튼으로) 주고 어떤 사유로 정지 됐는지는 인풋박스로 텍스트 입력
-        2.신고된 댓글 내용은 클릭 시 모달창 띄워서 전체 내용 띄우기
-        3.정지 쪽 const생성
-        */}
-    
-    return(
-        <div className="admin-main-wrap">
-            <section className="admin-header">
-                <div className="admin-page-title">신고된 회원</div>
-            </section>
+    if (!days || !reason) {
+      Swal.fire({
+        title: "입력 누락",
+        text: "정지일수와 사유를 모두 선택해주세요.",
+        icon: "warning",
+      });
+      return;
+    }
 
-            <div className="admin-content-box scrollable">
-                <table className="admin-content-tbl">
-                    <thead>
-                        <tr>
-                            <th style={{width:"20%"}}>아이디</th>
-                            <th style={{width:"30%"}}>신고된 댓글 내용</th>
-                            <th style={{width:"10%"}}>정지일수</th>
-                            <th style={{width:"60%"}}>정지사유</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {reportMember.length > 0 ? (
-                            reportMember.map((member, index)=>{
-                                <tr key={"member-" + index}>
-                                    <td>{member.memberId}</td>
-                                    <td>{movieCommentNo}</td>
-                                    <td>{suspendDays}</td>
-                                    {selectSuspend === "3일" && (
-                                    <td>
-                                        <span className={`status-badge status-${suspend.suspendDays}`}
-                                        >
-                                            {{
-                                                1: "5일",
-                                                2: "7일",
-                                                3: "14일",
-                                            }[suspend.suspendDays] || "-"}
-                                        </span>
-                                    </td>
-                                    )}
-                                </tr>
-                            })
-                        ) : (
-                            <tr>
-                                <td colSpan="4" style={{ textAlign : "center", padding: "20px"}}>
-                                    회원 정보가 없습니다.
-                                </td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    )
+    axios
+      .post(`${import.meta.env.VITE_BACK_SERVER}/admin/memberSuspend`, {
+        memberNo,
+        suspendDays: days,
+        suspendReason: reason,
+      })
+      .then(() => {
+        Swal.fire({
+          title: "정지 처리 완료",
+          text: `${days}일 정지 처리되었습니다.`,
+          icon: "success",
+        });
+      })
+      .catch((err) => {
+        console.log("정지 등록 실패:", err);
+        Swal.fire("정지 등록 실패");
+      });
+  };
+
+  const dayOptions = [3, 5, 7, 14];
+  const reasonOptions = [
+    "부적절한 단어 사용",
+    "지나친 비방글",
+    "스팸/광고성 댓글",
+    "기타",
+  ];
+
+  return (
+    <div className="admin-main-wrap">
+      <section className="admin-header">
+        <div className="admin-page-title">신고된 회원</div>
+      </section>
+
+      <div className="admin-content-box scrollable">
+        <table className="admin-content-tbl">
+          <thead>
+            <tr>
+              <th>아이디</th>
+              <th>신고된 댓글 내용</th>
+              <th>정지일수</th>
+              <th>정지사유</th>
+              <th>처리</th>
+            </tr>
+          </thead>
+          <tbody>
+            {reportMember.length > 0 ? (
+              reportMember.map((member, index) => (
+                <tr key={`member-${index}`}>
+                  {/* 아이디 */}
+                  <td>{member.member_id || "아이디 없음"}</td>
+
+                  {/* 신고된 댓글 내용 미리보기 + 클릭 시 모달 */}
+                  <td
+                    className="comment-cell"
+                    onClick={() =>
+                      Swal.fire({
+                        title: "신고된 댓글",
+                        text: member.reported_comment || "내용 없음",
+                        icon: "info",
+                      })
+                    }
+                  >
+                    <div className="comment-preview">
+                      {member.reported_comment || "내용 없음"}
+                    </div>
+                  </td>
+
+                  {/* 정지일수 */}
+                  <td>
+                    <select
+                      value={suspendDays[member.member_no] || ""}
+                      onChange={(e) =>
+                        setSuspendDays({
+                          ...suspendDays,
+                          [member.member_no]: e.target.value,
+                        })
+                      }
+                    >
+                      <option value="">선택</option>
+                      {dayOptions.map((d) => (
+                        <option key={d} value={d}>
+                          {d}일
+                        </option>
+                      ))}
+                    </select>
+                  </td>
+
+                  {/* 정지사유 */}
+                  <td>
+                    <select
+                      value={suspendReason[member.member_no] || ""}
+                      onChange={(e) =>
+                        setSuspendReason({
+                          ...suspendReason,
+                          [member.member_no]: e.target.value,
+                        })
+                      }
+                    >
+                      <option value="">선택</option>
+                      {reasonOptions.map((r, i) => (
+                        <option key={i} value={r}>
+                          {r}
+                        </option>
+                      ))}
+                    </select>
+                  </td>
+
+                  {/* 등록 버튼 */}
+                  <td>
+                    <button
+                      className="suspend-btn"
+                      onClick={() => insertSuspend(member.member_no)}
+                    >
+                      정지 등록
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="5" style={{ textAlign: "center", padding: "20px" }}>
+                  신고된 회원이 없습니다.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
 };
 
 export default AdminReportMember;

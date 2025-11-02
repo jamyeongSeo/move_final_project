@@ -117,11 +117,13 @@ public class MovieService {
 			String movieTitle = null;
 			String screen = null;
 			int movieGrade = 0;
+			int movieNo = -1;
 			for (MovieScheduleDTO m : list) {
 				if (m.getMovieTitle().equals(mm.getMovieTitle())) {
 					if (movieTitle == null) {
 						movieTitle = m.getMovieTitle();
 						movieGrade = m.getMovieGrade();
+						movieNo = m.getMovieNo();
 					}
 					time.add(m);
 					screen = m.getScreenName();
@@ -135,6 +137,8 @@ public class MovieService {
 			movieTitle = null;
 			result.put("movieGrade", movieGrade);
 			movieGrade = 0;
+			result.put("movieNo", movieNo);
+			movieNo = -1;
 			result.put("schedules", content);
 			content = null;
 			// schedules.put("schedules", content);
