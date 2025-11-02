@@ -46,7 +46,7 @@ const AdminMovieModal = ({ movie, onClose, onStatusChange }) => {
             alt={movie.movieTitle}
             className="admin-modal-thumb"
             onError={(e) => {
-              // 🔥 이미지 로딩 실패 시 대체 이미지 표시
+           // 이미지 로딩 실패 시 대체 이미지 표시
               e.target.src = "/default-movie-thumb.png";
             }}
           />

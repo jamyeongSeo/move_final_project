@@ -44,5 +44,13 @@ public interface AdminDao {
 	/*---------- 회원 관리 ----------*/
 	 int totalMemberCount(String memberId);
 	 List<MemberDTO> adminMemberList(Map<String, Object> param);
+	 
+	 //정지회원 중복 방지
+	 int checkAlreadySuspended(int memberNo);
+	 //정지 회원 등로
+	 int insertSuspend(Map<String, Object> suspendData);
+	 //정지된 회원 목록
+	 List<Map<String, Object>> getReportedMembers();
+	 
 
 }

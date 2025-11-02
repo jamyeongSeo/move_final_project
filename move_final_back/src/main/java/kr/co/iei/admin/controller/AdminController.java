@@ -1,6 +1,7 @@
 package kr.co.iei.admin.controller;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -46,13 +47,24 @@ public class AdminController {
 		return ResponseEntity.ok(adminMemMap);
 	}
 
-//    /*신고된 회원 목록*/
-//    @GetMapping("/member")
-//    public ResponseEntity<Map> reportMemberList(
-//    		
-//    		)
-//    
-//    
+	/* 신고된 회원 목록 조회 */
+	@GetMapping("/reportMember")
+	public ResponseEntity<List<Map<String, Object>>> getReportedMembers() {
+	    List<Map<String, Object>> list = adminService.getReportedMembers();
+	    if (list == null) {
+	        list = new ArrayList<>();
+	    }
+	    return ResponseEntity.ok(list);
+	}
+
+
+	/* 회원 정지 등록 */
+	@PostMapping("/memberSuspend")
+	public ResponseEntity<Integer> insertSuspend(@RequestBody Map<String, Object> suspendData) {
+	    int result = adminService.insertSuspend(suspendData);
+	    return ResponseEntity.ok(result);
+	}
+  
 
 	/************ 영화 *************/
 

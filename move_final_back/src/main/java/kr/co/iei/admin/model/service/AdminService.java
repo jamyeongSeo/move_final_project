@@ -50,8 +50,15 @@ public class AdminService {
         return map;
     }
 
+    // 신고된 회원 목록 조회
+    public List<Map<String, Object>> getReportedMembers() {
+        return adminDao.getReportedMembers();
+    }
 
-    
+    // 회원 정지 등록
+    public int insertSuspend(Map<String, Object> suspendData) {
+        return adminDao.insertSuspend(suspendData);
+    }
     
 
     /* 영화 목록 */
@@ -133,6 +140,7 @@ public class AdminService {
 		    param.put("startDate", startDate);
 		    return adminDao.getWeeklySchedule(param);
 	}
+
 
 
 	

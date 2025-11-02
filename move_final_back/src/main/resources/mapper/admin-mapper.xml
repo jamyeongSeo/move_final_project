@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.co.iei.admin.model.dao.AdminDao">
 
-    <!-- 영화 목록 -->
+    <!-- 🎬 영화 목록 -->
     <select id="adminMovieList" resultType="movie" parameterType="map">
         SELECT *
         FROM movie_tbl
@@ -52,7 +52,7 @@
         WHERE movie_no = #{movieNo}
     </update>
 
-    <!-- 영화 정보 등록 -->
+    <!-- 영화 등록 -->
     <insert id="insertMovieInfo">
         INSERT INTO movie_tbl (
             movie_no, movie_type, movie_title, movie_status,
@@ -67,7 +67,7 @@
         )
     </insert>
 
-    <!-- 전체 개수 조회 -->
+    <!-- 영화 개수 조회 -->
     <select id="totalCount" resultType="int" parameterType="map">
         SELECT COUNT(*)
         FROM movie_tbl
@@ -81,7 +81,7 @@
         </where>
     </select>
 
-    <!-- 스케줄 등록 -->
+    <!-- 🎞 스케줄 등록 -->
     <insert id="insertSchedule" parameterType="schedule">
         INSERT INTO schedule_tbl (
             schedule_no,
@@ -103,14 +103,14 @@
         )
     </insert>
 
+    <!-- 상영 중 / 재개봉 영화 -->
     <select id="getRunningMovies" resultType="movie">
-    SELECT movie_no, movie_title, movie_thumb, movie_status, movie_runtime
-    FROM movie_tbl
-    WHERE movie_status IN (2, 4)
-</select>
+        SELECT movie_no, movie_title, movie_thumb, movie_status, movie_runtime
+        FROM movie_tbl
+        WHERE movie_status IN (2, 4)
+    </select>
 
-
-    <!-- 스케줄 리스트 -->
+    <!-- 스케줄 목록 -->
     <select id="scheduleList" resultType="schedule">
         SELECT
             s.schedule_no AS scheduleNo,
@@ -125,7 +125,6 @@
         JOIN movie_tbl m ON s.movie_no = m.movie_no
         ORDER BY s.schedule_no DESC
     </select>
-
 
     <!-- 스케줄 수정 -->
     <update id="updateSchedule">
@@ -154,7 +153,7 @@
           AND TO_CHAR(schedule_open, 'YYYY-MM-DD') = #{scheduleOpen}
     </select>
 
-    <!-- 상영 시간 중복 체크 -->
+    <!-- 상영시간 중복 체크 -->
     <select id="checkTimeConflict" parameterType="schedule" resultType="int">
         SELECT COUNT(*)
         FROM schedule_tbl
@@ -188,19 +187,17 @@
         ORDER BY s.schedule_open, s.screen_no, s.schedule_time_start
     </select>
 
-    <!-- 회원 관리 -->
- 	<!-- 회원 목록 및 검색한 회원 아이디 목로 -->
+    <!-- 👥 회원 관리 -->
     <select id="totalMemberCount" parameterType="string" resultType="int">
-    SELECT COUNT(*)
-    FROM member_tbl
-    <where>
-        <if test="memberId != null and memberId != ''">
-            AND member_id LIKE '%' || #{memberId} || '%'
-        </if>
-    </where>
-	</select>
+        SELECT COUNT(*)
+        FROM member_tbl
+        <where>
+            <if test="memberId != null and memberId != ''">
+                AND member_id LIKE '%' || #{memberId} || '%'
+            </if>
+        </where>
+    </select>
 	
-	<!--  -->
 	<select id="adminMemberList" parameterType="map" resultType="member">
 	    SELECT *
 	    FROM (
@@ -219,6 +216,35 @@
 	    WHERE rnum BETWEEN #{start} AND #{end}
 	</select>
 
+    <!-- 🚨 신고된 회원 목록 -->
+	<select id="getReportedMembers" resultType="map">
+        SELECT DISTINCT 
+            m.member_no AS member_no,
+            m.member_id AS member_id,
+            c.comment_content AS reported_comment,
+            r.comment_report_date AS comment_report_date
+        FROM comment_report_tbl r
+        JOIN member_tbl m ON r.member_no = m.member_no
+        JOIN movie_comment_tbl c ON r.movie_comment_no = c.movie_comment_no
+        ORDER BY r.comment_report_date DESC
+    </select>
+
+    <!-- ⛔ 정지 등록 -->
+	<insert id="insertMemberSuspend" parameterType="map">
+        INSERT INTO member_suspend (
+            suspend_no,
+            member_no,
+            suspend_date,
+            suspend_days,
+            suspend_reason
+        )
+        VALUES (
+            suspend_seq.NEXTVAL,
+            #{memberNo},
+            SYSDATE,
+            #{suspendDays},
+            #{suspendReason}
+        )
+    </insert>
 
 </mapper>
-
