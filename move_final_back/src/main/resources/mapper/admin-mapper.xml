@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.co.iei.admin.model.dao.AdminDao">
 
-    <!-- 🎬 영화 목록 -->
+    <!--영화 목록 -->
     <select id="adminMovieList" resultType="movie" parameterType="map">
         SELECT *
         FROM movie_tbl
@@ -81,7 +81,7 @@
         </where>
     </select>
 
-    <!-- 🎞 스케줄 등록 -->
+    <!--  스케줄 등록 -->
     <insert id="insertSchedule" parameterType="schedule">
         INSERT INTO schedule_tbl (
             schedule_no,
@@ -187,7 +187,7 @@
         ORDER BY s.schedule_open, s.screen_no, s.schedule_time_start
     </select>
 
-    <!-- 👥 회원 관리 -->
+    <!--회원 관리 -->
     <select id="totalMemberCount" parameterType="string" resultType="int">
         SELECT COUNT(*)
         FROM member_tbl
@@ -216,7 +216,7 @@
 	    WHERE rnum BETWEEN #{start} AND #{end}
 	</select>
 
-    <!-- 🚨 신고된 회원 목록 -->
+    <!--신고된 회원 목록 -->
 	<select id="getReportedMembers" resultType="map">
         SELECT DISTINCT 
             m.member_no AS member_no,
@@ -229,7 +229,7 @@
         ORDER BY r.comment_report_date DESC
     </select>
 
-    <!-- ⛔ 정지 등록 -->
+    <!-- 정지 등록 -->
 	<insert id="insertMemberSuspend" parameterType="map">
         INSERT INTO member_suspend (
             suspend_no,
