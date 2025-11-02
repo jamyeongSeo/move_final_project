@@ -76,7 +76,11 @@ const BookingMovieList = () => {
                     <div className="memberMovie-list-wrap">
                       <div className="memberMovie-box">
                         <div className="memberMovie-post">
-                          <img src={b.movieThumb}></img>
+                          <img
+                            src={`${import.meta.env.VITE_BACK_SERVER}/thumb/${
+                              b.movieThumb
+                            }`}
+                          ></img>
                         </div>
                         <div className="memberMovie-info">
                           <div className="memberMovie-content">

@@ -238,7 +238,11 @@ const WatchedMovieList = () => {
                         <div className="memberMovie-list-wrap">
                           <div className="memberMovie-box">
                             <div className="memberMovie-post">
-                              <img src={w.movieThumb}></img>
+                              <img
+                                src={`${
+                                  import.meta.env.VITE_BACK_SERVER
+                                }/thumb/${w.movieThumb}`}
+                              ></img>
                             </div>
                             <div className="memberMovie-info">
                               <div className="memberMovie-content">
