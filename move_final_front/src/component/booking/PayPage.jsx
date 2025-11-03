@@ -105,6 +105,7 @@ const PayPage = () => {
     if (totalPrice - coupon < 0) {
       setPayPrice(0);
     }
+    console.log(bookingInfo.couponBoxNo);
     setBookingInfo(newBookingInfo);
   }, [coupon]);
   console.log(bookingInfo);
@@ -116,7 +117,10 @@ const PayPage = () => {
             <div className="book-page-title">예매 정보</div>
             <div className="book-info-wrap">
               <div className="thumb-box">
-                <img src={movie.movieThumb} className="book-movie-thumb" />
+                <img
+                  src={`${import.meta.env.VITE_BACK_SERVER}${movie.movieThumb}`}
+                  className="book-movie-thumb"
+                />
               </div>
               <div className="book-info-detail">
                 <div className="pay-movie-title">{movie.movieTitle}</div>
@@ -272,7 +276,7 @@ const CouponSelect = (props) => {
   const couponSelect = (e) => {
     setCoupon(e.target.value);
     if (e.target.value !== 0) {
-      const newInfo = { ...bookingInfo, couponNo: e.target.id };
+      const newInfo = { ...bookingInfo, couponBoxNo: e.target.id };
       setBookingInfo(newInfo);
     }
   };
@@ -288,6 +292,7 @@ const CouponSelect = (props) => {
         >
           <MenuItem value={0}>선택하지 않음</MenuItem>
           {couponList.map((coupon, index) => {
+            console.log(coupon.couponBoxNo);
             return (
               <MenuItem
                 key={"coupon-" + index}
@@ -303,7 +308,5 @@ const CouponSelect = (props) => {
     </Box>
   );
 };
-
-const Payment = (props) => {};
 
 export default PayPage;

@@ -125,4 +125,108 @@ WHERE
     AND SUBSTR(B.BOOKING_DATE, 1, 10) = #{bookingDate}
   </select>
   
+	</select>
+
+	<select id="selectScreenSeat" resultType="seat">
+		select * from seat_tbl where screen_no = #{screenNo}
+	</select>
+
+	<select id="selectRowList" resultType="string">
+		select distinct seat_row from seat_tbl where screen_no =#{screenNo}
+		order by 1
+	</select>
+
+	<select id="selectMoviePrice" resultType="price">
+		select price, movie_type, price_per_age from price_tbl where movie_no is
+		null
+	</select>
+
+	<select id="selectOneRow" resultType="seat">
+		select * from seat_tbl where screen_no=#{screenNo} and seat_row = #{row}
+		order by 2 asc
+	</select>
+
+	<select id="selectOneMovie" resultType="movie">
+		select * from movie_tbl where movie_no = #{movieNo}
+	</select>
+
+	<select id="selectOneMemberNo" resultType="member">
+		select member_no from member_tbl where member_id = #{memberId}
+	</select>
+
+	<select id="selectCoupon" resultType="coupon">
+		select * from coupon_box_tbl join coupon_tbl using(coupon_no) where
+		member_no=#{memberNo} and use_status = 'n'
+	</select>
+
+	<select id="selectOneMember" resultType="member">
+		select * from member_tbl where member_id =#{memberId}
+	</select>
+	<update id="useCoupon">
+		update coupon_tbl set use_status = 'y' where coupon_no =#{couponNo}
+		and member_no =#{memberNo}
+	</update>
+
+	<select id="getPriceNo">
+		select price_no from price_tbl where movie_no is null and price_per_age
+		=#{i}
+	</select>
+	<select id="getBookNo" resultType="int">
+		select book_no from book_tbl where member_no = #{memberNo} and schedule_no
+		=#{scheduleNo} and TRUNC(BOOKING_DATE) = TRUNC(#{bookingDate})
+	</select>
+	<select id="getSeatNo" resultType="int">
+		select seat_no from seat_tbl where seat_row = #{bookSeatRow} and seat_column
+		= #{bookSeatColumn} and screen_no = #{screenNo}
+	</select>
+
+	<select id="getPayNo" resultType="int">
+		select pay_no from pay_tbl where book_no =#{bookNo} and member_no =
+		#{memberNo}
+	</select>
+
+	<select id="selectBookedSeat" resultType="booking">
+		select
+		book_seat_row,
+		book_seat_column
+		from book_tbl b
+		join book_seat_tbl bs using(book_no)
+		where b.schedule_no = #{scheduleNo}
+		AND TRUNC(B.BOOKING_DATE) = TRUNC(TO_DATE(#{bookingDate}, 'YYYY-MM-DD
+		HH24:MI'))
+	</select>
+
+	<insert id="insertBooking">
+		insert into book_tbl values(book_seq.nextval, null , #{scheduleNo},
+		#{bookingDate} , #{memberNo})
+	</insert>
+
+	<insert id="insertBookSeat">
+		insert into book_seat_tbl values(book_seat_seq.nextval, #{bookNo},
+		#{bookSeatRow}, #{bookSeatColumn} , #{seatNo}, #{payNo})
+	</insert>
+
+	<insert id="insertPayment">
+		insert into pay_tbl
+		values(pay_seq.nextval,#{payTitle},#{payPrice},sysdate,default,#{memberNo},#{bookNo})
+	</insert>
+
+	<select id="getSeatList" resultType="seat">
+		select * from seat_tbl where screen_no = #{screenNo}
+	</select>
+
+	<select id="getBookedSeatList" resultType="booking">
+		SELECT 
+    BS.book_seat_row, 
+    BS.book_seat_column 
+FROM 
+    book_tbl B 
+JOIN 
+    book_seat_tbl BS using(book_no)
+WHERE 
+    B.schedule_no = #{scheduleNo} 
+    
+    AND TRUNC(B.BOOKING_DATE) = TRUNC(TO_DATE(#{bookingDate}, 'YYYY-MM-DD HH24:MI'))
+	</select>
+
 </mapper>

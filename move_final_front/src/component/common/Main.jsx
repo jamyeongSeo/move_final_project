@@ -167,16 +167,18 @@ const MovieItem = (props) => {
                       )
                       .then((res) => {
                         if (res.data === 1) {
-                          const likePushList = movieBoxOffice.map((item, i) => {
-                            return index === i
-                              ? {
-                                  ...item,
-                                  like: false,
-                                }
-                              : item;
-                          });
+                          const likeUnPushList = movieBoxOffice.map(
+                            (item, i) => {
+                              return index === i
+                                ? {
+                                    ...item,
+                                    like: false,
+                                  }
+                                : item;
+                            }
+                          );
 
-                          setMovieBoxOffice(likePushList);
+                          setMovieBoxOffice(likeUnPushList);
                         }
                       })
                       .catch((err) => {});
@@ -200,18 +202,16 @@ const MovieItem = (props) => {
                       )
                       .then((res) => {
                         if (res.data === 1) {
-                          const likeUnPushList = movieBoxOffice.map(
-                            (item, i) => {
-                              return index === i
-                                ? {
-                                    ...item,
-                                    like: true,
-                                  }
-                                : item;
-                            }
-                          );
+                          const likePushList = movieBoxOffice.map((item, i) => {
+                            return index === i
+                              ? {
+                                  ...item,
+                                  like: true,
+                                }
+                              : item;
+                          });
 
-                          setMovieBoxOffice(likeUnPushList);
+                          setMovieBoxOffice(likePushList);
                         }
                       })
                       .catch((err) => {});
@@ -223,7 +223,7 @@ const MovieItem = (props) => {
             )}
           </div>
           <div className="like-count" style={{ color: "var(--main1)" }}>
-            {likeCount}
+            {movie.like ? likeCount : likeCount}
           </div>
         </div>
         <div className="booking-zone">
