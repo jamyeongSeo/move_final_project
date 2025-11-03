@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="kr.co.iei.booking.model.dao.BookingDao">
-  <select id="selectMovieList" resultType="movie">
-  	select * from movie_tbl where movie_status = 2
-  </select>
-  
-  <select id="selectDateList" resultType="string">
-  	select to_char(sysdate + (level-1), 'yyyy-mm-dd') as week  
-	from dual connect by level <![CDATA[ <= ]]>7 
-  </select>
-  <select id="selectSchedule" resultType="schedule">
-  	SELECT
+	<select id="selectMovieList" resultType="movie">
+		select * from movie_tbl where movie_status = 2 or movie_status = 4
+	</select>
+
+	<select id="selectDateList" resultType="string">
+		select to_char(sysdate + (level-1), 'yyyy-mm-dd') as week
+		from dual connect by level <![CDATA[ <= ]]>7
+	</select>
+	<select id="selectSchedule" resultType="schedule">
+		SELECT
     TO_CHAR(s.schedule_time_start, 'HH24:MI') AS schedule_time_start,
     TO_CHAR(s.schedule_time_end, 'HH24:MI') AS schedule_time_end,
     s.schedule_no,
@@ -24,10 +24,12 @@ FROM
 INNER JOIN 
     movie_tbl m ON s.movie_no = m.movie_no
 WHERE
-    s.schedule_open <![CDATA[ <= ]]> TRUNC(SYSDATE) 
-    AND s.schedule_close <![CDATA[ >= ]]> TRUNC(SYSDATE) 
+    s.schedule_open <![CDATA[ <= ]]> TRUNC(TO_DATE(#{movieDate}, 'YYYY-MM-DD'))
+    AND s.schedule_close <![CDATA[ >= ]]> TRUNC(TO_DATE(#{movieDate}, 'YYYY-MM-DD'))
     
-    AND (TRUNC(SYSDATE) + (s.schedule_time_start - TRUNC(s.schedule_time_start))) <![CDATA[ >= ]]> SYSDATE
+    <if test='movieDate != null and movieDate.substring(0, 10) == todayDate'>
+        AND TO_CHAR(s.schedule_time_start, 'HH24:MI') <![CDATA[ >= ]]> TO_CHAR(SYSDATE, 'HH24:MI')
+    </if>
     
 <if test="movieNo != null and movieNo != -1">
     AND s.movie_no = #{movieNo}
@@ -35,94 +37,108 @@ WHERE
     
 ORDER BY
     schedule_time_start ASC
-  </select>
-  <select id="selectScreenSeat" resultType="seat">
-  	select * from seat_tbl where screen_no = #{screenNo}
-  </select>
-  
-  <select id="selectRowList" resultType="string">
-  	select distinct seat_row from seat_tbl where screen_no =#{screenNo}
-  	order by 1
-  </select>
-  
-  <select id="selectMoviePrice" resultType="price">
-  	select price, movie_type, price_per_age from price_tbl where movie_no is null
-  </select>
-  
-  <select id="selectOneRow" resultType="seat">
-  	select * from seat_tbl where screen_no=#{screenNo} and seat_row = #{row} order by 2 asc
-  </select>
-  
-  <select id="selectOneMovie" resultType="movie">
-  	select * from movie_tbl where movie_no = #{movieNo}
-  </select>
-  
-  <select id="selectOneMemberNo" resultType="member">
-  	select member_no from member_tbl where member_id = #{memberId}
-  </select>
-  
-  <select id="selectCoupon" resultType="coupon">
-  	select * from coupon_box_tbl join coupon_tbl using(coupon_no) where member_no=#{memberNo} and use_status = 'n'
-  </select>
-  
-  <select id="selectOneMember" resultType="member">
-  	select * from member_tbl where member_id =#{memberId}
-  </select>
-  <update id="useCoupon">
-  	update coupon_box_tbl set use_status = 'y' where coupon_no =#{couponNo} and member_no =#{memberNo}
-  </update>
-  
-  <select id="getPriceNo">
-  	select price_no from price_tbl where movie_no is null and price_per_age =#{i} 
-  </select>
-  <select id="getBookNo" resultType="int">
-  	select book_no from book_tbl where member_no = #{memberNo} and schedule_no =#{scheduleNo} and TRUNC(BOOKING_DATE) = TRUNC(#{bookingDate})
-  </select>
-  <select id="getSeatNo" resultType="int">
-  	select seat_no from seat_tbl where seat_row = #{bookSeatRow} and seat_column = #{bookSeatColumn} and screen_no = #{screenNo}
-  </select>
-  
-  <select id="getPayNo" resultType="int">
-  	select pay_no from pay_tbl where book_no =#{bookNo} and member_no = #{memberNo}
-  </select>
-  
-  <select id="selectBookedSeat" resultType="booking">
-  	select 
-  		book_seat_row, 
-  		book_seat_column 
-  	from book_tbl b 
-  	join book_seat_tbl bs using(book_no)
-  	where b.schedule_no = #{scheduleNo}
-  	AND TRUNC(B.BOOKING_DATE) = TRUNC(TO_DATE(#{bookingDate}, 'YYYY-MM-DD HH24:MI'))
-  </select>
-  
-  <insert id="insertBooking">
-  	insert into book_tbl values(book_seq.nextval, null , #{scheduleNo}, #{bookingDate} , #{memberNo})
-  </insert>
-  
-  <insert id="insertBookSeat">
-  	insert into book_seat_tbl values(book_seat_seq.nextval, #{bookNo}, #{bookSeatRow}, #{bookSeatColumn} , #{seatNo}, #{payNo})
-  </insert>
-  
-  <insert id="insertPayment">
-  	insert into pay_tbl values(pay_seq.nextval,#{payTitle},#{payPrice},sysdate,default,#{memberNo},#{bookNo})
-  </insert>
-  
-  <select id="getSeatList" resultType="seat">
-  	select * from seat_tbl where screen_no = #{screenNo}
-  </select>
-  
-  <select id="getBookedSeatList" resultType="booking">
-  	SELECT
-    BS.book_seat_row,
-    BS.book_seat_column
-FROM
-    book_tbl B
-JOIN
-    book_seat_tbl BS ON B.book_no = BS.book_no
-WHERE
-    B.schedule_no = #{scheduleNo}
-    AND SUBSTR(B.BOOKING_DATE, 1, 10) = #{bookingDate}
-  </select>
-  
+	</select>
+
+	<select id="selectScreenSeat" resultType="seat">
+		select * from seat_tbl where screen_no = #{screenNo}
+	</select>
+
+	<select id="selectRowList" resultType="string">
+		select distinct seat_row from seat_tbl where screen_no =#{screenNo}
+		order by 1
+	</select>
+
+	<select id="selectMoviePrice" resultType="price">
+		select price, movie_type, price_per_age from price_tbl where movie_no is
+		null
+	</select>
+
+	<select id="selectOneRow" resultType="seat">
+		select * from seat_tbl where screen_no=#{screenNo} and seat_row = #{row}
+		order by 2 asc
+	</select>
+
+	<select id="selectOneMovie" resultType="movie">
+		select * from movie_tbl where movie_no = #{movieNo}
+	</select>
+
+	<select id="selectOneMemberNo" resultType="member">
+		select member_no from member_tbl where member_id = #{memberId}
+	</select>
+
+	<select id="selectCoupon" resultType="coupon">
+		select * from coupon_box_tbl join coupon_tbl using(coupon_no) where
+		member_no=#{memberNo} and use_status = 'n'
+	</select>
+
+	<select id="selectOneMember" resultType="member">
+		select * from member_tbl where member_id =#{memberId}
+	</select>
+	<update id="useCoupon">
+		update coupon_box_tbl set use_status = 'y' where coupon_box_no =#{couponNo}
+		and member_no =#{memberNo}
+	</update>
+
+	<select id="getPriceNo">
+		select price_no from price_tbl where movie_no is null and price_per_age
+		=#{i}
+	</select>
+	<select id="getBookNo" resultType="int">
+		select book_no from book_tbl where member_no = #{memberNo} and schedule_no
+		=#{scheduleNo} and TRUNC(BOOKING_DATE) = TRUNC(#{bookingDate})
+	</select>
+	<select id="getSeatNo" resultType="int">
+		select seat_no from seat_tbl where seat_row = #{bookSeatRow} and seat_column
+		= #{bookSeatColumn} and screen_no = #{screenNo}
+	</select>
+
+	<select id="getPayNo" resultType="int">
+		select pay_no from pay_tbl where book_no =#{bookNo} and member_no =
+		#{memberNo}
+	</select>
+
+	<select id="selectBookedSeat" resultType="booking">
+		select
+		book_seat_row,
+		book_seat_column
+		from book_tbl b
+		join book_seat_tbl bs using(book_no)
+		where b.schedule_no = #{scheduleNo}
+		AND TRUNC(B.BOOKING_DATE) = TRUNC(TO_DATE(#{bookingDate}, 'YYYY-MM-DD
+		HH24:MI'))
+	</select>
+
+	<insert id="insertBooking">
+		insert into book_tbl values(book_seq.nextval, null , #{scheduleNo},
+		#{bookingDate} , #{memberNo})
+	</insert>
+
+	<insert id="insertBookSeat">
+		insert into book_seat_tbl values(book_seat_seq.nextval, #{bookNo},
+		#{bookSeatRow}, #{bookSeatColumn} , #{seatNo}, #{payNo})
+	</insert>
+
+	<insert id="insertPayment">
+		insert into pay_tbl
+		values(pay_seq.nextval,#{payTitle},#{payPrice},sysdate,default,#{memberNo},#{bookNo})
+	</insert>
+
+	<select id="getSeatList" resultType="seat">
+		select * from seat_tbl where screen_no = #{screenNo}
+	</select>
+
+	<select id="getBookedSeatList" resultType="booking">
+		SELECT 
+    BS.book_seat_row, 
+    BS.book_seat_column 
+FROM 
+    book_tbl B 
+JOIN 
+    book_seat_tbl BS using(book_no)
+WHERE 
+    B.schedule_no = #{scheduleNo} 
+    
+    AND TRUNC(B.BOOKING_DATE) = TRUNC(TO_DATE(#{bookingDate}, 'YYYY-MM-DD HH24:MI'))
+	</select>
+
 </mapper>

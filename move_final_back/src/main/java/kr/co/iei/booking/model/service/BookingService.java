@@ -44,8 +44,9 @@ public class BookingService {
 
 	public Map selectSchedule(int movieNo, String movieDate) {
 		Map selectMap = new HashMap<String, Object>();
+		String todayDate = java.time.LocalDate.now().toString();
 		selectMap.put("movieNo", movieNo);
-		
+		selectMap.put("movieDate", movieDate);
 		List<ScheduleDTO> oneSchedule = bookingDao.selectSchedule(selectMap);
 		for(ScheduleDTO s : oneSchedule) {
 			List seatList = bookingDao.getSeatList(s.getScreenNo());

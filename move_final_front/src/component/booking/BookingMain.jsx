@@ -34,7 +34,6 @@ const BookingMain = () => {
         console.log(err);
       });
   }, [movieScheduleSelect, movieSelect]);
-  useEffect(() => {}, [refresh]);
 
   return (
     <div className="content-wrap">
@@ -76,6 +75,7 @@ const BookingMain = () => {
                     </div>
                     <ul className="booking-movie-list">
                       {bookingMovieList.map((bookingMovie, index) => {
+                        console.log();
                         return (
                           <li
                             key={"booking-movie-" + index}
@@ -88,23 +88,25 @@ const BookingMain = () => {
                               setMovieNo(bookingMovie.movieNo);
                               setmovieScheduleSelect(-1);
                               setMovieSelect(index);
-                              axios
-                                .get(
-                                  `${
-                                    import.meta.env.VITE_BACK_SERVER
-                                  }/booking/schedule?movieNo=${
-                                    bookingMovie.movieNo
-                                  }&movieDate=${movieDate}`
-                                )
-                                .then((res) => {
-                                  console.log(res);
+                              if (movieDate != null) {
+                                axios
+                                  .get(
+                                    `${
+                                      import.meta.env.VITE_BACK_SERVER
+                                    }/booking/schedule?movieNo=${
+                                      bookingMovie.movieNo
+                                    }&movieDate=${movieDate}`
+                                  )
+                                  .then((res) => {
+                                    console.log(res);
 
-                                  setBookingSchedule(res.data.oneSchedule);
-                                })
+                                    setBookingSchedule(res.data.oneSchedule);
+                                  })
 
-                                .catch((err) => {
-                                  console.log(err);
-                                });
+                                  .catch((err) => {
+                                    console.log(err);
+                                  });
+                              }
                             }}
                           >
                             <div className="booking-movie-grade">

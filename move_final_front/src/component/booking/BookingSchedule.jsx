@@ -26,7 +26,22 @@ const BookingSchedule = (props) => {
     }
     setScheduleList(scheduleList);
     setRefresh(false);
-  }, [bookingDate, refresh]);
+    if (movieDate != null) {
+      axios
+        .get(
+          `${
+            import.meta.env.VITE_BACK_SERVER
+          }/booking/schedule?movieNo=${movieNo}&movieDate=${movieDate} `
+        )
+        .then((res) => {
+          console.log(res);
+          setBookingSchedule(res.data.oneSchedule);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [bookingDate, movieDate, refresh]);
   const prevWeek = () => {
     const prevWeek = new Date(bookingDate);
     prevWeek.setDate(bookingDate.getDate() - 7);
@@ -79,7 +94,7 @@ const BookingSchedule = (props) => {
                 .get(
                   `${
                     import.meta.env.VITE_BACK_SERVER
-                  }/booking/schedule?movieNo=${movieNo}&movieDate=${movieDate} `
+                  }/booking/schedule?movieNo=${movieNo}&movieDate=${currentDate} `
                 )
                 .then((res) => {
                   console.log(res);
