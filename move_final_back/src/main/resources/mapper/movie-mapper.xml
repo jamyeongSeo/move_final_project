@@ -19,8 +19,8 @@
   	select count(*) from movie_like_tbl where movie_no =#{movieNo} and member_id = #{memberId}
   </select>
   
-  <select id="totalLike" resultType="int">
-  	select count(*) from movie_like_tbl where movie_no =#{movieNo}
+  <select id="totalLike" resultType="movie">
+  	select * from movie_like_tbl where movie_no =#{movieNo}
   </select>
   
   <delete id="likeUnPush">
@@ -40,22 +40,22 @@
 	from movie_tbl m 
 	left join price_tbl p on (p.movie_no = m.movie_no)
 	left join book_tbl b on (b.price_no = p.price_no)
-	left join (select bs.book_no from pay_tbl p join book_seat_tbl bs on (bs.book_seat_no = p.book_seat_no) where p.refund_status = 'n') c on (c.book_no = b.book_no) 
+	left join (select bs.book_no from pay_tbl p join book_seat_tbl bs on (bs.pay_no = p.pay_no) where p.refund_status = 'n') c on (c.book_no = b.book_no) 
 	where (m.movie_status != 3 and to_number(sysdate-b.booking_date) <= 7) or (m.movie_status != 3 and b.booking_date is null)
 	group by m.movie_no,m.movie_title, m.movie_thumb, m.movie_grade, m.movie_content
 	order by gallery_count desc
 	 ]]>
   </select>
   
-  <!-- 추후 매진 관객 확인 시 결제 상태 컬럼 where로 확인 필요 -->
+  <!-- 추후 매진 관객 확인 시 결제 상태 컬럼 where로 확인 필요
   <select id="selectSchedule" resultType="movieSchedule">
   <![CDATA[
   	select 
-    	sh1.movie_no,---
-    	sh1.movie_title,--
-    	sh1.movie_grade,--
+    	sh1.movie_no,
+    	sh1.movie_title,
+    	sh1.movie_grade,
     	sh1.movie_runtime,
-    	sh1.movie_type,--
+    	sh1.movie_type,
     	sh1.schedule_time_start,
     	sh1.schedule_time_end,
     	sh1.schedule_open,
@@ -70,14 +70,14 @@
         	m.movie_title,
         	m.movie_grade,
         	m.movie_runtime,
-        	m.movie_type,--관 타입(2D.3D,4D)
+        	m.movie_type,관 타입(2D.3D,4D)
         	s.schedule_time_start,
         	s.schedule_time_end, 
         	s.schedule_open,
         	s.schedule_close, 
-        	scr.screen_name,--관 이름
-        	st.seat_total,--관별 전체 좌석수
-        	b.booking_date--스케줄링된 날짜(관람 예정일)
+        	scr.screen_name,관 이름
+        	st.seat_total,관별 전체 좌석수
+        	b.booking_date스케줄링된 날짜(관람 예정일)
     	from schedule_tbl s
     	join (select count(*) seat_total, screen_no
             	from seat_tbl
@@ -99,6 +99,83 @@
             where (b.booking_date = sysdate+#{dateSchedule}) and (ppp.refund_status = 'n')
             group by s.schedule_no) sss on (sss.schedule_no = b.schedule_no)) sh2 on (sh1.booking_date = sh2.booking_date)
             order by sh1.schedule_time_start
+	  ]]>
+  </select>
+   -->
+   <select id="selectSchedule" resultType="movieSchedule">
+  <![CDATA[
+  	SELECT 
+    sh1.movie_no,
+    sh1.movie_title,
+    sh1.movie_grade,
+    sh1.movie_runtime,
+    sh1.movie_type,
+    sh1.schedule_time_start,
+    sh1.schedule_time_end,
+    sh1.schedule_open,
+    sh1.schedule_close,
+    sh1.screen_name,
+    sh1.seat_total,
+    sh1.booking_date,
+    COALESCE(sh2.gallery_seat, 0) AS gallery_seat
+FROM (
+    SELECT 
+        m.movie_no,
+        m.movie_title,
+        m.movie_grade,
+        m.movie_runtime,
+        m.movie_type,
+        s.schedule_time_start,
+        s.schedule_time_end,
+        s.schedule_open,
+        s.schedule_close,
+        scr.screen_name,
+        st.seat_total,
+        b.booking_date
+    FROM schedule_tbl s
+        JOIN (
+            SELECT COUNT(*) AS seat_total, screen_no
+            FROM seat_tbl
+            GROUP BY screen_no
+        ) st ON st.screen_no = s.screen_no
+        JOIN screen_tbl scr ON scr.screen_no = st.screen_no
+        JOIN movie_tbl m ON m.movie_no = s.movie_no
+        LEFT JOIN book_tbl b ON b.schedule_no = s.schedule_no
+    WHERE 
+        (SYSDATE + #{dateSchedule} BETWEEN s.schedule_open AND s.schedule_close)
+        AND (
+            (TO_NUMBER(TO_CHAR(SYSDATE, 'mm')) * 43200)
+          + (TO_NUMBER(TO_CHAR(SYSDATE, 'dd')) * 1440)
+          + (TO_NUMBER(TO_CHAR(SYSDATE + #{dateSchedule}, 'hh24')) * 60)
+          + (TO_NUMBER(TO_CHAR(SYSDATE + #{dateSchedule}, 'mi')))
+        ) <= (
+            (TO_NUMBER(TO_CHAR(SYSDATE + #{dateSchedule}, 'mm')) * 43200)
+          + (TO_NUMBER(TO_CHAR(SYSDATE + #{dateSchedule}, 'dd')) * 1440)
+          + (TO_NUMBER(TO_CHAR(s.schedule_time_start, 'hh24')) * 60)
+          + (TO_NUMBER(TO_CHAR(s.schedule_time_start, 'mi')))
+        )
+) sh1
+LEFT JOIN (
+    SELECT 
+        b.booking_date,
+        sss.schedule_no,
+        sss.gallery_seat
+    FROM book_tbl b
+        RIGHT JOIN (
+            SELECT 
+                s.schedule_no,
+                COUNT(bs.book_seat_no) AS gallery_seat
+            FROM book_seat_tbl bs
+                LEFT JOIN book_tbl b ON b.book_no = bs.book_no
+                LEFT JOIN pay_tbl p ON p.pay_no = bs.pay_no
+                RIGHT JOIN schedule_tbl s ON s.schedule_no = b.schedule_no
+            WHERE 
+                b.booking_date = SYSDATE + #{dateSchedule}
+                AND p.refund_status = 'n'
+            GROUP BY s.schedule_no
+        ) sss ON sss.schedule_no = b.schedule_no
+) sh2 ON sh1.booking_date = sh2.booking_date
+ORDER BY sh1.schedule_time_start
 	  ]]>
   </select>
   <!-- Mian  끝-->

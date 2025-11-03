@@ -1,6 +1,7 @@
 package kr.co.iei.movie.model.dto;
 
 import java.sql.Date;
+import java.util.List;
 
 import org.apache.ibatis.type.Alias;
 
@@ -26,7 +27,7 @@ public class MovieDTO {
 	private String movieActor;
 	private Date movieRelease;
 	private boolean like;
-	private int likeCount;
+	private List likeCount;
 	
 	private int galleryCount; 
 }

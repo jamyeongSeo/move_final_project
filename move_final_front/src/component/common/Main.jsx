@@ -225,7 +225,7 @@ const MovieItem = (props) => {
             )}
           </div>
           <div className="like-count" style={{ color: "var(--main1)" }}>
-            {movie.likeCount}
+            {}
           </div>
         </div>
         <div className="booking-zone">

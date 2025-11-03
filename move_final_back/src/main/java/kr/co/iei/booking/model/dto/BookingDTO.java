@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @Alias(value="booking")
 public class BookingDTO {
 	private int bookNo;
+	private int seatNo;
 	private int payNo; 
 	private int priceNo;
 	private int pricePerAge;
@@ -21,7 +22,7 @@ public class BookingDTO {
 	private String screenName;
 	private String bookingDate;
 	private String movieThumb;
-	private String bookSeatRow;
+	private char bookSeatRow;
 	private String bookSeatColumn;
 	private String commentContent;
 	private int movieGrade;

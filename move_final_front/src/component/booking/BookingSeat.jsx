@@ -6,8 +6,10 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import EventSeatIcon from "@mui/icons-material/EventSeat";
 import { EventSeat } from "@mui/icons-material";
 import Swal from "sweetalert2";
+
 const BookingSeat = () => {
   const location = useLocation();
+  const scheduleNo = location.state.scheduleNo;
   const params = useParams();
   const movieNo = params.movieNo;
   const screenNo = params.screenNo;
@@ -17,25 +19,35 @@ const BookingSeat = () => {
   const [kidCount, setKidCount] = useState(0);
   const totalCount = adultCount + kidCount;
   const selectCount = totalCount;
+  let totalPrice = 0;
   const [selectSeat, setSelectSeat] = useState(Array(6).fill(null));
   const [count, setCount] = useState(0);
-  const [totalPrice, setTotalPrice] = useState(0);
   const [selectSeatList, setSelectSeatList] = useState([]);
-  const showPrice = totalPrice.toLocaleString();
+  const newMovieDate = new Date(location.state.movieDate);
+  console.log(movieNo);
   const navigate = useNavigate();
-  const bookingInfo = {
+  const [refresh, setRefresh] = useState(false);
+  const [bookSeatRow, setBookSeatRow] = useState([]);
+  const [bookSeatColumn, setBookSeatColumn] = useState([]);
+  const [bookedSeatList, setBookedSeatList] = useState([]);
+  const [payInfo, setPayInfo] = useState({
     movieNo: movieNo,
     screenNo: screenNo,
-    totalPrice: totalPrice,
-    adultCount: adultCount,
-    kidCount: kidCount,
-    selectSeatList: selectSeatList,
+    totalPrice: 0,
+    selectSeatList: [],
     scheduleTimeStart: location.state.scheduleTimeStart,
     scheduleTimeEnd: location.state.scheduleTimeEnd,
-    movieDate: location.state.movieDate,
-  };
+    movieDate: newMovieDate,
+    bookSeatRow: [],
+    bookSeatColumn: [],
+    scheduleNo: location.state.scheduleNo,
+  });
 
   useEffect(() => {
+    if (adultCount === 0 && kidCount === 0) {
+      return;
+    }
+
     axios
       .get(
         `${
@@ -44,26 +56,31 @@ const BookingSeat = () => {
       )
       .then((res) => {
         console.log(res);
-        setTotalPrice(res.data.totalPrice);
+        setPayInfo({ ...payInfo, totalPrice: res.data.totalPrice });
+        totalPrice = payInfo.totalPrice;
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [kidCount, adultCount]);
-
+  }, [kidCount, adultCount, movieNo]);
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_BACK_SERVER}/booking/getSeat/${screenNo}`)
+      .get(
+        `${
+          import.meta.env.VITE_BACK_SERVER
+        }/booking/getSeat/${screenNo}/${scheduleNo}`
+      )
       .then((res) => {
-        console.log(res.data.seatList);
         setRowList(res.data.rowList);
         setSeatList(res.data.seatList);
+        setBookedSeatList(res.data.bookedSeatList);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
-
+  console.log(movieNo);
+  console.log(payInfo.totalPrice);
   return (
     <div>
       <div className="content">
@@ -100,21 +117,35 @@ const BookingSeat = () => {
                               className={
                                 selectSeat.includes(seatName)
                                   ? "one-seat-box filled"
-                                  : selectCount === 0 &&
-                                    oneSeat.seatColumn >= 15
+                                  : selectSeat.includes(seatName) &&
+                                    oneSeat.seatColumn > 14
+                                  ? "one-seat-box-double filled"
+                                  : selectCount === 0 && oneSeat.seatColumn > 14
                                   ? "one-seat-box-double " +
                                     " unselected " +
                                     (i + 1)
-                                  : selectCount === 0
+                                  : selectCount === 0 ||
+                                    bookedSeatList.includes(seatName)
                                   ? "one-seat-box" + " unselected " + (i + 1)
-                                  : selectCount !== 0 &&
-                                    oneSeat.seatColumn >= 15
+                                  : selectCount !== 0 && oneSeat.seatColumn > 14
                                   ? "one-seat-box-double" +
                                     oneSeat.seatRow +
                                     (i + 1)
                                   : "one-seat-box" + oneSeat.seatRow + (i + 1)
                               }
+                              id={selectCount !== 0 && i === 14 && "couple"}
                               onClick={() => {
+                                if (selectSeatList.length === selectCount) {
+                                  Swal.fire({
+                                    title: "예매 개수 초과",
+                                    html: "선택한 예매 수를 초과합니다. <br/> 예매 수를 확인해주세요.",
+                                    icon: "warning",
+                                    confirmButtonText: "확인",
+                                  });
+                                }
+                                if (bookedSeatList.includes(seatName)) {
+                                  return;
+                                }
                                 if (
                                   count <= 6 &&
                                   selectCount > count &&
@@ -123,12 +154,30 @@ const BookingSeat = () => {
                                   const newSelectSeat = [...selectSeat];
                                   newSelectSeat[count] = seatName;
                                   setSelectSeat(newSelectSeat);
+
+                                  const bookingSelectSeat =
+                                    newSelectSeat.filter((s, i) => s !== null);
                                   setSelectSeatList(
                                     newSelectSeat.filter((s, i) => s !== null)
                                   );
-
+                                  const newRow = [
+                                    ...bookSeatRow,
+                                    oneSeat.seatRow,
+                                  ];
+                                  const newColumn = [
+                                    ...bookSeatColumn,
+                                    oneSeat.seatColumn,
+                                  ];
+                                  setBookSeatRow(newRow);
+                                  setBookSeatColumn(newColumn);
+                                  const newPayInfo = {
+                                    ...payInfo,
+                                    bookSeatColumn: bookSeatColumn,
+                                    bookSeatRow: bookSeatRow,
+                                    selectSeatList: bookingSelectSeat,
+                                  };
+                                  setPayInfo(newPayInfo);
                                   setCount(count + 1);
-                                  console.log(selectSeatList);
                                 } else if (selectSeat.includes(seatName)) {
                                   const removeSelectSeat = selectSeat.map(
                                     (removeSeat, index) =>
@@ -136,6 +185,7 @@ const BookingSeat = () => {
                                         ? removeSeat
                                         : null
                                   );
+
                                   setSelectSeat(removeSelectSeat);
                                   setCount(count - 1);
                                 }
@@ -153,7 +203,9 @@ const BookingSeat = () => {
               <div className="seat-info-box">
                 <div className="price-title">총 결제 금액</div>
                 <div className="price-count">
-                  {totalPrice !== undefined ? showPrice + "원" : "0원"}
+                  {payInfo.totalPrice !== 0
+                    ? payInfo.totalPrice.toLocaleString() + "원"
+                    : "0원"}
                 </div>
                 <div className="adult-amount">
                   <span className="amount-title">성인</span>
@@ -264,7 +316,11 @@ const BookingSeat = () => {
                       });
                     } else if (selectSeatList.length === totalCount) {
                       navigate(`/booking/pay`, {
-                        state: { bookingInfo: bookingInfo },
+                        state: {
+                          payInfo: payInfo,
+                          adultCount: adultCount,
+                          kidCount: kidCount,
+                        },
                       });
                     }
                   }}

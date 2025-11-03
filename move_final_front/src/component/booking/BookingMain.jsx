@@ -21,6 +21,7 @@ const BookingMain = () => {
   const [memberId, setMemberId] = useRecoilState(loginIdState);
   const isLogin = useRecoilValue(isLoginState);
   const [refresh, setRefresh] = useState(false);
+  const [scheduleNo, setScheduleNo] = useState(0);
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -33,6 +34,7 @@ const BookingMain = () => {
         console.log(err);
       });
   }, [movieScheduleSelect, movieSelect]);
+  useEffect(() => {}, [refresh]);
 
   return (
     <div className="content-wrap">
@@ -96,7 +98,7 @@ const BookingMain = () => {
                                 )
                                 .then((res) => {
                                   console.log(res);
-                                  console.log("movieDate :" + movieDate);
+
                                   setBookingSchedule(res.data.oneSchedule);
                                 })
 
@@ -148,20 +150,34 @@ const BookingMain = () => {
                               <div
                                 className="booking-schedule-box"
                                 onClick={() => {
+                                  const newDateString =
+                                    movieDate + " " + one.scheduleTimeStart;
+
+                                  console.log(
+                                    "newDateString :" + newDateString
+                                  );
                                   setmovieScheduleSelect(index);
                                   setMovieNo(one.movieNo);
 
-                                  !isLogin
+                                  movieDate === null
+                                    ? Swal.fire({
+                                        title: "날짜 미선택",
+                                        text: "예매할 날짜를 선택해주세요.",
+                                        icon: "warning",
+                                      })
+                                    : !isLogin
                                     ? navigate("/member/noMemberInfo")
-                                    : navigate(
-                                        `/booking/bookingSeat/${one.screenNo}/${movieNo}`,
+                                    : isLogin &&
+                                      navigate(
+                                        `/booking/bookingSeat/${one.screenNo}/${one.movieNo}`,
                                         {
                                           state: {
                                             scheduleTimeStart:
                                               one.scheduleTimeStart,
                                             scheduleTimeEnd:
                                               one.scheduleTimeEnd,
-                                            movieDate: movieDate,
+                                            movieDate: newDateString,
+                                            scheduleNo: one.scheduleNo,
                                           },
                                         }
                                       );
