@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.co.iei.admin.model.dto.ScheduleDTO;
 import kr.co.iei.booking.model.dao.BookingDao;
 import kr.co.iei.booking.model.dto.BookingDTO;
 import kr.co.iei.booking.model.dto.BookingInfoDTO;
@@ -41,17 +42,27 @@ public class BookingService {
 		return map;
 	}
 
-	public Map selectSchedule(int movieNo) {
+	public Map selectSchedule(int movieNo, String movieDate) {
 		Map selectMap = new HashMap<String, Object>();
+		String todayDate = java.time.LocalDate.now().toString();
 		selectMap.put("movieNo", movieNo);
-		
-		List oneSchedule = bookingDao.selectSchedule(selectMap);
+		selectMap.put("movieDate", movieDate);
+		List<ScheduleDTO> oneSchedule = bookingDao.selectSchedule(selectMap);
+		for(ScheduleDTO s : oneSchedule) {
+			List seatList = bookingDao.getSeatList(s.getScreenNo());
+			s.setSeatList(seatList);
+			Map bookSeatMap = new HashMap<String , Object>();
+			bookSeatMap.put("scheduleNo", s.getScheduleNo());
+			bookSeatMap.put("bookingDate", movieDate);
+			List bookedSeatList = bookingDao.getBookedSeatList(bookSeatMap);
+			s.setBookedSeatList(bookedSeatList);
+		}
 		Map map = new HashMap<String, Object>();
 		map.put("oneSchedule", oneSchedule);
 		return map;
 	}
 
-	public Map selectScreenSeat(int screenNo, int scheduleNo) {
+	public Map selectScreenSeat(int screenNo, int scheduleNo, String movieDate) {
 		Map rowMap = new HashMap<String,Object>();
 		List seatList = new ArrayList();
 		List rowList = bookingDao.selectRowList(screenNo);
@@ -61,7 +72,10 @@ public class BookingService {
 			List oneRowList = bookingDao.selectOneRow(rowMap);
 			seatList.add(oneRowList);
 		}
-		List<BookingDTO> bookSeatList = bookingDao.selectBookedSeat(scheduleNo);
+		Map bookSeatMap = new HashMap<String , Object>();
+		bookSeatMap.put("scheduleNo", scheduleNo);
+		bookSeatMap.put("bookingDate", movieDate);
+		List<BookingDTO> bookSeatList = bookingDao.selectBookedSeat(bookSeatMap);
 		
 		ArrayList<String> bookedSeatList = new ArrayList<>();
 		for(BookingDTO b : bookSeatList) {
@@ -69,7 +83,7 @@ public class BookingService {
 			bookedSeatList.add(bookedSeat);
 		}
 		Map seatMap = new HashMap<String, Object>();
-		System.out.println("bookedSeatList" +bookedSeatList);
+		
 		seatMap.put("bookedSeatList", bookedSeatList);
 		seatMap.put("seatList", seatList);
 		seatMap.put("rowList",rowList);
@@ -142,6 +156,7 @@ public class BookingService {
 		
 		if(insertResult == 1) {
 			Map map = new HashMap<String, Object>();
+			map.put("bookingDate", bookingInfo.getBookingDate());
 			map.put("scheduleNo", bookingInfo.getScheduleNo());
 			map.put("memberNo", bookingInfo.getMemberNo());
 			int bookNo = bookingDao.getBookNo(map);
@@ -162,6 +177,7 @@ public class BookingService {
 				Map map = new HashMap<String, Object>();
 				map.put("scheduleNo", bookingInfo.getScheduleNo());
 				map.put("memberNo", bookingInfo.getMemberNo());
+				map.put("bookingDate", bookingInfo.getBookingDate());
 				int bookNo = bookingDao.getBookNo(map);
 				map.put("bookNo", bookNo);
 				int payNo = bookingDao.getPayNo(map);
@@ -192,7 +208,7 @@ public class BookingService {
 		
 		
 		
-		return 0;
+		return seatInsertResult;
 	}
 
 

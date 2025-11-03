@@ -63,7 +63,7 @@ const MainBoxOffice = () => {
         setMovieBoxOffice(res.data.boxOfficeList.slice(0, 3));
       })
       .catch((err) => {});
-  }, [movieBoxOffice.likePushList]);
+  }, [movieBoxOffice]);
 
   return (
     <div>
@@ -103,7 +103,7 @@ const MovieItem = (props) => {
   const memberId = props.memberId;
   const movieBoxOffice = props.movieBoxOffice;
   const setMovieBoxOffice = props.setMovieBoxOffice;
-  const [likeCount, setLikeCount] = useState(movie.likeCount);
+  const likeCount = movie.likeCount.length;
 
   return (
     <li className="movie-item" style={{ width: "290px" }}>
@@ -119,9 +119,7 @@ const MovieItem = (props) => {
               height: "100%",
               boxShadow: "6px 6px 5px var(--main1)",
             }}
-            src={`${import.meta.env.VITE_BACK_SERVER}/thumb/${
-              movie.movieThumb
-            }`}
+            src={`${import.meta.env.VITE_BACK_SERVER}${movie.movieThumb}`}
             className={hoverText !== 2 ? "movie-thumb" : "movie-thumb-hide"}
           />
         </Link>
@@ -172,7 +170,6 @@ const MovieItem = (props) => {
                               ? {
                                   ...item,
                                   like: false,
-                                  likeCount: Number(likeCount),
                                 }
                               : item;
                           });
@@ -207,7 +204,6 @@ const MovieItem = (props) => {
                                 ? {
                                     ...item,
                                     like: true,
-                                    likeCount: Number(likeCount),
                                   }
                                 : item;
                             }
@@ -225,7 +221,7 @@ const MovieItem = (props) => {
             )}
           </div>
           <div className="like-count" style={{ color: "var(--main1)" }}>
-            {}
+            {likeCount}
           </div>
         </div>
         <div className="booking-zone">

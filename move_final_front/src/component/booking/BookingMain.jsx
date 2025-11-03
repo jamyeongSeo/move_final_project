@@ -34,7 +34,6 @@ const BookingMain = () => {
         console.log(err);
       });
   }, [movieScheduleSelect, movieSelect]);
-  useEffect(() => {}, [refresh]);
 
   return (
     <div className="content-wrap">
@@ -76,6 +75,7 @@ const BookingMain = () => {
                     </div>
                     <ul className="booking-movie-list">
                       {bookingMovieList.map((bookingMovie, index) => {
+                        console.log();
                         return (
                           <li
                             key={"booking-movie-" + index}
@@ -88,23 +88,25 @@ const BookingMain = () => {
                               setMovieNo(bookingMovie.movieNo);
                               setmovieScheduleSelect(-1);
                               setMovieSelect(index);
-                              axios
-                                .get(
-                                  `${
-                                    import.meta.env.VITE_BACK_SERVER
-                                  }/booking/schedule?movieNo=${
-                                    bookingMovie.movieNo
-                                  }`
-                                )
-                                .then((res) => {
-                                  console.log(res);
+                              if (movieDate != null) {
+                                axios
+                                  .get(
+                                    `${
+                                      import.meta.env.VITE_BACK_SERVER
+                                    }/booking/schedule?movieNo=${
+                                      bookingMovie.movieNo
+                                    }&movieDate=${movieDate}`
+                                  )
+                                  .then((res) => {
+                                    console.log(res);
 
-                                  setBookingSchedule(res.data.oneSchedule);
-                                })
+                                    setBookingSchedule(res.data.oneSchedule);
+                                  })
 
-                                .catch((err) => {
-                                  console.log(err);
-                                });
+                                  .catch((err) => {
+                                    console.log(err);
+                                  });
+                              }
                             }}
                           >
                             <div className="booking-movie-grade">
@@ -138,6 +140,7 @@ const BookingMain = () => {
                       </li>
                       <li className="booking-schedule-content">
                         {bookingSchedule.map((one, index) => {
+                          console.log(one.bookedSeatList);
                           return (
                             <div
                               key={"booking-schedule-" + index}
@@ -153,9 +156,6 @@ const BookingMain = () => {
                                   const newDateString =
                                     movieDate + " " + one.scheduleTimeStart;
 
-                                  console.log(
-                                    "newDateString :" + newDateString
-                                  );
                                   setmovieScheduleSelect(index);
                                   setMovieNo(one.movieNo);
 
@@ -191,9 +191,21 @@ const BookingMain = () => {
                                     ? "2관"
                                     : "3관"}
                                 </div>
-                                <div>{one.scheduleTimeStart}</div>
-                                <span>~</span>
-                                <div>{one.scheduleTimeEnd}</div>
+                                <div className="booking-time-box">
+                                  <div className="time-start">
+                                    {one.scheduleTimeStart}
+                                  </div>
+                                  <div>~</div>
+                                  <div className="time-end">
+                                    {one.scheduleTimeEnd}
+                                  </div>
+                                </div>
+                                <div className="seat-info">
+                                  {one.seatList.length -
+                                    one.bookedSeatList.length}
+                                  <span>/</span>
+                                  {one.seatList.length}
+                                </div>
                               </div>
                             </div>
                           );

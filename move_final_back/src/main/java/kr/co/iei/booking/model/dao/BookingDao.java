@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Mapper;
 import kr.co.iei.booking.model.dto.BookingDTO;
 import kr.co.iei.booking.model.dto.BookingInfoDTO;
 import kr.co.iei.booking.model.dto.PayDTO;
+
 import kr.co.iei.member.model.dto.MemberDTO;
 import kr.co.iei.movie.model.dto.MovieDTO;
 
@@ -55,8 +56,12 @@ public interface BookingDao {
 
 	int insertBookSeat(BookingDTO b);
 
-	List selectBookedSeat(int scheduleNo);
+	List selectBookedSeat(Map bookSeatMap);
 
 	int getPayNo(Map map);
+
+	List getSeatList(String string);
+
+	List getBookedSeatList(Map bookSeatMap);
 
 }

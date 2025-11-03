@@ -1,6 +1,7 @@
 package kr.co.iei.admin.model.dto;
 
 import java.sql.Date;
+import java.util.List;
 
 import org.apache.ibatis.type.Alias;
 
@@ -23,4 +24,8 @@ public class ScheduleDTO {
 	private String scheduleOpen;
 	private String scheduleClose;
 	private Date scheduleDate;
+	
+	private List seatList;
+	private List bookedSeatList;
+	
 }
