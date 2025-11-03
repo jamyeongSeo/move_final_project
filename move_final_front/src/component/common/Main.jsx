@@ -225,12 +225,14 @@ const MovieItem = (props) => {
           </div>
         </div>
         <div className="booking-zone">
-          <button
-            style={{ width: "165px", marginLeft: "5px" }}
-            className="booking-btn"
-          >
-            예매하기
-          </button>
+          <Link to="/booking/main">
+            <button
+              style={{ width: "165px", marginLeft: "5px" }}
+              className="booking-btn"
+            >
+              예매하기
+            </button>
+          </Link>
         </div>
       </div>
     </li>
