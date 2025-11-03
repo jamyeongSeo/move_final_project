@@ -102,9 +102,13 @@ public class MemberService {
 	//-----------------회원정보-------------------------
 	public MemberDTO selectMember(String memberId) {
 		MemberDTO m = memberDao.selectMember(memberId);
+		//System.out.println("회원번호: "+m.getMemberNo());
 		int couponCount = memberDao.memberCouponCount(m.getMemberNo());
-		System.out.println(couponCount);
+		//System.out.println("관람영화 수 : "+couponCount);
+		int watchingMovieCount = memberDao.memberWatchingMovieCount(m.getMemberNo());
+		System.out.println(watchingMovieCount);
 		m.setCouponCount(couponCount);
+		m.setWatchingMovieCount(watchingMovieCount);
 		//int watchingMovieCount = memberDao.memberWatchingMovieCount(m.getMemberNo()); 
 		//m.setWatchingMovieCount(watchingMovieCount);
 		System.out.println(m);

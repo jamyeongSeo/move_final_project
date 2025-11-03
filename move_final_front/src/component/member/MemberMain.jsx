@@ -83,7 +83,7 @@ const MemberMain = () => {
                 style={{ marginBottom: "60px" }}
               >
                 <div className="member-mypage-content-left">
-                  관람한 영화 수 : {member.watchingMovieCount} 건
+                  관람 및 예매 영화 수 : {member.watchingMovieCount} 건
                 </div>
               </div>
 
