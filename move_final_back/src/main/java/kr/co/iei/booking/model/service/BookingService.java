@@ -17,6 +17,7 @@ import kr.co.iei.booking.model.dto.BookingInfoDTO;
 import kr.co.iei.booking.model.dto.PayDTO;
 import kr.co.iei.booking.model.dto.PriceDTO;
 import kr.co.iei.member.model.dto.MemberDTO;
+import kr.co.iei.member.model.dto.MemberMovieListDTO;
 import kr.co.iei.movie.model.dto.MovieDTO;
 import kr.co.iei.movie.model.dto.SeatDTO;
 
@@ -209,6 +210,39 @@ public class BookingService {
 		
 		
 		return seatInsertResult;
+	}
+
+	public int insertRefund(MemberMovieListDTO refundInfo) {
+		Map payMap = new HashMap<String, Object>();
+		int refundResult = 0;
+		System.out.println(refundInfo);
+		String bookingDate = refundInfo.getMovieDate()+" "+refundInfo.getMovieTime().substring(0,5);
+		System.out.println(bookingDate);
+		MemberDTO m  = bookingDao.selectOneMemberNo(refundInfo.getMemberId());
+		System.out.println(m.getMemberNo());
+		payMap.put("memberNo", m.getMemberNo());
+		payMap.put("bookingDate", bookingDate);
+		Integer bookNo = bookingDao.selectBookNo(payMap);
+		System.out.println(bookNo);
+		int payNo = bookingDao.selectPayNo(bookNo);
+		int payPrice = bookingDao.selectPayPrice(payNo);
+		int refundBook = bookingDao.deleteBooking(bookNo);
+		if(refundBook == 1) {
+			refundResult = bookingDao.updateRefundStatus(refundInfo.getPayNo());
+			if(refundResult == 1) {
+				PayDTO p = new PayDTO();
+				p.setPayPrice(payPrice);
+				p.setPayNo(payNo);
+				refundResult += bookingDao.insertRefund(p);
+			}
+		}
+		
+		if(refundResult==2) {
+			
+			return refundResult;
+		}else {
+			return 0;
+		}
 	}
 
 

@@ -64,4 +64,16 @@ public interface BookingDao {
 
 	List getBookedSeatList(Map bookSeatMap);
 
+	int selectBookNo(Map payMap);
+
+	int deleteBooking(int bookNo);
+
+	int selectPayPrice(int payNo);
+
+	int updateRefundStatus(int payNo);
+
+	int insertRefund(PayDTO p);
+
+	int selectPayNo(int bookNo);
+
 }
