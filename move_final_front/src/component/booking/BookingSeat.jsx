@@ -12,13 +12,14 @@ const BookingSeat = () => {
   const scheduleNo = location.state.scheduleNo;
   const params = useParams();
   const movieNo = params.movieNo;
+  const movieDate = location.state.movieDate;
   const screenNo = params.screenNo;
   const [seatList, setSeatList] = useState([]);
   const [rowList, setRowList] = useState([]);
   const [adultCount, setAdultCount] = useState(0);
   const [kidCount, setKidCount] = useState(0);
   const totalCount = adultCount + kidCount;
-  const selectCount = totalCount;
+  let selectCount = totalCount;
   let totalPrice = 0;
   const [selectSeat, setSelectSeat] = useState(Array(6).fill(null));
   const [count, setCount] = useState(0);
@@ -55,7 +56,6 @@ const BookingSeat = () => {
         }/booking/calcPrice/${movieNo}?adultCount=${adultCount}&kidCount=${kidCount}`
       )
       .then((res) => {
-        console.log(res);
         setPayInfo({ ...payInfo, totalPrice: res.data.totalPrice });
         totalPrice = payInfo.totalPrice;
       })
@@ -68,7 +68,7 @@ const BookingSeat = () => {
       .get(
         `${
           import.meta.env.VITE_BACK_SERVER
-        }/booking/getSeat/${screenNo}/${scheduleNo}`
+        }/booking/getSeat/${screenNo}/${scheduleNo}?movieDate=${movieDate}`
       )
       .then((res) => {
         setRowList(res.data.rowList);
@@ -135,7 +135,10 @@ const BookingSeat = () => {
                               }
                               id={selectCount !== 0 && i === 14 && "couple"}
                               onClick={() => {
-                                if (selectSeatList.length === selectCount) {
+                                if (
+                                  !selectSeatList.includes(seatName) &&
+                                  selectSeatList.length === selectCount
+                                ) {
                                   Swal.fire({
                                     title: "예매 개수 초과",
                                     html: "선택한 예매 수를 초과합니다. <br/> 예매 수를 확인해주세요.",
@@ -152,14 +155,17 @@ const BookingSeat = () => {
                                   !selectSeat.includes(seatName)
                                 ) {
                                   const newSelectSeat = [...selectSeat];
-                                  newSelectSeat[count] = seatName;
+                                  const nullIndex = newSelectSeat.findIndex(
+                                    (seat) => seat === null
+                                  );
+                                  const targetIndex =
+                                    nullIndex !== -1 ? nullIndex : count;
+                                  newSelectSeat[targetIndex] = seatName;
                                   setSelectSeat(newSelectSeat);
 
                                   const bookingSelectSeat =
                                     newSelectSeat.filter((s, i) => s !== null);
-                                  setSelectSeatList(
-                                    newSelectSeat.filter((s, i) => s !== null)
-                                  );
+                                  setSelectSeatList(bookingSelectSeat);
                                   const newRow = [
                                     ...bookSeatRow,
                                     oneSeat.seatRow,
@@ -185,9 +191,34 @@ const BookingSeat = () => {
                                         ? removeSeat
                                         : null
                                   );
+                                  const bookingSelectSeat =
+                                    removeSelectSeat.filter((s) => s !== null);
+                                  const newBookSeatRow = [];
+                                  const newBookSeatColumn = [];
 
+                                  // bookingSelectSeat에 있는 각 좌석 이름에 대해 seatList를 조회하여 Row/Column 정보를 찾음
+                                  for (const name of bookingSelectSeat) {
+                                    const seat = seatList.find(
+                                      (s) => s.seatName === name
+                                    );
+                                    if (seat) {
+                                      newBookSeatRow.push(seat.seatRow);
+                                      newBookSeatColumn.push(seat.seatColumn);
+                                    }
+                                  }
                                   setSelectSeat(removeSelectSeat);
+
+                                  setSelectSeatList(bookingSelectSeat); // 최종 선택 리스트 업데이트
+                                  setBookSeatRow(newBookSeatRow);
+                                  setBookSeatColumn(newBookSeatColumn);
                                   setCount(count - 1);
+                                  const newPayInfo = {
+                                    ...payInfo,
+                                    bookSeatRow: newBookSeatRow, // 새로 구성된 행 정보 사용
+                                    bookSeatColumn: newBookSeatColumn, // 새로 구성된 열 정보 사용
+                                    selectSeatList: bookingSelectSeat, // 새로 필터링된 목록 사용
+                                  };
+                                  setPayInfo(newPayInfo);
                                 }
                               }}
                             ></div>

@@ -79,7 +79,7 @@ const BookingSchedule = (props) => {
                 .get(
                   `${
                     import.meta.env.VITE_BACK_SERVER
-                  }/booking/schedule?movieNo=${movieNo} `
+                  }/booking/schedule?movieNo=${movieNo}&movieDate=${movieDate} `
                 )
                 .then((res) => {
                   console.log(res);

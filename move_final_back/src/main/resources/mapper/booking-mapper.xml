@@ -10,28 +10,31 @@
 	from dual connect by level <![CDATA[ <= ]]>7 
   </select>
   <select id="selectSchedule" resultType="schedule">
-  	select * 
-    	from (select distinct to_char(schedule_time_start, 'hh24:mi') as schedule_time_start, 
-    		to_char(schedule_time_end, 'hh24:mi') as schedule_time_end ,
-    		s.schedule_no,
-    		m.movie_title, 
-    		s.screen_no , 
-    		m.movie_type, 
-    		m.movie_grade,
-    		movie_no
-  				from schedule_tbl s
-  				left join movie_tbl m using(movie_no)
-  			where to_date(schedule_open, 'yyyy-mm-dd') <![CDATA[ <= ]]> to_date(sysdate, 'yyyy-mm-dd') 
-  			and to_date(schedule_close, 'yyyy-mm-dd') <![CDATA[ >= ]]> to_date(sysdate, 'yyyy-mm-dd'))
-    where schedule_time_start <![CDATA[ >= ]]> to_char(sysdate, 'hh24:mi')
-    <if test="movieNo == -1">
-    order by schedule_time_start asc
-    </if>
-    <if test="movieNo != -1">
-    and movie_no = #{movieNo}	
-	order by schedule_time_start asc
-    </if>
-  
+  	SELECT
+    TO_CHAR(s.schedule_time_start, 'HH24:MI') AS schedule_time_start,
+    TO_CHAR(s.schedule_time_end, 'HH24:MI') AS schedule_time_end,
+    s.schedule_no,
+    m.movie_title,
+    s.screen_no,
+    m.movie_type,
+    m.movie_grade,
+    s.movie_no
+FROM
+    schedule_tbl s
+INNER JOIN 
+    movie_tbl m ON s.movie_no = m.movie_no
+WHERE
+    s.schedule_open <![CDATA[ <= ]]> TRUNC(SYSDATE) 
+    AND s.schedule_close <![CDATA[ >= ]]> TRUNC(SYSDATE) 
+    
+    AND (TRUNC(SYSDATE) + (s.schedule_time_start - TRUNC(s.schedule_time_start))) <![CDATA[ >= ]]> SYSDATE
+    
+<if test="movieNo != null and movieNo != -1">
+    AND s.movie_no = #{movieNo}
+</if>
+    
+ORDER BY
+    schedule_time_start ASC
   </select>
   <select id="selectScreenSeat" resultType="seat">
   	select * from seat_tbl where screen_no = #{screenNo}
@@ -73,7 +76,7 @@
   	select price_no from price_tbl where movie_no is null and price_per_age =#{i} 
   </select>
   <select id="getBookNo" resultType="int">
-  	select book_no from book_tbl where member_no = #{memberNo} and schedule_no =#{scheduleNo}
+  	select book_no from book_tbl where member_no = #{memberNo} and schedule_no =#{scheduleNo} and TRUNC(BOOKING_DATE) = TRUNC(#{bookingDate})
   </select>
   <select id="getSeatNo" resultType="int">
   	select seat_no from seat_tbl where seat_row = #{bookSeatRow} and seat_column = #{bookSeatColumn} and screen_no = #{screenNo}
@@ -89,7 +92,8 @@
   		book_seat_column 
   	from book_tbl b 
   	join book_seat_tbl bs using(book_no)
-  	where b.schedule_no = #{scheduleNo} 
+  	where b.schedule_no = #{scheduleNo}
+  	AND SUBSTR(B.BOOKING_DATE, 1, 10) = #{bookingDate} 
   </select>
   
   <insert id="insertBooking">
@@ -103,5 +107,22 @@
   <insert id="insertPayment">
   	insert into pay_tbl values(pay_seq.nextval,#{payTitle},#{payPrice},sysdate,default,#{memberNo},#{bookNo})
   </insert>
+  
+  <select id="getSeatList" resultType="seat">
+  	select * from seat_tbl where screen_no = #{screenNo}
+  </select>
+  
+  <select id="getBookedSeatList" resultType="booking">
+  	SELECT
+    BS.book_seat_row,
+    BS.book_seat_column
+FROM
+    book_tbl B
+JOIN
+    book_seat_tbl BS ON B.book_no = BS.book_no
+WHERE
+    B.schedule_no = #{scheduleNo}
+    AND SUBSTR(B.BOOKING_DATE, 1, 10) = #{bookingDate}
+  </select>
   
 </mapper>

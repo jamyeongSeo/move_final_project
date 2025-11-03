@@ -54,14 +54,14 @@ public class BookingController {
 	}
 	
 	@GetMapping(value="/schedule")
-	public ResponseEntity<Map> getSchedule(@RequestParam int movieNo){
-		Map map = bookingService.selectSchedule(movieNo);
+	public ResponseEntity<Map> getSchedule(@RequestParam int movieNo , @RequestParam String movieDate){
+		Map map = bookingService.selectSchedule(movieNo, movieDate);
 		return ResponseEntity.ok(map);
 	}
 	
 	@GetMapping(value="/getSeat/{screenNo}/{scheduleNo}")
-	public ResponseEntity<Map> getSeat(@PathVariable int screenNo, @PathVariable int scheduleNo ){
-		Map map = bookingService.selectScreenSeat(screenNo, scheduleNo);
+	public ResponseEntity<Map> getSeat(@PathVariable int screenNo, @PathVariable int scheduleNo , @RequestParam String movieDate ){
+		Map map = bookingService.selectScreenSeat(screenNo, scheduleNo, movieDate);
 		return ResponseEntity.ok(map);
 	}
 	@GetMapping(value="/calcPrice/{movieNo}")
