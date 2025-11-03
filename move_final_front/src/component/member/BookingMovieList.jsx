@@ -51,6 +51,7 @@ const BookingMovieList = () => {
               bookingList.map((b, index) => {
                 const BackServer = import.meta.env.VITE_BACK_SERVER;
                 const sendBookingMail = () => {
+                  console.log(b.payNo);
                   const bookingMail = {
                     payNo: b.payNo,
                     movieTitle: b.movieTitle,
@@ -60,7 +61,9 @@ const BookingMovieList = () => {
                     movieScreen: b.movieScreen,
                     count: b.count,
                     comment: "",
-                    movieThumb: b.movieThumb,
+                    movieThumb: `${import.meta.env.VITE_BACK_SERVER}${
+                      b.movieThumb
+                    }`,
                     seat: b.seat,
                     memberId: memberId,
                   };
@@ -79,7 +82,7 @@ const BookingMovieList = () => {
                       <div className="memberMovie-box">
                         <div className="memberMovie-post">
                           <img
-                            src={`${import.meta.env.VITE_BACK_SERVER}/thumb/${
+                            src={`${import.meta.env.VITE_BACK_SERVER}${
                               b.movieThumb
                             }`}
                           ></img>
@@ -93,11 +96,11 @@ const BookingMovieList = () => {
                                   <img
                                     className="member-movie-grade-img"
                                     src={
-                                      w.movieGrade == 1
+                                      b.movieGrade == 1
                                         ? "/image/ALL.png"
-                                        : w.movieGrade == 2
+                                        : b.movieGrade == 2
                                         ? "/image/12.png"
-                                        : w.movieGrade == 3
+                                        : b.movieGrade == 3
                                         ? "/image/15.png"
                                         : "/image/18.png"
                                     }
@@ -111,17 +114,7 @@ const BookingMovieList = () => {
                                 {b.movieScreen}
                               </li>
                               <li style={{ marginTop: "10px" }}>
-                                {b.count}
-                                <span
-                                  style={{
-                                    marginTop: "0px",
-                                    fontWeight: "500",
-                                    fontSize: "16px",
-                                    marginLeft: "23px",
-                                  }}
-                                >
-                                  [ {b.seat} ]
-                                </span>
+                                [ {b.seat} ]
                               </li>
                             </ul>
                           </div>

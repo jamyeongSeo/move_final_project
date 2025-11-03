@@ -102,9 +102,13 @@ public class MemberService {
 	//-----------------회원정보-------------------------
 	public MemberDTO selectMember(String memberId) {
 		MemberDTO m = memberDao.selectMember(memberId);
+		//System.out.println("회원번호: "+m.getMemberNo());
 		int couponCount = memberDao.memberCouponCount(m.getMemberNo());
-		System.out.println(couponCount);
+		//System.out.println("관람영화 수 : "+couponCount);
+		int watchingMovieCount = memberDao.memberWatchingMovieCount(m.getMemberNo());
+		System.out.println(watchingMovieCount);
 		m.setCouponCount(couponCount);
+		m.setWatchingMovieCount(watchingMovieCount);
 		//int watchingMovieCount = memberDao.memberWatchingMovieCount(m.getMemberNo()); 
 		//m.setWatchingMovieCount(watchingMovieCount);
 		System.out.println(m);
@@ -265,6 +269,7 @@ public class MemberService {
 				if(b.getPayNo() == c.getPayNo()) {
 					
 					//연령별 인원수
+					System.out.println(";;;"+ c.getPricePerAge());
 					if(c.getPricePerAge()==1){//성인
 						adult += 1;
 					}else if(c.getPricePerAge() == 2) {//어린이
@@ -278,6 +283,7 @@ public class MemberService {
 						resultCount = "어린이:"+kid;
 					}
 					content.setCount(resultCount);
+					System.out.println(resultCount);
 					//관람일
 					content.setMovieDate(c.getBookingDate());
 					//관람 연령(등급)
@@ -299,7 +305,7 @@ public class MemberService {
 					//좌석
 					if(seat == null) {
 						seat = c.getBookSeatRow()+c.getBookSeatColumn();
-					}else {
+					}else if(!seat.equals(c.getBookSeatRow()+c.getBookSeatColumn())) {
 						seat = seat+","+c.getBookSeatRow()+c.getBookSeatColumn();
 					}
 					content.setSeat(seat);

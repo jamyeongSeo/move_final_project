@@ -26,5 +26,7 @@ public class MovieScheduleDTO {
 	private int seatTotal; //관별 전체 좌석 수
 	private String bookingDate; //예매 날짜(스케쥴 연동 매진 좌석 파악 위해 필요)
 	private int gallerySeat; //매진 좌석
+	private int screenNo;
+	private int scheduleNo;
 
 }
