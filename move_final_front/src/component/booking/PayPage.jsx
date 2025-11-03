@@ -240,7 +240,33 @@ const PayPage = () => {
                               confirmButtonText: "확인",
                             }).then((result) => {
                               if (result.isConfirmed) {
-                                navigate(`/`);
+                                const sendBookingMail = () => {
+                                  const bookingMail = {
+                                    payNo: b.payNo,
+                                    movieTitle: b.movieTitle,
+                                    movieGrade: b.movieGrade,
+                                    movieDate: b.movieDate,
+                                    movieTime: b.movieTime,
+                                    movieScreen: b.movieScreen,
+                                    count: b.count,
+                                    comment: "",
+                                    movieThumb: b.movieThumb,
+                                    seat: b.seat,
+                                    memberId: memberId,
+                                  };
+                                  axios
+                                    .post(
+                                      `${BackServer}/member/sendBookingMail`,
+                                      bookingMail
+                                    )
+                                    .then((res) => {
+                                      console.log(res);
+                                      navigate(`/`);
+                                    })
+                                    .catch((err) => {
+                                      console.log(err);
+                                    });
+                                };
                               }
                             });
                           })

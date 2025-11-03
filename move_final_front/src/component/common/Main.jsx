@@ -103,7 +103,7 @@ const MovieItem = (props) => {
   const memberId = props.memberId;
   const movieBoxOffice = props.movieBoxOffice;
   const setMovieBoxOffice = props.setMovieBoxOffice;
-  const likeCount = movie.likeCount.length;
+  // const likeCount = movie.likeCount.length;
 
   return (
     <li className="movie-item" style={{ width: "290px" }}>
@@ -119,9 +119,7 @@ const MovieItem = (props) => {
               height: "100%",
               boxShadow: "6px 6px 5px var(--main1)",
             }}
-            src={`${import.meta.env.VITE_BACK_SERVER}/thumb/${
-              movie.movieThumb
-            }`}
+            src={`${import.meta.env.VITE_BACK_SERVER}${movie.movieThumb}`}
             className={hoverText !== 2 ? "movie-thumb" : "movie-thumb-hide"}
           />
         </Link>
@@ -223,7 +221,8 @@ const MovieItem = (props) => {
             )}
           </div>
           <div className="like-count" style={{ color: "var(--main1)" }}>
-            {movie.like ? likeCount : likeCount}
+            {movie.like ? likeCount + 1 : likeCount}
+            {/* {likeCount} */}
           </div>
         </div>
         <div className="booking-zone">

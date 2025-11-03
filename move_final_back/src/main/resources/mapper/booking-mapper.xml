@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="kr.co.iei.booking.model.dao.BookingDao">
-  <select id="selectMovieList" resultType="movie">
-  	select * from movie_tbl where movie_status = 2
-  </select>
-  
-  <select id="selectDateList" resultType="string">
-  	select to_char(sysdate + (level-1), 'yyyy-mm-dd') as week  
-	from dual connect by level <![CDATA[ <= ]]>7 
-  </select>
-  <select id="selectSchedule" resultType="schedule">
-  	SELECT
+	<select id="selectMovieList" resultType="movie">
+		select * from movie_tbl where movie_status = 2 or movie_status = 4
+	</select>
+
+	<select id="selectDateList" resultType="string">
+		select to_char(sysdate + (level-1), 'yyyy-mm-dd') as week
+		from dual connect by level <![CDATA[ <= ]]>7
+	</select>
+	<select id="selectSchedule" resultType="schedule">
+		SELECT
     TO_CHAR(s.schedule_time_start, 'HH24:MI') AS schedule_time_start,
     TO_CHAR(s.schedule_time_end, 'HH24:MI') AS schedule_time_end,
     s.schedule_no,
@@ -24,10 +24,12 @@ FROM
 INNER JOIN 
     movie_tbl m ON s.movie_no = m.movie_no
 WHERE
-    s.schedule_open <![CDATA[ <= ]]> TRUNC(SYSDATE) 
-    AND s.schedule_close <![CDATA[ >= ]]> TRUNC(SYSDATE) 
+    s.schedule_open <![CDATA[ <= ]]> TRUNC(TO_DATE(#{movieDate}, 'YYYY-MM-DD'))
+    AND s.schedule_close <![CDATA[ >= ]]> TRUNC(TO_DATE(#{movieDate}, 'YYYY-MM-DD'))
     
-    AND (TRUNC(SYSDATE) + (s.schedule_time_start - TRUNC(s.schedule_time_start))) <![CDATA[ >= ]]> SYSDATE
+    <if test='movieDate != null and movieDate.substring(0, 10) == todayDate'>
+        AND TO_CHAR(s.schedule_time_start, 'HH24:MI') <![CDATA[ >= ]]> TO_CHAR(SYSDATE, 'HH24:MI')
+    </if>
     
 <if test="movieNo != null and movieNo != -1">
     AND s.movie_no = #{movieNo}
@@ -163,7 +165,7 @@ WHERE
 		select * from member_tbl where member_id =#{memberId}
 	</select>
 	<update id="useCoupon">
-		update coupon_tbl set use_status = 'y' where coupon_no =#{couponNo}
+		update coupon_box_tbl set use_status = 'y' where coupon_box_no =#{couponNo}
 		and member_no =#{memberNo}
 	</update>
 

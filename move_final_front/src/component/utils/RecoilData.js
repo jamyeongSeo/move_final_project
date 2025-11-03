@@ -30,4 +30,23 @@ const isLoginState = selector({
     return loginId !== "" && memberLevel !== 0;
   },
 });
-export { loginIdState, memberLevelState, isLoginState, authReadyState };
+
+//신고된 회원의 정지일 수를 저장하는 저장소
+const suspendDaysState = atom({
+  key : "suspendDays",
+  default: "",
+  effects_UNSTABLE:[persistAtom],
+});
+
+//회원이 정지되어있는지 확인
+const isSuspended = selector({
+  key:"isSuspended",
+  default: false,
+  get:(state) => {
+    const loginId = state.get(loginIdState);
+    const suspendDays = state.get(suspendDaysState);
+    return loginId !== "" && suspendDays !== "";
+  },
+});
+
+export { loginIdState, memberLevelState, isLoginState, authReadyState, isSuspended };

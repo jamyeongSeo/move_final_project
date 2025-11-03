@@ -202,11 +202,28 @@ public class MovieService {
 	}
 	
 	@Transactional
-	public int reportComment(Map<String, Object> reportMap) {
-		int result = movieDao.insertReport(reportMap);
-		System.out.println(result);
-		return result;
-	}
+    public int reportComment(Map<String, Object> reportMap) {
+        
+        int movieCommentNo = (Integer) reportMap.get("movieCommentNo");
+        
+        int duplicateCount = movieDao.checkDuplicate(reportMap);
+        
+        if (duplicateCount > 0) {
+            return -1;
+        }
+        
+        Integer reportedMemberNo = movieDao.getCommentWriterMemberNo(movieCommentNo);
+        
+        if (reportedMemberNo == null) {
+            return 0; 
+        }
+
+        reportMap.put("reportedMemberNo", reportedMemberNo);
+        
+        int result = movieDao.insertReport(reportMap);
+        
+        return result;
+    }
 	@Transactional
 	public int insertComment(MovieCommentDTO comment) {
 		int result = movieDao.insertComment(comment);
@@ -222,7 +239,9 @@ public class MovieService {
     public int deleteComment(int movieCommentNo) {
         return movieDao.deleteComment(movieCommentNo);
     }
-	
 
+	public Double movieScoreAverage(String movieNo) {
+        return movieDao.selectAverageMovieScore(movieNo);
+    }
 	
 }
