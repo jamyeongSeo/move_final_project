@@ -58,8 +58,10 @@
     	sh1.schedule_time_start,
     	sh1.schedule_time_end,
     	sh1.schedule_open,
+    	sh1.schedule_no,
     	sh1.schedule_close,
     	sh1.screen_name,
+    	sh1.screen_no,
     	sh1.seat_total,
     	sh1.booking_date,
     	COALESCE(sh2.gallery_seat, 0) AS gallery_seat
@@ -73,6 +75,8 @@
         	s.schedule_time_start,
         	s.schedule_time_end, 
         	s.schedule_open,
+        	s.screen_no,
+        	s.schedule_no,
         	s.schedule_close, 
         	scr.screen_name,--관 이름
         	st.seat_total,--관별 전체 좌석수

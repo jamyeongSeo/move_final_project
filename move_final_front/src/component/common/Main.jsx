@@ -238,6 +238,7 @@ const MovieItem = (props) => {
 };
 
 const MainMovieSchedul = () => {
+  const navigate = useNavigate();
   //상영스케줄 일자 (오늘 포함 8일)
   const [scheduleDate, setScheduleDate] = useState(null);
   const today = new Date(); //오늘날짜
@@ -331,7 +332,7 @@ const MainMovieSchedul = () => {
         console.log(err.data);
       });
   }, [dateSchedule]);
-
+  console.log(schedul);
   return (
     <div>
       <div className="main-schedule-day-wrap">
@@ -484,10 +485,42 @@ const MainMovieSchedul = () => {
                                       //scheduleTimeStartHours * 60 + scheduleTimeStarMinutes;
                                       //const nowTime = today.getHours() * 60 + today.getMinutes();
                                       //console.log(schedul.movieGrade);
+                                      const newDate = new Date(s.bookingDate);
+                                      const newTime = new Date(
+                                        s.scheduleTimeStart
+                                      );
+                                      const newDateString =
+                                        newDate.getFullYear() +
+                                        "-" +
+                                        newDate.getMonth() +
+                                        "-" +
+                                        ("0" + newDate.getDay()).slice(-2) +
+                                        " " +
+                                        ("0" + newTime.getHours()).slice(-2) +
+                                        ":" +
+                                        ("0" + newTime.getMinutes()).slice(-2);
 
+                                      const seat = () => {
+                                        navigate(
+                                          `/booking/bookingSeat/${schedul.screenNo}/${schedul.movieNo}`,
+                                          {
+                                            state: {
+                                              scheduleTimeStart:
+                                                s.scheduleTimeStart,
+                                              scheduleTimeEnd:
+                                                s.scheduleTimeEnd,
+                                              movieDate: newDateString,
+                                              scheduleNo: schedul.scheduleNo,
+                                            },
+                                          }
+                                        );
+                                      };
                                       return (
                                         <div key={index - i}>
-                                          <div className="main-schedul-movie-time-box">
+                                          <div
+                                            className="main-schedul-movie-time-box"
+                                            onClick={seat}
+                                          >
                                             <div className="main-schedul-movie-time-content">
                                               {scheduleTimeStart}
                                             </div>

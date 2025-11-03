@@ -61,7 +61,9 @@ const BookingMovieList = () => {
                     movieScreen: b.movieScreen,
                     count: b.count,
                     comment: "",
-                    movieThumb: b.movieThumb,
+                    movieThumb: `${import.meta.env.VITE_BACK_SERVER}${
+                      b.movieThumb
+                    }`,
                     seat: b.seat,
                     memberId: memberId,
                   };
@@ -112,17 +114,7 @@ const BookingMovieList = () => {
                                 {b.movieScreen}
                               </li>
                               <li style={{ marginTop: "10px" }}>
-                                {b.count}
-                                <span
-                                  style={{
-                                    marginTop: "0px",
-                                    fontWeight: "500",
-                                    fontSize: "16px",
-                                    marginLeft: "23px",
-                                  }}
-                                >
-                                  [ {b.seat} ]
-                                </span>
+                                [ {b.seat} ]
                               </li>
                             </ul>
                           </div>
