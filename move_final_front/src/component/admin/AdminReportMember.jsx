@@ -13,7 +13,7 @@ const AdminReportMember = () => {
       .get(`${import.meta.env.VITE_BACK_SERVER}/admin/reportMember`)
       .then((res) => {
         console.log(res);
-        setReportMember(res.data || []);
+        setReportMember(res.data);
       })
       .catch((err) => {
         console.log("신고 회원 목록 불러오기 실패:", err);
@@ -21,9 +21,9 @@ const AdminReportMember = () => {
       });
   }, []);
 
-  const insertSuspend = (memberNo) => {
-    const days = suspendDays[memberNo];
-    const reason = suspendReason[memberNo];
+  const insertSuspend = (MEMBER_NO_KEY) => {
+    const days = suspendDays[MEMBER_NO_KEY];
+    const reason = suspendReason[MEMBER_NO_KEY];
 
     if (!days || !reason) {
       Swal.fire({
@@ -36,7 +36,7 @@ const AdminReportMember = () => {
 
     axios
       .post(`${import.meta.env.VITE_BACK_SERVER}/admin/memberSuspend`, {
-        memberNo,
+        MEMBER_NO: MEMBER_NO_KEY,
         suspendDays: days,
         suspendReason: reason,
       })
@@ -83,7 +83,7 @@ const AdminReportMember = () => {
               reportMember.map((member, index) => (
                 <tr key={`member-${index}`}>
                   {/* 아이디 */}
-                  <td>{member.member_id || "아이디 없음"}</td>
+                  <td>{member.MEMBER_ID || "아이디 없음"}</td>
 
                   {/* 신고된 댓글 내용 미리보기 + 클릭 시 모달 */}
                   <td
@@ -91,24 +91,24 @@ const AdminReportMember = () => {
                     onClick={() =>
                       Swal.fire({
                         title: "신고된 댓글",
-                        text: member.reported_comment || "내용 없음",
+                        text: member.REPORTED_COMMENT || "내용 없음",
                         icon: "info",
                       })
                     }
                   >
                     <div className="comment-preview">
-                      {member.reported_comment || "내용 없음"}
+                      {member.REPORTED_COMMENT || "내용 없음"}
                     </div>
                   </td>
 
                   {/* 정지일수 */}
                   <td>
                     <select
-                      value={suspendDays[member.member_no] || ""}
+                      value={suspendDays[member.MEMBER_ID] || ""}
                       onChange={(e) =>
                         setSuspendDays({
                           ...suspendDays,
-                          [member.member_no]: e.target.value,
+                          [member.MEMBER_ID]: e.target.value,
                         })
                       }
                     >
@@ -124,11 +124,11 @@ const AdminReportMember = () => {
                   {/* 정지사유 */}
                   <td>
                     <select
-                      value={suspendReason[member.member_no] || ""}
+                      value={suspendReason[member.MEMBER_ID] || ""}
                       onChange={(e) =>
                         setSuspendReason({
                           ...suspendReason,
-                          [member.member_no]: e.target.value,
+                          [member.MEMBER_ID]: e.target.value,
                         })
                       }
                     >
@@ -145,7 +145,7 @@ const AdminReportMember = () => {
                   <td>
                     <button
                       className="suspend-btn"
-                      onClick={() => insertSuspend(member.member_no)}
+                      onClick={() => insertSuspend(member.MEMBER_ID)}
                     >
                       정지 등록
                     </button>

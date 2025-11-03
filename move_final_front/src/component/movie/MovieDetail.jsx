@@ -45,9 +45,20 @@ const MovieDetail = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [movieScore, setMovieScore] = useState(0);
   const [commentContent, setCommentContent] = useState("");
+  const [alreadyComment, setAlreadyComment] = useState(false);
   const [isUpdate, setIsUpdate] = useState(null);
   const [updateContent, setUpdateContent] = useState("");
   const [updateScore, setUpdateScore] = useState(0);
+  const genreName = {
+    1: "액션",
+    2: "애니메이션",
+    3: "코미디",
+    4: "공포",
+    5: "스릴러",
+    6: "SF",
+    7: "범죄",
+    8: "판타지",
+  };
   const navigate = useNavigate();
   const getMovieInfo = () => {
     axios
@@ -61,6 +72,22 @@ const MovieDetail = () => {
         console.log(err);
       });
   };
+  const getAverageScore = () => {
+    axios
+      .get(
+        `${
+          import.meta.env.VITE_BACK_SERVER
+        }/movie/averageScore?movieNo=${movieNo}`
+      )
+      .then((res) => {
+        console.log(res);
+        setMovieScore(res.data || 0);
+      })
+      .catch((err) => {
+        console.log(err);
+        setMovieScore(0);
+      });
+  };
   const getMemberInfo = () => {
     axios
       .get(
@@ -70,6 +97,7 @@ const MovieDetail = () => {
       )
       .then((res) => {
         setMember(res.data);
+        getAverageScore();
       })
       .catch((err) => console.log(err));
   };
@@ -100,6 +128,17 @@ const MovieDetail = () => {
         setMovieCommentList(res.data.commentList);
         setTotalCount(res.data.totalCount);
         setPi(res.data.pi);
+
+        let foundComment = false;
+        const commentList = res.data.commentList;
+        for (let i = 0; i < commentList.length; i++) {
+          const comment = commentList[i];
+          if (member && comment.memberNo === member.memberNo) {
+            foundComment = true;
+            break;
+          }
+        }
+        setAlreadyComment(foundComment);
       })
       .catch((err) => {
         console.log(err);
@@ -107,7 +146,7 @@ const MovieDetail = () => {
   };
   useEffect(() => {
     getMovieCommentList();
-  }, [movieNo, reqPage, order]);
+  }, [movieNo, reqPage, order, member]);
 
   const nowDate = (comment) => {
     const now = dayjs(); //현재 날짜/시간 가져오는 함수
@@ -202,22 +241,27 @@ const MovieDetail = () => {
           memberNo: member.memberNo,
         })
         .then((res) => {
-          if (res.data === 1) {
+          if (res.data > 0) {
             Swal.fire({
               title: "신고 완료",
               text: "신고가 접수되었습니다.",
               icon: "success",
             });
+          } else if (res.data === -1) {
+            Swal.fire({
+              title: "신고 제한",
+              text: "한 댓글에 한번만 가능합니다.",
+              icon: "warning",
+            });
+          } else {
+            Swal.fire({
+              title: "신고 실패",
+              text: "신고에 실패하였습니다.",
+              icon: "error",
+            });
           }
         })
-        .catch((err) => {
-          Swal.fire({
-            title: "제한됨",
-            text: "한 댓글에 한번만 가능합니다.",
-            icon: "warning",
-          });
-          return;
-        });
+        .catch((err) => {});
     }
   };
   const StyledRating = styled(Rating)({
@@ -370,7 +414,7 @@ const MovieDetail = () => {
             </div>
             <div className="movie-info-downside-wrap">
               <div className="movie-middle-info-wrap">
-                <div>평점 : ? 점</div>
+                <div>평점 : {movieScore} 점</div>
                 <div>예매율 : ? %</div>
                 <div>누적관객수 : ? 명</div>
               </div>
@@ -514,12 +558,14 @@ const MovieDetail = () => {
               <div className="info-box">
                 <span className="info-box-title">장르</span>
                 <MovieOutlinedIcon sx={{ width: "100px", height: "100px" }} />
-                <span className="info-box-content">{movie.movieGenre}</span>
+                <span className="info-box-content">
+                  {genreName[movie.movieGenre]}
+                </span>
               </div>
               <div className="info-box">
                 <span className="info-box-title">평점</span>
                 <GradeOutlinedIcon sx={{ width: "100px", height: "100px" }} />
-                <span className="info-box-content">? 점</span>
+                <span className="info-box-content">{movieScore}</span>
               </div>
             </div>
             <div className="movie-detail-info-box-wrap">
@@ -680,33 +726,48 @@ const MovieDetail = () => {
                 />
               )}
             </div>
-            {}
-            <div className="movie-comment-input-wrap">
-              <div className="movie-comment-input-box">
-                <textarea
-                  className="comment-input"
-                  placeholder="실 관람평을 입력해주세요."
-                  value={commentContent}
-                  onChange={handleCommentContentChange}
-                ></textarea>
-                <div className="comment-write-bottom">
-                  <div className="comment-rating">
-                    <span className="rating-label">평점 입력</span>
-                    <StyledRating
-                      name="simple-controlled"
-                      value={movieScore}
-                      onChange={handleMovieScoreChange}
-                    />
+            {!alreadyComment && isLogin && (
+              <div className="movie-comment-input-wrap">
+                <div className="movie-comment-input-box">
+                  <textarea
+                    className="comment-input"
+                    placeholder="실 관람평을 입력해주세요."
+                    value={commentContent}
+                    onChange={handleCommentContentChange}
+                  ></textarea>
+                  <div className="comment-write-bottom">
+                    <div className="comment-rating">
+                      <span className="rating-label">평점 입력</span>
+                      <StyledRating
+                        name="simple-controlled"
+                        value={movieScore}
+                        onChange={handleMovieScoreChange}
+                      />
+                    </div>
+                    <button
+                      className="comment-submit-btn"
+                      onClick={submitComment}
+                    >
+                      입력
+                    </button>
                   </div>
-                  <button
-                    className="comment-submit-btn"
-                    onClick={submitComment}
-                  >
-                    입력
-                  </button>
                 </div>
               </div>
-            </div>
+            )}
+            {alreadyComment && isLogin && (
+              <div
+                style={{ padding: "20px", textAlign: "center", color: "#888" }}
+              >
+                이미 관람평을 작성하셨습니다.
+              </div>
+            )}
+            {!isLogin && (
+              <div
+                style={{ padding: "20px", textAlign: "center", color: "#888" }}
+              >
+                로그인 후 관람평을 작성할 수 있습니다.
+              </div>
+            )}
           </div>
         )}
       </section>

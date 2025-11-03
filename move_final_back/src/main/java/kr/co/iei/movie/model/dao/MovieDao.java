@@ -42,6 +42,12 @@ public interface MovieDao {
 
 	int deleteComment(int movieCommentNo);
 
+	int checkDuplicate(Map<String, Object> reportMap);
+
+	Integer getCommentWriterMemberNo(int movieCommentNo);
+
+	Double selectAverageMovieScore(String movieNo);
+
 	
 
 	
