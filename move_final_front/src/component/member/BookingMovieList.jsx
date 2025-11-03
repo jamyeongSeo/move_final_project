@@ -16,6 +16,7 @@ const BookingMovieList = () => {
   const [bookingList, setBookingList] = useState([]);
   const [totalCount, setTotalCount] = useState();
   const BackServer = import.meta.env.VITE_BACK_SERVER;
+  console.log(memberId);
   useEffect(() => {
     axios
       .get(`${BackServer}/member/bookingList?memberId=${memberId}`)
@@ -48,20 +49,21 @@ const BookingMovieList = () => {
           <>
             {bookingList &&
               bookingList.map((b, index) => {
+                const BackServer = import.meta.env.VITE_BACK_SERVER;
                 const sendBookingMail = () => {
-                  const [bookingMail, setBookingMail] = useState({
+                  const bookingMail = {
                     payNo: b.payNo,
                     movieTitle: b.movieTitle,
                     movieGrade: b.movieGrade,
                     movieDate: b.movieDate,
                     movieTime: b.movieTime,
-                    movieScreen: b.movieGrade,
+                    movieScreen: b.movieScreen,
                     count: b.count,
                     comment: "",
                     movieThumb: b.movieThumb,
                     seat: b.seat,
                     memberId: memberId,
-                  });
+                  };
                   axios
                     .post(`${BackServer}/member/sendBookingMail`, bookingMail)
                     .then((res) => {

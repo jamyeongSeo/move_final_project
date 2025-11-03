@@ -147,6 +147,7 @@
 .booking-category-title > h3 {
   margin-top: 10px;
   margin-bottom: 10px;
+  font-weight: 600;
 }
 .booking-movie-title-box {
   text-align: left;
@@ -187,6 +188,7 @@
 }
 
 .booking-schedule-title {
+  font-weight: 600;
   text-align: center;
   margin: 10 auto;
 }
@@ -195,9 +197,10 @@
   margin-top: 10px;
 }
 .booking-schedule-box {
-  width: 80%;
+  width: 100%;
   padding: 10px;
   display: flex;
+  justify-content: space-between;
   gap: 10px;
   align-items: center;
   height: 70px;
@@ -229,6 +232,26 @@
 }
 .booking-movie.select > div {
   color: var(--main3);
+}
+
+.booking-time-box {
+  width: 25%;
+  padding: 3px;
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+
+.booking-time-box > div {
+  height: 15px;
+}
+
+.time-start {
+  text-align: left;
+}
+.time-end {
+  text-align: right;
 }
 
 /*-----------------BookingSeat--------------------*/

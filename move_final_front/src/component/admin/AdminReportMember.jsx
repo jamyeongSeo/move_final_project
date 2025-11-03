@@ -14,6 +14,7 @@ const AdminReportMember = () => {
       .then((res) => {
         console.log(res);
         setReportMember(res.data);
+        setReportMember(res.data || []);
       })
       .catch((err) => {
         console.log("신고 회원 목록 불러오기 실패:", err);

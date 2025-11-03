@@ -63,7 +63,7 @@ const MainBoxOffice = () => {
         setMovieBoxOffice(res.data.boxOfficeList.slice(0, 3));
       })
       .catch((err) => {});
-  }, [movieBoxOffice.likePushList]);
+  }, [movieBoxOffice]);
 
   return (
     <div>
@@ -103,7 +103,7 @@ const MovieItem = (props) => {
   const memberId = props.memberId;
   const movieBoxOffice = props.movieBoxOffice;
   const setMovieBoxOffice = props.setMovieBoxOffice;
-  const [likeCount, setLikeCount] = useState(movie.likeCount);
+  const likeCount = movie.likeCount.length;
 
   return (
     <li className="movie-item" style={{ width: "290px" }}>
@@ -172,7 +172,6 @@ const MovieItem = (props) => {
                               ? {
                                   ...item,
                                   like: false,
-                                  likeCount: Number(likeCount),
                                 }
                               : item;
                           });
@@ -207,7 +206,6 @@ const MovieItem = (props) => {
                                 ? {
                                     ...item,
                                     like: true,
-                                    likeCount: Number(likeCount),
                                   }
                                 : item;
                             }
@@ -225,7 +223,7 @@ const MovieItem = (props) => {
             )}
           </div>
           <div className="like-count" style={{ color: "var(--main1)" }}>
-            {}
+            {likeCount}
           </div>
         </div>
         <div className="booking-zone">
