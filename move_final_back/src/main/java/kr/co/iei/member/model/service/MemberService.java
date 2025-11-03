@@ -105,8 +105,8 @@ public class MemberService {
 		int couponCount = memberDao.memberCouponCount(m.getMemberNo());
 		System.out.println(couponCount);
 		m.setCouponCount(couponCount);
-		int watchingMovieCount = memberDao.memberWatchingMovieCount(m.getMemberNo()); 
-		m.setWatchingMovieCount(watchingMovieCount);
+		//int watchingMovieCount = memberDao.memberWatchingMovieCount(m.getMemberNo()); 
+		//m.setWatchingMovieCount(watchingMovieCount);
 		System.out.println(m);
 		return m;
 	}

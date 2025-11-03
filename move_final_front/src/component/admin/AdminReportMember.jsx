@@ -12,6 +12,7 @@ const AdminReportMember = () => {
     axios
       .get(`${import.meta.env.VITE_BACK_SERVER}/admin/reportMember`)
       .then((res) => {
+        console.log(res);
         setReportMember(res.data || []);
       })
       .catch((err) => {
@@ -153,7 +154,10 @@ const AdminReportMember = () => {
               ))
             ) : (
               <tr>
-                <td colSpan="5" style={{ textAlign: "center", padding: "20px" }}>
+                <td
+                  colSpan="5"
+                  style={{ textAlign: "center", padding: "20px" }}
+                >
                   신고된 회원이 없습니다.
                 </td>
               </tr>
