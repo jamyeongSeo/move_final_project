@@ -159,15 +159,16 @@ const BookingMain = () => {
                                   setmovieScheduleSelect(index);
                                   setMovieNo(one.movieNo);
 
-                                  setRefresh(!refresh);
-                                  !isLogin && navigate("/member/noMemberInfo");
                                   movieDate === null
                                     ? Swal.fire({
                                         title: "날짜 미선택",
                                         text: "예매할 날짜를 선택해주세요.",
                                         icon: "warning",
                                       })
-                                    : navigate(
+                                    : !isLogin
+                                    ? navigate("/member/noMemberInfo")
+                                    : isLogin &&
+                                      navigate(
                                         `/booking/bookingSeat/${one.screenNo}/${one.movieNo}`,
                                         {
                                           state: {

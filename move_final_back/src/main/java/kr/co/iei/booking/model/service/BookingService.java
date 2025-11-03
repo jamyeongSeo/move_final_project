@@ -26,7 +26,8 @@ public class BookingService {
 	BookingDao bookingDao;
 	
 	public Map selectMovieList() {
-		List movieList = bookingDao.selectMovieList(); 
+		List<MovieDTO> movieList = bookingDao.selectMovieList(); 
+		
 		Map map = new HashMap<String, Object>();
 		map.put("bookingMovieList", movieList);
 		return map;
@@ -50,7 +51,7 @@ public class BookingService {
 		return map;
 	}
 
-	public Map selectScreenSeat(int screenNo) {
+	public Map selectScreenSeat(int screenNo, int scheduleNo) {
 		Map rowMap = new HashMap<String,Object>();
 		List seatList = new ArrayList();
 		List rowList = bookingDao.selectRowList(screenNo);
@@ -60,8 +61,16 @@ public class BookingService {
 			List oneRowList = bookingDao.selectOneRow(rowMap);
 			seatList.add(oneRowList);
 		}
+		List<BookingDTO> bookSeatList = bookingDao.selectBookedSeat(scheduleNo);
 		
+		ArrayList<String> bookedSeatList = new ArrayList<>();
+		for(BookingDTO b : bookSeatList) {
+			String bookedSeat = b.getBookSeatRow() + b.getBookSeatColumn();
+			bookedSeatList.add(bookedSeat);
+		}
 		Map seatMap = new HashMap<String, Object>();
+		System.out.println("bookedSeatList" +bookedSeatList);
+		seatMap.put("bookedSeatList", bookedSeatList);
 		seatMap.put("seatList", seatList);
 		seatMap.put("rowList",rowList);
 		return seatMap;
@@ -108,6 +117,7 @@ public class BookingService {
 	public int payment(BookingInfoDTO bookingInfo) {
 		int insertResult = 0;
 		int seatInsertResult = 0;
+		int payResult =0;
 		if(bookingInfo.getCouponBoxNo() != -1) {
 			Map couponMap = new HashMap<String, Object>();
 			couponMap.put("memberNo", bookingInfo.getMemberNo());
@@ -115,60 +125,77 @@ public class BookingService {
 			int updateResult = bookingDao.useCoupon(couponMap);
 		}
 		System.out.println("bookingService : "+bookingInfo);
+		insertResult += bookingDao.insertBooking(bookingInfo);
+		
+		/*
 		int adultPriceNo = bookingDao.getPriceNo(1); 
 		int kidPriceNo = bookingDao.getPriceNo(2);
 		for(int i = bookingInfo.getAdultCount(); i>0; i--) {
 			bookingInfo.setPriceNo(adultPriceNo);
-			insertResult += bookingDao.insertBooking(bookingInfo);
 			
 		}
 		for(int i = bookingInfo.getKidCount(); i>0; i--) {
 			bookingInfo.setPriceNo(kidPriceNo);
 			insertResult += bookingDao.insertBooking(bookingInfo);
 		}
+		*/
 		
-		if(insertResult == bookingInfo.getAdultCount() + bookingInfo.getKidCount()) {
-				
-				ArrayList<Integer> bookNo = bookingDao.getBookNo(bookingInfo);
-				System.out.println(bookNo);
+		if(insertResult == 1) {
+			Map map = new HashMap<String, Object>();
+			map.put("scheduleNo", bookingInfo.getScheduleNo());
+			map.put("memberNo", bookingInfo.getMemberNo());
+			int bookNo = bookingDao.getBookNo(map);
+			System.out.println(bookNo);
+			
+			PayDTO p = new PayDTO();
+			
+			p.setPayPrice(bookingInfo.getPayPrice());
+			p.setPayTitle(bookingInfo.getMovieTitle());
+			p.setMemberNo(bookingInfo.getMemberNo());
+			p.setBookNo(bookNo);
+		    payResult = bookingDao.insertPayment(p); 
+			
+			
+		}
+		
+		if(payResult == 1) {
+				Map map = new HashMap<String, Object>();
+				map.put("scheduleNo", bookingInfo.getScheduleNo());
+				map.put("memberNo", bookingInfo.getMemberNo());
+				int bookNo = bookingDao.getBookNo(map);
+				map.put("bookNo", bookNo);
+				int payNo = bookingDao.getPayNo(map);
+				System.out.println(payNo);
 				for(int i = 0; i<bookingInfo.getSelectSeatList().length; i++) {
 					String selectSeat = bookingInfo.getSelectSeatList()[i];
 					System.out.println(selectSeat);
-					int bookOneNo = bookNo.get(i);
+					
 					char bookSeatRow = selectSeat.charAt(0);
+					int screenNo = bookingInfo.getScreenNo();
 					String bookSeatColumn = selectSeat.substring(1);
 					System.out.println("bookSeatRow:"+bookSeatRow+" bookSeatColumn"+bookSeatColumn);
 					Map seatMap = new HashMap<String, Object>();
 					seatMap.put("bookSeatRow", bookSeatRow);
 					seatMap.put("bookSeatColumn", bookSeatColumn);
-					seatMap.put(bookSeatColumn, seatMap);
+					seatMap.put("screenNo", screenNo);
 					int seatNo = bookingDao.getSeatNo(seatMap);
 					BookingDTO b = new BookingDTO();
+					b.setBookNo(bookNo);
 					b.setSeatNo(seatNo);
 					b.setBookSeatColumn(bookSeatColumn);
 					b.setBookSeatRow(bookSeatRow);
-					b.setBookNo(bookOneNo);
+					b.setPayNo(payNo);
 					seatInsertResult += bookingDao.insertBookSeat(b);
 				}
-				
 		}
-		/*
-		if(seatInsertResult == bookingInfo.getSelectSeatList().length) {
-			PayDTO p = new PayDTO();
-			ArrayList<Integer> seatNoList = bookingDao.getBookSeatNo() 
-		    int result = bookingDao.insertPayment(bookingInfo); 
-			
-			
-		}
-		*/
+		 	
+		
+		
+		
 		return 0;
 	}
 
-	public Map selectBookedSeat(int scheduleNo) {
-		List bookedSeatList = bookingDao.selectBookedSeat(scheduleNo);
-		System.out.println("bookedSeatList :"+bookedSeatList);
-		return null;
-	}
+
 
 	
 

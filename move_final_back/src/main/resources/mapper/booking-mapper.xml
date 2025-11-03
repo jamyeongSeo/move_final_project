@@ -43,7 +43,7 @@
   </select>
   
   <select id="selectMoviePrice" resultType="price">
-  	select price, movie_type, price_per_age from price_tbl where movie_no = #{movieNo}
+  	select price, movie_type, price_per_age from price_tbl where movie_no is null
   </select>
   
   <select id="selectOneRow" resultType="seat">
@@ -73,10 +73,14 @@
   	select price_no from price_tbl where movie_no is null and price_per_age =#{i} 
   </select>
   <select id="getBookNo" resultType="int">
-  	select book_no from book_tbl where member_no = #{memberNo} and schedule_no =#{scheduleNo} and to_char(booking_date, 'yyyy-mm-dd hh24:mi') = to_char(#{bookingDate}, 'yyyy-mm-dd hh24:mi')
+  	select book_no from book_tbl where member_no = #{memberNo} and schedule_no =#{scheduleNo}
   </select>
   <select id="getSeatNo" resultType="int">
-  	select seat_no from seat_tbl where seat_row = #{bookSeatRow} and seat_column = #{bookSeatColumn}
+  	select seat_no from seat_tbl where seat_row = #{bookSeatRow} and seat_column = #{bookSeatColumn} and screen_no = #{screenNo}
+  </select>
+  
+  <select id="getPayNo" resultType="int">
+  	select pay_no from pay_tbl where book_no =#{bookNo} and member_no = #{memberNo}
   </select>
   
   <select id="selectBookedSeat" resultType="booking">
@@ -89,15 +93,15 @@
   </select>
   
   <insert id="insertBooking">
-  	insert into book_tbl values(book_seq.nextval, #{priceNo} , #{scheduleNo}, #{bookingDate} , #{memberNo})
+  	insert into book_tbl values(book_seq.nextval, null , #{scheduleNo}, #{bookingDate} , #{memberNo})
   </insert>
   
   <insert id="insertBookSeat">
-  	insert into book_seat_tbl values(book_seat_seq.nextval, #{bookNo}, #{bookSeatRow}, #{bookSeatColumn} , #{seatNo})
+  	insert into book_seat_tbl values(book_seat_seq.nextval, #{bookNo}, #{bookSeatRow}, #{bookSeatColumn} , #{seatNo}, #{payNo})
   </insert>
   
   <insert id="insertPayment">
-  	insert into pay_tbl values(pay_seq.nextval,#{movieTitle},#{payPrice},sysdate,)
+  	insert into pay_tbl values(pay_seq.nextval,#{payTitle},#{payPrice},sysdate,default,#{memberNo},#{bookNo})
   </insert>
   
 </mapper>

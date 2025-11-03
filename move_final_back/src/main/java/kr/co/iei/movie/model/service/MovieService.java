@@ -28,21 +28,23 @@ public class MovieService {
 	public Map selectMovieList(String memberId) {
 		List<MovieDTO> movieList = movieDao.selectMovieList();
 		Map map = new HashMap<String, Object>();
+		Map movieListMap = new HashMap<String,Object>();
+		
 		for (MovieDTO m : movieList) {
-
+			
 			map.put("movieNo", m.getMovieNo());
 			map.put("memberId", memberId);
-			int result = movieDao.isLike(map);
-			int totalLike = movieDao.totalLike(m.getMovieNo());
+			List totalLike = movieDao.totalLike(m.getMovieNo());
 			m.setLikeCount(totalLike);
+			int result = movieDao.isLike(map);
 			if (result == 1) {
 				m.setLike(true);
 			} else {
 				m.setLike(false);
 			}
 		}
-		map.put("movieList", movieList);
-		return map;
+		movieListMap.put("movieList", movieList);
+		return movieListMap;
 	}
 
 	@Transactional
@@ -52,7 +54,7 @@ public class MovieService {
 		map.put("memberId", memberId);
 		map.put("movieNo", movieNo);
 		int result = movieDao.likePush(map);
-
+		
 		return result;
 	}
 
@@ -74,10 +76,13 @@ public class MovieService {
 		map.put("memberId", memberId);
 		map.put("movieNo", movieNo);
 		int result = movieDao.likeUnPush(map);
-		System.out.println(result);
+		
+		
 		return result;
 	}
-
+	
+	
+	
 	/*------------------Main---------------*/
 	public Map selectBoxOffice(String memberId) {
 		List<MovieDTO> boxOffice = movieDao.selectBoxOffice();
@@ -87,8 +92,10 @@ public class MovieService {
 			map.put("movieNo", m.getMovieNo());
 			map.put("memberId", memberId);
 			int result = movieDao.isLike(map);
+			/*
 			int totalLike = movieDao.totalLike(m.getMovieNo());
 			m.setLikeCount(totalLike);
+			*/
 			if (result == 1) {
 				m.setLike(true);
 			} else {
@@ -212,6 +219,8 @@ public class MovieService {
 		int result = movieDao.updateComment(comment);
 		return result;
 	}
+
+	
 
 	
 }

@@ -52,8 +52,9 @@ public class MovieController {
 	public ResponseEntity<Integer> likeUnPush(@RequestParam int movieNo, @RequestParam String memberId){
 		System.out.println(movieNo);
 		System.out.println(memberId);
+		
 		int result  = movieService.likeUnPush(movieNo, memberId);
-		System.out.println(result);
+		
 		return ResponseEntity.ok(result);
 	}
 	

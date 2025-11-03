@@ -94,7 +94,7 @@ const PayPage = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [memberId]);
 
   useEffect(() => {
     if (!coupon) {
@@ -201,28 +201,7 @@ const PayPage = () => {
                 className="pay-btn"
                 onClick={() => {
                   const dateString = new Date();
-                  axios
-                    .post(
-                      `${import.meta.env.VITE_BACK_SERVER}/booking/payment`,
-                      bookingInfo
-                    )
-                    .then((res) => {
-                      console.log(res);
-                      Swal.fire({
-                        title: "예매 완료",
-                        html: "예매가 완료되었습니다. <br/> 예매 내역은 이메일로 발송됩니다.",
-                        icon: "success",
-                        confirmButtonText: "확인",
-                      }).then((result) => {
-                        if (result.isConfirmed) {
-                          navigate(`/`);
-                        }
-                      });
-                    })
-                    .catch((err) => {
-                      console.log(err);
-                    });
-                  /*
+
                   IMP.init("imp01372877");
                   IMP.request_pay(
                     {
@@ -241,10 +220,32 @@ const PayPage = () => {
                     },
                     (rsp) => {
                       if (rsp.success) {
+                        axios
+                          .post(
+                            `${
+                              import.meta.env.VITE_BACK_SERVER
+                            }/booking/payment`,
+                            bookingInfo
+                          )
+                          .then((res) => {
+                            console.log(res);
+                            Swal.fire({
+                              title: "예매 완료",
+                              html: "예매가 완료되었습니다. <br/> 예매 내역은 이메일로 발송됩니다.",
+                              icon: "success",
+                              confirmButtonText: "확인",
+                            }).then((result) => {
+                              if (result.isConfirmed) {
+                                navigate(`/`);
+                              }
+                            });
+                          })
+                          .catch((err) => {
+                            console.log(err);
+                          });
                       }
                     }
                   );
-                  */
                 }}
               >
                 결제하기

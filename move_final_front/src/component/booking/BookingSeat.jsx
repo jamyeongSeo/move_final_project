@@ -6,6 +6,7 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import EventSeatIcon from "@mui/icons-material/EventSeat";
 import { EventSeat } from "@mui/icons-material";
 import Swal from "sweetalert2";
+
 const BookingSeat = () => {
   const location = useLocation();
   const scheduleNo = location.state.scheduleNo;
@@ -18,6 +19,7 @@ const BookingSeat = () => {
   const [kidCount, setKidCount] = useState(0);
   const totalCount = adultCount + kidCount;
   const selectCount = totalCount;
+  let totalPrice = 0;
   const [selectSeat, setSelectSeat] = useState(Array(6).fill(null));
   const [count, setCount] = useState(0);
   const [selectSeatList, setSelectSeatList] = useState([]);
@@ -27,6 +29,7 @@ const BookingSeat = () => {
   const [refresh, setRefresh] = useState(false);
   const [bookSeatRow, setBookSeatRow] = useState([]);
   const [bookSeatColumn, setBookSeatColumn] = useState([]);
+  const [bookedSeatList, setBookedSeatList] = useState([]);
   const [payInfo, setPayInfo] = useState({
     movieNo: movieNo,
     screenNo: screenNo,
@@ -41,6 +44,10 @@ const BookingSeat = () => {
   });
 
   useEffect(() => {
+    if (adultCount === 0 && kidCount === 0) {
+      return;
+    }
+
     axios
       .get(
         `${
@@ -50,6 +57,7 @@ const BookingSeat = () => {
       .then((res) => {
         console.log(res);
         setPayInfo({ ...payInfo, totalPrice: res.data.totalPrice });
+        totalPrice = payInfo.totalPrice;
       })
       .catch((err) => {
         console.log(err);
@@ -60,21 +68,12 @@ const BookingSeat = () => {
       .get(
         `${
           import.meta.env.VITE_BACK_SERVER
-        }/booking/getBookedSeat?scheduleNo=${scheduleNo}`
+        }/booking/getSeat/${screenNo}/${scheduleNo}`
       )
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-  useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_BACK_SERVER}/booking/getSeat/${screenNo}`)
       .then((res) => {
         setRowList(res.data.rowList);
         setSeatList(res.data.seatList);
+        setBookedSeatList(res.data.bookedSeatList);
       })
       .catch((err) => {
         console.log(err);
@@ -118,21 +117,35 @@ const BookingSeat = () => {
                               className={
                                 selectSeat.includes(seatName)
                                   ? "one-seat-box filled"
-                                  : selectCount === 0 &&
-                                    oneSeat.seatColumn >= 15
+                                  : selectSeat.includes(seatName) &&
+                                    oneSeat.seatColumn > 14
+                                  ? "one-seat-box-double filled"
+                                  : selectCount === 0 && oneSeat.seatColumn > 14
                                   ? "one-seat-box-double " +
                                     " unselected " +
                                     (i + 1)
-                                  : selectCount === 0
+                                  : selectCount === 0 ||
+                                    bookedSeatList.includes(seatName)
                                   ? "one-seat-box" + " unselected " + (i + 1)
-                                  : selectCount !== 0 &&
-                                    oneSeat.seatColumn >= 15
+                                  : selectCount !== 0 && oneSeat.seatColumn > 14
                                   ? "one-seat-box-double" +
                                     oneSeat.seatRow +
                                     (i + 1)
                                   : "one-seat-box" + oneSeat.seatRow + (i + 1)
                               }
+                              id={selectCount !== 0 && i === 14 && "couple"}
                               onClick={() => {
+                                if (selectSeatList.length === selectCount) {
+                                  Swal.fire({
+                                    title: "예매 개수 초과",
+                                    html: "선택한 예매 수를 초과합니다. <br/> 예매 수를 확인해주세요.",
+                                    icon: "warning",
+                                    confirmButtonText: "확인",
+                                  });
+                                }
+                                if (bookedSeatList.includes(seatName)) {
+                                  return;
+                                }
                                 if (
                                   count <= 6 &&
                                   selectCount > count &&

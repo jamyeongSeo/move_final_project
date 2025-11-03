@@ -12,8 +12,8 @@ const MovieList = () => {
   const isLogin = useRecoilValue(isLoginState);
   const [memberId, setMemberId] = useRecoilState(loginIdState);
   const [movieAllList, setMovieAllList] = useState([]);
-  const [likeCount, setLikeCount] = useState(0);
 
+  const [like, setLike] = useState(false);
   useEffect(() => {
     axios
       .get(
@@ -25,7 +25,7 @@ const MovieList = () => {
         }
       })
       .catch((err) => {});
-  }, [movieAllList, likeCount]);
+  }, [like]);
 
   return (
     <div className="content">
@@ -47,8 +47,8 @@ const MovieList = () => {
                   memberId={memberId}
                   movieAllList={movieAllList}
                   setMovieAllList={setMovieAllList}
-                  likeCount={likeCount}
-                  setLikeCount={setLikeCount}
+                  like={like}
+                  setLike={setLike}
                 />
               );
             })}
@@ -74,8 +74,8 @@ const MovieItem = (props) => {
   const memberId = props.memberId;
   const movieAllList = props.movieAllList;
   const setMovieAllList = props.setMovieAllList;
-  const likeCount = props.likeCount;
-  const setLikeCount = props.setLikeCount;
+  const likeCount = movie.likeCount.length;
+  const setLike = props.setLike;
 
   return (
     <li className="movie-item">
@@ -130,18 +130,16 @@ const MovieItem = (props) => {
                       )
                       .then((res) => {
                         if (res.data === 1) {
-                          const likePushList = movieAllList.map((item, i) => {
-                            return index === i
-                              ? {
-                                  ...item,
-                                  like: false,
-                                  likeCount: Number(likeCount),
-                                }
-                              : item;
-                          });
-                          setLikeCount(Number(likeCount));
-                          setMovieAllList(likePushList);
+                          const likeUnPushList = movieAllList.map(
+                            (movie, i) => {
+                              return index === i
+                                ? { ...movie, like: false }
+                                : movie;
+                            }
+                          );
+                          setMovieAllList(likeUnPushList);
                         }
+                        setLike(false);
                       })
                       .catch((err) => {});
                   }
@@ -164,18 +162,14 @@ const MovieItem = (props) => {
                       )
                       .then((res) => {
                         if (res.data === 1) {
-                          const likeUnPushList = movieAllList.map((item, i) => {
+                          const likePushList = movieAllList.map((movie, i) => {
                             return index === i
-                              ? {
-                                  ...item,
-                                  like: true,
-                                  likeCount: Number(likeCount),
-                                }
-                              : item;
+                              ? { ...movie, like: true }
+                              : movie;
                           });
-                          setLikeCount(Number(likeCount));
-                          setMovieAllList(likeUnPushList);
+                          setMovieAllList(likePushList);
                         }
+                        setLike(true);
                       })
                       .catch((err) => {});
                   }
@@ -185,7 +179,9 @@ const MovieItem = (props) => {
               </span>
             )}
           </div>
-          <div className="like-count">{movie.likeCount}</div>
+          <div className="like-count">
+            {movie.like ? likeCount + 1 : likeCount}
+          </div>
         </div>
         <div className="booking-zone">
           <button className="booking-btn">예매하기</button>

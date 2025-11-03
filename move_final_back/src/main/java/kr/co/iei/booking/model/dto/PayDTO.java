@@ -17,5 +17,7 @@ public class PayDTO {
 	private String payTitle;
 	private int payPrice;
 	private Date payDate;
-	private int bookSeatNo;
+	private String refundStatus;
+	private int memberNo;
+	private int bookNo;
 }
