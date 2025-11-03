@@ -8,9 +8,19 @@
   align-items: center;
   width: 100%;
   padding: 40px 0;
-  background-color: #fff;
 }
 
+.regist-movie-frm{
+  width: 100%;
+}
+
+
+.regist-movie-frm{
+  width: 100%;
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;;
+}
 .regist-movie-title {
   font-size: 24px;
   font-weight: 700;
@@ -74,7 +84,7 @@
 .admin-regist-input select,
 .admin-runtime-select,
 .admin-textarea {
-  width: 100%;
+  width: 80%;
   padding: 10px 12px;
   border: 1px solid #ccc;
   border-radius: 6px;
@@ -94,7 +104,7 @@
 }
 
 .admin-textarea {
-  width: 100%;
+  width: 80%;
   height: 120px;
   resize: vertical;
 }

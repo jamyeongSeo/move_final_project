@@ -208,7 +208,7 @@ ORDER BY sh1.schedule_time_start
   	insert into comment_report_tbl values(#{memberNo},#{movieCommentNo},sysdate)
   </insert>
   <insert id="insertComment">
-  	insert into movie_comment_tbl values(movie_comment_seq.nextval, #{movieNo}, #{movieScore}, #{commentContent}, #{memberNo}, sysdate)
+  	insert into movie_comment_tbl values(movie_comment_seq.nextval, #{movieNo}, #{movieScore}, #{commentContent}, sysdate, #{memberNo})
   </insert>
   <update id="updateComment">
   	update movie_comment_tbl set movie_score = #{movieScore}, comment_content = #{commentContent} where movie_comment_no = #{movieCommentNo} 
