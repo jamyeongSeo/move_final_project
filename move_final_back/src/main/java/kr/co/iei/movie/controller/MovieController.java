@@ -85,12 +85,26 @@ public class MovieController {
 		return ResponseEntity.ok(commentMap);
 	}
 	@PostMapping(value="/comment/report")
-	public ResponseEntity<Integer> reportComment(@RequestBody Map<String, Object> reportMap){
-		System.out.println(reportMap);
-		int result = movieService.reportComment(reportMap);
-		System.out.println(result);
-		return ResponseEntity.ok(result);
-	}
+    public ResponseEntity<Integer> reportComment(@RequestBody Map<String, Object> reportMap){
+        
+        if (reportMap.get("movieCommentNo") == null || reportMap.get("memberNo") == null) {
+            return ResponseEntity.ok(0); 
+        }
+
+        int result = movieService.reportComment(reportMap);
+        
+        if (result == -1) {
+        	//중복
+            return ResponseEntity.ok(-1);
+        }else if (result > 0) {
+        	//성공
+            return ResponseEntity.ok(result); 
+        } else {
+        	//실패
+            return ResponseEntity.ok(0); 
+        }
+    }
+    
 
 	@PostMapping(value="/comment/insert")
 	public ResponseEntity<Integer> insertComment(@RequestBody MovieCommentDTO comment){
@@ -107,5 +121,13 @@ public class MovieController {
         int result = movieService.deleteComment(movieCommentNo);
         return ResponseEntity.ok(result);
     }
-
+	@GetMapping("/averageScore")
+    public ResponseEntity<Double> getAverageScore(@RequestParam String movieNo) {
+        
+        Double averageScore = movieService.movieScoreAverage(movieNo);
+        
+        Double result = averageScore != null ? averageScore : 0.0;
+        
+        return ResponseEntity.ok(result);
+    }
 }

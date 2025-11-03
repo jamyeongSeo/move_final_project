@@ -204,8 +204,14 @@ ORDER BY sh1.schedule_time_start
   		)
   	where rnum between #{start} and #{end}	
   </select>
+  <select id="checkDuplicate" resultType="int">
+  	select count(*) from comment_report_tbl where movie_comment_no = #{movieCommentNo} and member_no = #{memberNo}
+  </select>
+  <select id="getCommentWriterMemberNo" resultType="int">
+        select member_no from movie_comment_tbl where movie_comment_no = #{movieCommentNo}
+  </select>
   <insert id="insertReport">
-  	insert into comment_report_tbl values(#{memberNo},#{movieCommentNo},sysdate)
+  	insert into comment_report_tbl values(#{memberNo},#{movieCommentNo},sysdate,#{reportedMemberNo})
   </insert>
   <insert id="insertComment">
   	insert into movie_comment_tbl values(movie_comment_seq.nextval, #{movieNo}, #{movieScore}, #{commentContent}, sysdate, #{memberNo})
@@ -216,4 +222,7 @@ ORDER BY sh1.schedule_time_start
   <delete id="deleteComment">
   	delete from movie_comment_tbl where movie_comment_no = #{movieCommentNo}
   </delete>
+  <select id="selectAverageMovieScore" resultType="Double">
+  	select round(avg(movie_score), 1) from movie_comment_tbl where movie_no = #{movieNo}
+  </select>
 </mapper>
