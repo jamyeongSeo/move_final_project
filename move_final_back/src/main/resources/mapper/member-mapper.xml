@@ -208,11 +208,11 @@
     			m.movie_thumb,
     			m.movie_title,
     			m.movie_grade,
-    			to_char(s.schedule_time_start,'HH24:MI'),
-    			to_char(s.schedule_time_end,'HH24:MI'),
+    			s.schedule_time_start,
+    			s.schedule_time_end,
     			sc.screen_name,
     			pr.price_per_age,
-    			to_char(b.booking_date,'YYYY.DD.MM'),
+    			b.booking_date,
     			bs.book_seat_row,
     			bs.book_seat_column,
     			p.pay_no
@@ -227,7 +227,8 @@
 			left join screen_tbl sc on (sc.screen_no = s.screen_no)
 			where (m.member_no=#{memberNo}) and (p.refund_status = 'n') and
         			(b.booking_date >= sysdate) and 
-        			(((to_number(to_char(s.schedule_time_start,'hh24'))*60)+(to_number(to_char(s.schedule_time_start,'mi')))) >= ((to_number(to_char(sysdate,'hh24'))*60)+(to_number(to_char(sysdate,'mi')))))
+        			(((to_number(to_char(s.schedule_time_start,'hh24'))*60)+(to_number(to_char(s.schedule_time_start,'mi')))) 
+        				>= ((to_number(to_char(sysdate,'hh24'))*60)+(to_number(to_char(sysdate,'mi')))))
 		 ]]>
 	</select>
 	<select id="bookingCount" resultType="int">
