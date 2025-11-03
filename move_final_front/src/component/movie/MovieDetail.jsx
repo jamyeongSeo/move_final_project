@@ -601,10 +601,10 @@ const MovieDetail = () => {
                               className="comment-submit-btn"
                               onClick={() => updateComment(comment, true)}
                             >
-                              수정 완료
+                              수정
                             </button>
                             <button
-                              className="comment-delete-btn"
+                              className="comment-cancel-btn"
                               onClick={() => {
                                 setIsUpdate(null);
                                 setUpdateContent("");
@@ -627,22 +627,15 @@ const MovieDetail = () => {
                           </div>
                           {isUpdate !== comment.movieCommentNo && (
                             <div className="comment-btn-wrap">
-                              {(member &&
-                                member.memberNo === comment.memberNo) ||
-                              (member && member.memberLevel === 1) ? (
-                                <>
-                                  {member &&
-                                    member.memberNo === comment.memberNo && (
-                                      <div
-                                        className="comment-edit-btn"
-                                        onClick={() => updateComment(comment)}
-                                      >
-                                        수정
-                                      </div>
-                                    )}
-                                  {((member &&
-                                    member.memberNo === comment.memberNo) ||
-                                    (member && member.memberLevel === 1)) && (
+                              {member && isUpdate !== comment.movieCommentNo ? (
+                                member.memberNo === comment.memberNo ? (
+                                  <>
+                                    <div
+                                      className="comment-edit-btn"
+                                      onClick={() => updateComment(comment)}
+                                    >
+                                      수정
+                                    </div>
                                     <div
                                       className="comment-delete-btn"
                                       onClick={() =>
@@ -651,22 +644,15 @@ const MovieDetail = () => {
                                     >
                                       삭제
                                     </div>
-                                  )}
-                                </>
-                              ) : (
-                                member &&
-                                !(
-                                  (member &&
-                                    member.memberNo === comment.memberNo) ||
-                                  (member && member.memberLevel === 1)
-                                ) && (
+                                  </>
+                                ) : (
                                   <ReportProblemOutlinedIcon
                                     onClick={() => {
                                       reportComment(comment);
                                     }}
                                   />
                                 )
-                              )}
+                              ) : null}
                             </div>
                           )}
                         </div>
