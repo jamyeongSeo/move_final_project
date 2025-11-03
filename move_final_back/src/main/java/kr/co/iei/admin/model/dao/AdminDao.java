@@ -20,7 +20,9 @@ public interface AdminDao {
     /*스케줄 등록*/
     int insertSchedule(ScheduleDTO schedule);
     
-    
+    //단일 스케줄 조회
+    ScheduleDTO getScheduleDetail(int scheduleNo);
+
     int updateSchedule(ScheduleDTO schedule);
     int deleteSchedule(int scheduleNo);
 
@@ -42,15 +44,20 @@ public interface AdminDao {
 	
 	
 	/*---------- 회원 관리 ----------*/
-	 int totalMemberCount(String memberId);
-	 List<MemberDTO> adminMemberList(Map<String, Object> param);
-	 
-	 //정지회원 중복 방지
-	 int checkAlreadySuspended(int memberNo);
-	 //정지 회원 등로
-	 int insertSuspend(Map<String, Object> suspendData);
-	 //정지된 회원 목록
-	 List<Map<String, Object>> getReportedMembers();
+	int totalMemberCount(String memberId);
+	List<MemberDTO> adminMemberList(Map<String, Object> param);
+
+	// 정지회원 중복 방지
+	int checkAlreadySuspended(int memberNo);
+
+	// 정지 회원 등록
+	int insertSuspend(Map<String, Object> suspendData);
+
+	// 신고된 회원 목록
+	List<Map<String, Object>> getReportedMembers();
+
+//	// 유효한 정지 정보 조회
+//	Map<String, Object> getValidSuspensionInfo(int memberNo);
 	 
 
 }

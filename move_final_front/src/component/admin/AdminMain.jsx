@@ -13,7 +13,6 @@ import { authReadyState, isLoginState, loginIdState, memberLevelState } from "..
 const AdminMain = () => {
   const menus = [
     { url: "/admin/main", text: "영화 관리" },
-    { url: "/admin/sales", text: "매출 관리" },
     { url: "/admin/main/member", text: "회원 관리" },
   ];
   const subMenus = {
@@ -22,11 +21,6 @@ const AdminMain = () => {
       { text: "영화 등록", url: "movie/regist" },
       { text : "스케줄 목록", url : "schedule/list"},
       { text: "스케줄 등록", url: "schedule/regist" },
-      { text: "관객 수 조회", url: "movieGoer" },
-    ],
-    "/admin/sales": [
-      { text: "전체 매출 조회", url: "salesAll" },
-      { text: "각 영화 매출 조회", url: "salesOne" },
     ],
   };
   const [openMenu, setOpenMenu] = useState(null);

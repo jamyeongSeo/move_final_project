@@ -55,10 +55,34 @@ public class AdminService {
         return adminDao.getReportedMembers();
     }
 
-    // 회원 정지 등록
+    //회원 댓글 제재 등록
     public int insertSuspend(Map<String, Object> suspendData) {
-        return adminDao.insertSuspend(suspendData);
+        // 1. 프론트에서 넘어오는 JSON key: MEMBER_NO / suspendDays / suspendReason
+        int memberNo = ((Number) suspendData.get("MEMBER_NO")).intValue(); 
+        int suspendDays = Integer.parseInt(suspendData.get("suspendDays").toString());
+        String suspendReason = suspendData.get("suspendReason").toString();
+
+        Map<String, Object> param = new HashMap<>();
+        param.put("memberNo", memberNo);
+        param.put("suspendDays", suspendDays);
+        param.put("suspendReason", suspendReason);
+
+        // 3. 중복 제재 방지 (이미 정지 상태면 insert 안함)
+        int already = adminDao.checkAlreadySuspended(memberNo);
+        if (already > 0) {
+            return 0; // 이미 정지된 회원이면 처리 안 함
+        }
+        // 4. 정지 등록
+        return adminDao.insertSuspend(param);
     }
+//    // 특정 회원의 현재 유효한 정지 정보 조회 (새로 추가)
+//    public Map<String, Object> getMemberRestrictionInfo(int memberNo) {
+//        // 현재 유효한 정지 정보 (SUSPENDED_UNTIL이 SYSDATE보다 큰 것)를 가져옴
+//        // 만약 여러 건이면 가장 최근에 적용된 정지를 가져오도록 DAO에서 처리
+//        return adminDao.getValidSuspensionInfo(memberNo);
+//    }
+//    
+    /**********************영화***********************/
     
 
     /* 영화 목록 */
@@ -119,6 +143,11 @@ public class AdminService {
         return adminDao.scheduleList();
     }
 
+    /*단일 스케줄 조회*/
+    public ScheduleDTO getScheduleDetail(int scheduleNo) {
+        return adminDao.getScheduleDetail(scheduleNo);
+    }
+
     public int updateSchedule(ScheduleDTO schedule) {
         return adminDao.updateSchedule(schedule);
     }
@@ -140,9 +169,5 @@ public class AdminService {
 		    param.put("startDate", startDate);
 		    return adminDao.getWeeklySchedule(param);
 	}
-
-
-
-	
 
 }

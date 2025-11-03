@@ -1,19 +1,23 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import "./adminMember";
+import { useSetRecoilState } from "recoil";
+import { suspendDaysState } from "../utils/RecoilData";
 
 const AdminReportMember = () => {
   const [reportMember, setReportMember] = useState([]);
   const [suspendDays, setSuspendDays] = useState({});
   const [suspendReason, setSuspendReason] = useState({});
 
+  //Recoil 상태 업데이트 (정지일수/사유 등록 시 프론트에도 반영)
+  const setGlobalSuspendDays = useSetRecoilState(suspendDaysState);
+
   useEffect(() => {
     axios
       .get(`${import.meta.env.VITE_BACK_SERVER}/admin/reportMember`)
       .then((res) => {
-        console.log(res);
-        setReportMember(res.data);
+        console.log("신고 회원 목록:", res);
+        setReportMember(res.data || []);
       })
       .catch((err) => {
         console.log("신고 회원 목록 불러오기 실패:", err);
@@ -21,7 +25,7 @@ const AdminReportMember = () => {
       });
   }, []);
 
-  const insertSuspend = (MEMBER_NO_KEY) => {
+  const insertSuspend = async (MEMBER_NO_KEY) => {
     const days = suspendDays[MEMBER_NO_KEY];
     const reason = suspendReason[MEMBER_NO_KEY];
 
@@ -34,23 +38,54 @@ const AdminReportMember = () => {
       return;
     }
 
-    axios
-      .post(`${import.meta.env.VITE_BACK_SERVER}/admin/memberSuspend`, {
-        MEMBER_NO: MEMBER_NO_KEY,
-        suspendDays: days,
+    try {
+      const res = await axios.post(`${import.meta.env.VITE_BACK_SERVER}/admin/memberSuspend`, {
+        MEMBER_NO: Number(MEMBER_NO_KEY),
+        suspendDays: Number(days),
         suspendReason: reason,
-      })
-      .then(() => {
-        Swal.fire({
-          title: "정지 처리 완료",
-          text: `${days}일 정지 처리되었습니다.`,
-          icon: "success",
-        });
-      })
-      .catch((err) => {
-        console.log("정지 등록 실패:", err);
-        Swal.fire("정지 등록 실패");
       });
+
+      if (res.data === 0) {
+        Swal.fire({
+          title: "이미 정지된 회원",
+          text: "해당 회원은 현재 정지 상태입니다.",
+          icon: "info",
+        });
+        return;
+      }
+
+      //SweetAlert 표시 + 전역 상태 업데이트
+      Swal.fire({
+        title: "정지 처리 완료",
+        html: `
+          <p><b>${days}일</b> 정지 처리되었습니다.</p>
+          <p>사유: ${reason}</p>
+        `,
+        icon: "success",
+      }).then(() => {
+        //1) 목록에서 제거
+        setReportMember((prevList) =>
+          prevList.filter((member) => member.MEMBER_NO !== MEMBER_NO_KEY)
+        );
+
+        //2) 전역 Recoil 상태도 갱신 (로그인된 사용자와 동일한 회원이면 프론트에서도 막힘)
+        setGlobalSuspendDays({
+          SUSPENDED_DAYS: days,
+          SUSPENDED_AT: new Date().toISOString().split("T")[0],
+          SUSPENDED_UNTIL: new Date(Date.now() + days * 24 * 60 * 60 * 1000)
+            .toISOString()
+            .split("T")[0],
+          REASON: reason,
+        });
+      });
+    } catch (err) {
+      console.log("정지 등록 실패:", err);
+      Swal.fire({
+        title: "정지 등록 실패",
+        text: "서버 오류 또는 중복된 정지 요청입니다.",
+        icon: "error",
+      });
+    }
   };
 
   const dayOptions = [3, 5, 7, 14];
@@ -85,7 +120,7 @@ const AdminReportMember = () => {
                   {/* 아이디 */}
                   <td>{member.MEMBER_ID || "아이디 없음"}</td>
 
-                  {/* 신고된 댓글 내용 미리보기 + 클릭 시 모달 */}
+                  {/* 신고된 댓글 내용 미리보기 */}
                   <td
                     className="comment-cell"
                     onClick={() =>
@@ -104,11 +139,11 @@ const AdminReportMember = () => {
                   {/* 정지일수 */}
                   <td>
                     <select
-                      value={suspendDays[member.MEMBER_ID] || ""}
+                      value={suspendDays[member.MEMBER_NO] || ""}
                       onChange={(e) =>
                         setSuspendDays({
                           ...suspendDays,
-                          [member.MEMBER_ID]: e.target.value,
+                          [member.MEMBER_NO]: e.target.value,
                         })
                       }
                     >
@@ -124,11 +159,11 @@ const AdminReportMember = () => {
                   {/* 정지사유 */}
                   <td>
                     <select
-                      value={suspendReason[member.MEMBER_ID] || ""}
+                      value={suspendReason[member.MEMBER_NO] || ""}
                       onChange={(e) =>
                         setSuspendReason({
                           ...suspendReason,
-                          [member.MEMBER_ID]: e.target.value,
+                          [member.MEMBER_NO]: e.target.value,
                         })
                       }
                     >
@@ -145,7 +180,7 @@ const AdminReportMember = () => {
                   <td>
                     <button
                       className="suspend-btn"
-                      onClick={() => insertSuspend(member.MEMBER_ID)}
+                      onClick={() => insertSuspend(member.MEMBER_NO)}
                     >
                       정지 등록
                     </button>
@@ -154,10 +189,7 @@ const AdminReportMember = () => {
               ))
             ) : (
               <tr>
-                <td
-                  colSpan="5"
-                  style={{ textAlign: "center", padding: "20px" }}
-                >
+                <td colSpan="5" style={{ textAlign: "center", padding: "20px" }}>
                   신고된 회원이 없습니다.
                 </td>
               </tr>

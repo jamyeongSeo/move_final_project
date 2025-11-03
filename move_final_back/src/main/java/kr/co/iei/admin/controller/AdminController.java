@@ -57,7 +57,6 @@ public class AdminController {
 	    return ResponseEntity.ok(list);
 	}
 
-
 	/* 회원 정지 등록 */
 	@PostMapping("/memberSuspend")
 	public ResponseEntity<Integer> insertSuspend(@RequestBody Map<String, Object> suspendData) {
@@ -66,6 +65,14 @@ public class AdminController {
 	}
   
 
+//	/* 댓글 제재 모달창에 사유, 정지일 수 띄우기*/
+//	@GetMapping("/memberRestrict/{memberNo}")
+//	public ResponseEntity<Map<String, Object>> getMemberRestrictionInfo(@PathVariable int memberNo) {
+//	    Map<String, Object> restrictionInfo = adminService.getMemberRestrictionInfo(memberNo);
+//	    return ResponseEntity.ok(restrictionInfo);
+//	}
+//	
+	
 	/************ 영화 *************/
 
 	/* 영화 목록 */
@@ -149,6 +156,16 @@ public class AdminController {
 		return ResponseEntity.ok(scheduleList);
 	}
 
+	/*단일 스케줄 조회*/
+	@GetMapping("/schedule/{scheduleNo}")
+	public ResponseEntity<ScheduleDTO> getScheduleDetail(@PathVariable int scheduleNo) {
+	    ScheduleDTO schedule = adminService.getScheduleDetail(scheduleNo);
+	    if (schedule == null) {
+	        return ResponseEntity.notFound().build(); // 404 반환
+	    }
+	    return ResponseEntity.ok(schedule);
+	}
+	
 	/* 스케줄 수정 */
 	@PatchMapping("/schedule")
 	public ResponseEntity<Integer> updateSchedule(@RequestBody ScheduleDTO schedule) {
