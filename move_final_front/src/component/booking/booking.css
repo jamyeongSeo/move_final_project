@@ -172,6 +172,7 @@
   height: 500px;
   flex-direction: column;
   justify-content: flex-start;
+
   gap: 5px;
   flex-wrap: wrap;
   overflow-y: scroll;
@@ -194,7 +195,7 @@
   margin-top: 10px;
 }
 .booking-schedule-box {
-  width: 100%;
+  width: 80%;
   padding: 10px;
   display: flex;
   gap: 10px;
@@ -321,7 +322,7 @@
   padding-top: 5px;
   gap: 5px;
 }
-[class^="one-row-box"]:not([class$="15"]) {
+[class^="one-row-box"]:not([class$="15  "]) {
   display: flex;
   gap: 2px;
   height: 20px;
@@ -333,22 +334,27 @@
   margin: 0 auto;
   border: 2px solid var(--main1);
 }
-[class$="15"] {
+#couple {
   margin-left: 30px;
 }
 
 [class^="one-seat-box"]:not([class~="unselected"]):not(
     [class^="one-seat-box-double"]
-  ):hover {
+  ):not([id="couple"]):hover {
   cursor: pointer;
   background-color: var(--main1);
 }
 
+#couple:hover {
+  cursor: pointer;
+  background-color: var(--main6);
+}
+/*
 [class^="one-seat-box-double"]:not([class~="unselected"]):hover {
   cursor: pointer;
   background-color: var(--main6);
 }
-
+*/
 .unselected {
   background-color: var(--gray4);
 }

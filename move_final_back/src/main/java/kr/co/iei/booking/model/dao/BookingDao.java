@@ -1,10 +1,14 @@
 package kr.co.iei.booking.model.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import kr.co.iei.booking.model.dto.BookingDTO;
+import kr.co.iei.booking.model.dto.BookingInfoDTO;
+import kr.co.iei.booking.model.dto.PayDTO;
 import kr.co.iei.member.model.dto.MemberDTO;
 import kr.co.iei.movie.model.dto.MovieDTO;
 
@@ -32,5 +36,27 @@ public interface BookingDao {
 	List selectCoupon(int memberNo);
 
 	MemberDTO selectOneMemberNo(String memberId);
+
+	MemberDTO selectOneMember(String memberId);
+
+	int insertPayment(PayDTO p);
+
+	int useCoupon(Map couponMap);
+
+	int getPriceNo(int i);
+
+	int insertBooking(BookingInfoDTO bookingInfo);
+
+	
+	
+	int getBookNo(Map map);
+
+	int getSeatNo(Map seatMap);
+
+	int insertBookSeat(BookingDTO b);
+
+	List selectBookedSeat(int scheduleNo);
+
+	int getPayNo(Map map);
 
 }
