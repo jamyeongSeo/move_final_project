@@ -91,6 +91,7 @@ const NoticeList = () => {
                   onClick={() =>
                     navigate(`/cs/notice/detail/${notice.noticeNo}`)
                   }
+                  className="notice-row"
                 >
                   <td>{notice.noticeNo}</td>
                   <td>{notice.noticeTitle}</td>

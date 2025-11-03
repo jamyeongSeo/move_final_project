@@ -8,6 +8,7 @@ import {
 } from "../utils/RecoilData";
 import axios from "axios";
 import PqAnswerFrm from "./PqAnswerFrm";
+import { DownloadIcon } from "lucide-react";
 
 const PQDetail = () => {
   const params = useParams();
@@ -93,4 +94,39 @@ const PQDetail = () => {
     </section>
   );
 };
+const FileItem = (props) => {
+  const file = props.file;
+  const fileDown = () => {
+    axios
+      .get(`${import.meta.env.VITE_BACK_SERVER}/cs/pq/file/${file.filepath}`, {
+        responseType: "blob",
+      })
+      .then((res) => {
+        console.log(res);
+
+        const blob = new Blob([res.data]);
+        const fileUrl = window.URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+        link.href = fileUrl;
+        link.style.display = "none";
+        link.download = file.filename;
+
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        window.URL.revokeObjectURL(fileUrl);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  return (
+    <div className="notice-file">
+      <DownloadIcon onClick={fileDown} />
+      <span className="file-name">{file.filename}</span>
+    </div>
+  );
+};
+
 export default PQDetail;

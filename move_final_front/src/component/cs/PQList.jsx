@@ -151,6 +151,7 @@ const PQList = () => {
                 <tr
                   key={"pq-" + index}
                   onClick={() => navigate(`/cs/pq/detail/${pq.pqNo}`)}
+                  className="pq-row"
                 >
                   <td>{pq.pqCategoryName}</td>
                   <td>{pq.memberId}</td>

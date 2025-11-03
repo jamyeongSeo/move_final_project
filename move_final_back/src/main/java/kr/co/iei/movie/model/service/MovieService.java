@@ -237,11 +237,13 @@ public class MovieService {
 
 	@Transactional
     public int deleteComment(int movieCommentNo) {
-        return movieDao.deleteComment(movieCommentNo);
+        int result = movieDao.deleteComment(movieCommentNo);
+        return result;
     }
-
+	@Transactional
 	public Double movieScoreAverage(String movieNo) {
-        return movieDao.selectAverageMovieScore(movieNo);
+		Double result = movieDao.selectAverageMovieScore(movieNo);
+		return result;
     }
 	
 }

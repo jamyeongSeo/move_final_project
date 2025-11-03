@@ -65,10 +65,10 @@ const PQWrite = () => {
         </div>
       </div>
       <div className="btn-zone writeBtn">
-        <button type="submit" onClick={write} className="btn-red">
+        <button type="submit" onClick={write} className="btn-red pqSubmit">
           등록하기
         </button>
-        <button type="button" onClick={backBtn} className="btn-gray">
+        <button type="button" onClick={backBtn} className="btn-gray pqCancel">
           돌아가기
         </button>
       </div>

@@ -1,11 +1,19 @@
 package kr.co.iei.cs.pq.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -61,10 +69,27 @@ public class PQController {
 		int result = pqService.insertPQ(pq, pqFileList);
 		return ResponseEntity.ok(result);
 	}
+	
 	@GetMapping(value="/detail/{pqNo}")
 	public ResponseEntity<PQDTO> selectOnePQ(@PathVariable int pqNo){
 		PQDTO pq = pqService.selectOnePQ(pqNo);
 		return ResponseEntity.ok(pq);
+	}
+	@GetMapping(value="/file/{filepath}")
+	public ResponseEntity<Resource> fileDown(@PathVariable String filepath) throws FileNotFoundException{
+		String savepath = root +"/pq/";
+		File file = new File(savepath+filepath);
+		System.out.println(file.exists());
+		Resource resource = new InputStreamResource(new FileInputStream(file));
+		HttpHeaders header = new HttpHeaders();
+		header.add("Cache-Control", "no-cache, no-store, must-revalidate"); //캐시 사용안하고 저장도 안할거고 무조건 나한테 와서 받아가라
+		
+		return ResponseEntity
+				.status(HttpStatus.OK)
+				.headers(header)
+				.contentLength(file.length())
+				.contentType(MediaType.APPLICATION_OCTET_STREAM)
+				.body(resource);
 	}
 	@PatchMapping(value="/pqAnswer")
 	public ResponseEntity<Integer> UpdatePQAnswer(@RequestBody PQDTO pq){
