@@ -206,12 +206,13 @@ public class MemberService {
 					}
 					//썸네일(포스터)
 					content.setMovieThumb(c.getMovieThumb());
+					//
 					//상영시간(관람 시간)
 					content.setMovieTime(c.getScheduleTimeStart()+"~"+c.getScheduleTimeEnd());
 					//관람 영화제목
 					content.setMovieTitle(c.getMovieTitle());
-					//좌석
-					content.setSeat(enrollDate);
+					//좌석은 없어도 됨
+					//content.setSeat(enrollDate);
 				}
 				
 			}
@@ -230,9 +231,11 @@ public class MemberService {
 	/*-----------관람 예정 영화------------------*/
 	public Map selectBookingMovie(String memberId) {
 		MemberDTO m = memberDao.selectMember(memberId);
+		
 		int memberNo = m.getMemberNo();
 		int totalCount = memberDao.bookingCount(memberNo);
 		List<BookingDTO> list = memberDao.selectBookingMovie(memberNo);
+		System.out.println(list);
 		
 		//payNo로 맵 만들어야함.
 		Set<Integer> processedPayNo = new HashSet<>();

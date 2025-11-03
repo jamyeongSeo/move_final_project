@@ -3,8 +3,7 @@
 <mapper namespace="kr.co.iei.movie.model.dao.MovieDao">
   <select id="selectMovieList" resultType="movie">
   	select movie_no,movie_title, movie_thumb, movie_grade, movie_content 
-  		from movie_tbl
-  		
+  		from movie_tbl	
   </select>
   
   <select id="selectOneMovie" resultType="movie">
@@ -47,7 +46,7 @@
 	 ]]>
   </select>
   
-  <!-- 추후 매진 관객 확인 시 결제 상태 컬럼 where로 확인 필요
+  <!-- 추후 매진 관객 확인 시 결제 상태 컬럼 where로 확인 필요-->
   <select id="selectSchedule" resultType="movieSchedule">
   <![CDATA[
   	select 
@@ -70,14 +69,14 @@
         	m.movie_title,
         	m.movie_grade,
         	m.movie_runtime,
-        	m.movie_type,관 타입(2D.3D,4D)
+        	m.movie_type,--관 타입(2D.3D,4D)
         	s.schedule_time_start,
         	s.schedule_time_end, 
         	s.schedule_open,
         	s.schedule_close, 
-        	scr.screen_name,관 이름
-        	st.seat_total,관별 전체 좌석수
-        	b.booking_date스케줄링된 날짜(관람 예정일)
+        	scr.screen_name,--관 이름
+        	st.seat_total,--관별 전체 좌석수
+        	b.booking_date--스케줄링된 날짜(관람 예정일)
     	from schedule_tbl s
     	join (select count(*) seat_total, screen_no
             	from seat_tbl
@@ -94,14 +93,14 @@
             			right join (select s.schedule_no, count(bs.book_seat_no) gallery_seat
             			from book_seat_tbl bs
             			left join book_tbl b on (b.book_no = bs.book_no)
-            			left join pay_tbl ppp on (ppp.book_seat_no = bs.book_seat_no)
+            			left join pay_tbl ppp on (ppp.book_no = bs.book_no)
             right join schedule_tbl s on (s.schedule_no = b.schedule_no)
             where (b.booking_date = sysdate+#{dateSchedule}) and (ppp.refund_status = 'n')
             group by s.schedule_no) sss on (sss.schedule_no = b.schedule_no)) sh2 on (sh1.booking_date = sh2.booking_date)
             order by sh1.schedule_time_start
 	  ]]>
   </select>
-   -->
+   <!-- 
    <select id="selectSchedule" resultType="movieSchedule">
   <![CDATA[
   	SELECT 
@@ -178,6 +177,7 @@ LEFT JOIN (
 ORDER BY sh1.schedule_time_start
 	  ]]>
   </select>
+   -->
   <!-- Mian  끝-->
   <select id="selectCommentCount" resultType="int">
   	select count(*) from movie_comment_tbl where movie_no = #{movieNo}
