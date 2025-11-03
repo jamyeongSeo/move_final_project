@@ -48,7 +48,7 @@ const BookingSeat = () => {
     if (adultCount === 0 && kidCount === 0) {
       return;
     }
-
+    console.log(movieDate);
     axios
       .get(
         `${
@@ -79,8 +79,7 @@ const BookingSeat = () => {
         console.log(err);
       });
   }, []);
-  console.log(movieNo);
-  console.log(payInfo.totalPrice);
+
   return (
     <div>
       <div className="content">

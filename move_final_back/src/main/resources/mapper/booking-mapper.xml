@@ -93,7 +93,7 @@ ORDER BY
   	from book_tbl b 
   	join book_seat_tbl bs using(book_no)
   	where b.schedule_no = #{scheduleNo}
-  	AND SUBSTR(B.BOOKING_DATE, 1, 10) = #{bookingDate} 
+  	AND TRUNC(B.BOOKING_DATE) = TRUNC(TO_DATE(#{bookingDate}, 'YYYY-MM-DD HH24:MI'))
   </select>
   
   <insert id="insertBooking">
