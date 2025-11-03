@@ -133,7 +133,7 @@ const AdminScheduleRegistFrm = ({
               </option>
             ))}
           </select>
-
+{/* ui컴포넌트로 스케줄 타임 테이블 생성 */}
           <div className="relative">
             <button
               type="button"
