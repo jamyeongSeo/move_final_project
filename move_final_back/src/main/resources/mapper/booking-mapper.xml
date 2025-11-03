@@ -13,7 +13,7 @@
   	select * 
     	from (select distinct to_char(schedule_time_start, 'hh24:mi') as schedule_time_start, 
     		to_char(schedule_time_end, 'hh24:mi') as schedule_time_end ,
-    		 
+    		s.schedule_no,
     		m.movie_title, 
     		s.screen_no , 
     		m.movie_type, 
@@ -43,7 +43,7 @@
   </select>
   
   <select id="selectMoviePrice" resultType="price">
-  	select price, movie_type, price_per_age from price_tbl where movie_no = #{movieNo}
+  	select price, movie_type, price_per_age from price_tbl where movie_no is null
   </select>
   
   <select id="selectOneRow" resultType="seat">
@@ -62,5 +62,46 @@
   	select * from coupon_box_tbl join coupon_tbl using(coupon_no) where member_no=#{memberNo} and use_status = 'n'
   </select>
   
+  <select id="selectOneMember" resultType="member">
+  	select * from member_tbl where member_id =#{memberId}
+  </select>
+  <update id="useCoupon">
+  	update coupon_box_tbl set use_status = 'y' where coupon_no =#{couponNo} and member_no =#{memberNo}
+  </update>
+  
+  <select id="getPriceNo">
+  	select price_no from price_tbl where movie_no is null and price_per_age =#{i} 
+  </select>
+  <select id="getBookNo" resultType="int">
+  	select book_no from book_tbl where member_no = #{memberNo} and schedule_no =#{scheduleNo}
+  </select>
+  <select id="getSeatNo" resultType="int">
+  	select seat_no from seat_tbl where seat_row = #{bookSeatRow} and seat_column = #{bookSeatColumn} and screen_no = #{screenNo}
+  </select>
+  
+  <select id="getPayNo" resultType="int">
+  	select pay_no from pay_tbl where book_no =#{bookNo} and member_no = #{memberNo}
+  </select>
+  
+  <select id="selectBookedSeat" resultType="booking">
+  	select 
+  		book_seat_row, 
+  		book_seat_column 
+  	from book_tbl b 
+  	join book_seat_tbl bs using(book_no)
+  	where b.schedule_no = #{scheduleNo} 
+  </select>
+  
+  <insert id="insertBooking">
+  	insert into book_tbl values(book_seq.nextval, null , #{scheduleNo}, #{bookingDate} , #{memberNo})
+  </insert>
+  
+  <insert id="insertBookSeat">
+  	insert into book_seat_tbl values(book_seat_seq.nextval, #{bookNo}, #{bookSeatRow}, #{bookSeatColumn} , #{seatNo}, #{payNo})
+  </insert>
+  
+  <insert id="insertPayment">
+  	insert into pay_tbl values(pay_seq.nextval,#{payTitle},#{payPrice},sysdate,default,#{memberNo},#{bookNo})
+  </insert>
   
 </mapper>

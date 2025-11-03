@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Alias(value="price")
 public class PriceDTO {
+	private int priceNo;
 	private int price;
 	private int movieType;
 	private int pricePerAge;

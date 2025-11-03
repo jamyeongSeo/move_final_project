@@ -36,6 +36,10 @@ const AdminScheduleList = () => {
     });
   };
 
+  //async : 비동기 작업을 할거라고 자바스크립트에 선언해주는 키워드
+  //삭제 작업은 스프링서버로 http요청을 보내야하니까 시간이 걸림 => 비동기 작업
+  //붙인 함수는 뭘 리턴하든 상관없이 무조건 프로미스 객체를 반환
+  //어웨잇 : 서버에서 응답이 올때까지(=일정이 삭제되었다는 응답) 이 작업을 실행하지 않고 잠시 멈춰서 기다리게 해주는 키워드
   const deleteSchedule = async (scheduleNo) => {
     try {
       const result = await Swal.fire({

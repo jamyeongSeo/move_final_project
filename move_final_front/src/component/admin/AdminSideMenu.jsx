@@ -25,23 +25,26 @@ const AdminSideMenu = ({ menus, subMenus }) => {
         </Link>        
       {/* !! : 값을 논리형(boolean)으로 강제 변환하는 자바스크립트 */}
       {menus.map((menu, index) => {
-        const hasSubMenu = !!subMenus[menu.url];
-        return(
-          <div key={index} className="admin-menu-list">
-            {hasSubMenu ? (
-              <div
+          const hasSubMenu = !!subMenus[menu.url];
+            return(
+              <div key={index} className="admin-menu-list">
+                {hasSubMenu ? (
+                <div 
                 className={`admin-main-menu ${
-                  openMenu === menu.url ? "active" : ""
+                openMenu === menu.url ? "active" : ""
                 }`}
                 onClick={() => menuClick(menu.url, hasSubMenu)}
-              >
-              {menu.text}
-            </div>
-            ) : (
-              <Link to={menu.url} className="admin-main-no-submenu">
+                >
+                {menu.text}
+                </div>
+                ) : (
+                <Link 
+                to={menu.url} 
+                className="admin-main-menu" 
+                >
                 {menu.text}
               </Link>
-            )}
+              )}
             {hasSubMenu && (
               <ul
               className={`sub-menu-list ${

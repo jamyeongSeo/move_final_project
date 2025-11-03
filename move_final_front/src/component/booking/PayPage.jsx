@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./booking.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -9,25 +9,43 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { PortOneClient } from "@portone/server-sdk";
+
+import Swal from "sweetalert2";
 
 const PayPage = () => {
   const location = useLocation();
-  const bookingInfo = location.state.bookingInfo;
-  const movieNo = bookingInfo.movieNo;
-  const scheduleDate = bookingInfo.scheduleTimeStart;
-  const scheduleEnd = bookingInfo.scheduleTimeEnd;
-  const totalPrice = bookingInfo.totalPrice;
-  const movieDate = bookingInfo.movieDate;
-  const [payPrice, setPayPrice] = useState(0);
+  const payInfo = location.state.payInfo;
+  const movieNo = payInfo.movieNo;
+  const [memberNo, setMemberNo] = useState(0);
+  const scheduleDate = payInfo.scheduleTimeStart;
+  const scheduleEnd = payInfo.scheduleTimeEnd;
+  const totalPrice = payInfo.totalPrice;
+  const movieDate = payInfo.movieDate;
+  const bookDate = new Date(movieDate);
+
+  const [payCount, setPayCount] = useState(0);
+  const [payPrice, setPayPrice] = useState(totalPrice);
   const [discount, setDiscount] = useState(0);
   const [movie, setMovie] = useState(null);
   const [memberId, setMemberId] = useRecoilState(loginIdState);
   const [couponList, setCouponList] = useState([]);
-  const [coupon, setCoupon] = useState(null);
+  const [coupon, setCoupon] = useState(0);
   const [refresh, setRefresh] = useState(false);
   const [member, setMember] = useState(null);
-
+  const [bookingInfo, setBookingInfo] = useState({
+    scheduleNo: payInfo.scheduleNo,
+    memberNo: 0,
+    movieNo: movieNo,
+    bookingDate: bookDate,
+    payPrice: payPrice,
+    screenNo: payInfo.screenNo,
+    selectSeatList: payInfo.selectSeatList,
+    movieTitle: "",
+    kidCount: location.state.kidCount,
+    adultCount: location.state.adultCount,
+    couponBoxNo: -1,
+  });
+  const navigate = useNavigate();
   useEffect(() => {
     axios
       .get(
@@ -35,14 +53,34 @@ const PayPage = () => {
           import.meta.env.VITE_BACK_SERVER
         }/booking/getMovie?movieNo=${movieNo}`
       )
-      .then((res) => {
-        console.log(res);
-        setMovie(res.data);
+      .then((res1) => {
+        setMovie(res1.data);
+
+        axios
+          .get(
+            `${
+              import.meta.env.VITE_BACK_SERVER
+            }/booking/getMember?memberId=${memberId}`
+          )
+          .then((res2) => {
+            setMember(res2.data);
+            const newPayInfo = {
+              ...bookingInfo,
+              movieTitle: res1.data.movieTitle,
+              movieNo: res1.data.movieNo,
+              memberNo: res2.data.memberNo,
+            };
+            setBookingInfo(newPayInfo);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [refresh]);
+  }, []);
+
   useEffect(() => {
     axios
       .get(
@@ -51,36 +89,25 @@ const PayPage = () => {
         }/booking/getCoupon?memberId=${memberId}`
       )
       .then((res) => {
-        console.log(res);
         setCouponList(res.data.couponList);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [memberId]);
+
   useEffect(() => {
+    if (!coupon) {
+      return;
+    }
     setPayPrice(totalPrice - coupon);
+    const newBookingInfo = { ...bookingInfo, payPrice: totalPrice - coupon };
     if (totalPrice - coupon < 0) {
       setPayPrice(0);
     }
+    setBookingInfo(newBookingInfo);
   }, [coupon]);
-  useEffect(() => {
-    axios
-      .get(
-        `${
-          import.meta.env.VITE_BACK_SERVER
-        }/member/selectMember?memberId=${memberId}`
-      )
-      .then((res) => {
-        console.log(res);
-        setMember(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-  console.log(movie);
-  console.log(member);
+  console.log(bookingInfo);
   return movie !== null ? (
     <div className="content-wrap">
       <div className="pay-content">
@@ -94,19 +121,22 @@ const PayPage = () => {
               <div className="book-info-detail">
                 <div className="pay-movie-title">{movie.movieTitle}</div>
                 <div className="pay-movie-schedule">
-                  {movieDate.getMonth() + 1 + "-" + movieDate.getDate()}
+                  {bookDate.getMonth() +
+                    1 +
+                    "-" +
+                    String(bookDate.getDate()).padStart(2, "0")}
                   &nbsp;
-                  {movieDate.getDay() === 1
+                  {bookDate.getDay() === 1
                     ? "(월)"
-                    : movieDate.getDay() === 2
+                    : bookDate.getDay() === 2
                     ? "(화)"
-                    : movieDate.getDay() === 3
+                    : bookDate.getDay() === 3
                     ? "(수)"
-                    : movieDate.getDay() === 4
+                    : bookDate.getDay() === 4
                     ? "(목)"
-                    : movieDate.getDay() === 5
+                    : bookDate.getDay() === 5
                     ? "(금)"
-                    : movieDate.getDay() === 6
+                    : bookDate.getDay() === 6
                     ? "(토)"
                     : "(일)"}
                   &nbsp;
@@ -115,16 +145,16 @@ const PayPage = () => {
                   {" ~ " + scheduleEnd}
                 </div>
                 <div className="screen-title">
-                  {bookingInfo.screenNo === "1"
+                  {payInfo.screenNo === "1"
                     ? "1관"
-                    : bookingInfo.screenNo === "2"
+                    : payInfo.screenNo === "2"
                     ? "2관"
                     : "3관"}
                 </div>
                 <div className="seat-title">
                   <span>좌석 : </span>
-                  {bookingInfo.selectSeatList.map((seat, index) => {
-                    return bookingInfo.selectSeatList.length !== index + 1 ? (
+                  {payInfo.selectSeatList.map((seat, index) => {
+                    return payInfo.selectSeatList.length !== index + 1 ? (
                       <span key={"booking-seat"}>{seat},</span>
                     ) : (
                       <span key={"bookling-seat-end"}>{seat}</span>
@@ -137,12 +167,12 @@ const PayPage = () => {
           <section className="pay-price-info">
             <div className="book-page-title">결제 정보</div>
             <div className="book-amount-info">
-              {bookingInfo.adultCount !== 0 && (
-                <div>{"성인 : " + bookingInfo.adultCount + "명"}</div>
+              {location.state.adultCount !== 0 && (
+                <div>{"성인 : " + location.state.adultCount + "명"}</div>
               )}
 
-              {bookingInfo.kidCount !== 0 && (
-                <div>{"어린이 : " + bookingInfo.kidCount + "명"}</div>
+              {location.state.kidCount !== 0 && (
+                <div>{"어린이 : " + location.state.kidCount + "명"}</div>
               )}
             </div>
             <div className="book-price-info">
@@ -158,6 +188,8 @@ const PayPage = () => {
                   totalPrice={totalPrice}
                   setPayPrice={setPayPrice}
                   setDiscount={setDiscount}
+                  setBookingInfo={setBookingInfo}
+                  bookingInfo={bookingInfo}
                 />
               }
             </div>
@@ -168,7 +200,52 @@ const PayPage = () => {
               <button
                 className="pay-btn"
                 onClick={() => {
-                  const portOne = new PortOne();
+                  const dateString = new Date();
+
+                  IMP.init("imp01372877");
+                  IMP.request_pay(
+                    {
+                      customer_uid:
+                        "store-b7434f12-6184-47c2-ab78-5779cb27861e",
+                      channelKey:
+                        "channel-key-cd790bcc-53eb-4fa9-9f90-e92ea7984b23",
+                      pay_method: "easy_pay",
+                      merchant_uid: "orderNo0001" + dateString,
+                      name: movie.movieTitle,
+                      amount: payPrice,
+                      buyer_email: member.memberEmail,
+                      buyer_name: member.memberName,
+                      buyer_tel: member.memberPhone,
+                      custom_data: {},
+                    },
+                    (rsp) => {
+                      if (rsp.success) {
+                        axios
+                          .post(
+                            `${
+                              import.meta.env.VITE_BACK_SERVER
+                            }/booking/payment`,
+                            bookingInfo
+                          )
+                          .then((res) => {
+                            console.log(res);
+                            Swal.fire({
+                              title: "예매 완료",
+                              html: "예매가 완료되었습니다. <br/> 예매 내역은 이메일로 발송됩니다.",
+                              icon: "success",
+                              confirmButtonText: "확인",
+                            }).then((result) => {
+                              if (result.isConfirmed) {
+                                navigate(`/`);
+                              }
+                            });
+                          })
+                          .catch((err) => {
+                            console.log(err);
+                          });
+                      }
+                    }
+                  );
                 }}
               >
                 결제하기
@@ -189,9 +266,15 @@ const CouponSelect = (props) => {
   const totalPrice = props.totalPrice;
   const coupon = props.coupon;
   const setPayPrice = props.setPayPrice;
+  const bookingInfo = props.bookingInfo;
+  const setBookingInfo = props.setBookingInfo;
 
   const couponSelect = (e) => {
     setCoupon(e.target.value);
+    if (e.target.value !== 0) {
+      const newInfo = { ...bookingInfo, couponNo: e.target.id };
+      setBookingInfo(newInfo);
+    }
   };
   return (
     <Box sx={{ minWidth: 120 }} className="booking-coupon-box">
@@ -206,7 +289,11 @@ const CouponSelect = (props) => {
           <MenuItem value={0}>선택하지 않음</MenuItem>
           {couponList.map((coupon, index) => {
             return (
-              <MenuItem key={"coupon-" + index} value={coupon.couponDisscount}>
+              <MenuItem
+                key={"coupon-" + index}
+                value={coupon.couponDisscount}
+                id={coupon.couponBoxNo}
+              >
                 {coupon.couponName}
               </MenuItem>
             );
@@ -216,4 +303,7 @@ const CouponSelect = (props) => {
     </Box>
   );
 };
+
+const Payment = (props) => {};
+
 export default PayPage;

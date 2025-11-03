@@ -22,7 +22,7 @@ public interface MovieDao {
 
 	MovieDTO selectOneMovie(int movieNo);
 
-	int totalLike(int movieNo);
+	List totalLike(int movieNo);
 	
 	/*------Main------*/
 	List<MovieDTO> selectBoxOffice();
@@ -41,6 +41,8 @@ public interface MovieDao {
 	int updateComment(MovieCommentDTO comment);
 
 	int deleteComment(int movieCommentNo);
+
+	
 
 	
 

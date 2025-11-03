@@ -71,18 +71,9 @@ const BookingSchedule = (props) => {
                 "0"
               );
               const currentDate =
-                currentYear +
-                "-" +
-                currentMonth +
-                "-" +
-                currentDay +
-                " " +
-                currentHour +
-                ":" +
-                currentMinutes;
+                currentYear + "-" + currentMonth + "-" + currentDay;
 
-              const newDate = schedule.getTime();
-              setMovieDate(schedule);
+              setMovieDate(currentDate);
               setMovieSelect(-1);
               axios
                 .get(
