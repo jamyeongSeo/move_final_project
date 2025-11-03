@@ -119,9 +119,7 @@ const MovieItem = (props) => {
               height: "100%",
               boxShadow: "6px 6px 5px var(--main1)",
             }}
-            src={`${import.meta.env.VITE_BACK_SERVER}/thumb/${
-              movie.movieThumb
-            }`}
+            src={`${import.meta.env.VITE_BACK_SERVER}${movie.movieThumb}`}
             className={hoverText !== 2 ? "movie-thumb" : "movie-thumb-hide"}
           />
         </Link>
