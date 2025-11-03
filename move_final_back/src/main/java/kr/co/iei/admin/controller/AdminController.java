@@ -96,7 +96,7 @@ public class AdminController {
 				if (!dir.exists())
 					dir.mkdirs();
 
-				String fileName = System.currentTimeMillis() + "_" + movieThumb.getOriginalFilename();
+				String fileName =  movieThumb.getOriginalFilename();
 				File dest = new File(savePath, fileName);
 				movieThumb.transferTo(dest);
 

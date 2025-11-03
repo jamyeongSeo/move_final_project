@@ -103,7 +103,7 @@ const MovieItem = (props) => {
   const memberId = props.memberId;
   const movieBoxOffice = props.movieBoxOffice;
   const setMovieBoxOffice = props.setMovieBoxOffice;
-  const likeCount = movie.likeCount.length;
+  // const likeCount = movie.likeCount.length;
 
   return (
     <li className="movie-item" style={{ width: "290px" }}>
@@ -221,7 +221,7 @@ const MovieItem = (props) => {
             )}
           </div>
           <div className="like-count" style={{ color: "var(--main1)" }}>
-            {likeCount}
+            {/* {likeCount} */}
           </div>
         </div>
         <div className="booking-zone">
