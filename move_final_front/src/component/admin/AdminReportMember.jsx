@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import "./adminMember";
+
+// import "./adminMember"; // ⚠️ [오류 수정]: 해당 파일을 찾을 수 없어 import 구문을 제거했습니다.
 
 const AdminReportMember = () => {
   const [reportMember, setReportMember] = useState([]);
@@ -9,22 +10,24 @@ const AdminReportMember = () => {
   const [suspendReason, setSuspendReason] = useState({});
 
   useEffect(() => {
+    // ⚠️ [경고]: import.meta.env 사용 시 컴파일 환경에 따라 경고가 발생할 수 있습니다.
     axios
       .get(`${import.meta.env.VITE_BACK_SERVER}/admin/reportMember`)
       .then((res) => {
-        console.log(res);
-        setReportMember(res.data);
-        setReportMember(res.data || []);
+        console.log("신고 회원 목록:", res.data);
+        setReportMember(res.data || []); // null 또는 undefined일 경우 빈 배열 사용
       })
       .catch((err) => {
-        console.log("신고 회원 목록 불러오기 실패:", err);
+        console.error("신고 회원 목록 불러오기 실패:", err);
         setReportMember([]);
       });
   }, []);
 
-  const insertSuspend = (member_no) => {
-    const days = suspendDays[member_no];
-    const reason = suspendReason[member_no];
+  // MEMBER_ID_KEY를 사용하여 상태를 조회하고 API를 호출
+  const insertSuspend = (memberIdKey) => {
+    // memberIdKey는 member.MEMBER_ID (문자열 ID)를 사용함.
+    const days = suspendDays[memberIdKey];
+    const reason = suspendReason[memberIdKey];
 
     if (!days || !reason) {
       Swal.fire({
@@ -37,7 +40,7 @@ const AdminReportMember = () => {
 
     axios
       .post(`${import.meta.env.VITE_BACK_SERVER}/admin/memberSuspend`, {
-        member_no: MEMBER_ID,
+        memberId: memberIdKey, // 백엔드에서 식별할 ID (MEMBER_ID)
         suspendDays: days,
         suspendReason: reason,
       })
@@ -47,10 +50,32 @@ const AdminReportMember = () => {
           text: `${days}일 정지 처리되었습니다.`,
           icon: "success",
         });
+        
+        // 정지 처리 후 해당 회원을 목록에서 제거하여 UI 갱신
+        setReportMember(prevMembers => 
+            prevMembers.filter(member => member.MEMBER_ID !== memberIdKey)
+        );
+
+        // 선택했던 정지 일수/사유 상태 초기화
+        setSuspendDays(prev => {
+            const newDays = { ...prev };
+            delete newDays[memberIdKey];
+            return newDays;
+        });
+        setSuspendReason(prev => {
+            const newReasons = { ...prev };
+            delete newReasons[memberIdKey];
+            return newReasons;
+        });
+
       })
       .catch((err) => {
-        console.log("정지 등록 실패:", err);
-        Swal.fire("정지 등록 실패");
+        console.error("정지 등록 실패:", err);
+        Swal.fire({
+            title: "정지 등록 실패",
+            text: "서버 요청 중 오류가 발생했습니다. 자세한 내용은 콘솔을 확인하세요.",
+            icon: "error"
+        });
       });
   };
 
@@ -109,6 +134,7 @@ const AdminReportMember = () => {
                       onChange={(e) =>
                         setSuspendDays({
                           ...suspendDays,
+                          // MEMBER_ID를 키로 사용
                           [member.MEMBER_ID]: e.target.value,
                         })
                       }
@@ -125,11 +151,13 @@ const AdminReportMember = () => {
                   {/* 정지사유 */}
                   <td>
                     <select
-                      value={suspendReason[member.MEMBER_NO] || ""}
+                      // MEMBER_ID를 키로 사용
+                      value={suspendReason[member.MEMBER_ID] || ""}
                       onChange={(e) =>
                         setSuspendReason({
                           ...suspendReason,
-                          [member.MEMBER_NO]: e.target.value,
+                          // MEMBER_ID를 키로 사용
+                          [member.MEMBER_ID]: e.target.value,
                         })
                       }
                     >
@@ -141,12 +169,13 @@ const AdminReportMember = () => {
                       ))}
                     </select>
                   </td>
-
+                  
                   {/* 등록 버튼 */}
                   <td>
                     <button
                       className="suspend-btn"
-                      onClick={() => insertSuspend(member.MEMBER_NO)}
+                      // MEMBER_ID를 insertSuspend 함수로 넘겨서 사용
+                      onClick={() => insertSuspend(member.MEMBER_ID)}
                     >
                       정지 등록
                     </button>

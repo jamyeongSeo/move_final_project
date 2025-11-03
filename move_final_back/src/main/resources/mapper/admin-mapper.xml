@@ -218,15 +218,16 @@
 
     <!--신고된 회원 목록 -->
 	<select id="getReportedMembers" resultType="map">
-        SELECT DISTINCT 
-            m.member_no AS member_no,
-            m.member_id AS member_id,
-            c.comment_content AS reported_comment,
-            r.comment_report_date AS comment_report_date
-        FROM comment_report_tbl r
-        JOIN member_tbl m ON r.member_no = m.member_no
-        JOIN movie_comment_tbl c ON r.movie_comment_no = c.movie_comment_no
-        ORDER BY r.comment_report_date DESC
+	    SELECT DISTINCT 
+	        m_reported.member_no AS MEMBER_NO,              
+	        m_reported.member_id AS MEMBER_ID,              
+	        r.reported_member_no AS REPORTED_MEMBER_NO,     
+	        c.comment_content AS REPORTED_COMMENT,
+	        r.comment_report_date AS COMMENT_REPORT_DATE
+	    FROM comment_report_tbl r
+	    JOIN member_tbl m_reported ON r.reported_member_no = m_reported.member_no 
+	    JOIN movie_comment_tbl c ON r.movie_comment_no = c.movie_comment_no
+	    ORDER BY r.comment_report_date DESC
     </select>
 
     <!-- 정지 등록 -->
