@@ -284,8 +284,15 @@ background-color, margin는 각자 개인 className에 설정해서 사용하면
   font-family: ns-black;
   color: var(--gray4);
   font-style: italic;
+  cursor: pointer;
+  transition: color 0.2s;
 }
-
+.footer-logo a {
+  font-family: ns-black;
+}
+.footer-logo:hover {
+  color: #fff;
+}
 .footer-menu {
   display: flex;
   justify-content: center;
@@ -295,13 +302,13 @@ background-color, margin는 각자 개인 className에 설정해서 사용하면
   margin-right: 520px;
 }
 
-.footer-menu span {
+.footer-menu a {
   cursor: pointer;
   transition: color 0.2s;
   color: var(--gray4);
 }
 
-.footer-menu span:hover {
+.footer-menu a:hover {
   color: #fff;
 }
 

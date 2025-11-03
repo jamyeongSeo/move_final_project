@@ -33,6 +33,11 @@ public class FileUtil {
 			}
 			count++;
 		}
+		File dir = new File(savepath);
+		if (!dir.exists()) {
+			dir.mkdirs(); 
+		}
+		
 		File uploadFile = new File(savepath + filepath);
 		try {
 			file.transferTo(uploadFile);

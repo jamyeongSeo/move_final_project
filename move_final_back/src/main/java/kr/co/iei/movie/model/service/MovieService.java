@@ -123,12 +123,16 @@ public class MovieService {
 			String screen = null;
 			int movieGrade = 0;
 			int movieNo = -1;
+			int screenNo = -1;
+			int scheduleNo = -1;
 			for (MovieScheduleDTO m : list) {
 				if (m.getMovieTitle().equals(mm.getMovieTitle())) {
 					if (movieTitle == null) {
 						movieTitle = m.getMovieTitle();
 						movieGrade = m.getMovieGrade();
 						movieNo = m.getMovieNo();
+						screenNo = m.getScreenNo();
+						scheduleNo = m.getScheduleNo();
 					}
 					time.add(m);
 					screen = m.getScreenName();
@@ -146,6 +150,10 @@ public class MovieService {
 			movieNo = -1;
 			result.put("schedules", content);
 			content = null;
+			result.put("screenNo", screenNo);
+			screenNo = -1;
+			result.put("scheduleNo", scheduleNo);
+			scheduleNo = -1;
 			// schedules.put("schedules", content);
 			movieSchedule.add(result);
 		}
@@ -237,11 +245,13 @@ public class MovieService {
 
 	@Transactional
     public int deleteComment(int movieCommentNo) {
-        return movieDao.deleteComment(movieCommentNo);
+        int result = movieDao.deleteComment(movieCommentNo);
+        return result;
     }
-
+	@Transactional
 	public Double movieScoreAverage(String movieNo) {
-        return movieDao.selectAverageMovieScore(movieNo);
+		Double result = movieDao.selectAverageMovieScore(movieNo);
+		return result;
     }
 	
 }

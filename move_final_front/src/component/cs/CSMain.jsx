@@ -13,12 +13,16 @@ import PQDetail from "./PQDetail";
 import PQWrite from "./PQWrite";
 import FAQList from "./FAQList";
 import FAQWrite from "./FAQWrite";
+import PrivatePolicyMain from "./PrivatePolicyMain";
+import TermsOfService from "./TermsOfService";
 
 const CSMain = () => {
   const [menus, setMenus] = useState([
     { url: "/cs/notice", text: "공지사항" },
     { url: "/cs/faq", text: "FAQ" },
     { url: "/cs/pq", text: "1:1 문의" },
+    { url: "/cs/privatePolicy", text: "개인정보처리방침" },
+    { url: "/cs/termsOfService", text: "이용약관" },
   ]);
   const [authReady, setAuthReady] = useRecoilState(authReadyState);
   return (
@@ -43,6 +47,8 @@ const CSMain = () => {
             <Route path="pq/detail/:pqNo" element={<PQDetail />} />
             <Route path="faq" element={<FAQList />} />
             <Route path="faq/frm" element={<FAQWrite />} />
+            <Route path="privatePolicy" element={<PrivatePolicyMain />} />
+            <Route path="termsOfService" element={<TermsOfService />} />
           </Routes>
         </section>
       </div>

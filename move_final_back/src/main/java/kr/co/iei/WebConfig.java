@@ -32,7 +32,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .addResourceLocations("file:///" + root + "/thumb/");*/
         registry
 		        .addResourceHandler("/resource/movie/**")
-		        .addResourceLocations("file:///"+root+"/thumb/");
+		        .addResourceLocations("file:///" + root + "/thumb/");
 		
         /*registry.addResourceHandler("/board/thumb/**") 
                 .addResourceLocations("file:///" + root + "/thumb/");*/

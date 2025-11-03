@@ -116,22 +116,25 @@ const FAQList = () => {
       <div className="list-wrap">
         <table className="tbl faqTbl">
           <thead>
-            {authReady && memberLevel === 1 ? (
-              <tr>
-                <th style={{ width: "70%" }}>질문</th>
-                <th style={{ width: "15%" }}>답변보기</th>
+            <tr>
+              <th
+                style={{
+                  width: authReady && memberLevel === 1 ? "70%" : "85%",
+                }}
+              >
+                질문
+              </th>
+              <th style={{ width: "15%" }}>답변보기</th>
+              {authReady && memberLevel === 1 && (
                 <th style={{ width: "15%" }}>삭제하기</th>
-              </tr>
-            ) : (
-              <tr>
-                <th style={{ width: "85%" }}>질문</th>
-                <th style={{ width: "15%" }}>답변보기</th>
-              </tr>
-            )}
+              )}
+            </tr>
           </thead>
-          {authReady && memberLevel === 1 ? (
-            <tbody>
-              {faqList.map((faq, i) => (
+          <tbody>
+            {faqList.map((faq, i) => {
+              const colSpanValue = authReady && memberLevel === 1 ? 3 : 2;
+
+              return (
                 <>
                   <tr
                     key={"faq-" + i}
@@ -146,55 +149,33 @@ const FAQList = () => {
                         <KeyboardArrowDownIcon />
                       )}
                     </td>
-                    <td>
-                      <button
-                        type="button"
-                        onClick={() => deleteFaq(faq.faqNo)}
-                        className="btn-red"
-                      >
-                        삭제
-                      </button>
-                    </td>
+                    {authReady && memberLevel === 1 && (
+                      <td>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            deleteFaq(faq.faqNo);
+                          }}
+                          className="faq-delete-btn"
+                        >
+                          삭제
+                        </button>
+                      </td>
+                    )}
                   </tr>
+
                   {openAnswer === i && (
                     <tr className="faq-answer-row">
-                      <td colSpan="3">
+                      <td colSpan={colSpanValue}>
                         <div className="faq-answer">A : {faq.faqAnswer}</div>
                       </td>
                     </tr>
                   )}
                 </>
-              ))}
-            </tbody>
-          ) : (
-            <tbody>
-              {faqList.map((faq, i) => (
-                <>
-                  <tr
-                    key={"faq-" + i}
-                    onClick={() => toggleAnswer(i)}
-                    className="faq-row"
-                  >
-                    <td>Q : {faq.faqQuestion}</td>
-                    <td>
-                      {openAnswer === i ? (
-                        <KeyboardArrowUpIcon />
-                      ) : (
-                        <KeyboardArrowDownIcon />
-                      )}
-                    </td>
-                  </tr>
-                  {openAnswer === i && (
-                    <tr className="faq-answer-row">
-                      <td colSpan="2">
-                        <div className="faq-answer">A : {faq.faqAnswer}</div>
-                      </td>
-                    </tr>
-                  )}
-                </>
-              ))}
-            </tbody>
-          )}
+              );
+            })}
+          </tbody>
         </table>
       </div>
       <div className="page-navi">

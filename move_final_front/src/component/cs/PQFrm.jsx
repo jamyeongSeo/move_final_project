@@ -2,6 +2,7 @@ import { useRecoilState } from "recoil";
 import { loginIdState } from "../utils/RecoilData";
 import { useState } from "react";
 import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { DeleteIcon } from "lucide-react";
 
 const PQFrm = (props) => {
   const pqTitle = props.pqTitle;

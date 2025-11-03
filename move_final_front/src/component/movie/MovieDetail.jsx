@@ -215,6 +215,7 @@ const { checkSuspend } = CommentRestrictModal ({memberNo: member?.memberNo});
           setCommentContent("");
           setMovieScore(0);
           getMovieCommentList();
+          getAverageScore();
         } else {
           Swal.fire({
             title: "등록 실패",
@@ -346,6 +347,7 @@ const { checkSuspend } = CommentRestrictModal ({memberNo: member?.memberNo});
             setUpdateContent("");
             setUpdateScore(0);
             getMovieCommentList();
+            getAverageScore();
           } else if (res.data !== 1) {
             Swal.fire({
               title: "권한 없음",
@@ -396,6 +398,7 @@ const { checkSuspend } = CommentRestrictModal ({memberNo: member?.memberNo});
                 icon: "success",
               });
               getMovieCommentList();
+              getAverageScore();
             } else {
               Swal.fire({
                 title: "삭제 실패",
@@ -517,7 +520,14 @@ const { checkSuspend } = CommentRestrictModal ({memberNo: member?.memberNo});
                 <div className="like-count">{movie.likeCount}</div>
               </div>
               <div className="booking-zone">
-                <button className="booking-btn bookingBtn">예매하기</button>
+                <button
+                  className="booking-btn bookingBtn"
+                  onClick={() => {
+                    navigate("/booking/main");
+                  }}
+                >
+                  예매하기
+                </button>
               </div>
             </div>
           </div>
