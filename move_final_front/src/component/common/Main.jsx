@@ -334,7 +334,7 @@ const MainMovieSchedul = () => {
         console.log(err.data);
       });
   }, [dateSchedule]);
-  console.log(schedul);
+  //console.log(schedul);
   return (
     <div>
       <div className="main-schedule-day-wrap">
@@ -422,7 +422,7 @@ const MainMovieSchedul = () => {
             const scheduleCloseString = schedul.schedules.scheduleClose;
             const scheduleCloseDate = new Date(scheduleCloseString);
             */
-            console.log(schedul);
+            //console.log(schedul);
             return (
               <div key={"main-schedul-movie" + index}>
                 <div className="main-schedul-movie-box">
@@ -475,7 +475,7 @@ const MainMovieSchedul = () => {
                                   <div className="main-schedul-movie-time-box-wrap">
                                     {timeList.map((s, i) => {
                                       //상영시작시간 시,분 만 나오도록
-                                      console.log(s);
+                                      //console.log(s);
                                       const scheduleTimeStartDate = new Date(
                                         s.scheduleTimeStart
                                       );

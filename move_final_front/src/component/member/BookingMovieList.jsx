@@ -18,12 +18,12 @@ const BookingMovieList = () => {
   const [bookingList, setBookingList] = useState([]);
   const [totalCount, setTotalCount] = useState();
   const BackServer = import.meta.env.VITE_BACK_SERVER;
-  console.log(memberId);
+  //console.log(memberId);
   useEffect(() => {
     axios
       .get(`${BackServer}/member/bookingList?memberId=${memberId}`)
       .then((res) => {
-        console.log(res.data);
+        //console.log(res.data);
         setBookingList(res.data.bookingList);
       })
       .catch((err) => {
@@ -72,7 +72,7 @@ const BookingMovieList = () => {
                       memberId: memberId,
                     };
                     const sendBookingMail = () => {
-                      console.log(b.payNo);
+                      //console.log(b.payNo);
 
                       axios
                         .post(
@@ -80,7 +80,7 @@ const BookingMovieList = () => {
                           bookingMail
                         )
                         .then((res) => {
-                          console.log(res);
+                          //console.log(res);
                         })
                         .catch((err) => {
                           console.log(err);
@@ -148,7 +148,7 @@ const BookingMovieList = () => {
                                         bookingMail
                                       )
                                       .then((res) => {
-                                        console.log(res);
+                                        //console.log(res);
                                       })
                                       .catch((err) => {
                                         console.log(err);

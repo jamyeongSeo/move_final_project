@@ -139,7 +139,7 @@ public class MovieService {
 				}
 				
 			}
-			System.out.println(time);
+			//System.out.println(time);
 			content.put(screen, time);
 			System.out.println("contetn: "+content);
 			result.put("movieTitle", movieTitle);

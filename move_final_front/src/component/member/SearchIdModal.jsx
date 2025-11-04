@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 
 const SearchIdModal = (props) => {
   const isModalId = props.isModalId;
-  console.log("isModalId: " + isModalId);
+  //console.log("isModalId: " + isModalId);
   const setIsModalId = props.setIsModalId;
 
   const [member, setMember] = useState({

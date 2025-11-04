@@ -84,7 +84,7 @@ const WatchedMovieList = () => {
         `${BackServer}/member/watchedList?memberId=${memberId}&intervalChoice=${intervalChoice}`
       )
       .then((res) => {
-        console.log(res.data);
+        //console.log(res.data);
         if (res.data.watchedList) {
           setWatchedList(res.data.watchedList);
         }

@@ -41,7 +41,7 @@ const SearchPwModal = (props) => {
 
         .then((res) => {
           setIsLoding(false);
-          console.log(res.data);
+          //console.log(res.data);
           if (res.data == -1) {
             //회원조회 실패
             setMember({
