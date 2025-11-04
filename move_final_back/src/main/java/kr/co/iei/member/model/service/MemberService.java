@@ -182,7 +182,7 @@ public class MemberService {
 				if(b.getPayNo() == c.getPayNo()) {
 					//관람평
 					content.setComment(c.getCommentContent());
-					//연령별 인원수
+					/*연령별 인원수-> 컬럼에 없음
 					if(c.getPricePerAge()==1){//성인
 						adult += 1;
 					}else if(c.getPricePerAge() == 2) {//어린이
@@ -194,7 +194,7 @@ public class MemberService {
 						resultCount = "성인:"+adult;
 					}else if(adult == 0 && kid != 0) {
 						resultCount = "어린이:"+kid;
-					}
+					}*/
 					content.setCount(resultCount);
 					//관람일
 					content.setMovieDate(c.getBookingDate());
@@ -216,7 +216,7 @@ public class MemberService {
 					//관람 영화제목
 					content.setMovieTitle(c.getMovieTitle());
 					//좌석은 없어도 됨
-					//content.setSeat(enrollDate);
+					content.setSeat(enrollDate);
 				}
 				
 			}

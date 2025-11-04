@@ -388,6 +388,7 @@ const MainMovieSchedul = () => {
             );
           })}
       </div>
+
       <div className="main-schedul-movie-list" style={{ overflow: "hidden" }}>
         <div
           ref={movieTimeBtn}

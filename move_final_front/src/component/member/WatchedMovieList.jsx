@@ -271,24 +271,24 @@ const WatchedMovieList = () => {
                                     {w.movieScreen}
                                   </li>
                                   <li style={{ marginTop: "10px" }}>
-                                    {w.count}
+                                    `[ ${w.seat} ]`
                                   </li>
                                 </ul>
                               </div>
                               <div className="memberMovie-review">
                                 <div className="memberMovie-review-text">
-                                  <Link>
+                                  {w.comment ? (
                                     <ul>
-                                      {w.comment ? (
-                                        <li>{w.comment}</li>
-                                      ) : (
-                                        <>
-                                          <li>관람하신 영화, 어떠셨나요?</li>
-                                          <li>실관람평을 남겨주세요.</li>
-                                        </>
-                                      )}
+                                      <li>{w.comment}</li>
                                     </ul>
-                                  </Link>
+                                  ) : (
+                                    <Link to={`/movie/detail/${w.movieNo}`}>
+                                      <ul>
+                                        <li>관람하신 영화, 어떠셨나요?</li>
+                                        <li>실관람평을 남겨주세요.</li>
+                                      </ul>
+                                    </Link>
+                                  )}
                                 </div>
                                 <div className="memberMovie-review-box"></div>
                               </div>
