@@ -237,7 +237,7 @@ public class MemberController {
 			emailContent += "</li>";
 				//관람자 구분 및 관람 인원 + 좌석
 			emailContent += "<li style='overflow:hidden;'>";
-			emailContent += "<p style='float: left;'>"+bookingMail.getCount() + "</p><p style='margin-left:10px; float: left;'>["+bookingMail.getSeat()+"]</p>";
+			emailContent += "<p style='float: left;'>"+bookingMail.getCount() + "</p><p style='margin-left:10px; float: left;'>["+bookingMail.getSelectSeatList()+"]</p>";
 			emailContent += "</li>";
 			
 			emailContent += "</ul></div>";

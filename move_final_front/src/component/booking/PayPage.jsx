@@ -21,8 +21,8 @@ const PayPage = () => {
   const scheduleEnd = payInfo.scheduleTimeEnd;
   const totalPrice = payInfo.totalPrice;
   const movieDate = payInfo.movieDate;
-  const bookDate = new Date(movieDate);
-
+  const bookingDate = movieDate;
+  const bookDate = movieDate + " " + scheduleDate;
   const [payCount, setPayCount] = useState(0);
   const [payPrice, setPayPrice] = useState(totalPrice);
   const [discount, setDiscount] = useState(0);
@@ -36,7 +36,8 @@ const PayPage = () => {
     scheduleNo: payInfo.scheduleNo,
     memberNo: 0,
     movieNo: movieNo,
-    bookingDate: bookDate,
+    bookDate: scheduleDate,
+    bookingDate: new Date(bookingDate),
     payPrice: payPrice,
     screenNo: payInfo.screenNo,
     selectSeatList: payInfo.selectSeatList,
@@ -125,22 +126,22 @@ const PayPage = () => {
               <div className="book-info-detail">
                 <div className="pay-movie-title">{movie.movieTitle}</div>
                 <div className="pay-movie-schedule">
-                  {bookDate.getMonth() +
+                  {bookingDate.getMonth() +
                     1 +
                     "-" +
-                    String(bookDate.getDate()).padStart(2, "0")}
+                    String(bookingDate.getDate()).padStart(2, "0")}
                   &nbsp;
-                  {bookDate.getDay() === 1
+                  {bookingDate.getDay() === 1
                     ? "(월)"
-                    : bookDate.getDay() === 2
+                    : bookingDate.getDay() === 2
                     ? "(화)"
-                    : bookDate.getDay() === 3
+                    : bookingDate.getDay() === 3
                     ? "(수)"
-                    : bookDate.getDay() === 4
+                    : bookingDate.getDay() === 4
                     ? "(목)"
-                    : bookDate.getDay() === 5
+                    : bookingDate.getDay() === 5
                     ? "(금)"
-                    : bookDate.getDay() === 6
+                    : bookingDate.getDay() === 6
                     ? "(토)"
                     : "(일)"}
                   &nbsp;
@@ -240,33 +241,39 @@ const PayPage = () => {
                               confirmButtonText: "확인",
                             }).then((result) => {
                               if (result.isConfirmed) {
-                                const sendBookingMail = () => {
-                                  const bookingMail = {
-                                    payNo: b.payNo,
-                                    movieTitle: b.movieTitle,
-                                    movieGrade: b.movieGrade,
-                                    movieDate: b.movieDate,
-                                    movieTime: b.movieTime,
-                                    movieScreen: b.movieScreen,
-                                    count: b.count,
-                                    comment: "",
-                                    movieThumb: b.movieThumb,
-                                    seat: b.seat,
-                                    memberId: memberId,
-                                  };
-                                  axios
-                                    .post(
-                                      `${BackServer}/member/sendBookingMail`,
-                                      bookingMail
-                                    )
-                                    .then((res) => {
-                                      console.log(res);
-                                      navigate(`/`);
-                                    })
-                                    .catch((err) => {
-                                      console.log(err);
-                                    });
+                                const bookingMail = {
+                                  movieTitle: movie.movieTitle,
+
+                                  movieDate: bookDate,
+                                  count:
+                                    location.state.adultCount +
+                                    location.state.kidCount +
+                                    "매",
+                                  movieScreen:
+                                    payInfo.screenNo === 1
+                                      ? "1관"
+                                      : payInfo.screenNo === 2
+                                      ? "2관"
+                                      : "3관",
+                                  comment: "",
+                                  movieThumb: movie.movieThumb,
+                                  selectSeatList: payInfo.selectSeatList,
+                                  memberId: memberId,
                                 };
+                                axios
+                                  .post(
+                                    `${
+                                      import.meta.env.VITE_BACK_SERVER
+                                    }/member/sendBookingMail`,
+                                    bookingMail
+                                  )
+                                  .then((res) => {
+                                    console.log(res);
+                                    navigate(`/`);
+                                  })
+                                  .catch((err) => {
+                                    console.log(err);
+                                  });
                               }
                             });
                           })

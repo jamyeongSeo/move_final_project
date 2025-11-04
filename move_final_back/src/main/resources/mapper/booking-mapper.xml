@@ -88,7 +88,7 @@ ORDER BY
 	</select>
 	<select id="getBookNo" resultType="int">
 		select book_no from book_tbl where member_no = #{memberNo} and schedule_no
-		=#{scheduleNo} and TRUNC(BOOKING_DATE) = TRUNC(#{bookingDate})
+		=#{scheduleNo} and TO_char(booking_Date, 'YYYY.MM.DD hh24:mi') = #{bookingDate}
 	</select>
 	<select id="getSeatNo" resultType="int">
 		select seat_no from seat_tbl where seat_row = #{bookSeatRow} and seat_column
@@ -145,7 +145,7 @@ WHERE
 	</select>
 
 	<select id="selectBookNo" resultType="Integer">
-		select book_no from book_tbl where member_no =#{memberNo} and TO_char(booking_Date, 'YYYY.MM.DD hh24:mi') = #{bookingDate}
+		select book_no from book_tbl where member_no =#{memberNo} and TO_char(booking_Date, 'YYYY-MM-DD hh24:mi') = #{bookingDate}
 	</select>
 	
 	<delete id="deleteBooking">

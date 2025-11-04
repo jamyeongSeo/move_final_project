@@ -103,7 +103,7 @@ const MovieItem = (props) => {
   const memberId = props.memberId;
   const movieBoxOffice = props.movieBoxOffice;
   const setMovieBoxOffice = props.setMovieBoxOffice;
-  // const likeCount = movie.likeCount.length;
+  let likeCount = movie.likeCount.length;
 
   return (
     <li className="movie-item" style={{ width: "290px" }}>
