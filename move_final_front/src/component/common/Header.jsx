@@ -3,6 +3,7 @@ import "./default.css";
 import { useRecoilState } from "recoil";
 import { loginIdState, memberLevelState } from "../utils/RecoilData";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const Header = () => {
   return (
@@ -46,6 +47,11 @@ const AuthNavi = () => {
     delete axios.defaults.headers.common["Authorization"];
     window.localStorage.removeItem("refreshToken");
     navigate("/");
+    Swal.fire({
+      title: "로그아웃",
+      text: "회원 접속 해제되었습니다.",
+      icon: "info",
+    });
   };
   return (
     <>

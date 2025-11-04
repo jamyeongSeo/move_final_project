@@ -54,6 +54,11 @@ const Login = () => {
           axios.defaults.headers.common["Authorization"] = res.data.accessToken;
           //로그인을 성공하면 갱신을위한 refreshToken을 브라우저에 저장
           window.localStorage.setItem("refreshToken", res.data.refreshToken);
+          Swal.fire({
+            title: "로그인",
+            text: "회원 접속 되었습니다.",
+            icon: "info",
+          });
           navigate("/");
         })
         .catch((err) => {
