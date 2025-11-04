@@ -137,7 +137,7 @@ const JoinEmailCode = (props) => {
             </button>
             <span>{showTimer == "0:00" ? "" : showTimer}</span>
           </div>
-          <ul className="input-line" style={{ width: "585px", float: "right" }}>
+          <ul className="input-line" style={{ width: "580px", float: "right" }}>
             <label htmlFor="memberEmailRe">
               <li className="join-input">
                 <input
