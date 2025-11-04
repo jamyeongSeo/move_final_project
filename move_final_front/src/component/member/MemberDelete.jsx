@@ -35,7 +35,7 @@ const MemberDelete = () => {
                     title: "탈퇴 완료",
                     icon: "success",
                   });
-                  setmemberId("");
+                  setmemberId(null);
                   navigate("/");
                 } else {
                   Swal.fire({
