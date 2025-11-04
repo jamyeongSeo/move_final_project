@@ -30,5 +30,6 @@ public class BookingInfoDTO {
 		private int adultCount;
 		private int couponBoxNo;
 		private String payTitle;
+		private String bookDate;
 	}
 

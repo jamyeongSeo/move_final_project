@@ -205,6 +205,11 @@
   align-items: center;
   height: 70px;
 }
+
+.booking-schedule-box > div {
+  font-weight: 600;
+}
+
 .booking-schedule-box:hover {
   cursor: pointer;
 }
@@ -252,6 +257,16 @@
 }
 .time-end {
   text-align: right;
+}
+
+.remain-seat {
+  color: var(--main10);
+  font-weight: 600;
+}
+
+.total-seat {
+  color: var(--main1);
+  font-weight: 600;
 }
 
 /*-----------------BookingSeat--------------------*/
