@@ -73,13 +73,13 @@ const NoticeDetail = () => {
             <div className="btn-zone">
               <Link
                 to={`/cs/notice/update/${noticeNo}`}
-                className="btn-red noticeUpdate"
+                className="noticeUpdate"
               >
                 수정
               </Link>
               <button
                 type="button"
-                className="btn-gray noticeDelete"
+                className="noticeDelete"
                 onClick={deleteNotice}
               >
                 삭제
