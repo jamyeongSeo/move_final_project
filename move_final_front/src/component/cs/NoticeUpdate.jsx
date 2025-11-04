@@ -15,19 +15,15 @@ const NoticeUpdate = () => {
   const [delFileNo, setDelFileNo] = useState([]); // 삭제할 파일 번호
   const [noticeContent, setNoticeContent] = useState("");
 
-  // 기존 게시글 불러오기
   useEffect(() => {
     axios
       .get(`${import.meta.env.VITE_BACK_SERVER}/cs/notice/detail/${noticeNo}`)
       .then((res) => {
-        console.log("불러온 공지사항:", res.data);
         setNoticeTitle(res.data.noticeTitle);
         setNoticeContent(res.data.noticeContent);
         setFileList(res.data.noticeFileList || []);
       })
-      .catch((err) => {
-        console.log("공지 불러오기 오류:", err);
-      });
+      .catch((err) => {});
   }, []);
 
   // 수정 버튼 클릭 시
@@ -52,11 +48,6 @@ const NoticeUpdate = () => {
       form.append("delFileNo", delFileNo[i]);
     }
 
-    console.log("업데이트 전송 데이터 확인:");
-    for (let pair of form.entries()) {
-      console.log(pair[0], pair[1]);
-    }
-
     axios
       .patch(`${import.meta.env.VITE_BACK_SERVER}/cs/notice`, form, {
         headers: {
@@ -64,17 +55,10 @@ const NoticeUpdate = () => {
         },
       })
       .then((res) => {
-        console.log("수정 성공:", res);
         navigate(`/cs/notice/detail/${noticeNo}`);
       })
-      .catch((err) => {
-        console.log("수정 오류:", err);
-      });
+      .catch((err) => {});
   };
-
-  console.log("현재 fileList =", fileList);
-  console.log("현재 noticeFile =", noticeFile);
-  console.log("삭제 예정 delFileNo =", delFileNo);
 
   return (
     <section className="section update-wrap">

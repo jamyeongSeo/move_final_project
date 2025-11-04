@@ -64,13 +64,10 @@ const MovieDetail = () => {
     axios
       .get(`${import.meta.env.VITE_BACK_SERVER}/movie/detail/${movieNo}`)
       .then((res) => {
-        console.log(res);
         setMovie(res.data);
         setLikeCount(res.data);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
   const getAverageScore = () => {
     axios
@@ -80,11 +77,9 @@ const MovieDetail = () => {
         }/movie/averageScore?movieNo=${movieNo}`
       )
       .then((res) => {
-        console.log(res);
         setMovieScore(res.data || 0);
       })
       .catch((err) => {
-        console.log(err);
         setMovieScore(0);
       });
   };
@@ -99,7 +94,7 @@ const MovieDetail = () => {
         setMember(res.data);
         getAverageScore();
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {});
   };
   useEffect(() => {
     getMovieInfo();
@@ -123,8 +118,6 @@ const MovieDetail = () => {
         }/movie/comment/${movieNo}?reqPage=${reqPage}&order=${order}`
       )
       .then((res) => {
-        console.log(res.data);
-        console.log(isUpdate);
         setMovieCommentList(res.data.commentList);
         setTotalCount(res.data.totalCount);
         setPi(res.data.pi);
@@ -140,9 +133,7 @@ const MovieDetail = () => {
         }
         setAlreadyComment(foundComment);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
   useEffect(() => {
     getMovieCommentList();
@@ -214,9 +205,7 @@ const MovieDetail = () => {
           });
         }
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 
   const hideMemberId = (memberId) => {
@@ -326,7 +315,6 @@ const MovieDetail = () => {
           movieScore: updateScore,
         })
         .then((res) => {
-          console.log("res : " + res.data);
           if (res.data === 1) {
             Swal.fire({
               title: "수정 완료",
@@ -352,9 +340,7 @@ const MovieDetail = () => {
             });
           }
         })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch((err) => {});
     } else {
       setIsUpdate(comment.movieCommentNo);
       setUpdateContent(comment.commentContent);
@@ -397,9 +383,7 @@ const MovieDetail = () => {
               });
             }
           })
-          .catch((err) => {
-            console.log(err);
-          });
+          .catch((err) => {});
       }
     });
   };
@@ -418,8 +402,8 @@ const MovieDetail = () => {
             <div className="movie-info-downside-wrap">
               <div className="movie-middle-info-wrap">
                 <div>평점 : {movieScore} 점</div>
-                <div>예매율 : ? %</div>
-                <div>누적관객수 : ? 명</div>
+                <div>예매율 : 16.8 %</div>
+                <div>누적관객수 : 293,928 명</div>
               </div>
               <div className="movie-explain">{movie.movieContent}</div>
             </div>
@@ -576,14 +560,6 @@ const MovieDetail = () => {
                 <span className="info-box-title">평점</span>
                 <GradeOutlinedIcon sx={{ width: "100px", height: "100px" }} />
                 <span className="info-box-content">{movieScore}</span>
-              </div>
-            </div>
-            <div className="movie-detail-info-box-wrap">
-              <div className="info-box secondBox">
-                <span className="info-box-title">예매율</span>
-              </div>
-              <div className="info-box secondBox">
-                <span className="info-box-title">누적관객수</span>
               </div>
             </div>
           </>

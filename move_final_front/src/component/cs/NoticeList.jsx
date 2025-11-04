@@ -27,19 +27,16 @@ const NoticeList = () => {
         }/cs/notice?reqPage=${reqPage}&noticeTitle=${search}`
       )
       .then((res) => {
-        console.log(res);
         setNoticeList(res.data.noticeList);
         setPi(res.data.pi);
         setTotalCount(res.data.totalCount);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 
   useEffect(() => {
     noticeFunc(reqPage);
-  }, [reqPage]);
+  }, [reqPage, search]);
   const searchInput = () => {
     setReqPage(1);
     noticeFunc(1, search);
@@ -85,6 +82,9 @@ const NoticeList = () => {
           </thead>
           <tbody>
             {noticeList.map((notice, index) => {
+              const boardLimit = pi?.boardLimit || 10;
+              const rnum =
+                (Number(reqPage) - 1) * Number(boardLimit) + index + 1;
               return (
                 <tr
                   key={"notice-" + index}
@@ -93,7 +93,7 @@ const NoticeList = () => {
                   }
                   className="notice-row"
                 >
-                  <td>{notice.noticeNo}</td>
+                  <td>{rnum}</td>
                   <td>{notice.noticeTitle}</td>
                   <td>{notice.noticeDate}</td>
                 </tr>

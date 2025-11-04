@@ -32,16 +32,11 @@ const PQList = () => {
         }/cs/pq?reqPage=${reqPage}&pqTitle=${search}&memberId=${loginId}&memberLevel=${memberLevel}&pqCategory=${pqCategory}`
       )
       .then((res) => {
-        console.log(res);
         setPqList(res.data.pqList);
         setPi(res.data.pi);
         setTotalCount(res.data.totalCount);
-        console.log("pqList:", res.data.pqList);
-        console.log("category:", pqCategory);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 
   useEffect(() => {
@@ -56,12 +51,11 @@ const PQList = () => {
     } else {
       pqFunc();
     }
-  }, [reqPage, authReady, pqCategory]);
+  }, [reqPage, authReady, pqCategory, search]);
 
   const categoryChange = (e) => {
     setPqCategory(e.target.value);
     pqFunc();
-    console.log(e.target.value);
   };
 
   const searchInput = () => {
