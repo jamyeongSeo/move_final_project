@@ -29,13 +29,14 @@ const MemberDelete = () => {
             axios
               .delete(`${BackServer}/member/${memberId}`)
               .then((res) => {
-                console.log(res.data);
+                //console.log(res.data);
                 if (res.data == 1) {
                   Swal.fire({
                     title: "탈퇴 완료",
                     icon: "success",
                   });
                   setmemberId("");
+                  setmemberLebel(0);
                   navigate("/");
                 } else {
                   Swal.fire({

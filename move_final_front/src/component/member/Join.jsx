@@ -388,7 +388,7 @@ const JoinMain = () => {
     }
   };
 
-  console.log(member);
+  //console.log(member);
 
   return (
     <section>

@@ -200,7 +200,7 @@ const MemberUpdateMain = (props) => {
         console.log(err);
       });
   }, []);
-  console.log(member);
+  //console.log(member);
   const inputData = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -254,7 +254,7 @@ const MemberUpdateMain = (props) => {
 
   const backServer = import.meta.env.VITE_BACK_SERVER;
   const checkEmail = () => {
-    console.log(member);
+    //console.log(member);
     if (member.memberEmail !== "") {
       if (member.memberEmail !== memberEmail) {
         //이메일 형식 유효성 검사

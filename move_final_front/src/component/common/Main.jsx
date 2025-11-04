@@ -334,7 +334,7 @@ const MainMovieSchedul = () => {
         console.log(err.data);
       });
   }, [dateSchedule]);
-  console.log(schedul);
+  //console.log(schedul);
   return (
     <div>
       <div className="main-schedule-day-wrap">
@@ -388,6 +388,31 @@ const MainMovieSchedul = () => {
             );
           })}
       </div>
+
+      <div className="main-schedul-movie-list" style={{ overflow: "hidden" }}>
+        <div
+          ref={movieTimeBtn}
+          className="main-schedul-movie-show main-schedul-movie-title-wrap"
+          style={{
+            float: "right",
+            marginBottom: "5px",
+            padding: "0px 5px",
+            fontSize: "15px",
+            fontWeight: "700",
+          }}
+          onClick={() => {
+            if (movieTimeShow) {
+              movieTimeBtn.current.innerText = "전체보기+";
+              setMovieTimeShow(false);
+            } else {
+              movieTimeBtn.current.innerText = "닫기ㅡ";
+              setMovieTimeShow(true);
+            }
+          }}
+        >
+          닫기ㅡ
+        </div>
+      </div>
       <div className="main-schedul-movie-list">
         {schedul &&
           schedul.map((schedul, index) => {
@@ -397,7 +422,7 @@ const MainMovieSchedul = () => {
             const scheduleCloseString = schedul.schedules.scheduleClose;
             const scheduleCloseDate = new Date(scheduleCloseString);
             */
-            console.log(schedul);
+            //console.log(schedul);
             return (
               <div key={"main-schedul-movie" + index}>
                 <div className="main-schedul-movie-box">
@@ -426,22 +451,6 @@ const MainMovieSchedul = () => {
                         </Link>
                       </div>
                     </div>
-                    <div
-                      ref={movieTimeBtn}
-                      className="main-schedul-movie-show"
-                      style={{ float: "right" }}
-                      onClick={() => {
-                        if (movieTimeShow) {
-                          movieTimeBtn.current.innerText = "+";
-                          setMovieTimeShow(false);
-                        } else {
-                          movieTimeBtn.current.innerText = "ㅡ";
-                          setMovieTimeShow(true);
-                        }
-                      }}
-                    >
-                      ㅡ
-                    </div>
                   </div>
                   {!movieTimeShow ? (
                     <></>
@@ -466,7 +475,7 @@ const MainMovieSchedul = () => {
                                   <div className="main-schedul-movie-time-box-wrap">
                                     {timeList.map((s, i) => {
                                       //상영시작시간 시,분 만 나오도록
-                                      console.log(s);
+                                      //console.log(s);
                                       const scheduleTimeStartDate = new Date(
                                         s.scheduleTimeStart
                                       );

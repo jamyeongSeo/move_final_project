@@ -84,7 +84,7 @@ const WatchedMovieList = () => {
         `${BackServer}/member/watchedList?memberId=${memberId}&intervalChoice=${intervalChoice}`
       )
       .then((res) => {
-        console.log(res.data);
+        //console.log(res.data);
         if (res.data.watchedList) {
           setWatchedList(res.data.watchedList);
         }
@@ -239,9 +239,9 @@ const WatchedMovieList = () => {
                           <div className="memberMovie-box">
                             <div className="memberMovie-post">
                               <img
-                                src={`${
-                                  import.meta.env.VITE_BACK_SERVER
-                                }/thumb/${w.movieThumb}`}
+                                src={`${import.meta.env.VITE_BACK_SERVER}${
+                                  w.movieThumb
+                                }`}
                               ></img>
                             </div>
                             <div className="memberMovie-info">
@@ -277,18 +277,20 @@ const WatchedMovieList = () => {
                               </div>
                               <div className="memberMovie-review">
                                 <div className="memberMovie-review-text">
-                                  <Link>
-                                    <ul>
-                                      {w.comment ? (
-                                        <li>{w.comment}</li>
-                                      ) : (
-                                        <>
-                                          <li>관람하신 영화, 어떠셨나요?</li>
-                                          <li>실관람평을 남겨주세요.</li>
-                                        </>
-                                      )}
+                                  {w.comment ? (
+                                    <ul style={{ fontWeight: "600" }}>
+                                      <li style={{ fontWeight: "600" }}>
+                                        나의 관람평 : {w.comment}
+                                      </li>
                                     </ul>
-                                  </Link>
+                                  ) : (
+                                    <Link to={`/movie/detail/${w.movieNo}`}>
+                                      <ul>
+                                        <li>관람하신 영화, 어떠셨나요?</li>
+                                        <li>실관람평을 남겨주세요.</li>
+                                      </ul>
+                                    </Link>
+                                  )}
                                 </div>
                                 <div className="memberMovie-review-box"></div>
                               </div>

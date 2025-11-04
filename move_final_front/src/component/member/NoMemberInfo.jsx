@@ -7,7 +7,9 @@ const NoMemberInfo = () => {
         <div className="memberModal-content-box-wrap">
           <div className="memberModal-content-box">
             <div style={{ margin: "13px" }}>
-              <h2>회원전용 페이지입니다. 로그인 후 이용해주세요.</h2>
+              <p style={{ fontSize: "23px", fontWeight: "700" }}>
+                회원전용 페이지입니다. 로그인 후 이용해주세요.
+              </p>
             </div>
             <Link
               to="/common/login"

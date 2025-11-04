@@ -85,12 +85,12 @@
     			m.movie_thumb,--썸네일
     			m.movie_title,--제목
     			m.movie_grade,--등급
-    			to_char(s.schedule_time_start,'HH24:MI'),--관람 시간
-    			to_char(s.schedule_time_end,'HH24:MI'),--관람 시간
-    			sc.screen_name,--관
-    			pr.price_per_age,--나이대 확인
-    			to_char(b.booking_date,'YYYY.DD.MM'),--관람일
-    			bs.book_seat_row,--좌석
+    			m.movie_no,
+    			to_char(s.schedule_time_start,'HH24:MI') as scheduleTimeStart,
+    			to_char(s.schedule_time_end,'HH24:MI') as scheduleTimeEnd,
+    			sc.screen_name,
+    			pr.price_per_age,
+    			to_char(b.booking_date,'YYYY.mm.dd') as bookingDate,
     			bs.book_seat_column,--좌석
     			p.pay_no--결제 건
 			from member_tbl m
@@ -112,13 +112,14 @@
 			select 
     			mc.comment_content,
     			m.movie_thumb,
+    			m.movie_no,
     			m.movie_title,
     			m.movie_grade,
-    			to_char(s.schedule_time_start,'HH24:MI'),
-    			to_char(s.schedule_time_end,'HH24:MI'),
+    			to_char(s.schedule_time_start,'HH24:MI') as scheduleTimeStart,
+    			to_char(s.schedule_time_end,'HH24:MI') as scheduleTimeEnd,
     			sc.screen_name,
     			pr.price_per_age,
-    			to_char(b.booking_date,'YYYY.DD.MM'),
+    			to_char(b.booking_date,'YYYY.mm.dd') as bookingDate,
     			bs.book_seat_row,
     			bs.book_seat_column,
     			p.pay_no
@@ -142,15 +143,14 @@
 		<![CDATA[
 		select count(*) from
 			(select 
-    			mc.comment_content,
     			m.movie_thumb,
     			m.movie_title,
     			m.movie_grade,
-    			to_char(s.schedule_time_start,'HH24:MI'),
-    			to_char(s.schedule_time_end,'HH24:MI'),
+    			to_char(s.schedule_time_start,'HH24:MI') as scheduleTimeStart,
+    			to_char(s.schedule_time_end,'HH24:MI') as scheduleTimeEnd,
     			sc.screen_name,
     			pr.price_per_age,
-    			to_char(b.booking_date,'YYYY.DD.MM'),
+    			to_char(b.booking_date,'YYYY.mm.dd') as bookingDate,
     			bs.book_seat_row,
     			bs.book_seat_column,
     			p.pay_no
@@ -161,7 +161,6 @@
 			left join price_tbl pr on (pr.price_no = b.price_no)
 			left join schedule_tbl s on (s.schedule_no = b.schedule_no)
 			left join movie_tbl m on(m.movie_no = s.movie_no)
-			left join movie_comment_tbl mc on (mc.movie_no = m.movie_no)
 			left join screen_tbl sc on (sc.screen_no = s.screen_no)
 			where (m.member_no=#{memberNo}) and (p.refund_status = 'n') and
         			(b.booking_date <= sysdate) and 
@@ -172,15 +171,14 @@
 		<![CDATA[
 		select count(*) from
 			(select 
-    			mc.comment_content,
     			m.movie_thumb,
     			m.movie_title,
     			m.movie_grade,
-    			s.schedule_time_start,,
-    			to_char(s.schedule_time_end,'HH24:MI'),
+    			to_char(s.schedule_time_start,'HH24:MI') as scheduleTimeStart,
+    			to_char(s.schedule_time_end,'HH24:MI') as scheduleTimeEnd,
     			sc.screen_name,
     			pr.price_per_age,
-    			to_char(b.booking_date,'YYYY.DD.MM'),
+    			to_char(b.booking_date,'YYYY.mm.dd') as bookingDate,
     			bs.book_seat_row,
     			bs.book_seat_column,
     			p.pay_no
@@ -191,7 +189,6 @@
 			left join price_tbl pr on (pr.price_no = b.price_no)
 			left join schedule_tbl s on (s.schedule_no = b.schedule_no)
 			left join movie_tbl m on(m.movie_no = s.movie_no)
-			left join movie_comment_tbl mc on (mc.movie_no = m.movie_no)
 			left join screen_tbl sc on (sc.screen_no = s.screen_no)
 			where (m.member_no=#{memberNo}) and (p.refund_status = 'n') and
         			(b.booking_date between add_months(sysdate, -#{intervalChoice}) and sysdate) and 
@@ -239,11 +236,11 @@
     			m.movie_thumb,
     			m.movie_title,
     			m.movie_grade,
-    			to_char(s.schedule_time_start,'HH24:MI'),
-    			to_char(s.schedule_time_end,'HH24:MI'),
+    			to_char(s.schedule_time_start,'HH24:MI') as scheduleTimeStart,
+    			to_char(s.schedule_time_end,'HH24:MI') as scheduleTimeEnd,
     			sc.screen_name,
     			pr.price_per_age,
-    			to_char(b.booking_date,'YYYY.DD.MM'),
+    			to_char(b.booking_date,'YYYY.mm.dd') as bookingDate,
     			bs.book_seat_row,
     			bs.book_seat_column,
     			p.pay_no

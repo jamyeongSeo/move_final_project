@@ -106,12 +106,12 @@ public class MemberService {
 		int couponCount = memberDao.memberCouponCount(m.getMemberNo());
 		//System.out.println("관람영화 수 : "+couponCount);
 		int watchingMovieCount = memberDao.memberWatchingMovieCount(m.getMemberNo());
-		System.out.println(watchingMovieCount);
+		//System.out.println(watchingMovieCount);
 		m.setCouponCount(couponCount);
 		m.setWatchingMovieCount(watchingMovieCount);
 		//int watchingMovieCount = memberDao.memberWatchingMovieCount(m.getMemberNo()); 
 		//m.setWatchingMovieCount(watchingMovieCount);
-		System.out.println(m);
+		//System.out.println(m);
 		return m;
 	}
 	//쿠폰 모달
@@ -178,11 +178,13 @@ public class MemberService {
 			String resultCount = null;
 			int adult = 0;
 			int kid = 0;
+			String seat = null;
+			int count = -1;
 			for(BookingDTO c : list) {
 				if(b.getPayNo() == c.getPayNo()) {
 					//관람평
 					content.setComment(c.getCommentContent());
-					//연령별 인원수
+					/*연령별 인원수-> 컬럼에 없음
 					if(c.getPricePerAge()==1){//성인
 						adult += 1;
 					}else if(c.getPricePerAge() == 2) {//어린이
@@ -194,8 +196,8 @@ public class MemberService {
 						resultCount = "성인:"+adult;
 					}else if(adult == 0 && kid != 0) {
 						resultCount = "어린이:"+kid;
-					}
-					content.setCount(resultCount);
+					}*/
+					//content.setCount(resultCount);
 					//관람일
 					content.setMovieDate(c.getBookingDate());
 					//관람 연령(등급)
@@ -215,8 +217,16 @@ public class MemberService {
 					content.setMovieTime(c.getScheduleTimeStart()+"~"+c.getScheduleTimeEnd());
 					//관람 영화제목
 					content.setMovieTitle(c.getMovieTitle());
-					//좌석은 없어도 됨
-					//content.setSeat(enrollDate);
+					//좌석
+					if(seat == null) {
+						seat = c.getBookSeatRow()+c.getBookSeatColumn();
+						count = 1;
+					}else if(!seat.equals(c.getBookSeatRow()+c.getBookSeatColumn())) {
+						seat = seat+","+c.getBookSeatRow()+c.getBookSeatColumn();
+						count += 1;
+					}
+					content.setSeat(seat);
+					content.setCount(count+"명");
 				}
 				
 			}
@@ -239,7 +249,7 @@ public class MemberService {
 		int memberNo = m.getMemberNo();
 		int totalCount = memberDao.bookingCount(memberNo);
 		List<BookingDTO> list = memberDao.selectBookingMovie(memberNo);
-		System.out.println(list);
+		//System.out.println(list);
 		
 		//payNo로 맵 만들어야함.
 		Set<Integer> processedPayNo = new HashSet<>();
@@ -269,7 +279,7 @@ public class MemberService {
 				if(b.getPayNo() == c.getPayNo()) {
 					
 					//연령별 인원수
-					System.out.println(";;;"+ c.getPricePerAge());
+					//System.out.println(";;;"+ c.getPricePerAge());
 					if(c.getPricePerAge()==1){//성인
 						adult += 1;
 					}else if(c.getPricePerAge() == 2) {//어린이
@@ -283,7 +293,7 @@ public class MemberService {
 						resultCount = "어린이:"+kid;
 					}
 					content.setCount(resultCount);
-					System.out.println(resultCount);
+					//System.out.println(resultCount);
 					//관람일
 					content.setMovieDate(c.getBookingDate());
 					//관람 연령(등급)

@@ -4,6 +4,7 @@ import LeftSideMenu from "../utils/LeftSideMenu";
 import axios from "axios";
 import { useRecoilState } from "recoil";
 import { loginIdState } from "../utils/RecoilData";
+import NoMemberInfo from "./NoMemberInfo";
 import Swal from "sweetalert2";
 
 const BookingMovieList = () => {
@@ -13,154 +14,158 @@ const BookingMovieList = () => {
     { url: "/member/watchedMovieList", text: "내가 본 영화" },
     { url: "/member/bookingMovieList", text: "예약 / 결제" },
   ]);
-  const [toggle, setToggle] = useState(false);
+
   const [bookingList, setBookingList] = useState([]);
   const [totalCount, setTotalCount] = useState();
   const BackServer = import.meta.env.VITE_BACK_SERVER;
-  console.log(memberId);
+  //console.log(memberId);
   useEffect(() => {
     axios
       .get(`${BackServer}/member/bookingList?memberId=${memberId}`)
       .then((res) => {
-        console.log(res.data);
+        //console.log(res.data);
         setBookingList(res.data.bookingList);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [toggle]);
+  }, []);
 
   return (
-    <div className="content-wrap member-wrap">
-      <section className="left-side-menu-side">
-        <Link to="/member/memberMain">
-          <div className="left-side-menu-title">마이페이지</div>
-        </Link>
-        <LeftSideMenu menus={menus}></LeftSideMenu>
-      </section>
+    <>
+      {memberId === "" ? (
+        <NoMemberInfo></NoMemberInfo>
+      ) : (
+        <div className="content-wrap member-wrap">
+          <section className="left-side-menu-side">
+            <Link to="/member/memberMain">
+              <div className="left-side-menu-title">마이페이지</div>
+            </Link>
+            <LeftSideMenu menus={menus}></LeftSideMenu>
+          </section>
 
-      <section className="left-side-menu-other">
-        <div className="memberMain-title">
-          <p style={{ fontWeight: "600", fontSize: "32px" }}>예약 / 결제</p>
-        </div>
-        <div
-          style={{ borderBottom: "none" }}
-          className="member-mypage-content-wrap"
-        >
-          <>
-            {bookingList &&
-              bookingList.map((b, index) => {
-                const BackServer = import.meta.env.VITE_BACK_SERVER;
-                const bookingMail = {
-                  payNo: b.payNo,
-                  movieTitle: b.movieTitle,
-                  movieGrade: b.movieGrade,
-                  movieDate: b.movieDate,
-                  movieTime: b.movieTime,
-                  movieScreen: b.movieScreen,
-                  count: b.count,
-                  comment: "",
-                  movieThumb: b.movieThumb,
-                  seat: b.seat,
-                  memberId: memberId,
-                };
-                console.log(bookingMail);
-                const sendBookingMail = () => {
-                  console.log(b.payNo);
-                  axios
-                    .post(`${BackServer}/member/sendBookingMail`, bookingMail)
-                    .then((res) => {
-                      Swal.fire({
-                        title: "예매 취소",
-                        text: "예매가 성공적으로 취소되었습니다.",
-                        icon: "info",
-                      });
-                      setToggle(!toggle);
-                    })
-                    .catch((err) => {
-                      console.log(err);
-                    });
-                };
-                return (
-                  <div key={"bookingMovie-" + index}>
-                    <div className="memberMovie-list-wrap">
-                      <div className="memberMovie-box">
-                        <div className="memberMovie-post">
-                          <img
-                            src={`${import.meta.env.VITE_BACK_SERVER}${
-                              b.movieThumb
-                            }`}
-                          ></img>
-                        </div>
-                        <div className="memberMovie-info">
-                          <div className="memberMovie-content">
-                            <ul>
-                              <li>
-                                <p className="member-movie-title">
-                                  {b.movieTitle}
-                                  <img
-                                    className="member-movie-grade-img"
-                                    src={
-                                      b.movieGrade == 1
-                                        ? "/image/ALL.png"
-                                        : b.movieGrade == 2
-                                        ? "/image/12.png"
-                                        : b.movieGrade == 3
-                                        ? "/image/15.png"
-                                        : "/image/18.png"
-                                    }
-                                  />
-                                </p>
-                              </li>
-                              <li>
-                                {b.movieDate} {b.movieTime}
-                              </li>
-                              <li style={{ marginTop: "10px" }}>
-                                {b.movieScreen}
-                              </li>
-                              <li style={{ marginTop: "10px" }}>
-                                [ {b.seat} ]
-                              </li>
-                            </ul>
-                          </div>
-                          <div className="memberMovie-booking-btn">
-                            <button
-                              style={{ marginRight: "5px", width: "110px" }}
-                              className="btn-red"
-                              onClick={sendBookingMail}
-                            >
-                              예매내역 발송
-                            </button>
-                            <button
-                              style={{ width: "80px" }}
-                              className="btn-red"
-                              onClick={() => {
-                                axios
-                                  .post(
-                                    `${
-                                      import.meta.env.VITE_BACK_SERVER
-                                    }/booking/refund`,
-                                    bookingMail
-                                  )
-                                  .then((res) => {
-                                    console.log(res);
-                                  })
-                                  .catch((err) => {
-                                    console.log(err);
-                                  });
-                              }}
-                            >
-                              예매 취소
-                            </button>
+          <section className="left-side-menu-other">
+            <div className="memberMain-title">
+              <p style={{ fontWeight: "600", fontSize: "32px" }}>예약 / 결제</p>
+            </div>
+            <div
+              style={{ borderBottom: "none" }}
+              className="member-mypage-content-wrap"
+            >
+              <>
+                {bookingList &&
+                  bookingList.map((b, index) => {
+                    const BackServer = import.meta.env.VITE_BACK_SERVER;
+                    const bookingMail = {
+                      payNo: b.payNo,
+                      movieTitle: b.movieTitle,
+                      movieGrade: b.movieGrade,
+                      movieDate: b.movieDate,
+                      movieTime: b.movieTime,
+                      movieScreen: b.movieScreen,
+                      count: b.count,
+                      comment: "",
+                      movieThumb: `${import.meta.env.VITE_BACK_SERVER}${
+                        b.movieThumb
+                      }`,
+                      seat: b.seat,
+                      memberId: memberId,
+                    };
+                    const sendBookingMail = () => {
+                      //console.log(b.payNo);
+
+                      axios
+                        .post(
+                          `${BackServer}/member/sendBookingMail`,
+                          bookingMail
+                        )
+                        .then((res) => {
+                          //console.log(res);
+                        })
+                        .catch((err) => {
+                          console.log(err);
+                        });
+                    };
+                    return (
+                      <div key={"bookingMovie-" + index}>
+                        <div className="memberMovie-list-wrap">
+                          <div className="memberMovie-box">
+                            <div className="memberMovie-post">
+                              <img
+                                src={`${import.meta.env.VITE_BACK_SERVER}${
+                                  b.movieThumb
+                                }`}
+                              ></img>
+                            </div>
+                            <div className="memberMovie-info">
+                              <div className="memberMovie-content">
+                                <ul>
+                                  <li>
+                                    <p className="member-movie-title">
+                                      {b.movieTitle}
+                                      <img
+                                        className="member-movie-grade-img"
+                                        src={
+                                          b.movieGrade == 1
+                                            ? "/image/ALL.png"
+                                            : b.movieGrade == 2
+                                            ? "/image/12.png"
+                                            : b.movieGrade == 3
+                                            ? "/image/15.png"
+                                            : "/image/18.png"
+                                        }
+                                      />
+                                    </p>
+                                  </li>
+                                  <li>
+                                    {b.movieDate} {b.movieTime}
+                                  </li>
+                                  <li style={{ marginTop: "10px" }}>
+                                    {b.movieScreen}
+                                  </li>
+                                  <li style={{ marginTop: "10px" }}>
+                                    [ {b.seat} ]
+                                  </li>
+                                </ul>
+                              </div>
+                              <div className="memberMovie-booking-btn">
+                                <button
+                                  style={{ marginRight: "5px", width: "110px" }}
+                                  className="btn-red"
+                                  onClick={sendBookingMail}
+                                >
+                                  예매내역 발송
+                                </button>
+                                <button
+                                  style={{ width: "80px" }}
+                                  className="btn-red"
+                                  onClick={() => {
+                                    axios
+                                      .post(
+                                        `${
+                                          import.meta.env.VITE_BACK_SERVER
+                                        }/booking/refund`,
+                                        bookingMail
+                                      )
+                                      .then((res) => {
+                                        //console.log(res);
+                                      })
+                                      .catch((err) => {
+                                        console.log(err);
+                                      });
+                                  }}
+                                >
+                                  예매 취소
+                                </button>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </div>
-                );
-              })}
-          </>
-          {/*삭제 예정 
+                    );
+                  })}
+              </>
+              {/*삭제 예정 
           <div className="memberMovie-list-wrap">
             <div className="memberMovie-box">
               <div className="memberMovie-post">
@@ -210,11 +215,13 @@ const BookingMovieList = () => {
             </div>
           </div>
           */}
-        </div>
+            </div>
 
-        {/*<div>페이지 네비</div> */}
-      </section>
-    </div>
+            {/*<div>페이지 네비</div> */}
+          </section>
+        </div>
+      )}
+    </>
   );
 };
 

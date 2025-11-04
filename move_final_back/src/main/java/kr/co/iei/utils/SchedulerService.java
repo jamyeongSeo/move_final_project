@@ -15,14 +15,14 @@ public class SchedulerService {
 	private MemberDao memberDao;
 	
 	@Transactional
-	@Scheduled(cron = "0 0 0 * * *") //매일 자정
+	@Scheduled(cron = "0 0 0 * * *", zone = "Asia/Seoul") //매일 자정
 	public void deleteCoupon() {
 		int result = memberDao.deleteCoupon();
 		System.out.println("쿠폰 삭제 확인 : "+ result);
 	}
 	
 	@Transactional
-	@Scheduled(cron = "0 0 0 * * *") //매일 자정
+	@Scheduled(cron = "0 5 0 * * *", zone = "Asia/Seoul") //매일 자정
 	public void BirthCoupon() {
 		List<String> m = memberDao.selectBirthMember();
 		for(String memberNo : m) {

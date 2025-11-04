@@ -13,7 +13,7 @@ import { loginIdState, memberLevelState } from "../utils/RecoilData";
 const Login = () => {
   const [memberId, setMemberId] = useRecoilState(loginIdState);
   const [memberLevel, setmemberLevel] = useRecoilState(memberLevelState);
-  console.log(memberId, memberLevel);
+  //console.log(memberId, memberLevel);
 
   const [member, setMember] = useState({
     memberId: "",

@@ -168,7 +168,7 @@ const CouponModal = (props) => {
       .get(`${BackServer}/member/selectCoupon?memberId=${memberId}`)
       .then((res) => {
         setCouponBox(res.data);
-        console.log(couponBox);
+        //console.log(couponBox);
       })
       .catch((err) => {
         console.log(err);
