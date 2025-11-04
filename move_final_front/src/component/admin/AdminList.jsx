@@ -46,7 +46,7 @@ const AdminList = () => {
         setMovieList(list);
         setPi(res.data.pi);
       })
-      .catch((err) => console.log(err));
+      // .catch(err);
   };
 
   useEffect(() => {
@@ -90,7 +90,7 @@ const AdminList = () => {
           fetchMovies();
         }, 200);
       })
-      .catch((err) => console.log(err));
+      // .catch(err);
   };
 
   return (

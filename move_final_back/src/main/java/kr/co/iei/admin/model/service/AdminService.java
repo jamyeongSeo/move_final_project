@@ -75,13 +75,14 @@ public class AdminService {
         // 4. 정지 등록
         return adminDao.insertSuspend(param);
     }
+    
 //    // 특정 회원의 현재 유효한 정지 정보 조회 (새로 추가)
 //    public Map<String, Object> getMemberRestrictionInfo(int memberNo) {
 //        // 현재 유효한 정지 정보 (SUSPENDED_UNTIL이 SYSDATE보다 큰 것)를 가져옴
 //        // 만약 여러 건이면 가장 최근에 적용된 정지를 가져오도록 DAO에서 처리
 //        return adminDao.getValidSuspensionInfo(memberNo);
 //    }
-//    
+    
     /**********************영화***********************/
     
 

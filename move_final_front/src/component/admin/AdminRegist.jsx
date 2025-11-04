@@ -94,8 +94,7 @@ const AdminRegist = () => {
           icon: "error",
         });
       }
-    } catch (err) {
-      console.error(err);
+    } catch (err) {;
       Swal.fire({
         title: "등록 실패",
         text: "서버 요청 중 오류가 발생했습니다.",

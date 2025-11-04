@@ -31,7 +31,7 @@ const AdminScheduleEdit = () => {
     axios
       .get(`${import.meta.env.VITE_BACK_SERVER}/admin/movie/running`)
       .then((res) => setMovieList(res.data))
-      .catch((err) => console.error("영화 목록 불러오기 실패:", err));
+      .catch((err));
   }, []);
 
   // 수정할 스케줄 데이터 불러오기
@@ -58,7 +58,7 @@ const AdminScheduleEdit = () => {
         setEndMinute(endM);
         setEndAmPm(endH >= 12 ? "PM" : "AM");
       })
-      .catch((err) => console.error("스케줄 정보 불러오기 실패:", err));
+      // .catch((err));
   }, [scheduleNo]);
 
   // 수정 버튼 클릭
@@ -93,7 +93,6 @@ const AdminScheduleEdit = () => {
         confirmButtonColor: "#c0392b",
       }).then(() => navigate("/admin/main/schedule/list"));
     } catch (err) {
-      console.error("수정 실패:", err);
       Swal.fire({
         icon: "error",
         title: "수정 실패!",

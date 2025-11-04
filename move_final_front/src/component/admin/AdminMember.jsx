@@ -21,9 +21,7 @@ const AdminMember = () => {
         setMemberList(res.data.memberList || []);
         setTotalCount(res.data.totalCount || 0);
       })
-      .catch((err) => {
-        console.error("회원 목록 불러오기 실패:", err);
-      });
+      // .catch(err);
   }, [search]);
 
   const navigate = useNavigate();

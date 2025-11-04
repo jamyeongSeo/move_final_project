@@ -6,11 +6,10 @@ const AdminScheduleTable = ({ startDate }) => {
   const [schedules, setSchedules] = useState([]);
 
 useEffect(() => {
-  console.log("startDate:", startDate);
   axios
     .get("http://localhost:9999/admin/schedule", { params: { startDate } })
     .then((res) => setSchedules(res.data))
-    .catch((err) => console.error("주간 스케줄 조회 실패:", err));
+    // .catch(err);
 }, [startDate]);
 
   const days = Array.from({ length: 7 }, (_, i) => {

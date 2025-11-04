@@ -114,20 +114,8 @@
   justify-content: center;
   width: 100%;
   margin-top: 20px;
+  margin-right: 800px;
 }
-
-.btn-red {
-  color: var(--gray7);
-  background-color: var(--main5);
-  font-size: 16px;
-  font-weight: 600;
-  border: none;
-  padding: 12px 40px;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
 
 
 .admin-regist-info-wrap {

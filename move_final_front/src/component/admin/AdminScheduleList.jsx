@@ -18,7 +18,6 @@ const AdminScheduleList = () => {
         list = list.filter((schedule) => String(schedule.screenNo) === String(screenFilter));
         setScheduleList(list);
       })
-      .catch((err) => console.error("스케줄 불러오기 실패:", err));
   }, [screenFilter]);
 
   const days = Array.from({ length: 7 }, (_, i) => {
@@ -61,7 +60,6 @@ const AdminScheduleList = () => {
         confirmButtonColor: "#c0392b",
       });
     } catch (err) {
-      console.error(err);
       Swal.fire({
         icon: "error",
         title: "삭제 실패",
@@ -98,7 +96,7 @@ const AdminScheduleList = () => {
 
   return (
     <div className="admin-schedule-list-wrap">
-      <h2>스케줄 타임테이블</h2>
+      <div className="admin-schedule-title">스케줄 타임테이블</div>
       <div className="admin-schedule-list-header">
         <div className="screen-tab-group">
           {[

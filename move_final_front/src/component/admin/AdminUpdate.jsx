@@ -11,7 +11,6 @@ const AdminUpdate = () =>{
         axios
         .get(`${import.meta.env.VITE_BACK_SERVER}/admin/${movieNo}`)
         .then((res)=>{
-            console.log(res);
             setMovieContent(res.data.movieContent);
             setMovieThumb(res.data.setMovieThumb);
             setMovieGenre(res.data.movieGenre);
@@ -22,7 +21,6 @@ const AdminUpdate = () =>{
             setMovieType(res.data.movieType);
         })
         .catch((err)=>{
-            console.log(err);
         });
     }, []);
     const[movieTitle, setMovieTitle] = useState("");
@@ -53,7 +51,6 @@ const AdminUpdate = () =>{
             },
         })
         .then((res)=>{
-            console.log(res);
             navigate(`/admin/main/movie/list/${movieNo}`);
         })
         .catch((err)=>{

@@ -28,7 +28,6 @@ const AdminScheduleRegist = () => {
     axios
       .get("http://localhost:9999/admin/movie/running")
       .then((res) => {
-        console.log("상영중 영화 목록:", res.data);
         const list = Array.isArray(res.data)
           ? res.data
           : Array.isArray(res.data.data)
@@ -36,7 +35,7 @@ const AdminScheduleRegist = () => {
           : [];
         setMovieList(list);
       })
-      .catch((err) => console.error("영화 목록 불러오기 실패:", err));
+      // .catch(err);
   }, []);
 
 const [occupiedTimes, setOccupiedTimes] = useState([]);
@@ -49,10 +48,9 @@ useEffect(() => {
         params: { screenNo, scheduleOpen },
       })
       .then((res) => {
-        console.log("이미 등록된 시간대:", res.data);
         setOccupiedTimes(res.data || []);
       })
-      .catch((err) => console.error("시간대 불러오기 실패:", err));
+      // .catch(err);
   }
 }, [screenNo, scheduleOpen]);
 
@@ -150,11 +148,9 @@ const handleSubmit = async () => {
     scheduleTimeEnd: endTime,
   };
 
-  console.log("전송 데이터:", scheduleData);
 
   try {
     const res = await axios.post("http://localhost:9999/admin/schedule", scheduleData);
-    console.log(" 스케줄 등록 성공:", res.data);
 
     Swal.fire({
       icon: "success",
@@ -168,7 +164,6 @@ const handleSubmit = async () => {
     });
 
   } catch (err) {
-    console.error(" 스케줄 등록 실패:", err);
 
     Swal.fire({
       icon: "error",
@@ -179,11 +174,9 @@ const handleSubmit = async () => {
   }
 };
 
-console.log(" AdminScheduleRegist 컴포넌트 렌더링됨");
-
 return (
   <div className="admin-schedule-wrap">
-    <h2>상영 스케줄 등록</h2>
+    <div className="admin-schedule-title">상영 스케줄 등록</div>
 
     <AdminScheduleRegistFrm
       movieList={movieList}

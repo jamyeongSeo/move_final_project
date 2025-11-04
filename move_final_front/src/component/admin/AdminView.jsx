@@ -13,12 +13,9 @@ const AdminView = () =>{
         axios
         .get(`${import.meta.env.VITE_BACK_SERVER}/movie/${movieNo}`)
         .then((res)=>{
-            console.log(res);
             setMovie(res.data);
         })
-        .catch((err)=>{
-            console.log(err)
-        });
+        .catch((err));
     },[]);
     const deleteMovie =() =>{
         Swal.fire({
@@ -33,14 +30,11 @@ const AdminView = () =>{
                 axios
                 .delete(`${import.meta.env.VITE_BACK_SERVER}/movie/${movieNo}`)
                 .then((res) => {
-                    console.log(res);
                     if (res.data === 1) {
                         navigate("/movie/list");
                     }
                 })
-                .catch((err)=>{
-                    console.log(err);
-                });
+                .catch((err));
             }
         });
     };

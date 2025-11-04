@@ -248,34 +248,34 @@
     </select>
 
     <!-- 정지회원 중복 체크 -->
-<select id="checkAlreadySuspended" parameterType="int" resultType="int">
-    SELECT COUNT(*)
-    FROM member_suspend
-    WHERE member_no = #{memberNo}
-    AND suspend_date + suspend_days > SYSDATE
-</select>
-
-<!-- 정지 등록 -->
-<insert id="insertSuspend" parameterType="map">
-    INSERT INTO member_suspend (
-        suspend_no,
-        member_no,
-        suspend_date,
-        suspend_days,
-        suspend_reason,
-        suspended_until
-    )
-    VALUES (
-        suspend_seq.NEXTVAL,
-        #{memberNo},
-        SYSDATE,
-        #{suspendDays},
-        #{suspendReason},
-        SYSDATE + #{suspendDays}
-    )
-</insert>
+	<select id="checkAlreadySuspended" parameterType="int" resultType="int">
+	    SELECT COUNT(*)
+	    FROM member_suspend
+	    WHERE member_no = #{memberNo}
+	    AND suspend_date + suspend_days > SYSDATE
+	</select>
 	
-	<!-- ⭐️ 현재 유효한 정지 정보 조회  -->
+	<!-- 정지 등록 -->
+	<insert id="insertSuspend" parameterType="map">
+	    INSERT INTO member_suspend (
+	        suspend_no,
+	        member_no,
+	        suspend_date,
+	        suspend_days,
+	        suspend_reason,
+	        suspended_until
+	    )
+	    VALUES (
+	        suspend_seq.NEXTVAL,
+	        #{memberNo},
+	        SYSDATE,
+	        #{suspendDays},
+	        #{suspendReason},
+	        SYSDATE + #{suspendDays}
+	    )
+	</insert>
+	
+	<!-- 현재 유효한 정지 정보 조회  -->
 	<select id="getValidSuspensionInfo" parameterType="int" resultType="map">
 	    SELECT 
 	        suspend_days AS SUSPENDED_DAYS,
