@@ -239,9 +239,9 @@ const WatchedMovieList = () => {
                           <div className="memberMovie-box">
                             <div className="memberMovie-post">
                               <img
-                                src={`${
-                                  import.meta.env.VITE_BACK_SERVER
-                                }/thumb/${w.movieThumb}`}
+                                src={`${import.meta.env.VITE_BACK_SERVER}${
+                                  w.movieThumb
+                                }`}
                               ></img>
                             </div>
                             <div className="memberMovie-info">
@@ -271,7 +271,7 @@ const WatchedMovieList = () => {
                                     {w.movieScreen}
                                   </li>
                                   <li style={{ marginTop: "10px" }}>
-                                    `[ ${w.seat} ]`
+                                    {w.count}
                                   </li>
                                 </ul>
                               </div>
@@ -280,7 +280,7 @@ const WatchedMovieList = () => {
                                   {w.comment ? (
                                     <ul style={{ fontWeight: "600" }}>
                                       <li style={{ fontWeight: "600" }}>
-                                        {w.comment}
+                                        나의 관람평 : {w.comment}
                                       </li>
                                     </ul>
                                   ) : (

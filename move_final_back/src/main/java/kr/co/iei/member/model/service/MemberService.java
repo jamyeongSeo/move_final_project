@@ -178,6 +178,8 @@ public class MemberService {
 			String resultCount = null;
 			int adult = 0;
 			int kid = 0;
+			String seat = null;
+			int count = -1;
 			for(BookingDTO c : list) {
 				if(b.getPayNo() == c.getPayNo()) {
 					//관람평
@@ -195,7 +197,7 @@ public class MemberService {
 					}else if(adult == 0 && kid != 0) {
 						resultCount = "어린이:"+kid;
 					}*/
-					content.setCount(resultCount);
+					//content.setCount(resultCount);
 					//관람일
 					content.setMovieDate(c.getBookingDate());
 					//관람 연령(등급)
@@ -215,8 +217,16 @@ public class MemberService {
 					content.setMovieTime(c.getScheduleTimeStart()+"~"+c.getScheduleTimeEnd());
 					//관람 영화제목
 					content.setMovieTitle(c.getMovieTitle());
-					//좌석은 없어도 됨
-					content.setSeat(enrollDate);
+					//좌석
+					if(seat == null) {
+						seat = c.getBookSeatRow()+c.getBookSeatColumn();
+						count = 1;
+					}else if(!seat.equals(c.getBookSeatRow()+c.getBookSeatColumn())) {
+						seat = seat+","+c.getBookSeatRow()+c.getBookSeatColumn();
+						count += 1;
+					}
+					content.setSeat(seat);
+					content.setCount(count+"명");
 				}
 				
 			}

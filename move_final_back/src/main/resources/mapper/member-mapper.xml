@@ -143,7 +143,6 @@
 		<![CDATA[
 		select count(*) from
 			(select 
-    			mc.comment_content,
     			m.movie_thumb,
     			m.movie_title,
     			m.movie_grade,
@@ -162,7 +161,6 @@
 			left join price_tbl pr on (pr.price_no = b.price_no)
 			left join schedule_tbl s on (s.schedule_no = b.schedule_no)
 			left join movie_tbl m on(m.movie_no = s.movie_no)
-			left join movie_comment_tbl mc on (mc.movie_no = m.movie_no)
 			left join screen_tbl sc on (sc.screen_no = s.screen_no)
 			where (m.member_no=#{memberNo}) and (p.refund_status = 'n') and
         			(b.booking_date <= sysdate) and 
@@ -173,7 +171,6 @@
 		<![CDATA[
 		select count(*) from
 			(select 
-    			mc.comment_content,
     			m.movie_thumb,
     			m.movie_title,
     			m.movie_grade,
@@ -192,7 +189,6 @@
 			left join price_tbl pr on (pr.price_no = b.price_no)
 			left join schedule_tbl s on (s.schedule_no = b.schedule_no)
 			left join movie_tbl m on(m.movie_no = s.movie_no)
-			left join movie_comment_tbl mc on (mc.movie_no = m.movie_no)
 			left join screen_tbl sc on (sc.screen_no = s.screen_no)
 			where (m.member_no=#{memberNo}) and (p.refund_status = 'n') and
         			(b.booking_date between add_months(sysdate, -#{intervalChoice}) and sysdate) and 
