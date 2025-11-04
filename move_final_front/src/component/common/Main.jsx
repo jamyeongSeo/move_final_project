@@ -10,7 +10,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { Schedule } from "@mui/icons-material";
 
 const Main = () => {
-  const isLogin = useRecoilValue(isLoginState);
   return (
     <body
       style={{
@@ -40,7 +39,7 @@ const Main = () => {
             >
               상영스케줄
             </div>
-            <MainMovieSchedul isLogin={isLogin}></MainMovieSchedul>
+            <MainMovieSchedul></MainMovieSchedul>
           </div>
         </div>
       </div>
@@ -240,8 +239,7 @@ const MovieItem = (props) => {
   );
 };
 
-const MainMovieSchedul = (props) => {
-  const isLogin = props.isLogin;
+const MainMovieSchedul = () => {
   const navigate = useNavigate();
   //상영스케줄 일자 (오늘 포함 8일)
   const [scheduleDate, setScheduleDate] = useState(null);
@@ -514,12 +512,6 @@ const MainMovieSchedul = (props) => {
                                         ("0" + newTime.getMinutes()).slice(-2);
 
                                       const seat = () => {
-                                        if (!isLogin) {
-                                          // 로그인 안 된 경우 → 비회원 정보 페이지로 이동
-                                          navigate(`/member/noMemberInfo`);
-                                          return;
-                                        }
-
                                         navigate(
                                           `/booking/bookingSeat/${schedul.screenNo}/${schedul.movieNo}`,
                                           {

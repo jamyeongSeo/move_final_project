@@ -3,6 +3,7 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import "./booking.css";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const BookingSchedule = (props) => {
   const setBookingSchedule = props.setBookingSchedule;
@@ -19,6 +20,7 @@ const BookingSchedule = (props) => {
   const datebox = document.querySelectorAll("one-schedule");
   useEffect(() => {
     scheduleList.length = 0;
+
     for (let i = 0; i < 7; i++) {
       const nextDay = new Date(bookingDate);
       nextDay.setDate(bookingDate.getDate() + i);
@@ -43,7 +45,18 @@ const BookingSchedule = (props) => {
     }
   }, [bookingDate, movieDate, refresh]);
   const prevWeek = () => {
+    const currentDate = new Date();
+    if (bookingDate.getDate() === currentDate.getDate()) {
+      Swal.fire({
+        title: "타임머신 미개발",
+        text: "과거의 시간으로는 돌아갈 수 없습니다.",
+        icon: "warning",
+        confirmButtonText: "확인",
+      });
+      return;
+    }
     const prevWeek = new Date(bookingDate);
+
     prevWeek.setDate(bookingDate.getDate() - 7);
     setBookingDate(prevWeek);
     setRefresh(true);

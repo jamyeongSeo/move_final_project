@@ -151,9 +151,8 @@ const MovieDetail = () => {
     return target.fromNow(); //한국어로 ?? 시간전 표시하기
   };
 
-
   /* 댓글 제재 모달창 */
-const { checkSuspend } = CommentRestrictModal ({memberNo: member?.memberNo});
+  const { checkSuspend } = CommentRestrictModal({ memberNo: member?.memberNo });
 
   const submitComment = async () => {
     if (!isLogin) {
@@ -168,7 +167,7 @@ const { checkSuspend } = CommentRestrictModal ({memberNo: member?.memberNo});
 
     //1. 제재회원인지 확인
     const restricted = await checkSuspend();
-    if(restricted) return; // 정지면 여기서 막음
+    if (restricted) return; // 정지면 여기서 막음
 
     //2. 제재 아니면 기존 댓글 등록 진행
     if (commentContent.trim() === "") {
@@ -397,9 +396,6 @@ const { checkSuspend } = CommentRestrictModal ({memberNo: member?.memberNo});
       }
     });
   };
-
-
-
 
   return (
     <>
