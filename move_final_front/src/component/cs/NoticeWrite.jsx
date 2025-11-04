@@ -16,7 +16,6 @@ const NoticeWrite = () => {
   const write = () => {
     if (noticeTitle !== "" && noticeContent !== "") {
       const form = new FormData();
-      console.log(memberId);
       form.append("noticeTitle", noticeTitle);
       form.append("noticeContent", noticeContent);
       form.append("memberId", memberId);
@@ -30,14 +29,11 @@ const NoticeWrite = () => {
           },
         })
         .then((res) => {
-          console.log(res);
           if (res.data > 0) {
             navigate("/cs/notice");
           }
         })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch((err) => {});
     }
   };
   return (

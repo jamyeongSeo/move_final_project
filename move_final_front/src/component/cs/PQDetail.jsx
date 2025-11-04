@@ -21,18 +21,13 @@ const PQDetail = () => {
   const backToList = () => {
     navigate("/cs/pq");
   };
-  console.log(memberId);
-  console.log(pq);
   const detailFunc = () => {
     axios
       .get(`${import.meta.env.VITE_BACK_SERVER}/cs/pq/detail/${pqNo}`)
       .then((res) => {
-        console.log(res);
         setPq(res.data);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
   useEffect(() => {
     detailFunc();
@@ -102,8 +97,6 @@ const FileItem = (props) => {
         responseType: "blob",
       })
       .then((res) => {
-        console.log(res);
-
         const blob = new Blob([res.data]);
         const fileUrl = window.URL.createObjectURL(blob);
 
@@ -117,9 +110,7 @@ const FileItem = (props) => {
         link.remove();
         window.URL.revokeObjectURL(fileUrl);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
   return (
     <div className="notice-file">

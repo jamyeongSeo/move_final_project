@@ -30,14 +30,11 @@ const PQWrite = () => {
           },
         })
         .then((res) => {
-          console.log(res.data);
           if (res.data > 0) {
             navigate("/cs/pq");
           }
         })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch((err) => {});
     }
   };
   const backBtn = () => {

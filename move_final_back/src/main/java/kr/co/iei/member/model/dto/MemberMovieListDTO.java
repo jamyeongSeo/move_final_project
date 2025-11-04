@@ -19,4 +19,7 @@ public class MemberMovieListDTO {
 	private String movieThumb;
 	private String seat;
 	private String memberId;
+	private int bookNo;
+	private int memberNo;
+	private String[] selectSeatList;
 }
