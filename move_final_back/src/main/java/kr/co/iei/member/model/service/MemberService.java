@@ -106,9 +106,11 @@ public class MemberService {
 		int couponCount = memberDao.memberCouponCount(m.getMemberNo());
 		//System.out.println("관람영화 수 : "+couponCount);
 		int watchingMovieCount = memberDao.memberWatchingMovieCount(m.getMemberNo());
+		int watchingMoviePayNoCount = memberDao.memberWatchingMoviePayNoCount(m.getMemberNo());
 		//System.out.println(watchingMovieCount);
 		m.setCouponCount(couponCount);
 		m.setWatchingMovieCount(watchingMovieCount);
+		m.setWatchingMoviePayNoCount(watchingMoviePayNoCount);
 		//int watchingMovieCount = memberDao.memberWatchingMovieCount(m.getMemberNo()); 
 		//m.setWatchingMovieCount(watchingMovieCount);
 		//System.out.println(m);
@@ -153,6 +155,7 @@ public class MemberService {
 		MemberDTO m = memberDao.selectMember(memberId);
 		int memberNo = m.getMemberNo();
 		int totalCount = memberDao.watchedCount(intervalChoice, memberNo);
+		int payNoCount = memberDao.watchedPayNocount(intervalChoice, memberNo);
 		List<BookingDTO> list = memberDao.selectWatchedMovie(intervalChoice, memberNo);
 		
 		//payNo로 맵 만들어야함.
@@ -180,6 +183,7 @@ public class MemberService {
 			int kid = 0;
 			String seat = null;
 			int count = -1;
+			int movieNo = -1;
 			for(BookingDTO c : list) {
 				if(b.getPayNo() == c.getPayNo()) {
 					//관람평
@@ -228,6 +232,7 @@ public class MemberService {
 					}
 					content.setSeat(seat);
 					content.setCount(count+"명");
+					content.setMovieNo(c.getMovieNo());
 				}
 				
 			}
@@ -237,6 +242,7 @@ public class MemberService {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("enrollDate", enrollDate);
+		map.put("payNoCount", payNoCount);
 		map.put("totalCount", totalCount);
 		map.put("watchedList", watchedList);
 		

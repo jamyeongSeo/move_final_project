@@ -77,6 +77,7 @@ const WatchedMovieList = () => {
   const [watchedList, setWatchedList] = useState([]);
   const [enrollDate, setEnrollDate] = useState();
   const [totalCount, setTotalCount] = useState();
+  const [payNoCount, setPayNoCount] = useState();
   const BackServer = import.meta.env.VITE_BACK_SERVER;
   useEffect(() => {
     axios
@@ -90,6 +91,7 @@ const WatchedMovieList = () => {
         }
         setEnrollDate(res.data.enrollDate);
         setTotalCount(res.data.totalCount);
+        setPayNoCount(res.data.payNoCount);
       })
       .catch((err) => {
         console.log(err);
@@ -122,7 +124,7 @@ const WatchedMovieList = () => {
               <div className="memberMovie-set-wrap">
                 <div className="memberMovie-set">
                   <div className="memberMovie-count">
-                    관람 매 수 : {totalCount}
+                    관람 건 수 : {payNoCount}
                   </div>
                   <div className="memberMovie-interval-wrap">
                     <span className="memberMovie-interval">
@@ -276,23 +278,33 @@ const WatchedMovieList = () => {
                                 </ul>
                               </div>
                               <div className="memberMovie-review">
-                                <div className="memberMovie-review-text">
+                                <>
                                   {w.comment ? (
-                                    <ul style={{ fontWeight: "600" }}>
-                                      <li style={{ fontWeight: "600" }}>
-                                        나의 관람평 : {w.comment}
-                                      </li>
-                                    </ul>
+                                    <>
+                                      <div className="memberMovie-review-text">
+                                        <ul style={{ fontWeight: "600" }}>
+                                          <li style={{ fontWeight: "600" }}>
+                                            나의 관람평 : {w.comment}
+                                          </li>
+                                        </ul>
+                                      </div>
+                                      <div className="memberMovie-review-box"></div>
+                                    </>
                                   ) : (
                                     <Link to={`/movie/detail/${w.movieNo}`}>
-                                      <ul>
-                                        <li>관람하신 영화, 어떠셨나요?</li>
-                                        <li>실관람평을 남겨주세요.</li>
-                                      </ul>
+                                      <div
+                                        className="memberMovie-review-text"
+                                        style={{ marginLeft: "500px" }}
+                                      >
+                                        <ul>
+                                          <li>관람하신 영화, 어떠셨나요?</li>
+                                          <li>실관람평을 남겨주세요.</li>
+                                        </ul>
+                                      </div>
+                                      <div className="memberMovie-review-box"></div>
                                     </Link>
                                   )}
-                                </div>
-                                <div className="memberMovie-review-box"></div>
+                                </>
                               </div>
                             </div>
                           </div>

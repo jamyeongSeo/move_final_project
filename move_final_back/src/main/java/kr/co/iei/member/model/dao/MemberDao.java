@@ -62,6 +62,10 @@ public interface MemberDao {
 	List selectBirthMember();
 	int BirthCoupon(String memberNo);
 
+	int watchedPayNocount(int intervalChoice, int memberNo);
+
+	int memberWatchingMoviePayNoCount(int memberNo);
+
 
 	
 

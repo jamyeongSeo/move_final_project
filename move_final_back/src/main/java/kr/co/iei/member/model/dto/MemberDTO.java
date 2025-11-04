@@ -26,6 +26,7 @@ public class MemberDTO {
 	
 	private int couponCount;
 	private int watchingMovieCount;
+	private int watchingMoviePayNoCount;
 }
 
 /*

@@ -25,6 +25,7 @@ const MemberMain = () => {
     memberGrade: "",
     couponCount: "",
     watchingMovieCount: "",
+    watchingMoviePayNoCount: "",
   });
   const [coupon, setCoupon] = useState({
     couponBoxNo: "",
@@ -83,7 +84,8 @@ const MemberMain = () => {
                 style={{ marginBottom: "60px" }}
               >
                 <div className="member-mypage-content-left">
-                  관람 및 예매 영화 수 : {member.watchingMovieCount} 매
+                  관람 및 예매 영화 수 : {member.watchingMoviePayNoCount} 건 (
+                  {member.watchingMovieCount} 매 )
                 </div>
               </div>
 

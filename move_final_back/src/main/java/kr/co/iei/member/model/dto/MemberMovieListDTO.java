@@ -22,4 +22,5 @@ public class MemberMovieListDTO {
 	private int bookNo;
 	private int memberNo;
 	private String[] selectSeatList;
+	private int movieNo;
 }
