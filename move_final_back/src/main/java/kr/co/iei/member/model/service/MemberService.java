@@ -218,6 +218,7 @@ public class MemberService {
 					//관람 영화제목
 					content.setMovieTitle(c.getMovieTitle());
 					//좌석
+					
 					if(seat == null) {
 						seat = c.getBookSeatRow()+c.getBookSeatColumn();
 						count = 1;
