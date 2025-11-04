@@ -32,6 +32,7 @@ const PayPage = () => {
   const [coupon, setCoupon] = useState(0);
   const [refresh, setRefresh] = useState(false);
   const [member, setMember] = useState(null);
+
   const [bookingInfo, setBookingInfo] = useState({
     scheduleNo: payInfo.scheduleNo,
     memberNo: 0,
@@ -73,13 +74,9 @@ const PayPage = () => {
             };
             setBookingInfo(newPayInfo);
           })
-          .catch((err) => {
-            console.log(err);
-          });
+          .catch((err) => {});
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   }, []);
 
   useEffect(() => {
@@ -92,24 +89,23 @@ const PayPage = () => {
       .then((res) => {
         setCouponList(res.data.couponList);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   }, [memberId]);
 
   useEffect(() => {
     if (!coupon) {
       return;
     }
-    setPayPrice(totalPrice - coupon);
-    const newBookingInfo = { ...bookingInfo, payPrice: totalPrice - coupon };
+
+    setPayPrice(totalPrice - discount);
+    const newBookingInfo = { ...bookingInfo, payPrice: totalPrice - discount };
     if (totalPrice - coupon < 0) {
       setPayPrice(0);
     }
-    console.log(bookingInfo.couponBoxNo);
+
     setBookingInfo(newBookingInfo);
   }, [coupon]);
-  console.log(bookingInfo);
+
   return movie !== null ? (
     <div className="content-wrap">
       <div className="pay-content">
@@ -195,6 +191,7 @@ const PayPage = () => {
                   setDiscount={setDiscount}
                   setBookingInfo={setBookingInfo}
                   bookingInfo={bookingInfo}
+                  discount={discount}
                 />
               }
             </div>
@@ -233,7 +230,6 @@ const PayPage = () => {
                             bookingInfo
                           )
                           .then((res) => {
-                            console.log(res);
                             Swal.fire({
                               title: "예매 완료",
                               html: "예매가 완료되었습니다. <br/> 예매 내역은 이메일로 발송됩니다.",
@@ -268,18 +264,13 @@ const PayPage = () => {
                                     bookingMail
                                   )
                                   .then((res) => {
-                                    console.log(res);
                                     navigate(`/`);
                                   })
-                                  .catch((err) => {
-                                    console.log(err);
-                                  });
+                                  .catch((err) => {});
                               }
                             });
                           })
-                          .catch((err) => {
-                            console.log(err);
-                          });
+                          .catch((err) => {});
                       }
                     }
                   );
@@ -305,12 +296,21 @@ const CouponSelect = (props) => {
   const setPayPrice = props.setPayPrice;
   const bookingInfo = props.bookingInfo;
   const setBookingInfo = props.setBookingInfo;
+  const discount = props.discount;
+  const setDiscount = props.setDiscount;
 
   const couponSelect = (e) => {
-    setCoupon(e.target.value);
+    const selectedCouponBoxNo = e.target.value;
+
     if (e.target.value !== 0) {
-      const newInfo = { ...bookingInfo, couponBoxNo: e.target.id };
+      const newInfo = { ...bookingInfo, couponBoxNo: e.target.value };
       setBookingInfo(newInfo);
+      const selectedCoupon = couponList.find(
+        (c) => c.couponBoxNo === selectedCouponBoxNo
+      );
+      if (selectedCoupon) {
+        setDiscount(selectedCoupon.couponDissCount);
+      }
     }
   };
   return (
@@ -325,13 +325,8 @@ const CouponSelect = (props) => {
         >
           <MenuItem value={0}>선택하지 않음</MenuItem>
           {couponList.map((coupon, index) => {
-            console.log(coupon.couponBoxNo);
             return (
-              <MenuItem
-                key={"coupon-" + index}
-                value={coupon.couponDisscount}
-                id={coupon.couponBoxNo}
-              >
+              <MenuItem key={"coupon-" + index} value={coupon.couponBoxNo}>
                 {coupon.couponName}
               </MenuItem>
             );
