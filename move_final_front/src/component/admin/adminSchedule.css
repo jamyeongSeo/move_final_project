@@ -3,10 +3,27 @@
   float: left;
 }
 
-.admin-schedule-list-wrap > h2 {
-  text-align: center;
+.admin-schedule-list-wrap > span {
+  /* text-align: center;
   font-size: 21px;
+  font-weight: 700; */
+  /* font-size: 24px;
   font-weight: 700;
+  color: #222;
+  border-bottom: 2px solid #666;
+  margin-bottom: 25px;
+  padding-bottom: 8px;
+  width: 720px  */
+}
+
+.admin-schedule-title{
+  font-size: 24px;
+  font-weight: 700;
+  color: #222;
+  border-bottom: 2px solid #666;
+  margin-bottom: 25px;
+  padding-bottom: 8px;
+  width: 720px
 }
 
 .admin-schedule-list-header {
@@ -129,11 +146,18 @@
 
 /* 등록 타이틀 */
 .admin-schedule-regist-title {
-  font-size: 22px;
+  /* font-size: 22px;
   font-weight: 700;
   margin-bottom: 20px;
   color: #333;
-  text-align: left;
+  text-align: left; */
+  font-size: 24px;
+  font-weight: 700;
+  color: #222;
+  border-bottom: 2px solid #666;
+  margin-bottom: 25px;
+  padding-bottom: 8px;
+  width: 720px 
 }
 
 /* 등록 폼 */
@@ -171,13 +195,13 @@
 /* 버튼 영역 */
 .admin-schedule-btn-zone {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   margin-top: 20px;
   padding-right: 10px;
 }
 
 .admin-schedule-btn {
-  background-color: #c0392b;
+  background-color: var(--main5);
   color: white;
   border: none;
   padding: 10px 22px;

@@ -10,17 +10,15 @@ const AdminReportMember = () => {
   const [suspendReason, setSuspendReason] = useState({});
 
   //Recoil 상태 업데이트 (정지일수/사유 등록 시 프론트에도 반영)
-  const setGlobalSuspendDays = useSetRecoilState(suspendDaysState);
+  const setRecoilSuspendDays = useSetRecoilState(suspendDaysState);
 
   useEffect(() => {
     axios
       .get(`${import.meta.env.VITE_BACK_SERVER}/admin/reportMember`)
       .then((res) => {
-        console.log("신고 회원 목록:", res);
         setReportMember(res.data || []);
       })
       .catch((err) => {
-        console.log("신고 회원 목록 불러오기 실패:", err);
         setReportMember([]);
       });
   }, []);
@@ -69,7 +67,7 @@ const AdminReportMember = () => {
         );
 
         //2) 전역 Recoil 상태도 갱신 (로그인된 사용자와 동일한 회원이면 프론트에서도 막힘)
-        setGlobalSuspendDays({
+        setRecoilSuspendDays({
           SUSPENDED_DAYS: days,
           SUSPENDED_AT: new Date().toISOString().split("T")[0],
           SUSPENDED_UNTIL: new Date(Date.now() + days * 24 * 60 * 60 * 1000)
@@ -79,7 +77,6 @@ const AdminReportMember = () => {
         });
       });
     } catch (err) {
-      console.log("정지 등록 실패:", err);
       Swal.fire({
         title: "정지 등록 실패",
         text: "서버 오류 또는 중복된 정지 요청입니다.",
