@@ -92,7 +92,7 @@
   color: var(--main1);
 }
 .main-schedul-movie-show:hover {
-  color: var(--main5);
+  color: var(--main10);
 }
 .main-schedul-movie-age > img {
   width: 23px;

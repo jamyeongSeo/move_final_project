@@ -212,7 +212,7 @@
     			to_char(s.schedule_time_end,'HH24:MI') as scheduleTimeEnd,
     			sc.screen_name,
     			pr.price_per_age,
-    			to_char(b.booking_date,'YYYY.DD.MM') as bookingDate,
+    			to_char(b.booking_date,'YYYY.mm.dd') as bookingDate,
     			bs.book_seat_row,
     			bs.book_seat_column,
     			p.pay_no
@@ -243,7 +243,7 @@
     			to_char(s.schedule_time_end,'HH24:MI'),
     			sc.screen_name,
     			pr.price_per_age,
-    			to_char(b.booking_date,'YYYY.DD.MM'),
+    			to_char(b.booking_date,'YYYY.mm.dd'),
     			bs.book_seat_row,
     			bs.book_seat_column,
     			p.pay_no
