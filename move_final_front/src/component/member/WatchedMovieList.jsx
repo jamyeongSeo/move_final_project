@@ -278,8 +278,10 @@ const WatchedMovieList = () => {
                               <div className="memberMovie-review">
                                 <div className="memberMovie-review-text">
                                   {w.comment ? (
-                                    <ul>
-                                      <li>{w.comment}</li>
+                                    <ul style={{ fontWeight: "600" }}>
+                                      <li style={{ fontWeight: "600" }}>
+                                        {w.comment}
+                                      </li>
                                     </ul>
                                   ) : (
                                     <Link to={`/movie/detail/${w.movieNo}`}>
