@@ -81,18 +81,18 @@
 		<if test="intervalChoice == 0">
 		<![CDATA[
 			select 
-    			mc.comment_content,--관람평
-    			m.movie_thumb,--썸네일
-    			m.movie_title,--제목
-    			m.movie_grade,--등급
+    			mc.comment_content,
+    			m.movie_thumb,
+    			m.movie_title,
+    			m.movie_grade,
     			m.movie_no,
     			to_char(s.schedule_time_start,'HH24:MI') as scheduleTimeStart,
     			to_char(s.schedule_time_end,'HH24:MI') as scheduleTimeEnd,
     			sc.screen_name,
     			pr.price_per_age,
     			to_char(b.booking_date,'YYYY.mm.dd') as bookingDate,
-    			bs.book_seat_column,--좌석
-    			p.pay_no--결제 건
+    			bs.book_seat_column,
+    			p.pay_no
 			from member_tbl m
 			left join book_tbl b on (b.member_no = m.member_no)
 			left join book_seat_tbl bs on (bs.book_no = b.book_no)

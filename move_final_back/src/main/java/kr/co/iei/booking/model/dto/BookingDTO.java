@@ -29,5 +29,6 @@ public class BookingDTO {
 	private String movieTitle;
 	private String scheduleTimeStart;
 	private String scheduleTimeEnd;
+	private int movieNo;
 	
 }

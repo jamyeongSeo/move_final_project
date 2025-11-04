@@ -122,7 +122,7 @@ const WatchedMovieList = () => {
               <div className="memberMovie-set-wrap">
                 <div className="memberMovie-set">
                   <div className="memberMovie-count">
-                    관람 건 수 : {totalCount}
+                    관람 매 수 : {totalCount}
                   </div>
                   <div className="memberMovie-interval-wrap">
                     <span className="memberMovie-interval">
