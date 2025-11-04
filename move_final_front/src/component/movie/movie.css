@@ -411,7 +411,7 @@
   display: flex;
   justify-content: center;
   gap: 30px;
-  margin-bottom: 48px;
+  margin-bottom: 128px;
 }
 .half-info-box-wrap {
   display: flex;

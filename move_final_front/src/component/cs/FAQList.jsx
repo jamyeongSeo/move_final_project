@@ -33,19 +33,16 @@ const FAQList = () => {
         }/cs/faq?reqPage=${reqPage}&faqQuestion=${search}`
       )
       .then((res) => {
-        console.log(res);
         setFaqList(res.data.faqList);
         setPi(res.data.pi);
         setTotalCount(res.data.totalCount);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 
   useEffect(() => {
     faqFunc(reqPage);
-  }, [reqPage]);
+  }, [reqPage, search]);
   const searchInput = () => {
     setReqPage(1);
     faqFunc(1, search);
@@ -68,7 +65,6 @@ const FAQList = () => {
         axios
           .delete(`${import.meta.env.VITE_BACK_SERVER}/cs/faq/${faqNo}`)
           .then((res) => {
-            console.log(res);
             if (res.data === 1) {
               Swal.fire({
                 title: "삭제 완료",
@@ -78,9 +74,7 @@ const FAQList = () => {
               faqFunc();
             }
           })
-          .catch((err) => {
-            console.log(err);
-          });
+          .catch((err) => {});
       }
     });
   };

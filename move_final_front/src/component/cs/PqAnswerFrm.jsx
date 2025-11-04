@@ -21,7 +21,6 @@ const PqAnswerFrm = (props) => {
         pqAnswer: pqAnswerValue,
       })
       .then((res) => {
-        console.log(res);
         if (res.data > 0) {
           Swal.fire({
             title: "등록 성공",
@@ -32,9 +31,7 @@ const PqAnswerFrm = (props) => {
           });
         }
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 
   return (

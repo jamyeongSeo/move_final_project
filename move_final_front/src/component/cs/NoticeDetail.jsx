@@ -16,12 +16,9 @@ const NoticeDetail = () => {
     axios
       .get(`${import.meta.env.VITE_BACK_SERVER}/cs/notice/detail/${noticeNo}`)
       .then((res) => {
-        console.log(res);
         setNotice(res.data);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   }, []);
   const navigate = useNavigate();
   const deleteNotice = () => {
@@ -39,14 +36,11 @@ const NoticeDetail = () => {
             `${import.meta.env.VITE_BACK_SERVER}/cs/notice/delete/${noticeNo}`
           )
           .then((res) => {
-            console.log(res);
             if (res.data === 1) {
               navigate("/cs/notice");
             }
           })
-          .catch((err) => {
-            console.log(err);
-          });
+          .catch((err) => {});
       }
     });
   };
@@ -79,13 +73,13 @@ const NoticeDetail = () => {
             <div className="btn-zone">
               <Link
                 to={`/cs/notice/update/${noticeNo}`}
-                className="btn-red noticeUpdate"
+                className="noticeUpdate"
               >
                 수정
               </Link>
               <button
                 type="button"
-                className="btn-gray noticeDelete"
+                className="noticeDelete"
                 onClick={deleteNotice}
               >
                 삭제
@@ -107,8 +101,6 @@ const FileItem = (props) => {
         { responseType: "blob" }
       )
       .then((res) => {
-        console.log(res);
-
         const blob = new Blob([res.data]);
         const fileUrl = window.URL.createObjectURL(blob);
 
@@ -122,9 +114,7 @@ const FileItem = (props) => {
         link.remove();
         window.URL.revokeObjectURL(fileUrl);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
   return (
     <div className="notice-file">
