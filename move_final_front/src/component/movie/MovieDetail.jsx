@@ -26,6 +26,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/ko";
 import PageNavigation from "../utils/PageNavigation";
 import Swal from "sweetalert2";
+import CommentRestrictModal from "../admin/commentRestrictModal";
 
 dayjs.extend(relativeTime);
 dayjs.locale("ko");
@@ -150,7 +151,11 @@ const MovieDetail = () => {
     return target.fromNow(); //한국어로 ?? 시간전 표시하기
   };
 
-  const submitComment = () => {
+
+  /* 댓글 제재 모달창 */
+const { checkSuspend } = CommentRestrictModal ({memberNo: member?.memberNo});
+
+  const submitComment = async () => {
     if (!isLogin) {
       Swal.fire({
         title: "로그인 필요",
@@ -161,6 +166,11 @@ const MovieDetail = () => {
       return;
     }
 
+    //1. 제재회원인지 확인
+    const restricted = await checkSuspend();
+    if(restricted) return; // 정지면 여기서 막음
+
+    //2. 제재 아니면 기존 댓글 등록 진행
     if (commentContent.trim() === "") {
       Swal.fire({
         title: "필수 입력",
@@ -387,6 +397,9 @@ const MovieDetail = () => {
       }
     });
   };
+
+
+
 
   return (
     <>

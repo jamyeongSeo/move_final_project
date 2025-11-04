@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import kr.co.iei.movie.model.dto.MovieCommentDTO;
 import kr.co.iei.movie.model.dto.MovieDTO;
 import kr.co.iei.movie.model.service.MovieService;
+import kr.co.iei.admin.model.service.AdminService;
 
 @RestController
 @RequestMapping(value="/movie")
@@ -130,4 +132,24 @@ public class MovieController {
         
         return ResponseEntity.ok(result);
     }
+	
+//	/*회원 댓글 제재*/
+//	@PostMapping("/comment")
+//	public ResponseEntity<?> insertComment(@RequestBody MovieCommentDTO comment){
+//		int memberNo = comment.getMemberNo();
+//		
+//		//1. 정지 여부 확인 - adminService.checkSuspend 로 db에서 정지 상태 확인하고 403 응답 반환하도록함
+//		Map<String, Object> suspendInfo = adminService.checkSuspend(memberNo);
+//		if(suspendInfo != null && !suspendInfo.isEmpty()) {
+//			return ResponseEntity.status(HttpStatus.FORBIDDEN)
+//					.body(Map.of(
+//							"message", "댓글 작성이 제한된 회원입니다.",
+//							"reason", suspendInfo.get("REASON"),
+//							"until", suspendInfo.get("SUSPEND_UNTIL")
+//							));
+//		}
+//		//2. 정지 x -> 댓글 등록
+//		int result = movieService.insertComment(comment);
+//		return ResponseEntity.ok(result);
+//	}
 }

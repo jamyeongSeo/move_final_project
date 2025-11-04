@@ -45,6 +45,7 @@ const BookingSeat = () => {
   });
 
   useEffect(() => {
+    console.log(adultCount);
     if (adultCount === 0 && kidCount === 0) {
       return;
     }
@@ -56,13 +57,16 @@ const BookingSeat = () => {
         }/booking/calcPrice/${movieNo}?adultCount=${adultCount}&kidCount=${kidCount}`
       )
       .then((res) => {
-        setPayInfo({ ...payInfo, totalPrice: res.data.totalPrice });
-        totalPrice = payInfo.totalPrice;
+        setPayInfo((prev) => ({
+          ...prev,
+          totalPrice: res.data.totalPrice,
+        }));
       })
       .catch((err) => {
         console.log(err);
       });
   }, [kidCount, adultCount, movieNo]);
+  console.log(payInfo.totalPrice);
   useEffect(() => {
     axios
       .get(

@@ -31,22 +31,21 @@ const isLoginState = selector({
   },
 });
 
-//신고된 회원의 정지일 수를 저장하는 저장소
+//신고된 회원의 정지일수 저장
 const suspendDaysState = atom({
-  key : "suspendDays",
+  key: "suspendDays",
   default: "",
-  effects_UNSTABLE:[persistAtom],
+  effects_UNSTABLE: [persistAtom],
 });
 
-//회원이 정지되어있는지 확인
+// 회원 정지 여부 계산
 const isSuspended = selector({
-  key:"isSuspended",
-  default: false,
-  get:(state) => {
-    const loginId = state.get(loginIdState);
-    const suspendDays = state.get(suspendDaysState);
+  key: "isSuspended",
+  get: ({ get }) => {
+    const loginId = get(loginIdState);
+    const suspendDays = get(suspendDaysState);
     return loginId !== "" && suspendDays !== "";
   },
 });
 
-export { loginIdState, memberLevelState, isLoginState, authReadyState, isSuspended };
+export { loginIdState, memberLevelState, isLoginState, authReadyState, isSuspended, suspendDaysState };

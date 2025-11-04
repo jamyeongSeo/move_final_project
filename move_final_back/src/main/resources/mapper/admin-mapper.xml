@@ -143,6 +143,23 @@
         DELETE FROM schedule_tbl WHERE schedule_no = #{scheduleNo}
     </delete>
 
+	<!-- 단일 스케줄 조회 -->
+	<select id="getScheduleDetail" parameterType="int" resultType="schedule">
+    SELECT 
+        s.schedule_no,
+        s.movie_no,
+        m.movie_title,
+        s.screen_no,
+        s.schedule_open,
+        s.schedule_close,
+        s.schedule_time_start,
+        s.schedule_time_end
+    FROM schedule_tbl s
+    JOIN movie_tbl m ON s.movie_no = m.movie_no
+    WHERE s.schedule_no = #{scheduleNo}
+	</select>
+	
+
     <!-- 선택된 시간 제외 -->
     <select id="getOccupiedTimes" resultType="map">
         SELECT 
@@ -230,22 +247,47 @@
 	    ORDER BY r.comment_report_date DESC
     </select>
 
-    <!-- 정지 등록 -->
-	<insert id="insertMemberSuspend" parameterType="map">
-        INSERT INTO member_suspend (
-            suspend_no,
-            member_no,
-            suspend_date,
-            suspend_days,
-            suspend_reason
-        )
-        VALUES (
-            suspend_seq.NEXTVAL,
-            #{memberNo},
-            SYSDATE,
-            #{suspendDays},
-            #{suspendReason}
-        )
-    </insert>
+    <!-- 정지회원 중복 체크 -->
+<select id="checkAlreadySuspended" parameterType="int" resultType="int">
+    SELECT COUNT(*)
+    FROM member_suspend
+    WHERE member_no = #{memberNo}
+    AND suspend_date + suspend_days > SYSDATE
+</select>
+
+<!-- 정지 등록 -->
+<insert id="insertSuspend" parameterType="map">
+    INSERT INTO member_suspend (
+        suspend_no,
+        member_no,
+        suspend_date,
+        suspend_days,
+        suspend_reason,
+        suspended_until
+    )
+    VALUES (
+        suspend_seq.NEXTVAL,
+        #{memberNo},
+        SYSDATE,
+        #{suspendDays},
+        #{suspendReason},
+        SYSDATE + #{suspendDays}
+    )
+</insert>
+	
+	<!-- ⭐️ 현재 유효한 정지 정보 조회  -->
+	<select id="getValidSuspensionInfo" parameterType="int" resultType="map">
+	    SELECT 
+	        suspend_days AS SUSPENDED_DAYS,
+	        suspend_date AS SUSPENDED_AT,
+	        suspend_date + suspend_days AS SUSPENDED_UNTIL,  <!-- 종료일 계산 -->
+	        suspend_reason AS REASON
+	    FROM member_suspend
+	    WHERE member_no = #{memberNo}
+	    AND suspend_date + suspend_days > SYSDATE  <!-- 정지 종료일이 현재 시각보다 미래인 경우만 유효 -->
+	    ORDER BY SUSPENDED_UNTIL DESC  <!-- 혹시 중복 정지가 있다면 가장 나중에 끝나는 정지 정보를 가져옴 -->
+	    FETCH FIRST 1 ROW ONLY 
+	</select>
+
 
 </mapper>

@@ -201,10 +201,14 @@ const BookingMain = () => {
                                   </div>
                                 </div>
                                 <div className="seat-info">
-                                  {one.seatList.length -
-                                    one.bookedSeatList.length}
+                                  <span className="remain-seat">
+                                    {one.seatList.length -
+                                      one.bookedSeatList.length}
+                                  </span>
                                   <span>/</span>
-                                  {one.seatList.length}
+                                  <span className="total-seat">
+                                    {one.seatList.length}
+                                  </span>
                                 </div>
                               </div>
                             </div>

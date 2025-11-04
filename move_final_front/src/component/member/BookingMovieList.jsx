@@ -4,6 +4,7 @@ import LeftSideMenu from "../utils/LeftSideMenu";
 import axios from "axios";
 import { useRecoilState } from "recoil";
 import { loginIdState } from "../utils/RecoilData";
+import Swal from "sweetalert2";
 
 const BookingMovieList = () => {
   const [memberId, setMemberId] = useRecoilState(loginIdState);
@@ -12,7 +13,7 @@ const BookingMovieList = () => {
     { url: "/member/watchedMovieList", text: "내가 본 영화" },
     { url: "/member/bookingMovieList", text: "예약 / 결제" },
   ]);
-
+  const [toggle, setToggle] = useState(false);
   const [bookingList, setBookingList] = useState([]);
   const [totalCount, setTotalCount] = useState();
   const BackServer = import.meta.env.VITE_BACK_SERVER;
@@ -27,7 +28,7 @@ const BookingMovieList = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [toggle]);
 
   return (
     <div className="content-wrap member-wrap">
@@ -50,27 +51,31 @@ const BookingMovieList = () => {
             {bookingList &&
               bookingList.map((b, index) => {
                 const BackServer = import.meta.env.VITE_BACK_SERVER;
+                const bookingMail = {
+                  payNo: b.payNo,
+                  movieTitle: b.movieTitle,
+                  movieGrade: b.movieGrade,
+                  movieDate: b.movieDate,
+                  movieTime: b.movieTime,
+                  movieScreen: b.movieScreen,
+                  count: b.count,
+                  comment: "",
+                  movieThumb: b.movieThumb,
+                  seat: b.seat,
+                  memberId: memberId,
+                };
+                console.log(bookingMail);
                 const sendBookingMail = () => {
                   console.log(b.payNo);
-                  const bookingMail = {
-                    payNo: b.payNo,
-                    movieTitle: b.movieTitle,
-                    movieGrade: b.movieGrade,
-                    movieDate: b.movieDate,
-                    movieTime: b.movieTime,
-                    movieScreen: b.movieScreen,
-                    count: b.count,
-                    comment: "",
-                    movieThumb: `${import.meta.env.VITE_BACK_SERVER}${
-                      b.movieThumb
-                    }`,
-                    seat: b.seat,
-                    memberId: memberId,
-                  };
                   axios
                     .post(`${BackServer}/member/sendBookingMail`, bookingMail)
                     .then((res) => {
-                      console.log(res);
+                      Swal.fire({
+                        title: "예매 취소",
+                        text: "예매가 성공적으로 취소되었습니다.",
+                        icon: "info",
+                      });
+                      setToggle(!toggle);
                     })
                     .catch((err) => {
                       console.log(err);
@@ -129,6 +134,21 @@ const BookingMovieList = () => {
                             <button
                               style={{ width: "80px" }}
                               className="btn-red"
+                              onClick={() => {
+                                axios
+                                  .post(
+                                    `${
+                                      import.meta.env.VITE_BACK_SERVER
+                                    }/booking/refund`,
+                                    bookingMail
+                                  )
+                                  .then((res) => {
+                                    console.log(res);
+                                  })
+                                  .catch((err) => {
+                                    console.log(err);
+                                  });
+                              }}
                             >
                               예매 취소
                             </button>
