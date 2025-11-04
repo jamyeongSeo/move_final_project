@@ -37,7 +37,10 @@ WHERE
     
 ORDER BY
     schedule_time_start ASC
-	</select>
+  </select>
+ 
+  
+	
 
 	<select id="selectScreenSeat" resultType="seat">
 		select * from seat_tbl where screen_no = #{screenNo}
@@ -85,7 +88,7 @@ ORDER BY
 	</select>
 	<select id="getBookNo" resultType="int">
 		select book_no from book_tbl where member_no = #{memberNo} and schedule_no
-		=#{scheduleNo} and TRUNC(BOOKING_DATE) = TRUNC(#{bookingDate})
+		=#{scheduleNo} and TO_char(booking_Date, 'YYYY.MM.DD hh24:mi') = #{bookingDate}
 	</select>
 	<select id="getSeatNo" resultType="int">
 		select seat_no from seat_tbl where seat_row = #{bookSeatRow} and seat_column
@@ -141,4 +144,28 @@ WHERE
     AND TRUNC(B.BOOKING_DATE) = TRUNC(TO_DATE(#{bookingDate}, 'YYYY-MM-DD HH24:MI'))
 	</select>
 
+	<select id="selectBookNo" resultType="Integer">
+		select book_no from book_tbl where member_no =#{memberNo} and TO_char(booking_Date, 'YYYY-MM-DD hh24:mi') = #{bookingDate}
+	</select>
+	
+	<delete id="deleteBooking">
+		delete from book_tbl where book_no = #{bookNo}
+	</delete>
+	
+	<select id="selectPayPrice" resultType="int">
+		select pay_price from pay_tbl where pay_no = #{payNo}
+	</select>
+	
+	<update id="updateRefundStatus">
+		update pay_tbl set refund_status = 'y' where pay_no = #{payNo}
+	</update>
+	
+	<insert id="insertRefund">
+		insert into refund values(refund_seq.nextval, #{payPrice} , sysdate, #{payNo})
+	</insert>
+	
+	<select id="selectPayNo" resultType="int">
+		select pay_no from pay_tbl where book_no = #{bookNo}
+	</select>
+	
 </mapper>

@@ -5,6 +5,7 @@ import axios from "axios";
 import { useRecoilState } from "recoil";
 import { loginIdState } from "../utils/RecoilData";
 import NoMemberInfo from "./NoMemberInfo";
+import Swal from "sweetalert2";
 
 const BookingMovieList = () => {
   const [memberId, setMemberId] = useRecoilState(loginIdState);
@@ -55,23 +56,24 @@ const BookingMovieList = () => {
                 {bookingList &&
                   bookingList.map((b, index) => {
                     const BackServer = import.meta.env.VITE_BACK_SERVER;
+                    const bookingMail = {
+                      payNo: b.payNo,
+                      movieTitle: b.movieTitle,
+                      movieGrade: b.movieGrade,
+                      movieDate: b.movieDate,
+                      movieTime: b.movieTime,
+                      movieScreen: b.movieScreen,
+                      count: b.count,
+                      comment: "",
+                      movieThumb: `${import.meta.env.VITE_BACK_SERVER}${
+                        b.movieThumb
+                      }`,
+                      seat: b.seat,
+                      memberId: memberId,
+                    };
                     const sendBookingMail = () => {
                       console.log(b.payNo);
-                      const bookingMail = {
-                        payNo: b.payNo,
-                        movieTitle: b.movieTitle,
-                        movieGrade: b.movieGrade,
-                        movieDate: b.movieDate,
-                        movieTime: b.movieTime,
-                        movieScreen: b.movieScreen,
-                        count: b.count,
-                        comment: "",
-                        movieThumb: `${import.meta.env.VITE_BACK_SERVER}${
-                          b.movieThumb
-                        }`,
-                        seat: b.seat,
-                        memberId: memberId,
-                      };
+
                       axios
                         .post(
                           `${BackServer}/member/sendBookingMail`,
@@ -137,6 +139,21 @@ const BookingMovieList = () => {
                                 <button
                                   style={{ width: "80px" }}
                                   className="btn-red"
+                                  onClick={() => {
+                                    axios
+                                      .post(
+                                        `${
+                                          import.meta.env.VITE_BACK_SERVER
+                                        }/booking/refund`,
+                                        bookingMail
+                                      )
+                                      .then((res) => {
+                                        console.log(res);
+                                      })
+                                      .catch((err) => {
+                                        console.log(err);
+                                      });
+                                  }}
                                 >
                                   예매 취소
                                 </button>

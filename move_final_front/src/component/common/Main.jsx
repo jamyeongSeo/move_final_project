@@ -103,7 +103,7 @@ const MovieItem = (props) => {
   const memberId = props.memberId;
   const movieBoxOffice = props.movieBoxOffice;
   const setMovieBoxOffice = props.setMovieBoxOffice;
-  // const likeCount = movie.likeCount.length;
+  let likeCount = movie.likeCount.length;
 
   return (
     <li className="movie-item" style={{ width: "290px" }}>
@@ -165,16 +165,18 @@ const MovieItem = (props) => {
                       )
                       .then((res) => {
                         if (res.data === 1) {
-                          const likePushList = movieBoxOffice.map((item, i) => {
-                            return index === i
-                              ? {
-                                  ...item,
-                                  like: false,
-                                }
-                              : item;
-                          });
+                          const likeUnPushList = movieBoxOffice.map(
+                            (item, i) => {
+                              return index === i
+                                ? {
+                                    ...item,
+                                    like: false,
+                                  }
+                                : item;
+                            }
+                          );
 
-                          setMovieBoxOffice(likePushList);
+                          setMovieBoxOffice(likeUnPushList);
                         }
                       })
                       .catch((err) => {});
@@ -198,18 +200,16 @@ const MovieItem = (props) => {
                       )
                       .then((res) => {
                         if (res.data === 1) {
-                          const likeUnPushList = movieBoxOffice.map(
-                            (item, i) => {
-                              return index === i
-                                ? {
-                                    ...item,
-                                    like: true,
-                                  }
-                                : item;
-                            }
-                          );
+                          const likePushList = movieBoxOffice.map((item, i) => {
+                            return index === i
+                              ? {
+                                  ...item,
+                                  like: true,
+                                }
+                              : item;
+                          });
 
-                          setMovieBoxOffice(likeUnPushList);
+                          setMovieBoxOffice(likePushList);
                         }
                       })
                       .catch((err) => {});

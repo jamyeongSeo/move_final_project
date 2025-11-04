@@ -20,6 +20,7 @@ import kr.co.iei.booking.model.dto.BookingInfoDTO;
 import kr.co.iei.booking.model.service.BookingService;
 import kr.co.iei.coupon.model.dto.CouponDTO;
 import kr.co.iei.member.model.dto.MemberDTO;
+import kr.co.iei.member.model.dto.MemberMovieListDTO;
 import kr.co.iei.movie.model.dto.MovieDTO;
 
 @RestController
@@ -95,6 +96,12 @@ public class BookingController {
 		
 		int result = bookingService.payment(bookingInfo);
 		
+		return ResponseEntity.ok(result);
+	}
+	
+	@PostMapping(value="/refund")
+	public ResponseEntity<Integer> refund(@RequestBody MemberMovieListDTO refundInfo){
+		int result = bookingService.insertRefund(refundInfo);
 		return ResponseEntity.ok(result);
 	}
 }
